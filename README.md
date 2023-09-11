@@ -37,4 +37,4 @@
   * 아이고 "신의 기회" 화수목금 빠지는 하영이
 
 #### 배포 환경
-  - URL: https://i9c211.p.ssafy.io
+  - URL: https://j9c211.p.ssafy.io
