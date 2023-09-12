@@ -1,7 +1,12 @@
 import React from 'react';
+import SelectInfo from 'components/Pattern/SelectInfo'
 
 const PatternPage = () => {
-  return <div></div>;
+  return (
+    <div>
+      <SelectInfo/>
+    </div>
+  );
 };
 
-export default PatternPage;
+export default PatternPage;<SelectInfo/>
