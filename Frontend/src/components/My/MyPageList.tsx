@@ -18,10 +18,10 @@ const MyPageList = () => {
         <button onClick={() => navigate('/mypage/product')}>😹적금 상품 정보</button>
       </div>
       <div>
-        <button onClick={() => navigate('/mypage/userdelete')}>😥회원 탈퇴</button>
+        <button onClick={() => navigate('/mypage/account')}>🐛내 계좌 변경</button>
       </div>
       <div>
-        <button onClick={() => navigate('/mypage/account')}>🐛내 계좌 변경</button>
+        <button onClick={() => navigate('/mypage/userdelete')}>😥회원 탈퇴</button>
       </div>
       <div>
         <button>😄로그아웃</button>

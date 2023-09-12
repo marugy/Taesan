@@ -1,18 +1,17 @@
 import React from 'react';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { DAUM_POSTCODE } from 'constants/UserModify';
+import { usePostcodePopup } from 'hooks/usePostcodePopup';
 
 interface Props {
   postcode: string;
-  setPostCode: (value: string) => void;
   zonecode: string;
-  setZonCode: (value: string) => void;
   detailPostcode: string;
+  setPostCode: (value: string) => void;
+  setZonCode: (value: string) => void;
   setDetailPostcode: (value: string) => void;
 }
 
-const PostcodeList = ({ postcode, setPostCode, zonecode, setZonCode, detailPostcode, setDetailPostcode }: Props) => {
-  const open = useDaumPostcodePopup(DAUM_POSTCODE);
+const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonCode, setDetailPostcode }: Props) => {
+  const open = usePostcodePopup();
 
   const handleComplete = (data: any) => {
     console.log(data);
@@ -38,7 +37,7 @@ const PostcodeList = ({ postcode, setPostCode, zonecode, setZonCode, detailPostc
   };
 
   // 상세 주소 추가
-  const handleDetailPostcode = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetailPostcode(e.target.value);
   };
 
@@ -52,7 +51,7 @@ const PostcodeList = ({ postcode, setPostCode, zonecode, setZonCode, detailPostc
       </div>
       <div>
         <input type="text" placeholder="주소" value={postcode} />
-        <input type="text" placeholder="상세주소" onChange={handleDetailPostcode} />
+        <input type="text" placeholder="상세주소" onChange={onChange} />
       </div>
       <div>
         {zonecode} {postcode} {detailPostcode}

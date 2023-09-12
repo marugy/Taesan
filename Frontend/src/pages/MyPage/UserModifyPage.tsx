@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import EmailInput from 'components/UserModify/EmailInput';
 import PostcodeList from 'components/UserModify/PostcodeList';
+import { useNavigate } from 'react-router-dom';
 
 const UserModifyPage = () => {
+  const navigate = useNavigate();
   // 각 항목 State 생성
   const [email, setEmail] = useState('');
   const [postcode, setPostCode] = useState('');
   const [zonecode, setZonecode] = useState('');
   const [detailPostcode, setDeatailPostcode] = useState('');
-  // 사용자 정보 조회 후 State 저장
-  // value = State
+
+  const handleModify = () => {
+    console.log('POST_주소');
+    console.log('SUCCESS -> 페이지 이동');
+    navigate('/mypage');
+  };
 
   return (
     <div>
@@ -32,6 +38,9 @@ const UserModifyPage = () => {
           detailPostcode={detailPostcode}
           setDetailPostcode={setDeatailPostcode}
         />
+      </div>
+      <div>
+        <button onClick={handleModify}>수정하기</button>
       </div>
     </div>
   );
