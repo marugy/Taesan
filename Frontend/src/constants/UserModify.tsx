@@ -8,3 +8,5 @@ export const EMAIL_DOMAIN = [
   '@nate.com',
   '@kakao.com',
 ];
+
+export const DAUM_POSTCODE = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';

@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { MailTipLi, MailTipUl } from './EmailInputStyles';
-import { EMAIL_DOMAIN } from 'constants/EMAIL_DOMAIN';
+import { EMAIL_DOMAIN } from 'constants/UserModify';
 
-const EmailInput = () => {
-  const [email, setEmail] = useState(''); //이메일 input 값
+interface Props {
+  email: string;
+  setEmail: (value: string) => void;
+}
+
+const EmailInput = ({ email, setEmail }: Props) => {
   const [emailList, setEmailList] = useState(EMAIL_DOMAIN); //추천 이메일 리스트를 확인, 이메일 리스트 상태 관리
   const [selected, setSelected] = useState(-1); //키보드 선택
   const [isDrobBox, setIsDropbox] = useState(false); // 드롭박스 유무
