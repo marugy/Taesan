@@ -7,9 +7,11 @@ const MainAssetRegister = () => {
     <div>
       <MainAssetRegisterContainer
         onClick={() => {
-          navigate('/main/asset');
+          navigate('/main/asset/register');
         }}
-      ></MainAssetRegisterContainer>
+      >
+        내 계좌 등록하기
+      </MainAssetRegisterContainer>
     </div>
   );
 };
