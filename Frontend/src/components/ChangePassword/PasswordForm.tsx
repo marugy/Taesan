@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyledWarningText } from './PasswordFromStyles';
+import { StyledWarningText } from './PasswordFormStyles';
 
 interface formProps {
   password: string;
@@ -21,9 +21,8 @@ const PasswordForm = ({ form, setForm }: Props) => {
     });
   };
 
-  const [sameNewPassword, setSameNewPassword] = useState(true);
-
   // 유효성 검사
+  const [sameNewPassword, setSameNewPassword] = useState(true);
   useEffect(() => {
     if (form.newPassword && form.newPassword !== form.newPasswordConfirm) {
       setSameNewPassword(false);
