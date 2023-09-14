@@ -1,22 +1,24 @@
 import FrequencyPayList from 'components/HabitCreate/FrequencyPayList';
 import React from 'react';
-
+import DefaultCategory from 'components/HabitCreate/DefaultCategory';
+import RepeatCategory from 'components/HabitCreate/RepeatCategory';
+import { useNavigate } from 'react-router-dom';
 const HabitCreatePage = () => {
+  const navigate = useNavigate();
   return (
     <div>
-      <div>습관생성페이지</div>
-      <div>
-        <input type="text" placeholder="습관제모깅요" />
-      </div>
-      <div>
-        <button>대표습관1</button>
-        <button>대표습관2</button>
-        <button>대표습관3</button>
-        <button>대표습관4</button>
-      </div>
-      <div>
-        <FrequencyPayList />
-      </div>
+      <h1>습관의 제목을 입력해주세요.</h1>
+      <input type="text"></input>
+      <DefaultCategory />
+      <RepeatCategory />
+      박희창님은 지난 한 달 동안 '담배' 에 90,000원을 소비하셨어요!
+      <button
+        onClick={() => {
+          navigate('/habit');
+        }}
+      >
+        생성하기
+      </button>
     </div>
   );
 };

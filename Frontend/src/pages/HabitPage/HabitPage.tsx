@@ -1,16 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Calendar from 'components/Habit/Calendar';
-import HabitList from 'components/Habit/HabitList';
+
 const HabitPage = () => {
-  const navigate = useNavigate();
   return (
     <div>
-      <div>습관저금페이지</div>
+      <h1>내 습관 절약</h1>
+      <h1>총 절약 금액 : 45,000원</h1>
       <Calendar />
-      <button onClick={() => navigate('/habit/create')}>습관생성++</button>
+      <OnedaySaveMoney />
       <HabitList />
-      <button>POST_오늘습관저금</button>
     </div>
   );
 };
