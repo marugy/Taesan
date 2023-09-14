@@ -1,14 +1,13 @@
 import React from 'react';
 
 const Card = () => {
-    return (
-        <div>
-            카드임 아무튼 카드임
-            의심의 여지 없이 카드임
-            뭐 뭐
-            뭐 뭐 뭐 뭐 
-        </div>
-    );
+  return (
+    <div>
+      <div>Credit</div>
+      <div>VISA</div>
+      <div>0000-0000-0009-9000</div>
+    </div>
+  );
 };
 
 export default Card;

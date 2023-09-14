@@ -1,8 +1,5 @@
 import React from 'react';
-import Calendar from 'components/Habit/Calendar';
-import HabitList from 'components/Habit/HabitList';
 
-import OnedaySaveMoney from 'components/Habit/OnedaySaveMoney';
 const HabitPage = () => {
   return (
     <div>

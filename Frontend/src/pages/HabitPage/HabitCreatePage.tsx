@@ -1,3 +1,4 @@
+import FrequencyPayList from 'components/HabitCreate/FrequencyPayList';
 import React from 'react';
 import DefaultCategory from 'components/HabitCreate/DefaultCategory';
 import RepeatCategory from 'components/HabitCreate/RepeatCategory';
