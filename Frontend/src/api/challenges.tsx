@@ -9,6 +9,7 @@ export const postNewChallenge = async () => {
       period: '20221113',
       price: '1233312',
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -18,6 +19,7 @@ export const postNewChallenge = async () => {
 export const getExpireChallenge = async () => {
   try {
     const response = await axios.get(`${REACT_APP_URL}${CHALLENGES}/expired`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -28,6 +30,7 @@ export const getExpireChallenge = async () => {
 export const getStateChallenge = async () => {
   try {
     const response = await axios.get(`${REACT_APP_URL}${CHALLENGES}/state`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -42,6 +45,7 @@ export const postJoinChallenge = async () => {
     const response = await axios.post(`${REACT_APP_URL}${CHALLENGES}/${id}/join`, {
       code: '123123',
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -52,6 +56,7 @@ export const postJoinChallenge = async () => {
 export const postExitChallenge = async () => {
   try {
     const response = await axios.post(`${REACT_APP_URL}${CHALLENGES}/${id}/exit`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -62,6 +67,7 @@ export const postExitChallenge = async () => {
 export const postStartChallenge = async () => {
   try {
     const response = await axios.post(`${REACT_APP_URL}${CHALLENGES}/${id}/start`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -72,6 +78,7 @@ export const postStartChallenge = async () => {
 export const getRecruitChallenge = async () => {
   try {
     const response = await axios.get(`${REACT_APP_URL}${CHALLENGES}/${id}/recruit`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -82,6 +89,7 @@ export const getRecruitChallenge = async () => {
 export const getProgressChallenge = async () => {
   try {
     const response = await axios.get(`${REACT_APP_URL}${CHALLENGES}/${id}/progress`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);
@@ -95,6 +103,7 @@ export const postTransfer = async () => {
       challenge_id: '123',
       remaining_money: '1222311',
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred while fetching data: ', error);

@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/transaction")
+@RequestMapping("/api/transaction-management/transactions")
 public class TransactionAPI {
 
     @PostMapping("/history")
