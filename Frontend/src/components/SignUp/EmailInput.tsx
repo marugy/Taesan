@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { MailTipLi, MailTipUl } from './EmailInputStyles';
-import { EMAIL_DOMAIN } from 'constants/UserModify';
+import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
 
 interface Props {
   email: string;
