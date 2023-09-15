@@ -14,6 +14,13 @@ const MainAssettInfo = () => {
       >
         적금통 만들기
       </button>
+      <button
+        onClick={() => {
+          navigate('/saving');
+        }}
+      >
+        적금통 조회하기
+      </button>
     </div>
   );
 };

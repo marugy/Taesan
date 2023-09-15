@@ -23,7 +23,13 @@ const SavingInfo = () => {
       >
         적금통 해지하기
       </button>
-      <button>홈 화면 가기</button>
+      <button
+        onClick={() => {
+          navigate('/main');
+        }}
+      >
+        홈 화면 가기
+      </button>
     </div>
   );
 };
