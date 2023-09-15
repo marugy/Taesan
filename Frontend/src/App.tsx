@@ -3,7 +3,7 @@ import logo from './logo.svg';
 
 import { Router, Route, Routes } from 'react-router-dom';
 import LoginPage from 'pages/AuthPage/LoginPage';
-import AuthPage from 'pages/AuthPage/SignUpPage';
+import SingUpPage from 'pages/AuthPage/SignUpPage';
 import BuyifPage from 'pages/BuyifPage/BuyifPage';
 import BuyifCreatePage from 'pages/BuyifPage/BuyifCreatePage';
 import ChallengePage from 'pages/ChallengePage/ChallengePage';
@@ -34,12 +34,14 @@ import SavingPage from 'pages/SavingPage/SavingPage';
 import SavingDetailPage from 'pages/SavingPage/SavingDetailPage';
 import SavingCreatePage from 'pages/SavingPage/SavingCreatePage';
 import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
-import SingUpPage from 'pages/AuthPage/SignUpPage';
+import TestPage from 'pages/TestPage/TestPage';
 
 function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/" element={<TestPage />} />
+
         {/* 계정 관련 페이지 */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SingUpPage />} />
