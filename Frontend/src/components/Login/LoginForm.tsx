@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { StyledWarningText } from './LoginFormStyles';
-
 interface FormProps {
   loginId: string;
   password: string;
@@ -31,12 +29,12 @@ const LoginForm = () => {
       <div>
         <label>아이디</label>
         <input {...register('loginId')} />
-        {errors.loginId && <StyledWarningText>{errors.loginId.message}</StyledWarningText>}
+        {errors.loginId && <p>{errors.loginId.message}</p>}
       </div>
       <div>
         <label>비밀번호</label>
         <input {...register('password')} type="password" />
-        {errors.password && <StyledWarningText>{errors.password.message}</StyledWarningText>}
+        {errors.password && <p>{errors.password.message}</p>}
       </div>
       <input type="submit" />
     </form>

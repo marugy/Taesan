@@ -1,11 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StyledBottomNav } from './BottomNavStyles';
 
 const BottomNav = () => {
   const navigate = useNavigate();
   return (
-    <StyledBottomNav>
+    <div>
       <button
         onClick={() => {
           navigate('mypage');
@@ -28,7 +27,7 @@ const BottomNav = () => {
       >
         카드
       </button>
-    </StyledBottomNav>
+    </div>
   );
 };
 

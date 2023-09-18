@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { StyledButton } from './BuyifPageStyles';
-
 const BuyifCreatePage = () => {
   const [item, setItem] = useState('');
 
@@ -11,10 +9,10 @@ const BuyifCreatePage = () => {
       <div>{item}</div>
       <div>
         <input type="text" onChange={(e) => setItem(e.target.value)} />
-        <StyledButton>POST_샀다치고 등록</StyledButton>
+        <button>POST_샀다치고 등록</button>
       </div>
       <div>
-        <StyledButton>지피티 도움!</StyledButton>
+        <button>지피티 도움!</button>
       </div>
     </div>
   );

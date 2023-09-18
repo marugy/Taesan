@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { StyledButton } from './ChallengeCreatePageStyles';
-
 import NumericKeypad from 'components/ChallengeCreate/NumericKeypad';
 
 const ChallengeCreatePage = () => {
@@ -30,7 +28,7 @@ const ChallengeCreatePage = () => {
       <NumericKeypad money={money} setMoney={setMoney} />
       <br />
       <div>
-        <StyledButton onClick={handleRecruit}>챌린지 생성</StyledButton>
+        <button onClick={handleRecruit}>챌린지 생성</button>
       </div>
     </div>
   );

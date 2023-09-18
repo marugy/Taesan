@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { StyledWarningText } from './PasswordFormStyles';
 
 interface formProps {
   password: string;
@@ -53,7 +52,7 @@ const PasswordForm = ({ form, setForm }: Props) => {
           placeholder="새 비밀번호 확인"
           onChange={onChange}
         />
-        <StyledWarningText>{sameNewPassword ? null : '비밀번호가 일치하지 않습니다.'}</StyledWarningText>
+        <p>{sameNewPassword ? null : '비밀번호가 일치하지 않습니다.'}</p>
       </div>
     </div>
   );
