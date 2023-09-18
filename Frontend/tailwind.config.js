@@ -5,9 +5,9 @@ module.exports = withMT({
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     screens: {
-      tb: '768px',
+      tb: { min: '768px', max: '1023px' },
 
-      dt: '1024px',
+      dt: { min: '1024px' },
     },
     extend: {},
   },
