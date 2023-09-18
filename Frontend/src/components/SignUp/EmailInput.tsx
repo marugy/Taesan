@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useOutsideClick } from 'hooks/useOutsideClick';
-import { MailTipLi, MailTipUl } from './EmailInputStyles';
 import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
 
 interface Props {
@@ -60,19 +59,14 @@ const EmailInput = ({ email, setEmail }: Props) => {
         onKeyUp={handleKeyUp}
       />
       {isDrobBox && (
-        <MailTipUl>
+        <ul>
           {emailList.map((domain, idx) => (
-            <MailTipLi
-              key={idx}
-              onMouseOver={() => setSelected(idx)}
-              onClick={() => handleDropDownClick(email, domain)}
-              selected={selected === idx}
-            >
+            <li key={idx} onMouseOver={() => setSelected(idx)} onClick={() => handleDropDownClick(email, domain)}>
               {email.split('@')[0]}
               {domain}
-            </MailTipLi>
+            </li>
           ))}
-        </MailTipUl>
+        </ul>
       )}
     </div>
   );

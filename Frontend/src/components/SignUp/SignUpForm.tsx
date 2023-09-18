@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { StyledWarningText } from './SignUpFormStyles';
 import EmailInput from './EmailInput';
 import PostcodeList from './PostcodeList';
 
@@ -50,22 +49,22 @@ const SingUpForm = ({
       <div>
         <label>아이디</label>
         <input {...register('loginId')} />
-        {errors.loginId && <StyledWarningText>{errors.loginId.message}</StyledWarningText>}
+        {errors.loginId && <span>{errors.loginId.message}</span>}
       </div>
       <div>
         <label>비밀번호</label>
         <input {...register('password')} />
-        {errors.password && <StyledWarningText>{errors.password.message}</StyledWarningText>}
+        {errors.password && <span>{errors.password.message}</span>}
       </div>
       <div>
         <label>비밀번호 확인</label>
         <input {...register('passwordConfirm')} />
-        {errors.passwordConfirm && <StyledWarningText>{errors.passwordConfirm.message}</StyledWarningText>}
+        {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
       </div>
       <div>
         <label>이름</label>
         <input {...register('name')} />
-        {errors.name && <StyledWarningText>{errors.name.message}</StyledWarningText>}
+        {errors.name && <span>{errors.name.message}</span>}
       </div>
       <div>
         <EmailInput email={email} setEmail={setEmail} />
