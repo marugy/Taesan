@@ -5,8 +5,8 @@ import HistoryList from 'components/History/HistoryList';
 const HistoryPage = () => {
   return (
     <div>
-      <Card/>
-      <HistoryList/>
+      <Card />
+      <HistoryList />
     </div>
   );
 };
