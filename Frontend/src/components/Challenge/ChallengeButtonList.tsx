@@ -1,3 +1,4 @@
+import { Button } from '@material-tailwind/react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -5,21 +6,14 @@ const ChallengeButtonList = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div>
-        <button onClick={() => navigate('/challenge/create')}>생성하기</button>
-        <button>같이하기</button>
+      <div className="m-5 space-x-5">
+        <Button onClick={() => navigate('/challenge/create')}>생성하기</Button>
+        <Button>같이하기</Button>
       </div>
-      <br />
+      {/* <Button onClick={() => navigate('/challenge/recruit')}>모집중</Button>
+      <Button onClick={() => navigate('/challenge/play')}>진행중</Button> */}
       <div>
-        <button onClick={() => navigate('/challenge/recruit')}>모집중</button>
-      </div>
-      <br />
-      <div>
-        <button onClick={() => navigate('/challenge/play')}>진행중</button>
-      </div>
-      <br />
-      <div>
-        <button onClick={() => navigate('/challenge/result')}>이전 챌린지</button>
+        <Button onClick={() => navigate('/challenge/result')}>이전 챌린지</Button>
       </div>
     </div>
   );

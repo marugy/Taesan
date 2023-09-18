@@ -1,3 +1,4 @@
+import { Button } from '@material-tailwind/react';
 import React from 'react';
 
 interface Props {
@@ -30,32 +31,36 @@ const NumericKeypad = ({ money, setMoney }: Props) => {
 
   return (
     <div>
-      <div>목표소비금액</div>
-      <div>￦{money.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+      <div className="font-bold">목표소비금액</div>
+      <div className="font-bold">￦ {money.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
       <div>
-        <button onClick={() => setMoney(String(Number(money) + 1000))}>￦1,000</button>
-        <button onClick={() => setMoney(String(Number(money) + 5000))}>￦5,000</button>
-        <button onClick={() => setMoney(String(Number(money) + 10000))}>￦10,000</button>
-        <button onClick={() => setMoney(String(Number(money) + 50000))}>￦50,000</button>
-        <div>
-          <button onClick={() => handleInputNumber('1')}>1</button>
-          <button onClick={() => handleInputNumber('2')}>2</button>
-          <button onClick={() => handleInputNumber('3')}>3</button>
+        <div className="space-x-1 m-1">
+          <Button onClick={() => setMoney(String(Number(money) + 1000))}>￦1,000</Button>
+          <Button onClick={() => setMoney(String(Number(money) + 5000))}>￦5,000</Button>
+          <Button onClick={() => setMoney(String(Number(money) + 10000))}>￦10,000</Button>
+          <Button onClick={() => setMoney(String(Number(money) + 50000))}>￦50,000</Button>
         </div>
-        <div>
-          <button onClick={() => handleInputNumber('4')}>4</button>
-          <button onClick={() => handleInputNumber('5')}>5</button>
-          <button onClick={() => handleInputNumber('6')}>6</button>
+        <div className="space-x-1 m-1">
+          <Button onClick={() => handleInputNumber('1')}>1</Button>
+          <Button onClick={() => handleInputNumber('2')}>2</Button>
+          <Button onClick={() => handleInputNumber('3')}>3</Button>
         </div>
-        <div>
-          <button onClick={() => handleInputNumber('7')}>7</button>
-          <button onClick={() => handleInputNumber('8')}>8</button>
-          <button onClick={() => handleInputNumber('9')}>9</button>
+        <div className="space-x-1 m-1">
+          <Button onClick={() => handleInputNumber('4')}>4</Button>
+          <Button onClick={() => handleInputNumber('5')}>5</Button>
+          <Button onClick={() => handleInputNumber('6')}>6</Button>
         </div>
-        <div>
-          <button onClick={() => handleInputZero(2)}>00</button>
-          <button onClick={() => handleInputZero(1)}>0</button>
-          <button onClick={handleDeleteNumber}>X</button>
+        <div className="space-x-1 m-1">
+          <Button onClick={() => handleInputNumber('7')}>7</Button>
+          <Button onClick={() => handleInputNumber('8')}>8</Button>
+          <Button onClick={() => handleInputNumber('9')}>9</Button>
+        </div>
+        <div className="space-x-1 m-1">
+          <Button className="w-12" onClick={() => handleInputZero(2)}>
+            00
+          </Button>
+          <Button onClick={() => handleInputZero(1)}>0</Button>
+          <Button onClick={handleDeleteNumber}>X</Button>
         </div>
       </div>
     </div>

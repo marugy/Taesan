@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ChallengeMemberList from 'components/ChallengeRecruit/ChallengeMemberList';
+import { Button } from '@material-tailwind/react';
 
 const ChallengeRecruitPage = () => {
   const navigate = useNavigate();
@@ -33,8 +34,8 @@ const ChallengeRecruitPage = () => {
       </div>
       <br />
       <div>
-        <button onClick={handlePlay}>시작하기</button>
-        <button onClick={handleExit}>나가기</button>
+        <Button onClick={handlePlay}>시작하기</Button>
+        <Button onClick={handleExit}>나가기</Button>
       </div>
     </div>
   );
