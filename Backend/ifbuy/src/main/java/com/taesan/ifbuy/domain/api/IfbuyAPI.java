@@ -35,8 +35,8 @@ public class IfbuyAPI {
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResult<IfbuyRegisterResponse> postIfbuyList(
-            @RequestPart("data") IfbuyRegisterRequest ifbuyRegisterRequest,
-            @RequestPart("img") MultipartFile itemImg
+            @ModelAttribute("data") IfbuyRegisterRequest ifbuyRegisterRequest,
+            @ModelAttribute("img") MultipartFile itemImg
     ) {
         return OK(new IfbuyRegisterResponse());
     }
