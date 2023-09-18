@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import NumericKeypad from 'components/ChallengeCreate/NumericKeypad';
+import { Button, Input } from '@material-tailwind/react';
 
 const ChallengeCreatePage = () => {
   const navigate = useNavigate();
@@ -19,16 +20,13 @@ const ChallengeCreatePage = () => {
 
   return (
     <div>
-      <div>챌린지 생성 페이지</div>
-      <br />
-      <div>
-        <input type="text" value={title} onChange={onChange} />
+      <div className="m-10">
+        <Input label="챌린지 제목" value={title} onChange={onChange} crossOrigin={false} />
       </div>
-      <br />
       <NumericKeypad money={money} setMoney={setMoney} />
       <br />
       <div>
-        <button onClick={handleRecruit}>챌린지 생성</button>
+        <Button onClick={handleRecruit}>챌린지 생성</Button>
       </div>
     </div>
   );

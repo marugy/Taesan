@@ -9,9 +9,7 @@ const ChallengePage = () => {
 
   return (
     <div>
-      <div>챌린지 홈</div>
       <ChallengeSaving />
-      <br />
       <ChallengeButtonList />
     </div>
   );

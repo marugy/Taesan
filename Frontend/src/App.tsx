@@ -35,8 +35,6 @@ import SavingDetailPage from 'pages/SavingPage/SavingDetailPage';
 import SavingCreatePage from 'pages/SavingPage/SavingCreatePage';
 import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
-
-import BottomNav from 'components/Common/BottomNav';
 import './App.css';
 function App() {
   return (
@@ -96,7 +94,6 @@ function App() {
         <Route path="/saving/create" element={<SavingCreatePage />} />
         <Route path="/saving/delete" element={<SavingDeletePage />} />
       </Routes>
-      <BottomNav />
     </div>
   );
 }
