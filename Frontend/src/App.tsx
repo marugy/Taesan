@@ -66,7 +66,7 @@ function App() {
 
           {/* 거래내역 관련 페이지 */}
           <Route path="/history" element={<HistoryPage />} />
-          <Route path="/history/detail" element={<HistoryDetailPage />} />
+          <Route path="/history/detail/:id" element={<HistoryDetailPage />} />
           <Route path="/history/receipt" element={<ReceiptPage />} />
 
           {/* 메인페이지 관련 페이지 */}
