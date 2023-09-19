@@ -1,8 +1,16 @@
-import { Button } from '@material-tailwind/react';
 import React from 'react';
+import { Button } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 
-const ChallengeResultItem = () => {
+interface Props {
+  title: string;
+  challengeMoney: string;
+  saveMoney: string;
+  duration: string;
+  isSave: boolean;
+}
+
+const ChallengeResultItem = ({ title, challengeMoney, saveMoney, duration, isSave }: Props) => {
   const navigate = useNavigate();
 
   const handleSave = () => {
@@ -10,14 +18,25 @@ const ChallengeResultItem = () => {
   };
 
   return (
-    <div>
-      <div>제목 : 메롱</div>
-      <div>기간 : 12일</div>
-      <div>목표소비금액 : ￦100,000원</div>
-      <div>남은 금액 : ￦30,000원</div>
-      {/* 이미 환전한 항목은 비활성화 */}
-      <Button onClick={() => navigate('/challenge/result/detail')}>자세히 보기</Button>
-      <Button onClick={handleSave}>아낀 금액 환전</Button>
+    <div className="tb:w-[450px] dt:w-[500px] border">
+      <div className="flex flex-col items-center ml-10 mr-20">
+        <Button
+          variant="text"
+          className="font-bold text-lg dt:text-[25px] my-2"
+          onClick={() => navigate('/challenge/result/detail')}
+        >
+          아와왕아왕하기싫?어?
+        </Button>
+      </div>
+      <div className="flex mb-3 mr-3 justify-between">
+        <div className="ml-5 text-[13px] dt:text-[15px]">
+          <div className=" ">￦ 30,000 / 100,000</div>
+          <div className="">2023-08-29~2023-09-05</div>
+        </div>
+        <Button className="bg-main p-3 dt:text-[20px]" onClick={handleSave}>
+          아낀 금액 전환
+        </Button>
+      </div>
     </div>
   );
 };
