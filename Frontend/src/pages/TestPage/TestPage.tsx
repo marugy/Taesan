@@ -108,7 +108,7 @@ const TestPage = () => {
           <Button onClick={deleteMember}>회원 탈퇴</Button>
           <hr></hr>
           <h2>TRANSATIONS 관련 AXIOS 통신 테스트</h2>
-          <Button onClick={getHistory}>거래 내역 조회</Button>
+          {/* <Button onClick={getHistory}>거래 내역 조회</Button> */}
           <Button onClick={getTransactionDetail}>거래 상세 조회</Button>
           <Button onClick={getTransactionReceipt}>거래 영수증 조회</Button>
           <hr></hr>

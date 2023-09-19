@@ -1,4 +1,4 @@
-package com.taesan.transaction.domain.api.dto.response;
+package com.taesan.transaction.domain.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class CardResponse {
-    String cardNumber;
-    String name;
-    String cardCompany;
-    List<TransactionsResponse> transactions;
+public class CardListResponse {
+    Long sumPrice;
+    List<Transaction> transactions;
 }
