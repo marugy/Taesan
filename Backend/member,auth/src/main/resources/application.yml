@@ -1,10 +1,28 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ts_local?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: "root"
-    password: "ssafy"
+    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/ts_local?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: "root"
+#    password: "ssafy"
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P22C211?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: S09P22C211
+    password: hOGy0FJVud
+
 
   redis:
     host: localhost
     port: 6379
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+
+  config:
+    import: "optional:configserver:http://j9c211.p.ssafy.io:62110" #config server uri
+    cloud:
+      config:
+        name: member
+        profile: dev
+encrypt:
+  key: c211goforprize
