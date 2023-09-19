@@ -1,4 +1,5 @@
 import { IconButton } from '@material-tailwind/react';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import React from 'react';
 
 interface Props {
@@ -16,10 +17,10 @@ const RoomCode = ({ roomcode }: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100 tb:text-md dt:text-xl rounded-lg w-[150px] font-bold">
+    <div className="flex justify-center items-center mt-5 bg-gray-100 tb:text-md dt:text-xl rounded-lg w-[150px] font-bold">
       {roomcode}
-      <IconButton className="font-bold ml-2 tb:text-md dt:text-xl" onClick={() => handleCopyClipBoard(roomcode)}>
-        d
+      <IconButton className="font-bold m-1 tb:text-md dt:text-xl bg-main" onClick={() => handleCopyClipBoard(roomcode)}>
+        <ContentCopyOutlinedIcon />
       </IconButton>
     </div>
   );
