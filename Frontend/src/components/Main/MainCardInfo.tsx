@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MainCardInfo = () => {
-  return <div>얘가 일단 바텀nav 역할을 잠시 하는 것.</div>;
+  return <div>카드 정보 캐러셀로 띄우기</div>;
 };
 
 export default MainCardInfo;
