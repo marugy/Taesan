@@ -34,7 +34,6 @@ const MainPage = () => {
         <MainAssetInfo />
         <MainMenu />
         <MainCardInfo />
-        그냥 아무asdasd거나 막 추가
       </div>
     </div>
   );
