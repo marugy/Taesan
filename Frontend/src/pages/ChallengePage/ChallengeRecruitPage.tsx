@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ChallengeMemberList from 'components/ChallengeRecruit/ChallengeMemberList';
+import RoomCode from 'components/ChallengeRecruit/RoomCode';
 import { Button } from '@material-tailwind/react';
 
 const ChallengeRecruitPage = () => {
+  const [roomcode, setRoomcode] = useState('ABCDEF');
   const navigate = useNavigate();
   // 방 정보 불러오기
   console.log('GET_챌린지 모집정보');
@@ -22,20 +24,27 @@ const ChallengeRecruitPage = () => {
     console.log('DELETE_유저 IN 챌린지');
   };
   return (
-    <div>
-      <div>챌린지 모집중</div>
-      <div>제목 : 메롱</div>
-      <div>기간 : 12일</div>
-      <div>목표소비금액 : ￦100,000원</div>
-      <br />
-      <div>
-        <div>CODE : A2C2E2</div>
-        <ChallengeMemberList />
+    <div className="flex flex-col">
+      <div className="m-5">
+        <div className="ml-14 tb:ml-14 dt:ml-32 mb-10 tb:text-md dt:text-xl font-bold">일주일동안 열심히 모아봐요</div>
+        <div className="ml-14 tb:ml-14 dt:ml-32 mb-2 tb:text-md dt:text-xl font-bold">
+          절약 기간 <br /> 12일
+        </div>
+        <div className="ml-14 tb:ml-14 dt:ml-32 tb:text-md dt:text-xl font-bold">
+          목표소비금액 <br /> ￦100,000원
+        </div>
       </div>
-      <br />
-      <div>
-        <Button onClick={handlePlay}>시작하기</Button>
-        <Button onClick={handleExit}>나가기</Button>
+      <div className="flex flex-col items-center">
+        <RoomCode roomcode={roomcode} />
+        <ChallengeMemberList />
+        <div className="">
+          <Button className="bg-main tb:text-md dt:text-xl" onClick={handlePlay}>
+            시작하기
+          </Button>
+          <Button className="bg-main tb:text-md dt:text-xl" onClick={handleExit}>
+            나가기
+          </Button>
+        </div>
       </div>
     </div>
   );
