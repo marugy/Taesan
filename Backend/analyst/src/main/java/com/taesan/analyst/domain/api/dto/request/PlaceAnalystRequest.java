@@ -1,18 +1,20 @@
-package com.taesan.ifbuy.domain.dto.request;
+package com.taesan.analyst.domain.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class IfbuyRegisterRequest {
+public class PlaceAnalystRequest {
 
-    String name;
-    String price;
-    MultipartFile img;
+//    @JsonProperty("year")
+
+    String strYearMonth;
+
 }
