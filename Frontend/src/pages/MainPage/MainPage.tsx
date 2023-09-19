@@ -30,10 +30,13 @@ const MainPage = () => {
   return (
     <div>
       <div>
+        <div className="font-extrabold text-3xl">태산 : 泰山</div>
+
+        {/* 자산 등록 여부에 따라 다른 화면 띄우기 */}
         <MainAssetRegister />
+        {/* <MainCardInfo /> */}
         <MainAssetInfo />
         <MainMenu />
-        <MainCardInfo />
       </div>
     </div>
   );

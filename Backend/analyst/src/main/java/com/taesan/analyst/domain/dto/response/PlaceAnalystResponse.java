@@ -3,13 +3,17 @@ package com.taesan.analyst.domain.dto.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
+@Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class PlaceAnalystResponse {
 
-    @JsonProperty("location_category")
-    String locationCategory;
+    String year;
+    String month;
+    List<Info> infos;
 
 }

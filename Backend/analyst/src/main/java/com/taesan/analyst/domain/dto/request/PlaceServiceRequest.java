@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlaceReceiptRequest {
+public class PlaceServiceRequest {
 
-    @JsonProperty("img_url")
-    String imgUrl;
+    String year;
+    String month;
 
 }
