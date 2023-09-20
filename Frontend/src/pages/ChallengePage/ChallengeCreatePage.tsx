@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Swal from 'sweetalert2';
+import { Toast } from 'components/Common/Toast';
+
 import NumericKeypad from 'components/ChallengeCreate/NumericKeypad';
 import { Button, Input } from '@material-tailwind/react';
 import { Slider } from '@material-tailwind/react';
@@ -15,10 +18,43 @@ const ChallengeCreatePage = () => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
-  const handleRecruit = () => {
-    console.log('챌린지 생성 묻는 모달');
+  const handleRecruit = (title: string, money: string, period: string) => {
+    Swal.fire({
+      title: '챌린지 생성',
+      html: `<span><b>${title}
+            <br>
+             ￦ ${money} 
+             <br>
+             ${period}일
+             <br>
+             </b></span>
+             <br>
+             챌린지를 생성하시겠습니까?`,
+      icon: 'question',
+
+      confirmButtonColor: '#0046ff',
+      confirmButtonText: '생성',
+
+      showCancelButton: true,
+      cancelButtonColor: 'red',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (title === '') {
+          Toast.fire({
+            icon: 'info',
+            title: '제목을 입력하세요!',
+          });
+        } else {
+          navigate('/challenge/recruit');
+          Toast.fire({
+            icon: 'success',
+            title: '챌린지를 생성했습니다.',
+          });
+        }
+      }
+    });
     console.log('OK 시 챌린지 생성');
-    navigate('/challenge/recruit');
   };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +86,7 @@ const ChallengeCreatePage = () => {
       <NumericKeypad money={money} setMoney={setMoney} />
       <br />
       <div className="mb-5">
-        <Button className="bg-main tb:text-md dt:text-xl" onClick={handleRecruit}>
+        <Button className="bg-main tb:text-md dt:text-xl" onClick={() => handleRecruit(title, money, period)}>
           챌린지 생성
         </Button>
       </div>
