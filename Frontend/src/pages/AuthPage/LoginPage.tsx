@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import LoginForm from 'components/Login/LoginForm';
-
+import Landing from 'components/Login/Landing';
 const LoginPage = () => {
-  const [form, setForm] = useState({
-    id: '',
-    password: '',
-  });
+  const [showLanding, setShowLanding] = useState(true);
+
+  useEffect(() => {
+      const timer = setTimeout(() => {
+          setShowLanding(false);
+      }, 2500);
+      return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div>
-      <div>로그인 페이지</div>
-      <LoginForm />
+      {showLanding ? <Landing /> : <LoginForm />}
     </div>
   );
 };
