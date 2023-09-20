@@ -1,18 +1,18 @@
-package com.taesan.mydata.domain.bank.dto.request;
+package com.taesan.mydata.domain.bank.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AccountListRequest {
 
     @JsonProperty("org_code")
-    @NotBlank
+//    @NotBlank
     private String orgCode;
 
     @JsonProperty("search_timestamp")
@@ -22,7 +22,7 @@ public class AccountListRequest {
     private String nextPage;
 
     @JsonProperty("limit")
-    @NotBlank
+//    @NotBlank
     private String limit;
 
 }
