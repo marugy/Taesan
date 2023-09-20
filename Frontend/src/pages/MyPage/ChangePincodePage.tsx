@@ -1,10 +1,9 @@
+import { Pincode } from 'components/Common/Pincode';
 import React from 'react';
-import Pincode from 'components/Common/Pincode';
 
 const ChangePincodePage = () => {
   return (
-    <div>
-      <div>간편비밀번호변경 페이지</div>
+    <div className="flex flex-col items-center">
       <Pincode />
     </div>
   );
