@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.member.dto.response;
 
+import com.ts.taesan.domain.member.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,16 +17,12 @@ public class MemberInfoResponse {
     private String name;
     private String phone;
     private String email;
-    private String address;
-    private String addressDetail;
-    private String zipCode;
+    private Address address;
 
-    public MemberInfoResponse(String name, String phone, String email, String address, String addressDetail, String zipCode) {
+    public MemberInfoResponse(String name, String phone, String email, Address address) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.addressDetail = addressDetail;
-        this.zipCode = zipCode;
     }
 }
