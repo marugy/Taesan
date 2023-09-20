@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ChallengeMemberList from 'components/ChallengeRecruit/ChallengeMemberList';
 import RoomCode from 'components/ChallengeRecruit/RoomCode';
 import { Button } from '@material-tailwind/react';
+import ArrowBack from 'components/Common/ArrowBack';
 
 import Swal from 'sweetalert2';
 import { Toast } from 'components/Common/Toast';
@@ -84,32 +85,37 @@ const ChallengeRecruitPage = () => {
     });
   };
   return (
-    <div className="flex flex-col items-center">
-      <div className="m-5">
-        <div className="mr-14 tb:mr-14 dt:mr-32 mb-10 tb:text-md dt:text-xl font-bold">일주일동안 열심히 모아봐요</div>
-        <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-          절약 기간 <br /> 12일
+    <div>
+      <ArrowBack pageName="절약 챌린지 모집" />
+      <div className="flex flex-col items-center">
+        <div className="m-5">
+          <div className="mr-14 tb:mr-14 dt:mr-32 mb-10 tb:text-md dt:text-xl font-bold">
+            일주일동안 열심히 모아봐요
+          </div>
+          <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
+            절약 기간 <br /> 12일
+          </div>
+          <div className="mr-14 tb:mr-14 dt:mr-32 tb:text-md dt:text-xl font-bold">
+            목표소비금액 <br /> ￦100,000원
+          </div>
         </div>
-        <div className="mr-14 tb:mr-14 dt:mr-32 tb:text-md dt:text-xl font-bold">
-          목표소비금액 <br /> ￦100,000원
-        </div>
-      </div>
-      <div className="flex flex-col items-center bg-[#E3E9ED] w-[400px] dt:w-[500px] rounded-xl mb-5">
-        <RoomCode roomcode={roomcode} />
-        <ChallengeMemberList
-          playerOne={playerOne}
-          playerTwo={playerTwo}
-          playerThree={playerThree}
-          playerFour={playerFour}
-          playerFive={playerFive}
-        />
-        <div className="mb-5 space-x-5">
-          <Button className="bg-main tb:text-md dt:text-xl" onClick={handlePlay}>
-            시작하기
-          </Button>
-          <Button className="bg-main tb:text-md dt:text-xl" onClick={handleExit}>
-            나가기
-          </Button>
+        <div className="flex flex-col items-center bg-[#E3E9ED] w-[400px] dt:w-[500px] rounded-xl mb-5">
+          <RoomCode roomcode={roomcode} />
+          <ChallengeMemberList
+            playerOne={playerOne}
+            playerTwo={playerTwo}
+            playerThree={playerThree}
+            playerFour={playerFour}
+            playerFive={playerFive}
+          />
+          <div className="mb-5 space-x-5">
+            <Button className="bg-main tb:text-md dt:text-xl" onClick={handlePlay}>
+              시작하기
+            </Button>
+            <Button className="bg-main tb:text-md dt:text-xl" onClick={handleExit}>
+              나가기
+            </Button>
+          </div>
         </div>
       </div>
     </div>
