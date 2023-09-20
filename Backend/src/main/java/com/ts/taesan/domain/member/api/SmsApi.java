@@ -1,10 +1,10 @@
-package com.ts.taesan.domain.member.Api;
+package com.ts.taesan.domain.member.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ts.taesan.domain.member.Dto.request.*;
-import com.ts.taesan.domain.member.Dto.response.ResultResponse;
-import com.ts.taesan.domain.member.Dto.response.SmsResponse;
-import com.ts.taesan.domain.member.Service.SmsService;
+import com.ts.taesan.domain.member.dto.request.*;
+import com.ts.taesan.domain.member.dto.response.ResultResponse;
+import com.ts.taesan.domain.member.dto.response.SmsResponse;
+import com.ts.taesan.domain.member.service.SmsService;
 import com.ts.taesan.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

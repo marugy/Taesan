@@ -5,5 +5,10 @@ spring:
     config:
       name: member
       profile: local
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
 encrypt:
   key: ${ssh-encrypt-key}

@@ -27,7 +27,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true, name = "login_Id")
+    @Column(nullable = false, unique = true, name = "login_id")
     private String loginId;
 
     @Column(nullable = false, unique = true)
@@ -39,11 +39,11 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String hashCode;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true, name = "account_num")
     private String accountNum;
 
     @Column(nullable = false, unique = true)
-    private String tel;
+    private String phone;
 
     @Embedded
     private Address address;
@@ -55,6 +55,7 @@ public class Member extends BaseEntity {
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
     public void deleteRefreshToken() {
         this.refreshToken = null;
     }

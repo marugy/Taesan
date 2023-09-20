@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.member.Dto.request;
+package com.ts.taesan.domain.member.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

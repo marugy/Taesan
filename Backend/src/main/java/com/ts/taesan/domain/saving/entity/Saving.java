@@ -1,5 +1,6 @@
-package com.ts.taesan.domain.member.entity;
+package com.ts.taesan.domain.saving.entity;
 
+import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.global.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

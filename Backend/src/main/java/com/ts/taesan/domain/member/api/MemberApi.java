@@ -1,11 +1,13 @@
-package com.ts.taesan.domain.member.Api;
+package com.ts.taesan.domain.member.api;
 
-import com.ts.taesan.domain.member.Dto.request.JoinRequest;
-import com.ts.taesan.domain.member.Dto.request.LoginRequest;
-import com.ts.taesan.domain.member.Dto.request.SimpleLoginRequest;
-import com.ts.taesan.domain.member.Dto.response.LoginResponse;
-import com.ts.taesan.domain.member.Dto.response.MemberInfoResponse;
-import com.ts.taesan.domain.member.Dto.response.ResultResponse;
+import com.ts.taesan.domain.member.dto.request.JoinRequest;
+import com.ts.taesan.domain.member.dto.request.LoginRequest;
+import com.ts.taesan.domain.member.dto.request.SimpleLoginRequest;
+import com.ts.taesan.domain.member.dto.response.LoginResponse;
+import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
+import com.ts.taesan.domain.member.dto.response.ResultResponse;
+import com.ts.taesan.domain.member.service.MemberQService;
+import com.ts.taesan.domain.member.service.MemberService;
 import com.ts.taesan.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,9 @@ import static com.ts.taesan.global.api.ApiResponse.OK;
 @RequestMapping("/api/member-management/members")
 @Slf4j
 public class MemberApi {
+
+    private final MemberService memberService;
+    private final MemberQService memberQService;
 
     @PostMapping("/join")
     public ApiResponse<ResultResponse> join(@RequestBody JoinRequest joinRequest) {
@@ -36,7 +41,8 @@ public class MemberApi {
 
     @GetMapping("/info")
     public ApiResponse<MemberInfoResponse> getMemberInfoById() {
-        return OK(new MemberInfoResponse());
+        MemberInfoResponse memberInfoResponse = memberQService.findById(1L);
+        return OK(memberInfoResponse);
     }
 
     @PostMapping("/info")

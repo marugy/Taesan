@@ -1,10 +1,10 @@
-package com.ts.taesan.domain.member.Service;
+package com.ts.taesan.domain.member.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ts.taesan.domain.member.Dto.request.MessageRequest;
-import com.ts.taesan.domain.member.Dto.request.SmsRequest;
-import com.ts.taesan.domain.member.Dto.response.SmsResponse;
+import com.ts.taesan.domain.member.dto.request.MessageRequest;
+import com.ts.taesan.domain.member.dto.request.SmsRequest;
+import com.ts.taesan.domain.member.dto.response.SmsResponse;
 import com.ts.taesan.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 //@PropertySource("classpath:application.yml")
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +39,6 @@ public class SmsService {
     //휴대폰 인증 번호
     private final String smsConfirmNum = createSmsKey();
     private final RedisUtil redisUtil;
-//    private final Environment env;
 
     @Value("${naver-cloud-sms.accessKey}")
     private String accessKey;
@@ -52,18 +52,22 @@ public class SmsService {
     @Value("${naver-cloud-sms.senderPhone}")
     private String phone;
 
-    //spring core에서 값을 읽어
-//    public SmsService(Environment env) {
-//        this.env = env;
-//        this.accessKey = env.getProperty("naver-cloud-sms.accessKey");
-//
-//    }
+    // 인증코드 만들기
+    public static String createSmsKey() {
+        StringBuffer key = new StringBuffer();
+        Random rnd = new Random();
+
+        for (int i = 0; i < 5; i++) { // 인증코드 5자리
+            key.append((rnd.nextInt(10)));
+        }
+        return key.toString();
+    }
 
     public String getSignature(String time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         String space = " ";
         String newLine = "\n";
         String method = "POST";
-        String url = "/sms/v2/services/"+ this.serviceId+"/messages";
+        String url = "/sms/v2/services/" + this.serviceId + "/messages";
         String accessKey = this.accessKey;
         String secretKey = this.secretKey;
 
@@ -119,23 +123,10 @@ public class SmsService {
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         //restTemplate로 post 요청 보내고 오류가 없으면 202코드 반환
-        SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponse.class);
+        SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"), httpBody, SmsResponse.class);
         SmsResponse responseDto = new SmsResponse(smsConfirmNum);
         redisUtil.setDataExpire(smsConfirmNum, messageRequest.getTo(), 60 * 3L); // 유효시간 3분
         return smsResponse;
-    }
-
-
-
-    // 인증코드 만들기
-    public static String createSmsKey() {
-        StringBuffer key = new StringBuffer();
-        Random rnd = new Random();
-
-        for (int i = 0; i < 5; i++) { // 인증코드 5자리
-            key.append((rnd.nextInt(10)));
-        }
-        return key.toString();
     }
 
     public String verifyEmail(String key) throws ChangeSetPersister.NotFoundException {
