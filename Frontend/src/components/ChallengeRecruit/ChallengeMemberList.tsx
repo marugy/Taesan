@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-const ChallengeMemberList = () => {
-  const [playerOne, setPlayerOne] = useState('신규람');
-  const [playerTwo, setPlayerTwo] = useState('김하영');
-  const [playerThree, setPlayerThree] = useState('배용현');
-  const [playerFour, setPlayerFour] = useState('김성준');
-  const [playerFive, setPlayerFive] = useState('이지헌');
+interface Props {
+  playerOne: string;
+  playerTwo: string;
+  playerThree: string;
+  playerFour: string;
+  playerFive: string;
+}
 
+const ChallengeMemberList = ({ playerOne, playerTwo, playerThree, playerFour, playerFive }: Props) => {
   console.log('GET_챌린지 멤버');
   //   방장 판단 함수
 
