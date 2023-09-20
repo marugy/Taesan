@@ -1,23 +1,22 @@
-package com.taesan.transaction.domain.api.dto.response;
+package com.taesan.transaction.domain.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class TransactionsResponse {
+public class Transaction {
     Long transactionId;
-    Long approvedNum;
-    LocalDateTime date;
+    Long approvedId;
+    LocalDateTime dateTime;
     Long approvedAmount;
-    String merchantName;
+    Long afterTransAmt;
+    String shopName;
     String category;
 
 }

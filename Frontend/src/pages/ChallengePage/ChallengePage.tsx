@@ -8,10 +8,8 @@ const ChallengePage = () => {
   // 챌린지 상태에 따라 버튼 보여주기 생성+같이/모집/진행
 
   return (
-    <div>
-      <div>챌린지 홈</div>
+    <div className="flex flex-col items-center">
       <ChallengeSaving />
-      <br />
       <ChallengeButtonList />
     </div>
   );

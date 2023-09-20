@@ -10,13 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,7 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-@PropertySource("classpath:application-key.yml")
+//@PropertySource("classpath:application.yml")
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -39,6 +40,7 @@ public class SmsService {
     //휴대폰 인증 번호
     private final String smsConfirmNum = createSmsKey();
     private final RedisUtil redisUtil;
+//    private final Environment env;
 
     @Value("${naver-cloud-sms.accessKey}")
     private String accessKey;
@@ -51,6 +53,13 @@ public class SmsService {
 
     @Value("${naver-cloud-sms.senderPhone}")
     private String phone;
+
+    //spring core에서 값을 읽어
+//    public SmsService(Environment env) {
+//        this.env = env;
+//        this.accessKey = env.getProperty("naver-cloud-sms.accessKey");
+//
+//    }
 
     public String getSignature(String time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         String space = " ";
