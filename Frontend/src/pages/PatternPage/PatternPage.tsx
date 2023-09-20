@@ -1,12 +1,12 @@
 import React from 'react';
-import SelectInfo from 'components/Pattern/SelectInfo'
+import Graph from 'components/Pattern/Graph';
 
 const PatternPage = () => {
   return (
     <div>
-      <SelectInfo/>
+      <Graph/>
     </div>
   );
 };
 
-export default PatternPage;<SelectInfo/>
+export default PatternPage;
