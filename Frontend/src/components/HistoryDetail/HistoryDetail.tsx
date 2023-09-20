@@ -7,7 +7,7 @@ const HistoryDetail = () => {
     const [analys, setAnalys] = useState(false)
 
     return (
-        <div className='flex flex-col items-center mt-24'>
+        <div className='flex flex-col items-center my-24'>
             <div className='w-[86%] flex flex-col items-center'>
                 <div className='w-full flex justify-between mt-2'>
                     <ListItemPrefix>
@@ -61,12 +61,13 @@ const HistoryDetail = () => {
                     결재 내역 분석하기
                     </div>
                 </div>
+                {analys? 
                 <div className='border-blue-gray-100 rounded-xl border mt-5 flex flex-col items-center w-full '>
                     <div className='mt-11 font-bold'>아직 분석한 결제 내역이 없습니다.</div>
                     <div className='mt-10 mb-6'>
                     <Button color="blue">영수증 등록</Button>
                     </div>
-                </div>
+                </div>: null}
                 <div className='border-blue-gray-100 rounded-xl border mt-12 w-full'>
                     <div className=' flex justify-between mt-2 mx-5'>
                         <ListItemPrefix>
@@ -95,7 +96,13 @@ const HistoryDetail = () => {
                     </Typography>                    
                 </div>
                 <div className='border-blue-gray-100 rounded-xl border mt-5 w-full'>
-                    최근 3개월간 거래 내역
+                    <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-m font-bold  '>
+                        최근 3개월간 거래 내역
+                    </Typography>
+                    <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-m font-bold w-[90%] text-blue-gray-500 '>
+                        <div>거래 횟수:</div>
+                        <div>총 거래 금액:</div>
+                    </Typography>
                 </div>
             </div>
         </div>
