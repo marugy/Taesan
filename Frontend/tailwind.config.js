@@ -7,6 +7,7 @@ module.exports = withMT({
     colors: {
       main: '#0046ff',
       back: '#f7f7f7',
+      sub:'#0067AC'
     },
     screens: {
       tb: { min: '768px', max: '1023px' },
