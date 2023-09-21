@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
 
+import TextField from '@mui/material/TextField';
+import ListItemText from '@mui/material/ListItemText';
+import { MenuItem } from '@material-tailwind/react';
+
 interface Props {
   email: string;
   setEmail: (value: string) => void;
@@ -14,7 +18,7 @@ const EmailInput = ({ email, setEmail }: Props) => {
   const [isDrobBox, setIsDropbox] = useState(false); // 드롭박스 유무
   const inputRef = useOutsideClick(() => setIsDropbox(false));
 
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEmail(e.target.value);
     if (e.target.value.includes('@')) {
       setIsDropbox(true);
@@ -46,11 +50,11 @@ const EmailInput = ({ email, setEmail }: Props) => {
   };
 
   return (
-    <div>
+    <div className="">
       <div ref={inputRef}>
-        <input
+        <TextField
           type="email"
-          placeholder="이메일 입력"
+          label="이메일"
           value={email}
           onChange={(e) => {
             onChangeEmail(e);
@@ -58,12 +62,17 @@ const EmailInput = ({ email, setEmail }: Props) => {
           onKeyUp={handleKeyUp}
         />
         {isDrobBox && (
-          <ul>
+          <ul className="fixed z-999 border-2 bg-white ">
             {emailList.map((domain, idx) => (
-              <li key={idx} onMouseOver={() => setSelected(idx)} onClick={() => handleDropDownClick(email, domain)}>
+              <MenuItem
+                key={idx}
+                onMouseOver={() => setSelected(idx)}
+                onClick={() => handleDropDownClick(email, domain)}
+                className={idx === selected ? 'bg-main text-white' : ''}
+              >
                 {email.split('@')[0]}
                 {domain}
-              </li>
+              </MenuItem>
             ))}
           </ul>
         )}
