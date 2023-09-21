@@ -36,7 +36,6 @@ import SavingCreatePage from 'pages/SavingPage/SavingCreatePage';
 import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
 import './App.css';
-import Testbottomnav from 'pages/Testbottomnav';
 function App() {
   return (
     <div className="App  flex justify-center ">
@@ -96,8 +95,7 @@ function App() {
           <Route path="/saving/create" element={<SavingCreatePage />} />
           <Route path="/saving/delete" element={<SavingDeletePage />} />
 
-          {/* 테스트 페이지 */}
-          <Route path="/testNav" element={<Testbottomnav />} />
+        
         </Routes>
       </div>
     </div>
