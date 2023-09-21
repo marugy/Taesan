@@ -17,11 +17,11 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/mydata/account-management/accounts")
+@RequestMapping("/mydata/card-management/cards")
 public class CardApi {
 
     @GetMapping
-    public ResponseEntity<CardListResponse> getAccountList(
+    public ResponseEntity<CardListResponse> getCardList(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             CardListRequest accountListRequest)
@@ -36,7 +36,7 @@ public class CardApi {
     }
 
     @GetMapping("/{card_id}")
-    public ResponseEntity<CardListResponse> getAccountInfo(
+    public ResponseEntity<CardListResponse> getCardInfo(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
@@ -45,6 +45,26 @@ public class CardApi {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         return new ResponseEntity<>(new CardListResponse(), headers, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{card_id}/approval-domestic")
+    public ResponseEntity<CardListResponse> getCardTransactionList(
+            @RequestHeader("x-api-tran-id") String tranId,
+            @RequestHeader("x-api-type") String type,
+            @PathVariable("card_id") long cardId,
+            @Valid CardTransactionListRequest cardTransactionListRequest)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-api-tran-id", "1234567890M00000000000001");
+        return new ResponseEntity<>(new CardListResponse(), headers, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/{card_id}/pay")
+    public ResponseEntity<PayResponse> pay(
+            @PathVariable("card_id") long cardId,
+            @Valid PayRequest payRequest)
+    {
+        return new ResponseEntity<>(new PayResponse(), HttpStatus.ACCEPTED);
     }
 
 }

@@ -3,7 +3,7 @@ package com.taesan.mydata.domain.bank.api;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountDetail;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountInfo;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
-import com.taesan.mydata.domain.bank.api.dto.inner.TransactionList;
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountTransactionList;
 import com.taesan.mydata.domain.bank.api.dto.request.*;
 import com.taesan.mydata.domain.bank.api.dto.response.*;
 import lombok.RequiredArgsConstructor;
@@ -69,29 +69,25 @@ public class AccountApi {
     }
 
     @PostMapping("/deposit/transactions")
-    public ResponseEntity<TransactionListResponse> getTransactions(
+    public ResponseEntity<AccountTransactionListResponse> getTransactions(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            @Valid TransactionListRequest transactionListRequest)
+            @Valid AccountTransactionListRequest accountTransactionListRequest)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        TransactionListResponse ret = new TransactionListResponse();
-        List<TransactionList> list = new ArrayList<>();
-        list.add(new TransactionList());
+        AccountTransactionListResponse ret = new AccountTransactionListResponse();
+        List<AccountTransactionList> list = new ArrayList<>();
+        list.add(new AccountTransactionList());
         ret.setTransList(list);
         return new ResponseEntity<>(ret, headers, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/transfer")
     public ResponseEntity<TransferResponse> transfer(
-            @RequestHeader("x-api-tran-id") String tranId,
-            @RequestHeader("x-api-type") String type,
             @Valid TransferRequest transferRequest)
     {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("x-api-tran-id", "1234567890M00000000000001");
-        return new ResponseEntity<>(new TransferResponse(), headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new TransferResponse(), HttpStatus.ACCEPTED);
     }
 
 }

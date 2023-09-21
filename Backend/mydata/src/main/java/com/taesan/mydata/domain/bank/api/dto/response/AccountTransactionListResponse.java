@@ -1,7 +1,7 @@
 package com.taesan.mydata.domain.bank.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.taesan.mydata.domain.bank.api.dto.inner.TransactionList;
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountTransactionList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TransactionListResponse {
+public class AccountTransactionListResponse {
 
     @JsonProperty("rsp_code")
     private String rspCode;
@@ -26,6 +26,6 @@ public class TransactionListResponse {
     private Long transCnt;
 
     @JsonProperty("trans_list")
-    private List<TransactionList> transList;
+    private List<AccountTransactionList> transList;
 
 }

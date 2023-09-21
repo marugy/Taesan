@@ -1,4 +1,4 @@
-package com.taesan.mydata.domain.bank.api.dto.request;
+package com.taesan.mydata.domain.card.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,10 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionListRequest {
+public class CardTransactionListRequest {
 
     @JsonProperty("org_code")
     private String orgCode;
-
-    @JsonProperty("account_num")
-    private String accountNum;
-
-    @JsonProperty("seqno")
-    private Long seqNo;
 
     @JsonProperty("from_date")
     private Date fromDate;
