@@ -1,6 +1,9 @@
 import React from 'react';
 import { usePostcodePopup } from 'hooks/usePostcodePopup';
 
+import TextField from '@mui/material/TextField';
+import { Button } from '@material-tailwind/react';
+
 interface Props {
   postcode: string;
   zonecode: string;
@@ -42,18 +45,18 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonC
   };
 
   return (
-    <div>
-      <div>
-        <input type="text" placeholder="우편번호" value={zonecode} />
-        <button type="button" onClick={handleClick}>
+    <div className="space-y-2">
+      <div className="space-x-1 flex items-center ">
+        <TextField type="text" label="우편번호" value={zonecode} disabled />
+        <Button type="button" className="bg-[#F1F5F5] h-10 text-[#8EB4B5]" onClick={handleClick}>
           찾기
-        </button>
+        </Button>
       </div>
-      <div>
-        <input type="text" placeholder="주소" value={postcode} />
-        <input type="text" placeholder="상세주소" onChange={onChange} />
+      <div className="space-x-1">
+        <TextField type="text" label="주소" value={postcode} disabled />
+        <TextField type="text" label="상세주소" onChange={onChange} />
       </div>
-      <div>
+      <div className="text-xs text-gray-500">
         {zonecode} {postcode} {detailPostcode}
       </div>
     </div>

@@ -1,46 +1,16 @@
 import React, { useState } from 'react';
 import { List, ListItem, ListItemPrefix, Avatar, Card, Typography } from '@material-tailwind/react';
+import { ACCOUNT_DATA } from 'constants/DUMMY';
 const AccountRegister = () => {
   // 더미데이터
-  const accountData = [
-    {
-      name: '국민은행',
-      accountNumber: '052-1234-1234',
-      image: '/Account/KB.jpg',
-      balance: '1320000',
-    },
-    {
-      name: '신한은행',
-      accountNumber: '110-509-677498',
-      image: '/Account/Shinhan.png',
-      balance: '1220000',
-    },
-    {
-      name: '우리은행',
-      accountNumber: '110-509-677498',
-      image: '/Account/Woori.jpg',
-      balance: '465000',
-    },
-    {
-      name: '하나은행',
-      accountNumber: '110-509-677498',
-      image: '/Account/Hana.png',
-      balance: '230124',
-    },
-    {
-      name: '신한은행',
-      accountNumber: '110-509-677498',
-      image: '/Account/Shinhan.png',
-      balance: '1210122',
-    },
-  ];
+
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleItemClick = (index: any) => {
     setSelectedItem(index);
   };
   return (
-    <div className="flex  flex-col  items-center">
+    <div className="flex flex-col items-center">
       <Typography variant="h4" color="gray">
         '태산' 사용을 위해 등록하실
       </Typography>
@@ -51,7 +21,7 @@ const AccountRegister = () => {
       <div>
         <Card className="w-96">
           <List>
-            {accountData.map((bank, index) => (
+            {ACCOUNT_DATA.map((bank, index) => (
               <ListItem
                 key={index}
                 onClick={() => handleItemClick(index)}

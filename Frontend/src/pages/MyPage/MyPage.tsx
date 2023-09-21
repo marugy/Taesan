@@ -2,13 +2,16 @@ import React from 'react';
 
 import MyPageList from 'components/My/MyPageList';
 import MyInfo from 'components/My/MyInfo';
+import ArrowBack from 'components/Common/ArrowBack';
 
 const MyPage = () => {
   return (
-    <div>
-      <div>마이 페이지 홈</div>
-      <MyInfo />
-      <MyPageList />
+    <div className="bg-back ">
+      <ArrowBack pageName="마이페이지" />
+      <div className="flex flex-col mx-10">
+        <MyInfo />
+        <MyPageList />
+      </div>
     </div>
   );
 };
