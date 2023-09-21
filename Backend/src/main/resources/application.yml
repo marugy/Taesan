@@ -4,11 +4,12 @@ spring:
   cloud:
     config:
       name: member
-      profile: local
+      profile: dev
 
   jpa:
     hibernate:
       ddl-auto: create
+    open-in-view: false
 
   mvc:
     pathmatch:

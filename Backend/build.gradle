@@ -41,7 +41,6 @@ dependencies {
     //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //oauth
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     //기본 web
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
@@ -51,15 +50,19 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'org.springframework.security:spring-security-test'
 
-    //naver sms
+    //security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    testImplementation 'org.springframework.security:spring-security-test'
+
+
+    / / naver sms
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
     //swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-    
+
     // jwt 관련
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
