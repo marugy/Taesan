@@ -28,16 +28,19 @@ const MainPage = () => {
   const mutation = useMutation(testPost);
   console.log(mutation);
   return (
+    <div className="flex flex-col items-center"> 
     <div>
-      <div>
-        <div className="font-extrabold text-3xl">태산 : 泰山</div>
+       <div>
+        <img src="/Main/logo.png" className="h-16" />
+       </div>
+        {/* <div className="font-extrabold text-3xl">태산 : 泰山</div> */}
 
         {/* 자산 등록 여부에 따라 다른 화면 띄우기 */}
         <MainAssetRegister />
         {/* <MainCardInfo /> */}
         <MainAssetInfo />
         <MainMenu />
-      </div>
+        </div>
     </div>
   );
 };
