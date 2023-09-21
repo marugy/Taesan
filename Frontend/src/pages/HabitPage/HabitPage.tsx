@@ -1,14 +1,18 @@
 import React from 'react';
-import Calendar from 'components/Habit/Calendar';
+import HabitCalendar from 'components/Habit/HabitCalendar';
 import OnedaySaveMoney from 'components/Habit/OnedaySaveMoney';
 import HabitList from 'components/Habit/HabitList';
 
 const HabitPage = () => {
   return (
     <div>
-      <h1>내 습관 절약</h1>
-      <h1>총 절약 금액 : 45,000원</h1>
-      <Calendar />
+      <div className="text-main text-3xl font-bold">
+        내 습관 절약
+      </div>
+      <div className="text-xl font-semibold mt-5">
+      총 절약 금액 : 45,000원
+      </div>
+      <HabitCalendar />
       <OnedaySaveMoney />
       <HabitList />
     </div>
