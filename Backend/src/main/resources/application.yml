@@ -4,7 +4,7 @@ spring:
   cloud:
     config:
       name: member
-      profile: local
+      profile: dev
 
   jpa:
     hibernate:
