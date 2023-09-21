@@ -1,7 +1,7 @@
 package com.ts.taesan.domain.member.api;
 
-import com.ts.taesan.domain.member.dto.request.JoinRequest;
-import com.ts.taesan.domain.member.dto.request.LoginRequest;
+import com.ts.taesan.domain.member.dto.request.MemberJoinRequest;
+import com.ts.taesan.domain.member.dto.request.MemberLoginRequest;
 import com.ts.taesan.domain.member.dto.request.SimpleLoginRequest;
 import com.ts.taesan.domain.member.dto.response.LoginResponse;
 import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
@@ -25,22 +25,26 @@ public class MemberApi {
     private final MemberQService memberQService;
 
     @PostMapping("/join")
-    public ApiResponse<ResultResponse> join(@RequestBody JoinRequest joinRequest) {
+    public ApiResponse<ResultResponse> join(@RequestBody MemberJoinRequest memberJoinRequest) {
+        memberService.save(memberJoinRequest);
         return OK(new ResultResponse());
     }
 
     @PostMapping("/login")
-    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        return OK(new LoginResponse());
+    public ApiResponse<MemberInfoResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) {
+        MemberInfoResponse memberInfoResponse = memberQService.login(memberLoginRequest);
+        return OK(memberInfoResponse);
     }
 
     @PostMapping("/simple-login")
-    public ApiResponse<LoginResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
-        return OK(new LoginResponse());
+    public ApiResponse<MemberInfoResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
+        MemberInfoResponse correct = memberQService.simpleLogin(1L, simpleLoginRequest);
+        return OK(correct);
     }
 
     @GetMapping("/info")
     public ApiResponse<MemberInfoResponse> getMemberInfoById() {
+        // TODO: 2023-09-20 로그인 후 멤버 아이디로 수정 필요
         MemberInfoResponse memberInfoResponse = memberQService.findById(1L);
         return OK(memberInfoResponse);
     }
@@ -58,11 +62,6 @@ public class MemberApi {
     @PutMapping("/simple-password")
     public ApiResponse<ResultResponse> modifySimplePasswordById() {
         return OK(new ResultResponse());
-    }
-
-    @GetMapping("/saving")
-    public ApiResponse<Integer> getSavingInfo() {
-        return OK(30000);
     }
 
     @DeleteMapping()

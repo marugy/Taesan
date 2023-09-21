@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.saving.entity;
+package com.ts.taesan.domain.tikkle.entity;
 
 import com.ts.taesan.global.entity.BaseEntity;
 

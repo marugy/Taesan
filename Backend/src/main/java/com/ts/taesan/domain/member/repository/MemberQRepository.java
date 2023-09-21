@@ -4,7 +4,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +21,7 @@ public class MemberQRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public MemberInfoResponse findById(Long id) {
+    public MemberInfoResponse findMemberById(Long id) {
         return queryFactory
                 .select(Projections.constructor(MemberInfoResponse.class,
                         member.name,
@@ -32,6 +31,32 @@ public class MemberQRepository {
                 ))
                 .from(member)
                 .where(member.id.eq(id))
+                .fetchFirst();
+    }
+
+    public MemberInfoResponse findMemberByLoginIdAndPassword(String loginId, String password) {
+        return queryFactory
+                .select(Projections.constructor(MemberInfoResponse.class,
+                        member.name,
+                        member.phone,
+                        member.email,
+                        member.address
+                ))
+                .from(member)
+                .where(member.loginId.eq(loginId), member.password.eq(password))
+                .fetchFirst();
+    }
+
+    public MemberInfoResponse findMemberBySimplePassword(Long loginId, String password) {
+        return queryFactory
+                .select(Projections.constructor(MemberInfoResponse.class,
+                        member.name,
+                        member.phone,
+                        member.email,
+                        member.address
+                ))
+                .from(member)
+                .where(member.id.eq(loginId), member.password.eq(password))
                 .fetchFirst();
     }
 

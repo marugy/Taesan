@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.saving.entity;
+package com.ts.taesan.domain.tikkle.entity;
 
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.global.entity.BaseEntity;
@@ -24,7 +24,7 @@ public class Saving extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name="money")
+    @Column(name = "money")
     private Long money;
 
 }

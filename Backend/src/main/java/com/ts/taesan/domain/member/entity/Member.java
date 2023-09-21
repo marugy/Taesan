@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.member.entity;
 
 import com.ts.taesan.global.entity.BaseEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @DynamicInsert
 @ToString
@@ -36,7 +37,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true, name = "simple_password")
     private String simplePassword;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String hashCode;
 
     @Column(nullable = true, unique = true, name = "account_num")
