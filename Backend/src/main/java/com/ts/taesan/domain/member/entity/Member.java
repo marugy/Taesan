@@ -2,10 +2,7 @@ package com.ts.taesan.domain.member.entity;
 
 import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.global.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +14,7 @@ import java.util.Collection;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @SuperBuilder
 @DynamicInsert
 @ToString
@@ -72,6 +70,18 @@ public class Member extends BaseEntity implements UserDetails {
         this.refreshToken = null;
     }
 
+    public void update(MemberModifyRequest memberModifyRequest) {
+        this.address = memberModifyRequest.getAddress();
+        this.email = memberModifyRequest.getEmail();
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateSimplePassword(String simplePassword) {
+        this.simplePassword = simplePassword;
+    }
 
     ////////////////////////
     @Override

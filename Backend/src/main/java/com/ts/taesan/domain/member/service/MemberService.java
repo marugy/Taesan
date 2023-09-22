@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.member.service;
 
 import com.ts.taesan.domain.member.dto.request.MemberJoinRequest;
+import com.ts.taesan.domain.member.dto.request.MemberLoginRequest;
 import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 import com.ts.taesan.domain.member.entity.Address;
@@ -27,15 +28,42 @@ public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
+//    public void login(MemberLoginRequest memberLoginRequest){
+//        Member
+//    }
+
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
         memberRepository.save(member);
     }
 
-    public MemberInfoResponse modify(Long id, MemberModifyRequest memberModifyRequest) {
-//        Member findMember = memberRepository.findById(id);
-//        findMember.updateMemberInfo(memberModifyRequest);
-        return null;
+    public boolean checkId(String loginId) {
+        Member member = memberRepository.findByLoginId(loginId).orElse(null);
+        if (member == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void modify(Long id, MemberModifyRequest memberModifyRequest) {
+        Member findMember = memberRepository.findById(id).get();
+        findMember.update(memberModifyRequest);
+    }
+
+    public void modifyPassword(Long id, String password) {
+        Member findMember = memberRepository.findById(id).get();
+        findMember.updatePassword(password);
+    }
+
+    public void modifySimplePassword(Long id, String simplePassword) {
+        Member findMember = memberRepository.findById(id).get();
+        findMember.updateSimplePassword(simplePassword);
+    }
+
+    public void deleteMember(Long id) {
+        Member findMember = memberRepository.findById(id).get();
+        memberRepository.delete(findMember);
     }
 
     @Override
