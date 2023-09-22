@@ -26,7 +26,6 @@ const SignUpPage = () => {
 
   return (
     <div>
-      <div>회원가입 페이지</div>
       <SignUpForm
         email={email}
         postcode={postcode}

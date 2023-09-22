@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
 
+import { Input } from '@material-tailwind/react';
 import TextField from '@mui/material/TextField';
 import ListItemText from '@mui/material/ListItemText';
 import { MenuItem } from '@material-tailwind/react';
@@ -52,7 +53,7 @@ const EmailInput = ({ email, setEmail }: Props) => {
   return (
     <div className="">
       <div ref={inputRef}>
-        <TextField
+        <Input
           type="email"
           label="이메일"
           value={email}
@@ -60,19 +61,20 @@ const EmailInput = ({ email, setEmail }: Props) => {
             onChangeEmail(e);
           }}
           onKeyUp={handleKeyUp}
+          crossOrigin="anonymous"
         />
         {isDrobBox && (
-          <ul className="fixed z-999 border-2 bg-white ">
+          <ul className="border-2 fixed bg-back z-10 w-96 rounded">
             {emailList.map((domain, idx) => (
-              <MenuItem
+              <li
                 key={idx}
                 onMouseOver={() => setSelected(idx)}
                 onClick={() => handleDropDownClick(email, domain)}
-                className={idx === selected ? 'bg-main text-white' : ''}
+                className={idx === selected ? 'bg-blue-gray-500 text-white border-black border rounded ml-3' : 'ml-3'}
               >
                 {email.split('@')[0]}
                 {domain}
-              </MenuItem>
+              </li>
             ))}
           </ul>
         )}

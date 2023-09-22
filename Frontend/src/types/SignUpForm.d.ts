@@ -4,4 +4,5 @@ export interface FormProps {
   passwordConfirm: string;
   name: string;
   phone: string;
+  email: string;
 }

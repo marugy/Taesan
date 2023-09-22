@@ -3,17 +3,18 @@ import { usePostcodePopup } from 'hooks/usePostcodePopup';
 
 import TextField from '@mui/material/TextField';
 import { Button } from '@material-tailwind/react';
+import { Input } from '@material-tailwind/react';
 
 interface Props {
   postcode: string;
   zonecode: string;
   detailPostcode: string;
-  setPostCode: (value: string) => void;
-  setZonCode: (value: string) => void;
+  setPostcode: (value: string) => void;
+  setZoncode: (value: string) => void;
   setDetailPostcode: (value: string) => void;
 }
 
-const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonCode, setDetailPostcode }: Props) => {
+const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZoncode, setDetailPostcode }: Props) => {
   const open = usePostcodePopup();
 
   const handleComplete = (data: any) => {
@@ -31,8 +32,8 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonC
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    setPostCode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-    setZonCode(data.zonecode);
+    setPostcode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setZoncode(data.zonecode);
   };
 
   const handleClick = () => {
@@ -45,16 +46,16 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonC
   };
 
   return (
-    <div className="space-y-2">
-      <div className="space-x-1 flex items-center ">
-        <TextField type="text" label="우편번호" value={zonecode} disabled />
-        <Button type="button" className="bg-[#F1F5F5] h-10 text-[#8EB4B5]" onClick={handleClick}>
+    <div className="space-y-2 border rounded-lg p-5">
+      <div className="space-x-1 flex items-center">
+        <Input type="text" label="우편번호" value={zonecode} className="" crossOrigin="anonymous" disabled />
+        <Button type="button" className="bg-[#0067AC] h-10 w-24" onClick={handleClick}>
           찾기
         </Button>
       </div>
-      <div className="space-x-1">
-        <TextField type="text" label="주소" value={postcode} disabled />
-        <TextField type="text" label="상세주소" onChange={onChange} />
+      <div className="gap-1 flex flex-col">
+        <Input className="" type="text" label="주소" value={postcode} crossOrigin="anonymous" disabled />
+        <Input className="" type="text" label="상세주소" onChange={onChange} crossOrigin="anonymous" />
       </div>
       <div className="text-xs text-gray-500">
         {zonecode} {postcode} {detailPostcode}
