@@ -1,5 +1,7 @@
-package com.ts.taesan.domain.transaction.response;
+package com.ts.taesan.domain.transaction.api.dto.response;
 
+import com.ts.taesan.domain.transaction.service.dto.response.Card;
+import com.ts.taesan.domain.transaction.service.dto.response.Transaction;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

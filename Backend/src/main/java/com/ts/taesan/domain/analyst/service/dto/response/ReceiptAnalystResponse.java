@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.analyst.dto.response;
+package com.ts.taesan.domain.analyst.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class PlaceAnalystResponse {
+public class ReceiptAnalystResponse {
 
     String year;
     String month;

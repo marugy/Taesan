@@ -2,9 +2,9 @@ package com.ts.taesan.domain.analyst.api;
 
 import com.ts.taesan.domain.analyst.api.dto.request.PlaceAnalystRequest;
 import com.ts.taesan.domain.analyst.api.dto.request.ReceiptAnalystRequest;
-import com.ts.taesan.domain.analyst.dto.response.Info;
-import com.ts.taesan.domain.analyst.dto.response.PlaceAnalystResponse;
-import com.ts.taesan.domain.analyst.dto.response.ReceiptAnalystResponse;
+import com.ts.taesan.domain.analyst.service.dto.response.Info;
+import com.ts.taesan.domain.analyst.service.dto.response.PlaceAnalystResponse;
+import com.ts.taesan.domain.analyst.service.dto.response.ReceiptAnalystResponse;
 import com.ts.taesan.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

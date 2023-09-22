@@ -54,7 +54,8 @@ dependencies {
     //security
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
 //    testImplementation 'org.springframework.security:spring-security-test'
-
+    //validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // naver sms
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
