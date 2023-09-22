@@ -10,7 +10,6 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-@Setter
 public class AuthRequest {
 
     private String org_code;

@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-@Setter
 public class TokenRequest {
 
     @JsonProperty("org_code")
