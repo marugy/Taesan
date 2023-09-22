@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.analyst.dto.response;
+package com.ts.taesan.domain.analyst.service.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

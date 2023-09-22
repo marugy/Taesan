@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.transaction.response;
+package com.ts.taesan.domain.transaction.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class Card {
-    String cardNumber;
-    String name;
-    String cardCompany;
+public class Receipt {
+    String productName;
+    Integer count;
+    Long price;
 }

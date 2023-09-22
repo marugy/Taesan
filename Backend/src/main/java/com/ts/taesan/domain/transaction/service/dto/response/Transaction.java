@@ -1,10 +1,11 @@
-package com.ts.taesan.domain.transaction.response;
+package com.ts.taesan.domain.transaction.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,5 +19,8 @@ public class Transaction {
     Long afterTransAmt;
     String shopName;
     String category;
-
+    Character cardType;
+    String shopNumber;
 }
+
+
