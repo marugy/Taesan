@@ -38,7 +38,7 @@ import TestPage from 'pages/TestPage/TestPage';
 import './App.css';
 function App() {
   return (
-    <div className="App  flex justify-center ">
+    <div className="App  flex justify-center bg-back ">
       <div className="w-screen tb:w-[60vw] dt:w-[50vw] border">
         <Routes>
           <Route path="/test" element={<TestPage />} />
