@@ -6,12 +6,9 @@ import ArrowBack from 'components/Common/ArrowBack';
 
 const MyPage = () => {
   return (
-    <div className="bg-back ">
-      <ArrowBack pageName="마이페이지" />
-      <div className="flex flex-col mx-10">
-        <MyInfo />
-        <MyPageList />
-      </div>
+    <div className="h-screen flex flex-col justify-center mx-10">
+      <MyInfo />
+      <MyPageList />
     </div>
   );
 };

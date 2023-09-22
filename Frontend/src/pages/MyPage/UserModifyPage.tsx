@@ -3,7 +3,7 @@ import EmailInput from 'components/UserModify/EmailInput';
 import PostcodeList from 'components/UserModify/PostcodeList';
 import { useNavigate } from 'react-router-dom';
 import useFormatPhone from 'hooks/useFormatPhone';
-
+import { Input } from '@material-tailwind/react';
 import ArrowBack from 'components/Common/ArrowBack';
 import TextField from '@mui/material/TextField';
 import { Button } from '@material-tailwind/react';
@@ -13,26 +13,10 @@ const UserModifyPage = () => {
   // 각 항목 State 생성
   const [name, setName] = useState('박희창');
   const [phone, setPhone] = useFormatPhone('01068663000');
-  const [email, setEmail] = useState('');
-  const [postcode, setPostCode] = useState('');
-  const [zonecode, setZonecode] = useState('');
+  const [email, setEmail] = useState('asdads@gmail.com');
+  const [zonecode, setZonecode] = useState('62218');
+  const [postcode, setPostCode] = useState('광주 광산구 하남산단6번로 107 (오선동)');
   const [detailPostcode, setDeatailPostcode] = useState('');
-
-  const formatPhone = (phoneStr: string) => {
-    const cleaned = phoneStr.replace(/\D/g, '');
-
-    if (cleaned.length === 10) {
-      return `${cleaned.substring(0, 2)}-${cleaned.substring(2, 5)}-${cleaned.substring(5)}`;
-    } else if (cleaned.length === 11) {
-      if (cleaned.charAt(0) === '0' && cleaned.charAt(1) !== '2') {
-        // 예: 010-xxxx-xxxx 형식
-        return `${cleaned.substring(0, 3)}-${cleaned.substring(3, 6)}-${cleaned.substring(6)}`;
-      }
-    } else if (cleaned.length === 12) {
-      return `${cleaned.substring(0, 3)}-${cleaned.substring(3, 7)}-${cleaned.substring(7)}`;
-    }
-    return null;
-  };
 
   const handleModify = () => {
     console.log('POST_주소');
@@ -41,19 +25,12 @@ const UserModifyPage = () => {
   };
 
   return (
-    <div className="bg-back ">
-      <ArrowBack pageName="내 정보 수정" />
-      <div className="ml-10 space-y-3 ">
-        <div>
-          <TextField type="text" label="이름" value={name} disabled />
-        </div>
-        <div>
-          <TextField type="text" label="휴대폰 번호" value={phone} disabled />
-        </div>
-        <div>
+    <div className="h-screen flex justify-center items-center">
+      <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+        <div className="mb-4 flex flex-col gap-6">
+          <Input type="text" label="이름" value={name} crossOrigin="anonymous" disabled />
+          <Input type="text" label="휴대폰 번호" value={phone} crossOrigin="anonymous" disabled />
           <EmailInput email={email} setEmail={setEmail} />
-        </div>
-        <div>
           <PostcodeList
             postcode={postcode}
             setPostCode={setPostCode}
@@ -63,8 +40,8 @@ const UserModifyPage = () => {
             setDetailPostcode={setDeatailPostcode}
           />
         </div>
-        <div>
-          <Button className="bg-main" onClick={handleModify}>
+        <div className="flex flex-col items-center">
+          <Button className="bg-[#0067AC] dt:w-24" onClick={handleModify}>
             수정하기
           </Button>
         </div>

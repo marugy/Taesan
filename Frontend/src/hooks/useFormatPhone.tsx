@@ -1,5 +1,5 @@
 // useFormat.js
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 
 const formatPhone = (phoneStr: string) => {
   const cleaned = phoneStr.replace(/\D/g, '');
@@ -18,7 +18,7 @@ const formatPhone = (phoneStr: string) => {
   }
 };
 
-const useFormatPhone = (initialPhone: string) => {
+const useFormatPhone = (initialPhone: string): [string, Dispatch<SetStateAction<string>>] => {
   const [phone, setPhone] = useState(initialPhone);
   const formattedPhone = formatPhone(phone);
 

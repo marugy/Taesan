@@ -16,7 +16,7 @@ import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 const MyPageList = () => {
   const navigate = useNavigate();
   return (
-    <div className="space-y-2">
+    <div className="space-y-8">
       <Button
         className="flex items-center justify-between p-2 border rounded-xl bg-white w-full"
         onClick={() => navigate('/mypage/usermodify')}

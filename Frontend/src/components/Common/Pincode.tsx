@@ -31,7 +31,6 @@ export const Pincode = () => {
 
   return (
     <div className="flex-col">
-      <ArrowBack pageName="암호 입력" />
       <div className="text-main flex justify-center mt-10 text-2xl tb:text-3xl dt:text-4xl font-bold">암호 입력</div>
       <div className="flex justify-center space-x-5 text-main my-16 ">
         {Array.from({ length: MAX_LENGTH }).map((_, index) => {
