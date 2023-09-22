@@ -29,9 +29,9 @@ public class MemberApi {
 
     @ApiOperation(value = "회원 가입", notes = "회원 정보를 입력하고 회원 가입을 진행하는 API")
     @PostMapping("/join")
-    public ApiResponse<ResultResponse> join(@RequestBody MemberJoinRequest memberJoinRequest) {
+    public ApiResponse<Boolean> join(@RequestBody MemberJoinRequest memberJoinRequest) {
         memberService.save(memberJoinRequest);
-        return OK(new ResultResponse());
+        return OK(null);
     }
 
     @PostMapping("/login")
