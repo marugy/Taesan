@@ -9,12 +9,12 @@ interface Props {
   postcode: string;
   zonecode: string;
   detailPostcode: string;
-  setPostCode: (value: string) => void;
-  setZonCode: (value: string) => void;
+  setPostcode: (value: string) => void;
+  setZoncode: (value: string) => void;
   setDetailPostcode: (value: string) => void;
 }
 
-const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonCode, setDetailPostcode }: Props) => {
+const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZoncode, setDetailPostcode }: Props) => {
   const open = usePostcodePopup();
 
   const handleComplete = (data: any) => {
@@ -32,8 +32,8 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonC
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    setPostCode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-    setZonCode(data.zonecode);
+    setPostcode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setZoncode(data.zonecode);
   };
 
   const handleClick = () => {

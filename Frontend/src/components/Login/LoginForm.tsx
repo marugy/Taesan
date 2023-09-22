@@ -28,25 +28,12 @@ const LoginForm = () => {
 
   return (
     <div>
-      {/* <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>아이디</label>
-        <input {...register('loginId')} />
-        {errors.loginId && <p>{errors.loginId.message}</p>}
-      </div>
-      <div>
-        <label>비밀번호</label>
-        <input {...register('password')} type="password" />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
-      <input type="submit" />
-    </form>  */}
       <Card color="transparent" shadow={false} className="h-screen flex justify-center items-center">
         <div>
-          <img src="/Main/logo.png" className="h-36" alt="" />
+          <img src="/Main/Logo.png" className="h-36" alt="" />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-          <div className="mb-4 flex flex-col gap-6">
+          <div className="flex flex-col mb-4 gap-6">
             <div>
               <Input size="lg" label="아이디" crossOrigin="anonymous" {...register('loginId')} />
               {errors.loginId && <p className="font-thin text-sm">{errors.loginId.message}</p>}
@@ -66,7 +53,7 @@ const LoginForm = () => {
             }
             containerProps={{ className: '-ml-2.5' }}
           />
-          <Button className="mt-6 bg-sub text-lg" fullWidth>
+          <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
             로그인
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">

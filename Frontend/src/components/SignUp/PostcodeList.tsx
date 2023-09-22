@@ -1,6 +1,10 @@
 import React from 'react';
 import { usePostcodePopup } from 'hooks/usePostcodePopup';
 
+import TextField from '@mui/material/TextField';
+import { Button } from '@material-tailwind/react';
+import { Input } from '@material-tailwind/react';
+
 interface Props {
   postcode: string;
   zonecode: string;
@@ -14,6 +18,7 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZonc
   const open = usePostcodePopup();
 
   const handleComplete = (data: any) => {
+    console.log('주소 입력', data);
     let fullAddress = data.address;
     let extraAddress = '';
 
@@ -41,19 +46,18 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZonc
   };
 
   return (
-    <div>
-      <div>
-        w
-        <input type="text" placeholder="우편번호" readOnly defaultValue={zonecode} />
-        <button type="button" onClick={handleClick}>
+    <div className="space-y-2 border rounded-lg p-5">
+      <div className="space-x-1 flex items-center">
+        <Input type="text" label="우편번호" value={zonecode} className="" crossOrigin="anonymous" disabled />
+        <Button type="button" className="bg-[#0067AC] h-10 w-24" onClick={handleClick}>
           찾기
-        </button>
+        </Button>
       </div>
-      <div>
-        <input type="text" placeholder="주소" readOnly defaultValue={postcode} />
-        <input type="text" placeholder="상세주소" onChange={onChange} />
+      <div className="gap-1 flex flex-col">
+        <Input className="" type="text" label="주소" value={postcode} crossOrigin="anonymous" disabled />
+        <Input className="" type="text" label="상세주소" onChange={onChange} crossOrigin="anonymous" />
       </div>
-      <div>
+      <div className="text-xs text-gray-500">
         {zonecode} {postcode} {detailPostcode}
       </div>
     </div>

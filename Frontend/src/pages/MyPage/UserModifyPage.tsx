@@ -15,7 +15,7 @@ const UserModifyPage = () => {
   const [phone, setPhone] = useFormatPhone('01068663000');
   const [email, setEmail] = useState('asdads@gmail.com');
   const [zonecode, setZonecode] = useState('62218');
-  const [postcode, setPostCode] = useState('광주 광산구 하남산단6번로 107 (오선동)');
+  const [postcode, setPostcode] = useState('광주 광산구 하남산단6번로 107 (오선동)');
   const [detailPostcode, setDeatailPostcode] = useState('');
 
   const handleModify = () => {
@@ -33,9 +33,9 @@ const UserModifyPage = () => {
           <EmailInput email={email} setEmail={setEmail} />
           <PostcodeList
             postcode={postcode}
-            setPostCode={setPostCode}
+            setPostcode={setPostcode}
             zonecode={zonecode}
-            setZonCode={setZonecode}
+            setZoncode={setZonecode}
             detailPostcode={detailPostcode}
             setDetailPostcode={setDeatailPostcode}
           />

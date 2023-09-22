@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
+import { Input } from '@material-tailwind/react';
 
 interface Props {
   email: string;
@@ -47,21 +48,25 @@ const EmailInput = ({ email, setEmail }: Props) => {
 
   return (
     <div ref={inputRef}>
-      <label>이메일</label>
-
-      <input
+      <Input
         type="email"
-        placeholder="이메일 입력"
+        label="이메일"
         value={email}
         onChange={(e) => {
           onChangeEmail(e);
         }}
         onKeyUp={handleKeyUp}
+        crossOrigin="anonymous"
       />
       {isDrobBox && (
-        <ul>
+        <ul className="border-2 fixed bg-back z-10 w-96 rounded">
           {emailList.map((domain, idx) => (
-            <li key={idx} onMouseOver={() => setSelected(idx)} onClick={() => handleDropDownClick(email, domain)}>
+            <li
+              key={idx}
+              onMouseOver={() => setSelected(idx)}
+              onClick={() => handleDropDownClick(email, domain)}
+              className={idx === selected ? 'bg-blue-gray-500 text-white border-black border rounded ml-3' : 'ml-3'}
+            >
               {email.split('@')[0]}
               {domain}
             </li>
