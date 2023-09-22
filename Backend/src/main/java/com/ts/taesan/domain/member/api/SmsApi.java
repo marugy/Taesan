@@ -8,6 +8,7 @@ import com.ts.taesan.domain.member.service.SmsService;
 import com.ts.taesan.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +32,15 @@ public class SmsApi {
     @PostMapping("/sms/send")
     public ApiResponse<SmsResponse> sendSms(@RequestBody MessageRequest messageRequest) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
         log.info(messageRequest.getTo());
-        SmsResponse SmsResponse = smsService.sendSms(messageRequest);
-        return OK(SmsResponse);
+        SmsResponse smsResponse = smsService.sendSms(messageRequest);
+        return OK(smsResponse);
     }
 
     //인증 번호 검증
     @PostMapping("/sms/check")
-    public ApiResponse<ResultResponse> verifySMS(@RequestBody VerifySmsRequest verifySmsRequest) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
-        return OK(new ResultResponse());
+    public ApiResponse<Boolean> verifySMS(@RequestBody VerifySmsRequest verifySmsRequest) throws ChangeSetPersister.NotFoundException, UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+        Boolean check = smsService.verifySms(verifySmsRequest);
+        return OK(check);
     }
 
     //아이디 중복 검사

@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.member.entity;
 
+import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,8 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -16,7 +20,7 @@ import javax.persistence.*;
 @SuperBuilder
 @DynamicInsert
 @ToString
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +56,13 @@ public class Member extends BaseEntity {
     @Column(nullable = true, name = "refresh_token") // 초기에는 없음
     private String refreshToken;
 
+    public void updateMemberInfo(MemberModifyRequest memberModifyRequest) {
+        this.email = memberModifyRequest.getEmail();
+        this.address = memberModifyRequest.getAddress();
+    }
+
+
+    //////////////////////////
     // 비즈니스 로직
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
@@ -59,5 +70,37 @@ public class Member extends BaseEntity {
 
     public void deleteRefreshToken() {
         this.refreshToken = null;
+    }
+
+
+    ////////////////////////
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.phone;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

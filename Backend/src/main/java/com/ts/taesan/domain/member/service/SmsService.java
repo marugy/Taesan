@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ts.taesan.domain.member.dto.request.MessageRequest;
 import com.ts.taesan.domain.member.dto.request.SmsRequest;
+import com.ts.taesan.domain.member.dto.request.VerifySmsRequest;
 import com.ts.taesan.domain.member.dto.response.SmsResponse;
 import com.ts.taesan.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,6 @@ import java.util.Random;
 @Service
 public class SmsService {
 
-    //휴대폰 인증 번호
-    private final String smsConfirmNum = createSmsKey();
     private final RedisUtil redisUtil;
 
     @Value("${naver-cloud-sms.accessKey}")
@@ -103,6 +102,8 @@ public class SmsService {
         List<MessageRequest> messages = new ArrayList<>();
         messages.add(messageRequest);
 
+        String smsConfirmNum = createSmsKey();
+
         SmsRequest request = SmsRequest.builder()
                 .type("SMS")
                 .contentType("COMM")
@@ -126,16 +127,23 @@ public class SmsService {
         SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"), httpBody, SmsResponse.class);
         SmsResponse responseDto = new SmsResponse(smsConfirmNum);
         redisUtil.setDataExpire(smsConfirmNum, messageRequest.getTo(), 60 * 3L); // 유효시간 3분
-        return smsResponse;
+        return responseDto;
     }
 
-    public String verifyEmail(String key) throws ChangeSetPersister.NotFoundException {
-        String memberPhone = redisUtil.getData(key); //key값은 인증번호, value는 전화번호
+    public Boolean verifySms(VerifySmsRequest verifySmsRequest) throws ChangeSetPersister.NotFoundException {
+        String sms = verifySmsRequest.getSms();
+        String phone = verifySmsRequest.getPhone();
+
+        String memberPhone = redisUtil.getData(sms); //key값은 인증번호, value는 전화번호
         if (memberPhone == null) {
-            throw new ChangeSetPersister.NotFoundException();
+//            throw new ChangeSetPersister.NotFoundException();
+            return false;
+        } else if (memberPhone.equals(phone)) {
+            redisUtil.deleteData(sms);
+            return true;
+        } else {
+            return false;
         }
-        redisUtil.deleteData(key);
-        return memberPhone;
     }
 
 

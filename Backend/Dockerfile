@@ -10,4 +10,4 @@ COPY ${JAR_FILE} /app.jar
 ARG ssh_encrypt_key
 ENV ssh-encrypt-key $ssh_encrypt_key
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar","-Dspring.cloud.config.profile=dev", "/app.jar"]
