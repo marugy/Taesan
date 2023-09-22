@@ -1,10 +1,7 @@
 package com.taesan.mydata.domain.card.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
@@ -12,16 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CardInfoRequest {
 
-    @JsonProperty("org_code")
-    private String orgCode;
+    private String org_code;
 
-    @JsonProperty("search_timestamp")
-    private Long searchTimestamp;
+    private Long search_timestamp;
 
-    @JsonProperty("next_page")
-    private Long nextPage;
+    private Long next_page;
 
-    @JsonProperty("limit")
     private Integer limit;
 
 }

@@ -1,10 +1,7 @@
 package com.taesan.mydata.domain.card.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 
@@ -14,19 +11,14 @@ import java.sql.Date;
 @Builder
 public class CardTransactionListRequest {
 
-    @JsonProperty("org_code")
-    private String orgCode;
+    private String org_code;
 
-    @JsonProperty("from_date")
-    private Date fromDate;
+    private String from_date;
 
-    @JsonProperty("to_date")
-    private Date toDate;
+    private String to_date;
 
-    @JsonProperty("next_page")
-    private Long nextPage;
+    private Long next_page;
 
-    @JsonProperty("limit")
     private Integer limit;
 
 }

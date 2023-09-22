@@ -24,8 +24,9 @@ public class CardApi {
     public ResponseEntity<CardListResponse> getCardList(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            CardListRequest accountListRequest)
+            @Valid @ModelAttribute CardListRequest accountListRequest)
     {
+        log.info("{}", accountListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         CardListResponse ret = new CardListResponse();
@@ -40,8 +41,9 @@ public class CardApi {
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
-            @Valid CardListRequest cardListRequest)
+            @Valid @ModelAttribute CardListRequest cardListRequest)
     {
+        log.info("{}", cardListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         return new ResponseEntity<>(new CardListResponse(), headers, HttpStatus.ACCEPTED);
@@ -52,8 +54,9 @@ public class CardApi {
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
-            @Valid CardTransactionListRequest cardTransactionListRequest)
+            @Valid @ModelAttribute CardTransactionListRequest cardTransactionListRequest)
     {
+        log.info("{}", cardTransactionListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         return new ResponseEntity<>(new CardListResponse(), headers, HttpStatus.ACCEPTED);
@@ -62,8 +65,9 @@ public class CardApi {
     @PostMapping("/{card_id}/pay")
     public ResponseEntity<PayResponse> pay(
             @PathVariable("card_id") long cardId,
-            @Valid PayRequest payRequest)
+            @Valid @RequestBody PayRequest payRequest)
     {
+        log.info("{}", payRequest.getMerchantRegno());
         return new ResponseEntity<>(new PayResponse(), HttpStatus.ACCEPTED);
     }
 
