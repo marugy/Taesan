@@ -1,6 +1,9 @@
 package com.taesan.mydata.domain.auth.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,22 +13,16 @@ import lombok.Setter;
 @Setter
 public class AuthRequest {
 
-    @JsonProperty("org_code")
-    private String orgCode;
+    private String org_code;
 
-    @JsonProperty("response_type")
-    private String responseType;
+    private String response_type;
 
-    @JsonProperty("client_id")
-    private String clientId;
+    private String client_id;
 
-    @JsonProperty("redirect_uri")
-    private String redirectUri;
+    private String redirect_uri;
 
-    @JsonProperty("app_scheme")
-    private String appScheme;
+    private String app_scheme;
 
-    @JsonProperty("state")
     private String state;
 
 }

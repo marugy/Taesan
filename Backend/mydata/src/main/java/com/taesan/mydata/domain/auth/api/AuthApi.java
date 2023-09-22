@@ -25,18 +25,20 @@ public class AuthApi {
     public ResponseEntity<AuthResponse> getAuthCode(
             @RequestHeader("x-user-ci") String userCI,
             @RequestHeader("x-api-tran-id") String tranId,
-            AuthRequest authRequest)
+            @ModelAttribute AuthRequest authRequest)
     {
+        log.info("{}", authRequest.getClient_id());
         return new ResponseEntity<>(new AuthResponse(), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/token")
-    public ResponseEntity<TokenResponse> getAccessToken(
+    public ResponseEntity<? extends TokenResponse> getAccessToken(
             @RequestHeader("x-api-tran-id") String tranId,
-            TokenRequest tokenRequest)
+            @RequestBody TokenRequest tokenRequest)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
+        log.info("{}", tokenRequest.getClientId());
 
         if (tokenRequest.getCode() == null) {       // AT 갱신 로직
             return new ResponseEntity<>(new TokenResponse(), headers, HttpStatus.TEMPORARY_REDIRECT);
