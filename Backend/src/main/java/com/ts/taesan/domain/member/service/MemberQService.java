@@ -6,6 +6,7 @@ import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 import com.ts.taesan.domain.member.repository.MemberQRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

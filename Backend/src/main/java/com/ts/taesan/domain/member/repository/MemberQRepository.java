@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public class MemberQRepository {
     public MemberQRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
+
 
     public MemberInfoResponse findMemberById(Long id) {
         return queryFactory
