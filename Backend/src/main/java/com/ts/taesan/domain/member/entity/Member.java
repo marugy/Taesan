@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.member.entity;
 
+import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,6 +56,13 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = true, name = "refresh_token") // 초기에는 없음
     private String refreshToken;
 
+    public void updateMemberInfo(MemberModifyRequest memberModifyRequest) {
+        this.email = memberModifyRequest.getEmail();
+        this.address = memberModifyRequest.getAddress();
+    }
+
+
+    //////////////////////////
     // 비즈니스 로직
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
@@ -64,6 +72,8 @@ public class Member extends BaseEntity implements UserDetails {
         this.refreshToken = null;
     }
 
+
+    ////////////////////////
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

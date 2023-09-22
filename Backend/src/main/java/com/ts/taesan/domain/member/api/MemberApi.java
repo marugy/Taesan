@@ -2,8 +2,8 @@ package com.ts.taesan.domain.member.api;
 
 import com.ts.taesan.domain.member.dto.request.MemberJoinRequest;
 import com.ts.taesan.domain.member.dto.request.MemberLoginRequest;
+import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.domain.member.dto.request.SimpleLoginRequest;
-import com.ts.taesan.domain.member.dto.response.LoginResponse;
 import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 import com.ts.taesan.domain.member.dto.response.ResultResponse;
 import com.ts.taesan.domain.member.service.MemberQService;
@@ -38,6 +38,7 @@ public class MemberApi {
     @PostMapping("/login")
     public ApiResponse<MemberInfoResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) {
         MemberInfoResponse memberInfoResponse = memberQService.login(memberLoginRequest);
+        // TODO: 2023-09-22 JWT 응답으로 변경 
         return OK(memberInfoResponse);
     }
 
@@ -45,13 +46,16 @@ public class MemberApi {
     @PostMapping("/simple-login")
     public ApiResponse<MemberInfoResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
         MemberInfoResponse correct = memberQService.simpleLogin(1L, simpleLoginRequest);
+        // TODO: 2023-09-22 JWT 응답으로 변경
         return OK(correct);
     }
 
     @GetMapping("/info")
-    public ApiResponse<MemberInfoResponse> getMemberInfoById() {
+    public ApiResponse<MemberInfoResponse> getMemberInfoById(@RequestBody MemberModifyRequest memberModifyRequest) {
         // TODO: 2023-09-20 로그인 후 멤버 아이디로 수정 필요
-        MemberInfoResponse memberInfoResponse = memberQService.findById(1L);
+        Long memberId = 1L;
+
+        MemberInfoResponse memberInfoResponse = memberService.modify(1L, memberModifyRequest);
         return OK(memberInfoResponse);
     }
 
