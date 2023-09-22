@@ -1,5 +1,4 @@
 import React,{useState} from 'react';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -12,6 +11,7 @@ import { ResponsivePie } from '@nivo/pie';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import dayjs from 'dayjs';
+import { Typography } from '@material-tailwind/react';
 
 const Graph = () => {
     const data = [
@@ -60,7 +60,7 @@ const Graph = () => {
         setCategory(newCategory);
     };
     return (
-        <div className='mx-4'>
+        <div className='mx-4 my-24'>
             <div className=' font-bold text-blue-gray-600'>
                 설정기간
             </div>
@@ -235,24 +235,56 @@ const Graph = () => {
                         <div>자주 소비하는 카테고리</div>
                     </div>
                 </div>}
-            
-            <div className='flex items-center h-[16px] my-5'>
-                <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}></div>
-                담배 : 300000원
+            <div className='w-full flex flex-col items-center mt-4'>
+                <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
+                    <div className='flex gap-4 items-center'>
+                        <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}/>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                            담배
+                        </Typography>
+                    </div>
+                    <div className='flex gap-4'>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
+                            {30000/2000000}%
+                        </Typography>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                            45000원
+                        </Typography>
+                    </div>
+                </div>
+                <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
+                    <div className='flex gap-4 items-center'>
+                        <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}/>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                            담배
+                        </Typography>
+                    </div>
+                    <div className='flex gap-4'>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
+                            {30000/2000000}%
+                        </Typography>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                            45000원
+                        </Typography>
+                    </div>
+                </div>
+                <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
+                    <div className='flex gap-4 items-center'>
+                        <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}/>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                            담배
+                        </Typography>
+                    </div>
+                    <div className='flex gap-4'>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
+                            {30000/2000000}%
+                        </Typography>
+                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                            45000원
+                        </Typography>
+                    </div>
+                </div>
             </div>
-            <div className='flex items-center h-[16px] my-5'>
-                <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}></div>
-                담배 : 300000원
-            </div>
-            <div className='flex items-center h-[16px] my-5'>
-                <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}></div>
-                담배 : 300000원
-            </div>
-            <div className='flex items-center h-[16px] my-5'>
-                <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}></div>
-                담배 : 300000원
-            </div>
-            
         </div>
     );
 };
