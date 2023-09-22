@@ -34,12 +34,14 @@ public class MemberApi {
         return OK(null);
     }
 
+    @ApiOperation(value = "로그인", notes = "아이디, 비밀번호 입력하고 로그인을 진행하는 API")
     @PostMapping("/login")
     public ApiResponse<MemberInfoResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) {
         MemberInfoResponse memberInfoResponse = memberQService.login(memberLoginRequest);
         return OK(memberInfoResponse);
     }
 
+    @ApiOperation(value = "간편 로그인", notes = "간편 비밀번호 입력하고 로그인을 진행하는 API")
     @PostMapping("/simple-login")
     public ApiResponse<MemberInfoResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
         MemberInfoResponse correct = memberQService.simpleLogin(1L, simpleLoginRequest);
