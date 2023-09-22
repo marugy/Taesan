@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.analyst.dto.request;
+package com.ts.taesan.domain.analyst.service.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlaceServiceRequest {
+public class ReceiptServiceRequest {
 
     String year;
     String month;
