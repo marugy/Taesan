@@ -3,26 +3,29 @@ package com.taesan.mydata.domain.bank.api.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AccountListRequest {
 
-    @JsonProperty("org_code")
-//    @NotBlank
-    private String orgCode;
+    @NotBlank
+    String org_code;
 
-    @JsonProperty("search_timestamp")
-    private String searchTimestamp;
+    @NotBlank
+    @Positive
+    String search_timestamp;
 
-    @JsonProperty("next_page")
-    private String nextPage;
+    String next_page;
 
-    @JsonProperty("limit")
-//    @NotBlank
-    private String limit;
+    @NotBlank
+    @Max(500)
+    @Positive
+    String limit;
 
 }

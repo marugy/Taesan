@@ -23,7 +23,4 @@ public class TransferRequest {
     @JsonProperty("trans_amt")
     private Integer transAmt;
 
-    @JsonProperty("account_password")
-    private String accountPassword;
-
 }

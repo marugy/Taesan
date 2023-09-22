@@ -27,8 +27,9 @@ public class AccountApi {
     public ResponseEntity<AccountListResponse> getAccountList(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            AccountListRequest accountListRequest)
+            @Valid @ModelAttribute AccountListRequest accountListRequest)
     {
+        log.info("{}", accountListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountListResponse ret = new AccountListResponse();
@@ -42,8 +43,9 @@ public class AccountApi {
     public ResponseEntity<AccountInfoResponse> getAccountInfo(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            @Valid AccountInfoRequest accountInfoRequest)
+            @Valid @RequestBody AccountInfoRequest accountInfoRequest)
     {
+        log.info("{}", accountInfoRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountInfoResponse ret = new AccountInfoResponse();
@@ -57,8 +59,9 @@ public class AccountApi {
     public ResponseEntity<AccountDetailResponse> getAccountDetail(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            @Valid AccountDetailRequest accountDetailRequest)
+            @Valid @RequestBody AccountDetailRequest accountDetailRequest)
     {
+        log.info("{}", accountDetailRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountDetailResponse ret = new AccountDetailResponse();
@@ -72,8 +75,9 @@ public class AccountApi {
     public ResponseEntity<AccountTransactionListResponse> getTransactions(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            @Valid AccountTransactionListRequest accountTransactionListRequest)
+            @Valid @RequestBody AccountTransactionListRequest accountTransactionListRequest)
     {
+        log.info("{}", accountTransactionListRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountTransactionListResponse ret = new AccountTransactionListResponse();
@@ -85,8 +89,9 @@ public class AccountApi {
 
     @PostMapping("/transfer")
     public ResponseEntity<TransferResponse> transfer(
-            @Valid TransferRequest transferRequest)
+            @Valid @RequestBody TransferRequest transferRequest)
     {
+        log.info("{}", transferRequest.getSenderAccNum());
         return new ResponseEntity<>(new TransferResponse(), HttpStatus.ACCEPTED);
     }
 
