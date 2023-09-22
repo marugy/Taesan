@@ -56,7 +56,7 @@ dependencies {
 //    testImplementation 'org.springframework.security:spring-security-test'
 
 
-    / / naver sms
+    // naver sms
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
     //swagger

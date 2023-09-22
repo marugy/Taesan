@@ -9,12 +9,15 @@ import com.ts.taesan.domain.member.dto.response.ResultResponse;
 import com.ts.taesan.domain.member.service.MemberQService;
 import com.ts.taesan.domain.member.service.MemberService;
 import com.ts.taesan.global.api.ApiResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
 
+@Api(tags = "Member")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/member-management/members")
@@ -24,6 +27,7 @@ public class MemberApi {
     private final MemberService memberService;
     private final MemberQService memberQService;
 
+    @ApiOperation(value = "회원 가입", notes = "회원 정보를 입력하고 회원 가입을 진행하는 API")
     @PostMapping("/join")
     public ApiResponse<ResultResponse> join(@RequestBody MemberJoinRequest memberJoinRequest) {
         memberService.save(memberJoinRequest);
