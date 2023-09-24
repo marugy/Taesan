@@ -1,13 +1,15 @@
 import React,{useState} from 'react';
 import { Input,Button } from "@material-tailwind/react";
+import Swal from 'sweetalert2';
 
 
 const BuyifRegister = () => {
     const [buyifbot, setBuyifbot] = useState(false)
     const [changeProfileImage, setChangeProfileImage] = useState<File | null>(null);
+    const [itemname, setItemname] = useState('')
+    const [itemprice,setItemprice] = useState('')
 
     const formData = new FormData();
-
     // formData.append('request', new Blob([JSON.stringify(info)], { type: 'application/json' }));
     if (changeProfileImage) {
       formData.append('file', changeProfileImage);
@@ -16,7 +18,29 @@ const BuyifRegister = () => {
     // else {
     //   formData.append('file', '');
     // }
-
+    const handleItemnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setItemname(event.target.value);
+      };
+    const handleItempriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setItemprice(event.target.value);
+    };
+    const handleAnalys = () =>{
+        if (itemname === '') {
+            Swal.fire({
+              icon: 'warning',
+              title: '사고 싶은 물건이름을 입력해주세요',
+            });
+          }
+        else if(itemprice === ''){
+            Swal.fire({
+                icon: 'warning',
+                title: '물건의 가격을 입력해ㄴ주세요',
+              }); 
+        }
+        else{
+            setBuyifbot(true)
+        } 
+    }
 
     return (
         <div className='flex flex-col items-center h-screen'>
@@ -57,13 +81,13 @@ const BuyifRegister = () => {
                     </div>
                     <div className='w-[50%] gap-2'>
                         <div>내가 사고 싶은 물건</div>
-                        <Input size="lg" label="내가 사고 싶은 물건"  crossOrigin="anonymous"/>
+                        <Input size="lg" label="내가 사고 싶은 물건" onChange={handleItemnameChange} crossOrigin="anonymous"/>
                         <div>물건 가격</div>
-                        <Input size="lg" label="물건 가격"  crossOrigin="anonymous"/>
+                        <Input size="lg" label="물건 가격" type='number' onChange={handleItempriceChange} crossOrigin="anonymous"/>
                     </div>
                 </div>
                 <div className='w-[90%] flex justify-end gap-6'>
-                    <Button variant='gradient' color='blue' onClick={()=>{setBuyifbot(true)}}>
+                    <Button variant='gradient' color='blue' onClick={handleAnalys}>
                         <span>사도 될까요?</span>
                     </Button>
                     <Button variant='gradient' color='blue'>
