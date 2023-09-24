@@ -10,9 +10,11 @@ import com.ts.taesan.domain.member.token.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -24,6 +26,10 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
+    public Member findById(Long id) {
+        return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+    }
 
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
@@ -45,7 +51,7 @@ public class MemberService {
     }
 
     public TokenResponse simpleLogin(Long memberId, SimpleLoginRequest simpleLoginRequest) {
-        // TODO: 2023-09-25 RT에서 유저 정보 추출 및 expiredate 체크 
+        // TODO: 2023-09-25 RT에서 유저 정보 추출 및 expiredate 체크
         String simplePassword = simpleLoginRequest.getSimplePassword();
         Member member = memberRepository.findMemberByIdAndSimplePassword(memberId, simplePassword).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 

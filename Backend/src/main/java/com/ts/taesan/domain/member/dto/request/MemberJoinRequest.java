@@ -7,7 +7,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
 public class MemberJoinRequest {
     private String loginId;
