@@ -102,7 +102,6 @@ public class MemberApi {
     @PutMapping("/info")
     public ApiResponse<?> modifyMemberInfoById(@RequestBody MemberModifyRequest memberModifyRequest) {
         log.info(memberModifyRequest.toString());
-
         // TODO: 2023-09-22 토큰에서 회원 id 추출로 변경 필요
         Long memberId = 1L;
         memberService.modify(memberId, memberModifyRequest);

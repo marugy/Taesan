@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.member.token;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
@@ -51,7 +53,8 @@ public class JwtTokenProvider {
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME)) // set Expire Time
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // 사용할 암호화 알고리즘과
+//                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // 사용할 암호화 알고리즘
+                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)  // 사용할 암호화 알고리즘
                 .compact();
     }
 
@@ -65,7 +68,8 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS256, REFRESH_KEY)
+                .signWith(Keys.hmacShaKeyFor(REFRESH_KEY.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)  // 사용할 암호화 알고리즘
+//                .signWith(SignatureAlgorithm.HS256, REFRESH_KEY)
                 .compact();
     }
 
@@ -85,14 +89,16 @@ public class JwtTokenProvider {
 
     public Claims getClaimsFormToken(String token) {
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+                .setSigningKey(SECRET_KEY.getBytes(StandardCharsets.UTF_8))
+//                .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     public Claims getClaimsToken(String token) {
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(REFRESH_KEY))
+                .setSigningKey(REFRESH_KEY.getBytes(StandardCharsets.UTF_8))
+//                .setSigningKey(DatatypeConverter.parseBase64Binary(REFRESH_KEY))
                 .parseClaimsJws(token)
                 .getBody();
     }
