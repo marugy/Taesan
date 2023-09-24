@@ -34,7 +34,7 @@ const HabitList = () => {
         </TabsHeader>
         <TabsBody>
           <TabPanel value="proceeding">
-            <HabitListProceeding />
+            <HabitListProceeding /> 
           </TabPanel>
           <TabPanel value="completed">
             <HabitListCompleted />
