@@ -1,36 +1,26 @@
 package com.ts.taesan.domain.member.service;
 
 import com.ts.taesan.domain.member.dto.request.MemberJoinRequest;
-import com.ts.taesan.domain.member.dto.request.MemberLoginRequest;
 import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.domain.member.dto.request.SimpleLoginRequest;
-import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 import com.ts.taesan.domain.member.dto.response.TokenResponse;
-import com.ts.taesan.domain.member.entity.Address;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class MemberService implements UserDetailsService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -44,26 +34,7 @@ public class MemberService implements UserDetailsService {
 
         Member member = memberRepository.findMemberByLoginIdAndPassword(loginId, password).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-//        String accessToken = "";
-//        String refreshToken = member.getRefreshToken();
-//
-//        //refresh 토큰은 유효 할 경우
-//        //사실 이것도 로그인을 하는것이라면 refresh 토큰이 유효한지 파악안하고 그냥 둘다 재발급 하는게 나을듯?
-//        if (refreshToken != null && jwtTokenProvider.isValidRefreshToken(refreshToken)) {
-//            accessToken = jwtTokenProvider.createAccessToken(member.getId()); //Access Token 새로 만들어서 줌
-//            refreshToken = jwtTokenProvider.createRefreshToken(); //Refresh Token 재발급
-//            member.updateRefreshToken(refreshToken);
-//            return TokenResponse.builder()
-//                    .accessToken(accessToken)
-//                    .refreshToken(refreshToken)
-//                    .build();
-//        } else {
-//            //둘 다 새로 발급
-//            accessToken = jwtTokenProvider.createAccessToken(member.getId());
-//            refreshToken = jwtTokenProvider.createRefreshToken();
-//            member.updateRefreshToken(refreshToken);   //DB Refresh 토큰 갱신
-//        }
-//            //둘 다 새로 발급
+        //둘 다 새로 발급
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
         member.updateRefreshToken(refreshToken);   //DB Refresh 토큰 갱신
@@ -166,10 +137,5 @@ public class MemberService implements UserDetailsService {
     public void deleteMember(Long id) {
         Member findMember = memberRepository.findById(id).get();
         memberRepository.delete(findMember);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
     }
 }

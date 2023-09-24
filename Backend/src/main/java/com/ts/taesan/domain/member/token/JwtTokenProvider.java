@@ -164,7 +164,6 @@ public class JwtTokenProvider {
                 Arrays.stream(claims.get("userId").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-
         UserDetails principal = new User(claims.get("userId").toString(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }

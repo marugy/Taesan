@@ -23,15 +23,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.
-//                csrf().disable()
-//                .cors().disable()
-//                .headers().
-//                frameOptions().disable();
-//    }
-
     private final JwtTokenProvider jwtTokenProvider;
 
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -66,7 +57,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/api/auth-management/**", "/api/member-management/members/join", "/api/member-management/members/login", "/api/member-management/members/simple-login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/**").permitAll()
-                .antMatchers("/api/auth-management/**", "/api/member-management/members/join", "/api/member-management/members/login", "/api/member-management/members/simple-login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .antMatchers("/api/auth-management/**", "/api/member-management/members/join", "api/member-management/members/check", "/api/member-management/members/login", "/api/member-management/members/simple-login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
