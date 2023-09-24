@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -16,6 +17,8 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -56,7 +59,7 @@ const LoginForm = () => {
           <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
             로그인
           </Button>
-          <Typography color="gray" className="mt-4 text-center font-normal">
+          <Typography color="gray" className="mt-4 text-center font-normal" onClick={() => navigate('/signup')}>
             태산 회원이 아니신가요?{' '}
             <a href="#" className="font-bold text-sub">
               회원가입

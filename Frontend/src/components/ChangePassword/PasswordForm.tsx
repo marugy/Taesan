@@ -31,7 +31,7 @@ const PasswordForm = ({ form, setForm }: Props) => {
       setPasswordValid('');
     }
     if (form.newPassword === form.password) {
-      setPasswordValid('이전 비밀번호는 사용할 수 없습니다.');
+      setPasswordValid('다른 비밀번호를 입력해주세요.');
     }
   }, [form.newPassword, form.newPasswordConfirm, form.password]);
 
