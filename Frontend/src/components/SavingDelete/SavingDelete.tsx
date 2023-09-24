@@ -1,29 +1,56 @@
 import React, { useState } from 'react';
+import { Button } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
 
 const SavingDelete = () => {
+  const navigate = useNavigate();
   const [isDeleteButtonClicked, setIsDeleteButtonClicked] = useState(false);
   return (
-    <div>
-      {isDeleteButtonClicked ? (
-        <div>6자리 암호 띄우는 곳</div>
-      ) : (
+    <div className="bg-back">
+      <div className="flex justify-end mr-5">
+        <Button
+          color="blue"
+          onClick={() => {
+            navigate('/saving/detail');
+          }}
+        >
+          상세 내역
+        </Button>
+      </div>
+      <div className="text-center text-main text-3xl text font-semibold mt-5">
+        [Name]님의 <br /> 적금통 해지하기
+      </div>
+      <div className="flex justify-center h-64">
+        <img src="/piggy_bank.png" />
+      </div>
+      <div className="flex flex-col items-center gap-4">
+        <div className="text-lg text-gray-500">현재 적금통에 적립된 금액</div>
+        <div className="text-lg text-main font-bold">56,000원</div>
+        <div className="text-lg text-gray-500">만기까지 남은 일자 : </div>
+        <div className="text-lg text-main font-bold">87일(2023-12-25)</div>{' '}
+        <div className="text-lg text-gray-500">만기시 예상 출금액</div>
+        <div className="text-lg text-main font-bold">56,712원</div>
         <div>
-          <h1>이지헌님의 적금통 해지하기</h1>
-          <button>상세 내역</button>
-          <img src="/piggy_bank.png" style={{ height: '30vh' }}></img>
-
-          <div>현재 적금통에 적립된 금액 : 56,000원</div>
-          <div>만기까지 남은 일자 : 87일(2023-12-25)</div>
-          <div>중도해지시 출금액 : 56,712원</div>
-          <button
+          <Button
+            color="red"
             onClick={() => {
-              setIsDeleteButtonClicked(true);
+              navigate('/saving/delete');
             }}
           >
             적금통 해지하기
-          </button>
+          </Button>
         </div>
-      )}
+        <div>
+          <Button
+            color="blue-gray"
+            onClick={() => {
+              navigate('/main');
+            }}
+          >
+            홈 화면 가기
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

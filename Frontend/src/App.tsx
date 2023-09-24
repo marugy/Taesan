@@ -38,13 +38,13 @@ import TestPage from 'pages/TestPage/TestPage';
 import './App.css';
 function App() {
   return (
-    <div className="App  flex justify-center ">
-      <div className="w-screen tb:w-[60vw] dt:w-[50vw] border border-black">
+    <div className="App  flex justify-center bg-back ">
+      <div className="w-screen tb:w-[60vw] dt:w-[50vw] border">
         <Routes>
-          <Route path="/" element={<TestPage />} />
+          <Route path="/test" element={<TestPage />} />
 
           {/* 계정 관련 페이지 */}
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SingUpPage />} />
 
           {/* 샀다치고 관련 페이지 */}
@@ -94,6 +94,8 @@ function App() {
           <Route path="/saving/detail" element={<SavingDetailPage />} />
           <Route path="/saving/create" element={<SavingCreatePage />} />
           <Route path="/saving/delete" element={<SavingDeletePage />} />
+
+        
         </Routes>
       </div>
     </div>

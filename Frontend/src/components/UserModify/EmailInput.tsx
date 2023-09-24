@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
 
+import { Input } from '@material-tailwind/react';
+import TextField from '@mui/material/TextField';
+import ListItemText from '@mui/material/ListItemText';
+import { MenuItem } from '@material-tailwind/react';
+
 interface Props {
   email: string;
   setEmail: (value: string) => void;
@@ -14,7 +19,7 @@ const EmailInput = ({ email, setEmail }: Props) => {
   const [isDrobBox, setIsDropbox] = useState(false); // 드롭박스 유무
   const inputRef = useOutsideClick(() => setIsDropbox(false));
 
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEmail(e.target.value);
     if (e.target.value.includes('@')) {
       setIsDropbox(true);
@@ -46,21 +51,27 @@ const EmailInput = ({ email, setEmail }: Props) => {
   };
 
   return (
-    <div>
+    <div className="">
       <div ref={inputRef}>
-        <input
+        <Input
           type="email"
-          placeholder="이메일 입력"
+          label="이메일"
           value={email}
           onChange={(e) => {
             onChangeEmail(e);
           }}
           onKeyUp={handleKeyUp}
+          crossOrigin="anonymous"
         />
         {isDrobBox && (
-          <ul>
+          <ul className="border-2 fixed bg-back z-10 w-96 rounded">
             {emailList.map((domain, idx) => (
-              <li key={idx} onMouseOver={() => setSelected(idx)} onClick={() => handleDropDownClick(email, domain)}>
+              <li
+                key={idx}
+                onMouseOver={() => setSelected(idx)}
+                onClick={() => handleDropDownClick(email, domain)}
+                className={idx === selected ? 'bg-blue-gray-500 text-white border-black border rounded ml-3' : 'ml-3'}
+              >
                 {email.split('@')[0]}
                 {domain}
               </li>

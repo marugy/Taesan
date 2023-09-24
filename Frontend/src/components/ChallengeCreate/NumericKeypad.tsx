@@ -1,4 +1,5 @@
 import { Button } from '@material-tailwind/react';
+import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import React from 'react';
 
 interface Props {
@@ -158,7 +159,7 @@ const NumericKeypad = ({ money, setMoney }: Props) => {
             className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
             onClick={handleDeleteNumber}
           >
-            X
+            <BackspaceOutlinedIcon />
           </Button>
         </div>
       </div>

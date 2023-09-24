@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
+import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/react';
 
 interface FormProps {
   loginId: string;
@@ -14,6 +17,8 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,19 +30,44 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>아이디</label>
-        <input {...register('loginId')} />
-        {errors.loginId && <p>{errors.loginId.message}</p>}
-      </div>
-      <div>
-        <label>비밀번호</label>
-        <input {...register('password')} type="password" />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
-      <input type="submit" />
-    </form>
+    <div>
+      <Card color="transparent" shadow={false} className="h-screen flex justify-center items-center">
+        <div>
+          <img src="/Main/Logo.png" className="h-36" alt="" />
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+          <div className="flex flex-col mb-4 gap-6">
+            <div>
+              <Input size="lg" label="아이디" crossOrigin="anonymous" {...register('loginId')} />
+              {errors.loginId && <p className="font-thin text-sm">{errors.loginId.message}</p>}
+            </div>
+            <div>
+              <Input size="lg" label="비밀번호" crossOrigin="anonymous" {...register('password')} />
+              {errors.password && <p className="font-thin text-sm">{errors.password.message}</p>}
+            </div>
+          </div>
+          <Checkbox
+            crossOrigin="anonymous"
+            label={
+              <Typography variant="small" color="gray" className="flex items-center font-normal">
+                자동으로 로그인하기
+                <a href="#" className="font-medium transition-colors hover:text-gray-900"></a>
+              </Typography>
+            }
+            containerProps={{ className: '-ml-2.5' }}
+          />
+          <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
+            로그인
+          </Button>
+          <Typography color="gray" className="mt-4 text-center font-normal" onClick={() => navigate('/signup')}>
+            태산 회원이 아니신가요?{' '}
+            <a href="#" className="font-bold text-sub">
+              회원가입
+            </a>
+          </Typography>
+        </form>
+      </Card>
+    </div>
   );
 };
 
