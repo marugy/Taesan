@@ -3,7 +3,7 @@ package com.taesan.mydata.domain.bank.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -16,7 +16,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String memberCi;
+    private Long memberCi;
 
     private Date issueDate;
 
@@ -24,7 +24,7 @@ public class Account {
 
     private String currencyCode;
 
-    private Integer savingMethod;
+    private String savingMethod;
 
     private Date expDate;
 

@@ -18,9 +18,9 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String memberCi;
+    private Long memberCi;
 
-    private String cardId;
+    private Long accountId;
 
     private String cardNum;
 
@@ -30,6 +30,6 @@ public class Card {
 
     private Integer cardMember;
 
-    private Integer cardType;
+    private String cardType;
 
 }
