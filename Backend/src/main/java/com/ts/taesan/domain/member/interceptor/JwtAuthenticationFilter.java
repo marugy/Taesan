@@ -3,6 +3,7 @@ package com.ts.taesan.domain.member.interceptor;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -18,13 +19,15 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("AT : " + ((HttpServletRequest) request).getHeader("ACCESS_TOKEN"));
+//        System.out.println("AT : " + ((HttpServletRequest) request).getHeader("ACCESS_TOKEN"));
+        log.info(request.toString());
         String token = resolveToken((HttpServletRequest) request);
         try {
             // 토큰 유효성 검사
