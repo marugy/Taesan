@@ -35,31 +35,4 @@ public class MemberQRepository {
                 .where(member.id.eq(id))
                 .fetchFirst();
     }
-
-    public MemberInfoResponse findMemberByLoginIdAndPassword(String loginId, String password) {
-        return queryFactory
-                .select(Projections.constructor(MemberInfoResponse.class,
-                        member.name,
-                        member.phone,
-                        member.email,
-                        member.address
-                ))
-                .from(member)
-                .where(member.loginId.eq(loginId), member.password.eq(password))
-                .fetchFirst();
-    }
-
-    public MemberInfoResponse findMemberBySimplePassword(Long loginId, String password) {
-        return queryFactory
-                .select(Projections.constructor(MemberInfoResponse.class,
-                        member.name,
-                        member.phone,
-                        member.email,
-                        member.address
-                ))
-                .from(member)
-                .where(member.id.eq(loginId), member.password.eq(password))
-                .fetchFirst();
-    }
-
 }

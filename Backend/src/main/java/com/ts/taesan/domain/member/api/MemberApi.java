@@ -6,6 +6,7 @@ import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.domain.member.dto.request.SimpleLoginRequest;
 import com.ts.taesan.domain.member.dto.response.MemberInfoResponse;
 import com.ts.taesan.domain.member.dto.response.ResultResponse;
+import com.ts.taesan.domain.member.dto.response.TokenResponse;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.service.MemberQService;
 import com.ts.taesan.domain.member.service.MemberService;
@@ -14,11 +15,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
@@ -48,18 +53,28 @@ public class MemberApi {
 
     @ApiOperation(value = "로그인", notes = "아이디, 비밀번호 입력하고 로그인을 진행하는 API")
     @PostMapping("/login")
-    public ApiResponse<MemberInfoResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) {
-        MemberInfoResponse memberInfoResponse = memberQService.login(memberLoginRequest);
-        // TODO: 2023-09-22 JWT 응답으로 변경 
-        return OK(memberInfoResponse);
+    public ApiResponse<TokenResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) throws IOException {
+        String loginId = memberLoginRequest.getLoginId();
+        String password = memberLoginRequest.getPassword();
+        TokenResponse tokenResponse = memberService.login(loginId, password);
+        return OK(tokenResponse);
     }
 
     @ApiOperation(value = "간편 로그인", notes = "간편 비밀번호 입력하고 로그인을 진행하는 API")
     @PostMapping("/simple-login")
-    public ApiResponse<MemberInfoResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
-        MemberInfoResponse correct = memberQService.simpleLogin(1L, simpleLoginRequest);
+    public ApiResponse<TokenResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
+        Long id = 1L;
+        TokenResponse tokenResponse = memberService.simpleLogin(id, simpleLoginRequest);
         // TODO: 2023-09-22 JWT 응답으로 변경
-        return OK(correct);
+        return OK(tokenResponse);
+    }
+
+    @ApiOperation(value = "access token 재발급", notes = "accesstoken 재발급을 진행하는 API")
+    @PostMapping("/issue")
+    public ApiResponse<TokenResponse> issueToken(HttpServletRequest request) throws IllegalAccessException {
+        TokenResponse tokenResponse = memberService.issueAccessToken(request);
+        // TODO: 2023-09-22 JWT 응답으로 변경
+        return OK(tokenResponse);
     }
 
     @ApiOperation(value = "로그아웃", notes = "세션 종료 및 로그아웃을 진행하는 API")
@@ -67,6 +82,11 @@ public class MemberApi {
     public ApiResponse<Void> logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         session.invalidate();
+
+        // TODO: 2023-09-24 accesstoken에서 id 추출로 변경
+        Long memberId = 1L;
+        memberService.logout(memberId);
+
         return OK(null);
     }
 
@@ -117,5 +137,14 @@ public class MemberApi {
         Long memberId = 1L;
         memberService.deleteMember(memberId);
         return OK(null);
+    }
+
+
+    @PostMapping("/user/test")
+    public Map userResponseTest(@AuthenticationPrincipal User user) {
+        System.out.println(user.getUsername());
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "success");
+        return result;
     }
 }
