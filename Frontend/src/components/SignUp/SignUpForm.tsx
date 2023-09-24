@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
 import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/react';
-
 import { formatPhone } from 'hooks/useFormatPhone';
-
 import EmailInput from './EmailInput';
-
 import PostcodeList from './PostcodeList';
-
 import { FormProps } from 'types/SignUpForm';
+import axios from 'axios';
 
 const schema = yup.object().shape({
   loginId: yup.string().required('아이디를 입력하세요.'),
@@ -111,8 +107,32 @@ const SingUpForm = () => {
   };
 
   const onSubmit = (data: FormProps) => {
+   
     // 모든 인증 성공
     if (validLoginId && validPhone) {
+      axios.post('https://j9c211.p.ssafy.io/api/member-management/members/join', {
+        loginId: data.loginId,
+        password: data.password,
+        email: data.email,
+        name: data.name,
+        phone: extractNumbers(data.phone),
+        address: data.postcode,
+        zipCode: data.zonecode,
+        simplePassword:'123456',
+        addressDetail: data.detailPostcode,
+      }
+
+    
+      ).then((res)=>{
+        console.log('회원가입 성공함')
+        console.log(res);
+      }
+      ).catch((err)=>{
+        console.log(err);
+      })
+
+
+      console.log(extractNumbers(data.phone));
       console.log('가입성공');
       // 아이디 중복 확인
     } else if (validLoginId) {
@@ -130,6 +150,21 @@ const SingUpForm = () => {
     console.log('휴대폰인증', validPhone);
     console.log(formattedData);
   };
+
+  // 회원가입 axios
+  // const handleSignUp = () => {
+  //   axios.post('주소입력하기', {
+  //     loginId: loginId,
+  //     password: password,
+  //     email: email,
+  //     name: name,
+  //     phone: phone,
+  //     address: address,
+  //     zipCode: zipCode,
+  //     addressDetail: addressDetail,
+  //   });
+  // };
+
 
   return (
     <div className=" flex flex-col justify-center items-center">
