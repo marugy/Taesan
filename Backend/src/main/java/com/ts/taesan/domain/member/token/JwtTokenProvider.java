@@ -71,11 +71,11 @@ public class JwtTokenProvider {
 
     // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
     public String resolveAccessToken(HttpServletRequest request) {
-        return request.getHeader("AccessToken");
+        return request.getHeader("ACCESS_TOKEN");
     }
 
     public String resolveRefreshToken(HttpServletRequest request) {
-        return request.getHeader("RefreshToken");
+        return request.getHeader("REFRESH_TOKEN");
     }
 
     //Refresh 토큰의 DB상의 인덱스 번호를 해시로 받음
