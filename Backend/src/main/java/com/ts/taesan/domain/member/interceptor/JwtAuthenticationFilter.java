@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println(request.getAttribute("ACCESS_TOKEN"));
+        System.out.println("AT : " + ((HttpServletRequest) request).getHeader("ACCESS_TOKEN"));
         String token = resolveToken((HttpServletRequest) request);
         try {
             // 토큰 유효성 검사
@@ -39,9 +39,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private String resolveToken(HttpServletRequest request) {
-        System.out.println("resolveToken 호출");
+        System.out.println("resolveToken");
         String accessToken = request.getHeader("ACCESS_TOKEN");
-        System.out.println("AccessToken:" + accessToken);
+        System.out.println("AccessToken : " + accessToken);
         if (accessToken != null && jwtTokenProvider.isValidAccessToken(accessToken)) {
             return accessToken;
         }
