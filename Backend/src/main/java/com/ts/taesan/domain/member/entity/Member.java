@@ -33,10 +33,10 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true, name = "login_id")
     private String loginId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true, name = "simple_password")
+    @Column(nullable = false, name = "simple_password")
     private String simplePassword;
 
     @Column(nullable = true, unique = true)
