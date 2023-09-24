@@ -5,6 +5,7 @@ import MainAssetRegister from 'components/Main/MainAssetRegister';
 import MainCardInfo from 'components/Main/MainCardInfo';
 import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
+import BottomNav from 'components/Habit/BottomNav';
 
 const testGet = async () => {
   const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts');
@@ -40,6 +41,7 @@ const MainPage = () => {
         {/* <MainCardInfo /> */}
         <MainAssetInfo />
         <MainMenu />
+        <BottomNav/>
         </div>
     </div>
   );
