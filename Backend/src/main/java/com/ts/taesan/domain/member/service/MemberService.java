@@ -45,6 +45,7 @@ public class MemberService {
     }
 
     public TokenResponse simpleLogin(Long memberId, SimpleLoginRequest simpleLoginRequest) {
+        // TODO: 2023-09-25 RT에서 유저 정보 추출 및 expiredate 체크 
         String simplePassword = simpleLoginRequest.getSimplePassword();
         Member member = memberRepository.findMemberByIdAndSimplePassword(memberId, simplePassword).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 

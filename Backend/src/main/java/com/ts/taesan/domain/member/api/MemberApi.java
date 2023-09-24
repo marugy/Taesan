@@ -93,38 +93,34 @@ public class MemberApi {
 
     @ApiOperation(value = "회원 정보 조회", notes = "회원 정보를 조회하는 API")
     @GetMapping("/info")
-    public ApiResponse<MemberInfoResponse> getMemberInfoById() {
-        // TODO: 2023-09-20 로그인 후 멤버 아이디로 수정 필요
-        MemberInfoResponse memberInfoResponse = memberQService.findById(1L);
+    public ApiResponse<MemberInfoResponse> getMemberInfoById(@AuthenticationPrincipal User user) {
+        Long memberId = Long.parseLong(user.getUsername());
+        MemberInfoResponse memberInfoResponse = memberQService.findById(memberId);
         return OK(memberInfoResponse);
     }
 
     @ApiOperation(value = "회원 정보 수정", notes = "회원 정보를 수정하는 API")
     @PutMapping("/info")
-    public ApiResponse<?> modifyMemberInfoById(@RequestBody MemberModifyRequest memberModifyRequest) {
-        log.info(memberModifyRequest.toString());
-        // TODO: 2023-09-22 토큰에서 회원 id 추출로 변경 필요
-        Long memberId = 1L;
+    public ApiResponse<?> modifyMemberInfoById(@AuthenticationPrincipal User user, @RequestBody MemberModifyRequest memberModifyRequest) {
+        Long memberId = Long.parseLong(user.getUsername());
         memberService.modify(memberId, memberModifyRequest);
         return OK(null);
     }
 
     @ApiOperation(value = "회원 비밀번호 수정", notes = "회원 비밀번호를 수정하는 API")
     @PutMapping("/password")
-    public ApiResponse<?> modifyPasswordById(@RequestBody Map<String, String> body) {
-        // TODO: 2023-09-22 회원 ID 수정
+    public ApiResponse<?> modifyPasswordById(@AuthenticationPrincipal User user, @RequestBody Map<String, String> body) {
         String password = body.get("password");
         log.info(password);
-        Long memberId = 1L;
+        Long memberId = Long.parseLong(user.getUsername());
         memberService.modifyPassword(memberId, password);
         return OK(null);
     }
 
     @ApiOperation(value = "회원 간편 비밀번호 수정", notes = "회원 간편 비밀번호를 수정하는 API")
     @PutMapping("/simple-password")
-    public ApiResponse<?> modifySimplePasswordById(@RequestBody Map<String, String> body) {
-        // TODO: 2023-09-22 회원 ID 수정
-        Long memberId = 1L;
+    public ApiResponse<?> modifySimplePasswordById(@AuthenticationPrincipal User user, @RequestBody Map<String, String> body) {
+        Long memberId = Long.parseLong(user.getUsername());
         String simplePassword = body.get("simplePassword");
         memberService.modifySimplePassword(memberId, simplePassword);
         return OK(null);
@@ -132,19 +128,10 @@ public class MemberApi {
 
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴 API")
     @DeleteMapping()
-    public ApiResponse<ResultResponse> deleteMemberById() {
-        // TODO: 2023-09-22 회원 ID 수정
-        Long memberId = 1L;
+    public ApiResponse<ResultResponse> deleteMemberById(@AuthenticationPrincipal User user) {
+        Long memberId = Long.parseLong(user.getUsername());
         memberService.deleteMember(memberId);
         return OK(null);
     }
-
-
-    @PostMapping("/user/test")
-    public Map userResponseTest(@AuthenticationPrincipal User user) {
-        System.out.println(user.getUsername());
-        Map<String, String> result = new HashMap<>();
-        result.put("result", "success");
-        return result;
-    }
+    
 }
