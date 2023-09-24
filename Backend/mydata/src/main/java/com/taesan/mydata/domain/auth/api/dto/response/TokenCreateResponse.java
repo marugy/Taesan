@@ -1,13 +1,13 @@
 package com.taesan.mydata.domain.auth.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class TokenCreateResponse extends TokenResponse {
 
     @JsonProperty("refresh_token")

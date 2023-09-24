@@ -15,32 +15,62 @@ import java.util.*;
 public class JwtUtils {
 
     @Value("${jwt.access.key}")
-    private String keyPlain;
+    private String accessKeyPlain;
+
+    @Value("${jwt.refresh.key}")
+    private String refreshKeyPlain;
 
     @Value("${jwt.access.valid-time}")
     private long accessTokenValid;
 
+    @Value("${jwt.refresh.valid-time}")
+    private long refreshTokenValid;
+
     private SecretKey accessKey;
 
-    public SecretKey getSecretKey() {
+    private SecretKey refreshKey;
+
+    public SecretKey getAccessKey() {
         if (accessKey == null) {
-            accessKey = createKey();
+            accessKey = createAccessKey();
         }
 
         return accessKey;
     }
 
+    public SecretKey getRefreshKey() {
+        if (refreshKey == null) {
+            refreshKey = createRefreshKey();
+        }
+
+        return refreshKey;
+    }
+
     // 키 생성
-    protected SecretKey createKey() {
-        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(keyPlain.getBytes()).getBytes());
+    protected SecretKey createAccessKey() {
+        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(accessKeyPlain.getBytes()).getBytes());
+    }
+
+    // 키 생성
+    protected SecretKey createRefreshKey() {
+        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(refreshKeyPlain.getBytes()).getBytes());
     }
 
     // JWT 토큰 생성
-    public String createToken(String userCi) {
+    public String createAccessToken(long userCi) {
         return Jwts.builder()
                 .setHeader(createHeader())
-                .setClaims(createClaims(userCi))
-                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
+                .setClaims(createClaims(true, userCi))
+                .signWith(getAccessKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    // JWT 토큰 생성
+    public String createRefreshToken(long userCi) {
+        return Jwts.builder()
+                .setHeader(createHeader())
+                .setClaims(createClaims(false, userCi))
+                .signWith(getRefreshKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -53,13 +83,13 @@ public class JwtUtils {
         return header;
     }
 
-    private Claims createClaims(String userCi) {
+    private Claims createClaims(boolean isAccessToken, long userCi) {
         Claims claims = Jwts.claims();
 
         claims.setIssuer("Bank");
         claims.setAudience("Taesan");
         claims.setId(UUID.randomUUID().toString());
-        claims.setExpiration(new Date(new Date().getTime() + accessTokenValid));
+        claims.setExpiration(new Date(new Date().getTime() + (isAccessToken ? accessTokenValid : refreshTokenValid)));
         claims.put("scope", setScope());
         claims.put("user-ci", userCi);
 
@@ -88,6 +118,14 @@ public class JwtUtils {
         return scopeList;
     }
 
+    public String getAccessTokenValid() {
+        return Long.toString(accessTokenValid);
+    }
+
+    public String getRefreshTokenValid() {
+        return Long.toString(refreshTokenValid);
+    }
+
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
@@ -102,4 +140,21 @@ public class JwtUtils {
             return false;
         }
     }
+
+    public String getUserCi(String jwtToken) {
+        Jws<Claims> claims = Jwts.parserBuilder()
+                .setSigningKey(accessKey).build()
+                .parseClaimsJws(jwtToken);
+
+        return (String) claims.getBody().get("user-ci");
+    }
+
+    public String getScope(String jwtToken) {
+        Jws<Claims> claims = Jwts.parserBuilder()
+                .setSigningKey(accessKey).build()
+                .parseClaimsJws(jwtToken);
+
+        return (String) claims.getBody().get("user-ci");
+    }
+
 }

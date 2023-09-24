@@ -1,18 +1,19 @@
-package com.taesan.mydata.global.config;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.web.SecurityFilterChain;
-
-@RequiredArgsConstructor
-@EnableWebSecurity
-public class SecurityConfig {
-
+//package com.taesan.mydata.global.config;
+//
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.taesan.mydata.global.interceptor.JwtAuthenticationFilter;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+//import org.springframework.security.web.SecurityFilterChain;
+//
+//@RequiredArgsConstructor
+//@EnableWebSecurity
+//public class SecurityConfig {
+//
 //    private final ObjectMapper objectMapper;
 //    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 //
@@ -20,7 +21,6 @@ public class SecurityConfig {
 //    public WebSecurityCustomizer configure() {
 //        return (web) -> web.ignoring().mvcMatchers(
 //                "/v3/api-docs/**",
-//                "/swagger-ui/**",
 //                "/api/v1/login" // 임시
 //        );
 //    }
@@ -60,4 +60,4 @@ public class SecurityConfig {
 //                    );
 //                })).and().build();
 //    }
-}
+//}
