@@ -157,12 +157,12 @@ const HistoryDetail = () => {
                         <div className='w-full flex justify-between items-center mt-2'>
                             <input 
                             type="text" 
-                            className='w-[80px]'
+                            className='w-[90px] h-[40px] font-main text-center rounded-lg'
                             value={newItemName}
                             onChange={(e) => setNewItemName(e.target.value)}/>
                             <input 
                             type="number"
-                            className='w-[80px]' 
+                            className='w-[90px] h-[40px] font-main text-center rounded-lg' 
                             value={newItemPrice}
                             onChange={(e) => setNewItemPrice(e.target.value)}/>
                             <div>
@@ -181,14 +181,14 @@ const HistoryDetail = () => {
                         <div key={index} className='w-full flex justify-between items-center mt-2'>
                         <input
                             value={item.name}
-                            className='w-[80px]'
+                            className='w-[90px] h-[40px] font-main text-center rounded-lg'
                             disabled={editableItemIndex !== index}
                             onChange={(e) => handleItemInputChange(e, 'name', index)}
                         />
                         <input
                             type='number'
                             value={item.price}
-                            className='w-[80px]'
+                            className='w-[90px] h-[40px] font-main text-center rounded-lg '
                             disabled={ editableItemIndex !== index}
                             onChange={(e) => handleItemInputChange(e, 'price', index)}
                         />

@@ -5,9 +5,9 @@ import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
 const HistoryPage = () => {
   return (
-    <div className='h-screen'>
+    <div>
       <ArrowBack pageName='거래내역'/>
-      <Card name='LEE JI HEON' assetnumber='6011 - 6175 - 8192 - 2346' cardnumber={1} />
+      <Card name='LEE JI HEON' assetnumber='6011 - 6175 - 8192 - 2346' cardnumber={1} main=''/>
       <HistoryList />
       <BottomNav/>
     </div>

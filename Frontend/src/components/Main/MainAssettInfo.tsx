@@ -4,7 +4,7 @@ import { Button } from '@material-tailwind/react';
 const MainAssettInfo = () => {
   const navigate = useNavigate();
   return (
-    <div className="">
+    <div className="dt:w-[60%] dt:mt-4">
       <div className="font-extrabold text-lg font-main">내자산</div>
       {/* 계좌가 등록되어있는지 유무에 따라 다른 것을 띄워야함 */}
       <div className="flex justify-between">
