@@ -7,11 +7,18 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ClearIcon from '@mui/icons-material/Clear';
+import Swal from 'sweetalert2';
 
 
 const HistoryDetail = () => {
     const [analys, setAnalys] = useState(false)
     const [receiptImage, setReceiptImage] = useState<File | null>(null);
+    const [originalItem, setOriginalItem] = useState<{ name: string; price: string }>({ name: '', price: '' });
+    const [addItem,setAddItem] = useState(false)
+    const [newItemName,setNewItemName] = useState('')
+    const [newItemPrice,setNewItemPrice] = useState('')
+    
     const [clovaAnalys, setClovaAnalys] = useState({
         items: [
           {
@@ -32,31 +39,40 @@ const HistoryDetail = () => {
     const [editableItemIndex, setEditableItemIndex] = useState<number | null>(null);
   
     const handleEdit = (index: number) => {
-      setEditableItemIndex(index);
-    };
+        setEditableItemIndex(index);
+        setOriginalItem(clovaAnalys.items[index]);
+      };
   
     const handleSave = (index: number) => {
-      // Here you can update the item in the ClovaAnalys.items array
-      // based on the index and the new values.
-      setEditableItemIndex(null); // Exit edit mode
-      console.log(clovaAnalys)
-    };
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string, index: number) => {
-        const { value } = event.target;
+        const editedItem = clovaAnalys.items[index];
+
+        if (editedItem.name === '' || editedItem.price === '') {
+            Swal.fire({
+              icon: 'warning',
+              title: '값을 올바르게 입력해주세요',
+            });
+            return; 
+          }
+        setEditableItemIndex(null);
+        console.log(clovaAnalys);
+        
+      
+        // 변경 사항을 실제 데이터에 적용합니다.
+        // 이전 항목을 가져와서 변경 사항을 적용한 다음, 새로운 배열을 만들어 clovaAnalys에 설정합니다.
         setClovaAnalys((prevState) => ({
           ...prevState,
-          items: prevState.items.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
+          items: prevState.items.map((item, i) =>
+            i === index ? { ...originalItem, ...item } : item
+          ),
         }));
       };
-    const handleAddItem = () => {
-        // 기본 빈 항목을 생성하여 clovaAnalys에 추가
-        const newItem = { name: '', price: '' };
-        setClovaAnalys((prevState) => ({
-          ...prevState,
-          items: [...prevState.items, newItem],
-        }));
-        console.log(clovaAnalys)
-      };
+    
+    const handleOpenAddItem = () => {
+        setAddItem(!addItem)
+        setNewItemPrice('')
+        setNewItemName('')
+    }
+    
     const handleDelete = (index: number) => {
         // 해당 인덱스의 항목을 제거한 새 배열 생성
         const newItems = [...clovaAnalys.items];
@@ -68,36 +84,123 @@ const HistoryDetail = () => {
           items: newItems,
         }));
       };
+      const handleItemInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string, index: number) => {
+        const { value } = event.target;
+      
+        // 현재 항목을 복제하고 변경 사항을 적용한 후에 상태에 저장합니다.
+        setClovaAnalys((prevState) => ({
+          ...prevState,
+          items: prevState.items.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item
+          ),
+        }));
+      };
     
+    const handleCancel = (index: number) => {
+    // 이전 값으로 해당 항목을 복원합니다.
+    setClovaAnalys((prevState) => ({
+        ...prevState,
+        items: prevState.items.map((item, i) =>
+        i === index ? { ...originalItem } : item
+        ),
+    }));
     
+    // 편집 모드 종료
+    setEditableItemIndex(null);
+    };
+    const handleAddItem = (name: string, price: string) => {
+        // 새로운 항목 생성
+        if (name===''){
+            Swal.fire({
+                icon: 'warning',
+                title: '상세 품목이름을 입력해주세요',
+              })}
+        else if(price === ''){
+            Swal.fire({
+                icon: 'warning',
+                title: '물건의 가격을 입력해주세요',
+              }); 
+        }
+        else{
+        const newItem = { name, price };
+      
+        // 새로운 항목을 현재 항목 목록에 추가한 후, 편집 모드로 설정
+        setClovaAnalys((prevState) => ({
+          ...prevState,
+          items: [...prevState.items, newItem],
+        }));
+      
+        // 추가 모드 종료
+        setAddItem(false);
+        }
+      };
+    
+    const registerItem = () =>{
+        const total = clovaAnalys.items.reduce((acc, item) => acc + Number(item.price), 0);
+
+        if (total !== 10000) {
+          Swal.fire({
+            icon: 'warning',
+            title: '가격 합계가 일치하지 않습니다',
+          });
+          return;
+        }
+    }
     return (
         <div className='flex flex-col items-center mt-3 '>
                 {receiptImage? 
                 <div className='w-[86%] flex flex-col items-center'>
                     <div className='w-full  flex justify-end'>
-                        <button onClick={handleAddItem}><AddCircleIcon  color='primary' fontSize='large'/></button>
+                        <button onClick={handleOpenAddItem}><AddCircleIcon  color='primary' fontSize='large'/></button>
                     </div>
+                    {addItem? (
+                        <div className='w-full flex justify-between items-center mt-2'>
+                            <input 
+                            type="text" 
+                            className='w-[80px]'
+                            value={newItemName}
+                            onChange={(e) => setNewItemName(e.target.value)}/>
+                            <input 
+                            type="number"
+                            className='w-[80px]' 
+                            value={newItemPrice}
+                            onChange={(e) => setNewItemPrice(e.target.value)}/>
+                            <div>
+                            <button onClick={() => handleAddItem(newItemName, newItemPrice)}>
+                                <DoneIcon color='success' fontSize='medium' />
+                            </button>
+                            <button onClick={handleOpenAddItem}>
+                                <ClearIcon color='error' fontSize='medium' />
+                            </button>
+                            </div>
+                        </div>
+                    ):
+                    null
+                   }
                     {clovaAnalys.items.map((item, index) => (
                         <div key={index} className='w-full flex justify-between items-center mt-2'>
                         <input
                             value={item.name}
                             className='w-[80px]'
                             disabled={editableItemIndex !== index}
-                            onChange={(e) => handleInputChange(e, 'name', index)}
+                            onChange={(e) => handleItemInputChange(e, 'name', index)}
                         />
                         <input
                             type='number'
                             value={item.price}
                             className='w-[80px]'
                             disabled={ editableItemIndex !== index}
-                            onChange={(e) => handleInputChange(e, 'price', index)}
+                            onChange={(e) => handleItemInputChange(e, 'price', index)}
                         />
                         {editableItemIndex === index ? (
-                            <>
+                            <div>
                             <button onClick={() => handleSave(index)}>
                                 <DoneIcon color='success' fontSize='medium' />
                             </button>
-                            </>
+                            <button onClick={() => handleCancel(index)}>
+                                <ClearIcon color='error' fontSize='medium' />
+                            </button>
+                            </div>
                         ) : (
                             <div>
                             <button onClick={() => handleEdit(index)}>
@@ -121,7 +224,7 @@ const HistoryDetail = () => {
                             정보가 정확하게 분석되었나요?
                             </Typography>
                             <div className='w-full flex justify-center gap-4 my-4'>
-                                <Button variant='gradient' color='blue'>
+                                <Button variant='gradient' color='blue' onClick={registerItem}>
                                     <span>네 정확해요</span>
                                 </Button>
                                 <Button variant='gradient' color='gray'onClick={() => document.getElementById('file-input')?.click()}>
@@ -255,60 +358,3 @@ const HistoryDetail = () => {
 };
 
 export default HistoryDetail;
-
-{/* {transaction.type === 1 ? (
-    // 원단위 절삭
-    <Typography variant="h6" color="green" className="text-end">
-    {transaction.depositAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
-    </Typography>
-) : (
-    <Typography variant="h6" color="red" className="text-end">
-    {transaction.withdrawAmount === undefined
-        ? '0원'
-        : `-${transaction.withdrawAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`}
-    </Typography>
-)}
-<Typography variant="small" color="blue-gray" className="font-normal text-end">
-    {transaction.transactionBalance === undefined
-    ? '0원'
-    : `${transaction.transactionBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`}
-</Typography> */}
-// const receiptAnlays=()=>{
-    //     const formData = new FormData();
-    //     const info = {
-        //         images:[
-            //             {
-                //                 format:'png',
-                //                 name: 'meium',
-                //                 data:null,
-                //                 url:'https://kr.object.ncloudstorage.com/ocr-img/OCR_ko(1)REAN_ko(1).png'
-                //             }
-                //         ],
-                //         version:'V1',
-                //         requestId:'1',
-                //         timestamp:new Date(),
-                //         lang:'ko',
-                //         resultType:'1',
-                //     };
-                //     formData.append('request', new Blob([JSON.stringify(info)], { type: 'application/json' }));
-                //     if (receiptImage) {
-                    //       formData.append('file', receiptImage);
-                    //     }
-                    //     axios
-                    //     .post('https://y50y88z4me.apigw.ntruss.com/custom/v1/25160/a3a6a2f8b9873fdb25da734a3d975d911ca56e52a54142cd3e6418faab6c7a6d/general', 
-                    //     info,{
-                        //         headers: {
-                            //           'Content-Type':'application/json',
-                            //           'X-OCR-SECRET':'TWFGdVNjZ2lWSFBhUW9SS1ZPTVhocmVaTU5aQ1poblI=',
-                            //         },
-                            //       })
-                            //       .then((response)=>{
-                                //         console.log(response)
-                                //         console.log('제발')
-                                //       })
-                                //       .catch((error)=>{
-                                    //         console.log(error)
-                                    //         console.log('응아니야')
-                                    //         console.log(info)
-                                    //       })
-                                    // }
