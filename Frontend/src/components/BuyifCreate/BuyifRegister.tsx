@@ -35,7 +35,7 @@ const BuyifRegister = () => {
         else if(itemprice === ''){
             Swal.fire({
                 icon: 'warning',
-                title: '물건의 가격을 입력해ㄴ주세요',
+                title: '물건의 가격을 입력해주세요',
               }); 
         }
         else{

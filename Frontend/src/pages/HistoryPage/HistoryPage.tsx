@@ -7,7 +7,7 @@ const HistoryPage = () => {
   return (
     <div className='h-screen'>
       <ArrowBack pageName='거래내역'/>
-      <Card />
+      <Card name='LEE JI HEON' assetnumber='6011 - 6175 - 8192 - 2346' cardnumber={1} />
       <HistoryList />
       <BottomNav/>
     </div>
