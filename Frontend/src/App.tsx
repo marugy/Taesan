@@ -40,7 +40,7 @@ import ApproveMyData from 'pages/MainPage/ApproveMyData';
 import './App.css';
 function App() {
   return (
-    <div className="App  flex justify-center bg-back overflow-y-auto">
+    <div className="App  flex justify-center bg-back overflow-y-auto h-screen">
       <div className="w-screen tb:w-[60vw] dt:w-[50vw] border">
         <Routes>
           <Route path="/test" element={<TestPage />} />
@@ -97,8 +97,6 @@ function App() {
           <Route path="/saving/detail" element={<SavingDetailPage />} />
           <Route path="/saving/create" element={<SavingCreatePage />} />
           <Route path="/saving/delete" element={<SavingDeletePage />} />
-
-        
         </Routes>
       </div>
     </div>

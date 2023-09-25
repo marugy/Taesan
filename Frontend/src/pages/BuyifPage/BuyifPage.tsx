@@ -9,7 +9,7 @@ import ArrowBack  from 'components/Common/ArrowBack';
 const BuyIfPage = () => {
   const navigate = useNavigate();
   return (
-    <div className='mb-28'>
+    <div>
       <ArrowBack pageName='샀다치고'/>
       <div className='mx-6 my-7 font-bold text-2xl'>내 자산</div>
       <AssetCard />
@@ -18,6 +18,7 @@ const BuyIfPage = () => {
         <button onClick={() => navigate('/buyif/create')}><AddCircleIcon  color='primary' fontSize='large'/></button>
       </div>
       <BuyifList/>
+      <div className='h-[100px]'/>
       <BottomNav/>
     </div>
   );

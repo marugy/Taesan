@@ -7,7 +7,7 @@ const LoginPage = () => {
   useEffect(() => {
       const timer = setTimeout(() => {
           setShowLanding(false);
-      }, 2500);
+      }, 2900);
       return () => clearTimeout(timer);
   }, []);
 
