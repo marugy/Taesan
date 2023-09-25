@@ -17,8 +17,8 @@ const SavingDelete = () => {
           상세 내역
         </Button>
       </div>
-      <div className="text-center text-main text-3xl text font-semibold mt-5">
-        [Name]님의 <br /> 적금통 해지하기
+      <div className="text-center text-3xl text font-semibold mt-5">
+        이지헌님의 <br /> 적금통 해지하기
       </div>
       <div className="flex justify-center h-64">
         <img src="/piggy_bank.png" />
@@ -30,25 +30,29 @@ const SavingDelete = () => {
         <div className="text-lg text-main font-bold">87일(2023-12-25)</div>{' '}
         <div className="text-lg text-gray-500">만기시 예상 출금액</div>
         <div className="text-lg text-main font-bold">56,712원</div>
-        <div>
-          <Button
-            color="red"
-            onClick={() => {
-              navigate('/saving/delete');
-            }}
-          >
-            적금통 해지하기
-          </Button>
-        </div>
-        <div>
-          <Button
-            color="blue-gray"
-            onClick={() => {
-              navigate('/main');
-            }}
-          >
-            홈 화면 가기
-          </Button>
+        <div className="">
+          <div className="w-full">
+            <Button
+              size="lg"
+              color="red"
+              onClick={() => {
+                navigate('/saving/delete');
+              }}
+            >
+              적금통 해지하기
+            </Button>
+          </div>
+          <div className="w-full">
+            <Button
+              size="lg"
+              color="blue-gray"
+              onClick={() => {
+                navigate('/main');
+              }}
+            >
+              홈 화면 가기
+            </Button>
+          </div>
         </div>
       </div>
     </div>

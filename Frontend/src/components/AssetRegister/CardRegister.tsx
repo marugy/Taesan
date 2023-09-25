@@ -1,6 +1,9 @@
 import React from 'react';
 import { Typography, Button } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
+import Swal2 from 'sweetalert2';
 const CardRegister = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="text-center my-10">
@@ -72,7 +75,21 @@ const CardRegister = () => {
         {/* <img src="/Card/Card6.png" /> */}
       </div>
       <div className="text-center mt-10">
-        <Button color="blue">자산 연동하기</Button>
+        <Button
+          color="blue"
+          onClick={() => {
+            Swal2.fire({
+              icon: 'success',
+              title: '자산 연동이 완료되었습니다.',
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              navigate('/main');
+            });
+          }}
+        >
+          자산 연동하기
+        </Button>
       </div>
     </div>
   );

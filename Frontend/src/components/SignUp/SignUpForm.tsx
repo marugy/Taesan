@@ -65,7 +65,7 @@ const SingUpForm = () => {
   const handleRequestLoginId = () => {
     // 아이디 보내기
     axios
-      .get(`http://j9c211.p.ssafy.io/api/member-management/members/check?loginId=${watchedLoginId}`)
+      .get(`http://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
       .then((res) => {
         console.log(res.data.response);
         if (res.data.response) {
