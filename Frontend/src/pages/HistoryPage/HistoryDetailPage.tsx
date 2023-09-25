@@ -5,7 +5,7 @@ import BottomNav from 'components/Common/BottomNav';
 
 const HistoryDetailPage = () => {
   return (
-    <div className='h-screen'>
+    <div>
       <ArrowBack pageName='상세내역'/>
       <HistoryDetail/>
       <BottomNav/>

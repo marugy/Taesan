@@ -29,18 +29,23 @@ const MainPage = () => {
   const mutation = useMutation(testPost);
   console.log(mutation);
   return (
-    <div className="flex flex-col items-center h-screen">
-      <div>
-        <div>
+    <div className="flex flex-col items-center h-full">
+      <div className='dt:w-screen dt:h-screen dt:flex'>
+        <div className='mt-3 dt:fixed dt:top-3 dt:left-6'>
           <img src="/Main/logo.png" className="h-16" />
         </div>
+        
         {/* <div className="font-extrabold text-3xl">태산 : 泰山</div> */}
 
         {/* 자산 등록 여부에 따라 다른 화면 띄우기 */}
         {/* <MainAssetRegister /> */}
-        <MainCardInfo />
-        <MainAssetInfo />
+        <div className='dt:w-[50vw] dt:flex dt:flex-col dt:justify-center dt:items-center'>
+          <MainCardInfo />
+          <MainAssetInfo />
+        </div>
+        <div className='dt:w-[50vw] dt:flex dt:flex-col dt:justify-center dt:items-center'>
         <MainMenu />
+        </div>
       </div>
       <BottomNav />
     </div>

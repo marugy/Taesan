@@ -97,6 +97,7 @@ const SingUpForm = () => {
           console.log('SMS전송');
         })
         .catch((err) => {
+          console.log(typeof extractNumbers(phone));
           console.log(err);
         });
       setPhoneLengthError(false);

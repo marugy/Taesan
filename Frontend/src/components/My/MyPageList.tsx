@@ -16,9 +16,9 @@ import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 const MyPageList = () => {
   const navigate = useNavigate();
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <Button
-        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full"
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
         onClick={() => navigate('/mypage/usermodify')}
       >
         <div className="flex items-center space-x-3">
@@ -29,7 +29,7 @@ const MyPageList = () => {
       </Button>
 
       <Button
-        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full "
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
         onClick={() => navigate('/mypage/password')}
       >
         <div className="flex items-center space-x-3">
@@ -40,7 +40,7 @@ const MyPageList = () => {
       </Button>
 
       <Button
-        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full "
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
         onClick={() => navigate('/mypage/pincode')}
       >
         <div className="flex items-center space-x-3">
@@ -50,7 +50,7 @@ const MyPageList = () => {
         <ArrowForwardOutlinedIcon className="text-gray-500" />
       </Button>
       <Button
-        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full "
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
         onClick={() => navigate('/mypage/product')}
       >
         <div className="flex items-center space-x-3">
@@ -60,7 +60,7 @@ const MyPageList = () => {
         <ArrowForwardOutlinedIcon className="text-gray-500" />
       </Button>
       <Button
-        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full "
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
         onClick={() => navigate('/mypage/account')}
       >
         <div className="flex items-center space-x-3">
@@ -71,7 +71,7 @@ const MyPageList = () => {
       </Button>
 
       <Button
-        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full "
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
         onClick={() => navigate('/mypage/userdelete')}
       >
         <div className="flex items-center space-x-3">
@@ -81,7 +81,7 @@ const MyPageList = () => {
         <ArrowForwardOutlinedIcon className="text-gray-500" />
       </Button>
 
-      <Button className="flex items-center justify-between p-2 border rounded-xl bg-white w-full ">
+      <Button className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14">
         <div className="flex items-center space-x-3">
           <LogoutOutlinedIcon className="text-[#8EB4B5] " />
           <div className="text-red-500 tb:text-sm dt:text-xl">로그아웃</div>

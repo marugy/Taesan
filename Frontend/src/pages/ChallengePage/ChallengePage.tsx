@@ -10,13 +10,12 @@ const ChallengePage = () => {
 
   return (
     <div>
-      <div className="flex flex-col h-screen">
       <ArrowBack pageName="절약 챌린지" />
       <div className= 'flex flex-col items-center'>
         <ChallengeSaving />
         <ChallengeButtonList />
         </div>
-      </div>
+        <div className='h-[80px]'/>
       <BottomNav/>
     </div>
   );

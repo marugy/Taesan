@@ -43,8 +43,8 @@ const MainCardInfo = () => {
     },
   ];
   return (
-    <div className="w-full flex justify-center -mt-4">
-      <div className="w-[70vw] dt:w-[19vw] ">
+    <div className="w-full flex justify-center">
+      <div className="w-[70vw] dt:w-[30vw] ">
         <Swiper
           slidesPerView={1}
           spaceBetween={30}
@@ -59,7 +59,7 @@ const MainCardInfo = () => {
           {dummyData.map((data, index) => (
             <SwiperSlide key={index}>
               <div className="w-full h-full bg-back flex justify-center items-center">
-                <Card cardnumber={data.cardnumber} name={data.name} assetnumber={data.assetnumber} />
+                <Card cardnumber={data.cardnumber} name={data.name} assetnumber={data.assetnumber} main='1' />
               </div>
             </SwiperSlide>
           ))}
