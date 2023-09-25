@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import { useUserStore } from 'store/UserStore';
+import { postLogin} from 'api/member';
 import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/react';
 
 interface FormProps {
@@ -17,6 +18,7 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
+  const { setAccessToken, setRefreshToken } = useUserStore();
   const navigate = useNavigate();
 
   const {
@@ -26,7 +28,20 @@ const LoginForm = () => {
   } = useForm<FormProps>({ resolver: yupResolver(schema) });
 
   const onSubmit = (data: FormProps) => {
-    console.log(data);
+    // postLogin을 불러와서 id랑 password를 넘겨주고,
+    postLogin(data.loginId, data.password)
+      //받아온 accessToken과 refreshToken을 store에 저장해줍니다.
+      .then((res) => {
+        setAccessToken(res.data.response.accessToken);
+        setRefreshToken(res.data.response.refreshToken);
+        console.log(res.data);
+        console.log(res.data.response.accessToken);
+        navigate('/main');  
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log('폼데이터', data);
   };
 
   return (
