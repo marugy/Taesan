@@ -2,14 +2,20 @@ package com.taesan.mydata.global.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -48,12 +54,12 @@ public class JwtUtils {
 
     // 키 생성
     protected SecretKey createAccessKey() {
-        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(accessKeyPlain.getBytes()).getBytes());
+        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(accessKeyPlain.getBytes(StandardCharsets.UTF_8)).getBytes());
     }
 
     // 키 생성
     protected SecretKey createRefreshKey() {
-        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(refreshKeyPlain.getBytes()).getBytes());
+        return Keys.hmacShaKeyFor(Base64.getEncoder().encodeToString(refreshKeyPlain.getBytes(StandardCharsets.UTF_8)).getBytes());
     }
 
     // JWT 토큰 생성
@@ -101,7 +107,7 @@ public class JwtUtils {
         StringBuilder sb = new StringBuilder();
 
         for (String scope : scopeList) {
-            sb.append(scope).append(' ');
+            sb.append(scope).append('_');
         }
 
         return sb.substring(0, sb.length() - 1);
@@ -132,13 +138,34 @@ public class JwtUtils {
 
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(accessKey).build()
-                    .parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
+            return !getClaimsAccessToken(jwtToken).getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public Claims getClaimsAccessToken(String jwtToken) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getAccessKey()).build()
+                .parseClaimsJws(jwtToken.substring(7))
+                .getBody();
+    }
+
+    public Authentication getAuthentication(String accessToken) {
+        //토큰 복호화
+        Claims claims = getClaimsAccessToken(accessToken);
+
+        if (claims.get("user-ci") == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+
+        // 나중에 최적화 할수도 있을듯
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("user-ci").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+        UserDetails principal = new User(claims.get("user-ci").toString(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     public String getUserCi(String jwtToken) {
@@ -158,3 +185,4 @@ public class JwtUtils {
     }
 
 }
+

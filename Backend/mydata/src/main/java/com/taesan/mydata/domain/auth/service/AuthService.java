@@ -85,7 +85,7 @@ public class AuthService {
                     Shop shop = dummyUtils.getShop();
                     Date payTime = new Date(new Date().getTime() - (i * 86400000L) - (j * 3600000));
                     CardHistory cardHistory = CardHistory.builder()
-                            .card(cardList.get(new Random().nextInt(3) - 1))
+                            .card(cardList.get(new Random().nextInt(3)))
                             .approvedNum("12345678")
                             .approvedDtime(payTime.toString())
                             .status("01")

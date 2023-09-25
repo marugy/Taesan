@@ -11,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class AuthApi {
             @ModelAttribute AuthRequest authRequest)
     {
         log.info("{}", authRequest.getClient_id());
-        return new ResponseEntity<>(new AuthResponse(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new AuthResponse(), HttpStatus.OK);
     }
 
     @PostMapping("/token")
@@ -42,13 +44,13 @@ public class AuthApi {
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        log.info("{}", tokenRequest.getClientId());
+        log.info("{}", tokenRequest.getCode());
 
-        if (tokenRequest.getCode() == null) {       // AT 갱신 로직
-            return new ResponseEntity<>(new TokenResponse(), headers, HttpStatus.TEMPORARY_REDIRECT);
-        } else {        // AT 발급 로직
-            return new ResponseEntity<>(authService.getAccessToken(userCI), headers, HttpStatus.ACCEPTED);
-        }
+//        if (userCI == null) {       // AT 갱신 로직
+//            return new ResponseEntity<>(new TokenResponse(), headers, HttpStatus.TEMPORARY_REDIRECT);
+//        } else {        // AT 발급 로직
+            return new ResponseEntity<>(authService.getAccessToken(userCI), headers, HttpStatus.OK);
+//        }
 
     }
 

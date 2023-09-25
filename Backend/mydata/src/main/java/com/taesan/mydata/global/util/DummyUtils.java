@@ -29,8 +29,9 @@ public class DummyUtils {
     public String getAccountNum() {
         StringBuilder accountNum = new StringBuilder();
 
-        for(int i=0; i<14; i++) {
-            accountNum.append(random.nextInt(9));
+        accountNum.append(random.nextInt(9) + 1);
+        for(int i=0; i<13; i++) {
+            accountNum.append(random.nextInt(10));
         }
         return accountNum.toString();
     }
@@ -41,7 +42,7 @@ public class DummyUtils {
      * @return 랜덤 날짜
      */
     public Date getDate() {
-        return new Date(new Date().getTime() - (long) (random.nextDouble() * (94672800000L + 1)));
+        return new Date(new Date().getTime() - (long) (random.nextDouble() * 94672800000L));
     }
 
     /**
@@ -52,8 +53,9 @@ public class DummyUtils {
     public String getCardNum() {
         StringBuilder cardNum = new StringBuilder();
 
-        for(int i=0; i<19; i++) {
-            cardNum.append(random.nextInt(10) - 1);
+        cardNum.append(random.nextInt(9) + 1);
+        for(int i=0; i<18; i++) {
+            cardNum.append(random.nextInt(10));
         }
 
         return cardNum.toString();
@@ -66,11 +68,11 @@ public class DummyUtils {
      */
     public String getCardName() {
         StringBuilder cardName = new StringBuilder();
-        cardName.append(CardCompany.valueOf(random.nextInt(6)-1))
+        cardName.append(CardCompany.valueOf(random.nextInt(5)))
                 .append(' ')
-                .append(CardName.valueOf(random.nextInt(6)-1))
+                .append(CardName.valueOf(random.nextInt(5)))
                 .append(' ')
-                .append(CardRate.valueOf(random.nextInt(6)-1));
+                .append(CardRate.valueOf(random.nextInt(5)));
 
         return cardName.append(" 카드").toString();
     }
@@ -82,7 +84,7 @@ public class DummyUtils {
      * @return 타입
      */
     public String getType(int max) {
-        return "0" + (random.nextInt(max));
+        return "0" + (random.nextInt(max) + 1);
     }
 
     /**
@@ -92,7 +94,7 @@ public class DummyUtils {
      * @return 확률에 선정되었는지 여부
      */
     public boolean drawLots(int probability) {
-        return random.nextInt(101) - 1 > probability;
+        return random.nextInt(100) < probability;
     }
 
     /**
@@ -101,7 +103,7 @@ public class DummyUtils {
      * @return 가맹점 Enum 클래스
      */
     public Shop getShop() {
-        return Shop.valueOf(random.nextInt(10) - 1);
+        return Shop.valueOf(random.nextInt(10));
     }
 
 }
