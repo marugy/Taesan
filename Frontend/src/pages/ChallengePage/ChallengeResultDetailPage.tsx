@@ -1,12 +1,12 @@
 import React from 'react';
-
+import BottomNav from 'components/Common/BottomNav';
 import ChallengeMemberList from 'components/ChallengeResultDetail/ChallengeMemberList';
 import ArrowBack from 'components/Common/ArrowBack';
 
 const ChallengeResultDetailPage = () => {
   console.log('GET_이전 챌린지 상세');
   return (
-    <div>
+    <div className='h-screen'>
       <ArrowBack pageName="이전 챌린지" />
       <div className="flex flex-col items-center">
         <div className="m-5 flex flex-col justify-center items-center tb:text-md dt:text-xl font-bold">
@@ -20,6 +20,7 @@ const ChallengeResultDetailPage = () => {
         </div>
         <ChallengeMemberList />
       </div>
+      <BottomNav/>
     </div>
   );
 };

@@ -5,11 +5,14 @@ import { Button } from '@material-tailwind/react';
 import { List, ListItem, ListItemPrefix, Avatar, Card, Typography } from '@material-tailwind/react';
 import { ACCOUNT_DATA } from 'constants/DUMMY';
 import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 
 const ChangeAccountPage = () => {
   const [nextButton, setNextButton] = useState(false);
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
+    <div className='h-scren flex flex-col'>
+      <ArrowBack pageName='내 정보 수정'/>
+    <div className="h-screen flex flex-col items-center mt-4">
       <Typography variant="h4" color="gray">
         현재 등록 계좌
       </Typography>
@@ -44,6 +47,8 @@ const ChangeAccountPage = () => {
 
       <hr className="my-5 border-gray-400 border-1 w-full" />
       <AccountRegister />
+      <BottomNav/>
+    </div>
     </div>
   );
 };

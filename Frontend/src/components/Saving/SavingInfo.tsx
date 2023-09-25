@@ -1,10 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
+import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
+import { screen } from '@testing-library/react';
+
 const SavingInfo = () => {
   const navigate = useNavigate();
   return (
-    <div className="bg-back">
+    <div className="h-screen">
+      <ArrowBack pageName='내 적금통'/>
       <div className="flex justify-end mr-5">
         <Button
           color="blue"
@@ -49,6 +54,7 @@ const SavingInfo = () => {
           </Button>
         </div>
       </div>
+      <BottomNav/>
     </div>
   );
 };

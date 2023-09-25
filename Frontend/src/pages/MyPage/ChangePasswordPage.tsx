@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PasswordForm from 'components/ChangePassword/PasswordForm';
 import ArrowBack from 'components/Common/ArrowBack';
-
+import BottomNav from 'components/Common/BottomNav';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Button } from '@material-tailwind/react';
 
@@ -13,7 +13,9 @@ const ChangePasswordPage = () => {
   });
 
   return (
-    <div className="h-screen justify-center flex flex-col items-center mx-10 space-y-3 ">
+    <div className='h-screen flex flex-col'>
+      <ArrowBack pageName='비밀번호 변경'/>
+    <div className="justify-center flex flex-col items-center mx-10 space-y-3 my-24">
       <LockOutlinedIcon
         className="text-[#8EB4B5] w-12"
         sx={{
@@ -28,6 +30,8 @@ const ChangePasswordPage = () => {
       <div>
         <Button className="bg-[#0067AC] p-2 text-[5px] tb:text-[10px] dt:text-[20px]">수정하기</Button>
       </div>
+    </div>
+    <BottomNav/>
     </div>
   );
 };

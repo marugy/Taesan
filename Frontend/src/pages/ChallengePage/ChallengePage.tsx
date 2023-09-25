@@ -2,7 +2,7 @@ import React from 'react';
 import ChallengeButtonList from 'components/Challenge/ChallengeButtonList';
 import ChallengeSaving from 'components/Challenge/ChallengeSaving';
 import ArrowBack from 'components/Common/ArrowBack';
-
+import BottomNav from 'components/Common/BottomNav';
 const ChallengePage = () => {
   // 유저 챌린지 상태를 불러오기 API
   console.log('GET_사용자의 챌린지 상태');
@@ -10,11 +10,14 @@ const ChallengePage = () => {
 
   return (
     <div>
+      <div className="flex flex-col h-screen">
       <ArrowBack pageName="절약 챌린지" />
-      <div className="flex flex-col items-center">
+      <div className= 'flex flex-col items-center'>
         <ChallengeSaving />
         <ChallengeButtonList />
+        </div>
       </div>
+      <BottomNav/>
     </div>
   );
 };

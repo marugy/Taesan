@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useFormatPhone from 'hooks/useFormatPhone';
 import { Input } from '@material-tailwind/react';
 import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 import TextField from '@mui/material/TextField';
 import { Button } from '@material-tailwind/react';
 
@@ -25,6 +26,8 @@ const UserModifyPage = () => {
   };
 
   return (
+    <div className='h-screen flex flex-col'>
+      <ArrowBack pageName='정보 수정'/>
     <div className="h-screen flex justify-center items-center">
       <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
         <div className="mb-4 flex flex-col gap-6">
@@ -46,6 +49,8 @@ const UserModifyPage = () => {
           </Button>
         </div>
       </div>
+    </div>
+    <BottomNav/>
     </div>
   );
 };
