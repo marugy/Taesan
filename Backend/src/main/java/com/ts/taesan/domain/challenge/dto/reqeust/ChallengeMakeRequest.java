@@ -15,15 +15,15 @@ import java.util.Date;
 @Builder
 public class ChallengeMakeRequest {
     private String title;
-    private Date period;
+    private int period;
     private Long price;
 
-    public Challenge toEntity(Member member) {
-        return Challenge.builder()
-                .title(this.title)
-                .member(member)
-                .period(this.period)
-                .price(this.price)
-                .build();
-    }
+//    public Challenge toEntity(Member member) {
+//        return Challenge.builder()
+//                .title(this.title)
+//                .member(member)
+//                .period(this.period)
+//                .price(this.price)
+//                .build();
+//    }
 }

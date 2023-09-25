@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.challenge.dto.reqeust;
+package com.ts.taesan.domain.challenge.dto.response;
 
 import lombok.*;
 
