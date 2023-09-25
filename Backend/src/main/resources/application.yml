@@ -19,3 +19,7 @@ encrypt:
 
 file:
   dir: C:/dev/
+
+logging:
+  level:
+    com.ts.taesan.domain.transaction.req: DEBUG
