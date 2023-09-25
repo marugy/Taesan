@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useUserStore } from 'store/UserStore';
-import { postLogin} from 'api/member';
+import { postLogin } from 'api/member';
 import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/react';
 
 interface FormProps {
@@ -57,7 +57,7 @@ const LoginForm = () => {
               {errors.loginId && <p className="font-thin text-sm">{errors.loginId.message}</p>}
             </div>
             <div>
-              <Input size="lg" label="비밀번호" crossOrigin="anonymous" {...register('password')} />
+              <Input size="lg" label="비밀번호" crossOrigin="anonymous" {...register('password')} type="password" />
               {errors.password && <p className="font-thin text-sm">{errors.password.message}</p>}
             </div>
           </div>
