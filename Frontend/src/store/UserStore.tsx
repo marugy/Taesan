@@ -6,6 +6,8 @@ interface UserStore {
   setAccessToken: (accessToken: string) => void;
   refreshToken: string;
   setRefreshToken: (refreshToken: string) => void;
+  name : string;
+  setName : (name : string) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -15,6 +17,8 @@ export const useUserStore = create<UserStore>()(
       setAccessToken: (accessToken: string) => set({ accessToken }),
       refreshToken: '',
       setRefreshToken: (refreshToken: string) => set({ refreshToken }),
+      name : '',
+      setName : (name : string) => set({ name }),
     }),
     {
       name: 'user-storage', // persist key

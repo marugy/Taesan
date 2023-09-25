@@ -6,28 +6,29 @@ import MainCardInfo from 'components/Main/MainCardInfo';
 import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
 import BottomNav from 'components/Common/BottomNav';
+import { useUserStore } from 'store/UserStore';
 
-const testGet = async () => {
-  const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts');
-  console.log(data);
-  return data;
-};
 
-const testPost = async () => {
-  const { data } = await axios.post('https://jsonplaceholder.typicode.com/posts', {
-    userId: 11,
-    id: 101,
-    body: 'test body',
-    title: 'test title',
+
+const MainPage = () => {
+
+  // 스토어에서 AT,RT 가져오기
+const { accessToken, refreshToken,setName } = useUserStore();
+// useQuery를 이용해 사용자 정보 호출
+const getInfo = async () => {
+  const { data } = await axios.get('https://j9c211.p.ssafy.io/api/member-management/members/info', {
+    headers: {
+      'ACCESS-TOKEN': accessToken,
+      'REFRESH-TOKEN': refreshToken,
+    },
   });
   console.log(data);
+  setName(data.response.name)
   return data;
 };
-const MainPage = () => {
-  const query = useQuery('test', testGet);
-  console.log(query);
-  const mutation = useMutation(testPost);
-  console.log(mutation);
+  const query = useQuery('getInfo', getInfo);
+  // const mutation = useMutation(testPost);
+  // console.log(mutation);
   return (
     <div className="flex flex-col items-center h-full">
       <div className='dt:w-screen dt:h-screen dt:flex'>
