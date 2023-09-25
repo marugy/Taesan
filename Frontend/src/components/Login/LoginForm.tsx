@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { useUserStore } from 'store/UserStore';
 import { postLogin } from 'api/member';
 import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/react';
+import axios from 'axios';
 
 interface FormProps {
   loginId: string;
@@ -29,19 +30,37 @@ const LoginForm = () => {
 
   const onSubmit = (data: FormProps) => {
     // postLogin을 불러와서 id랑 password를 넘겨주고,
-    postLogin(data.loginId, data.password)
-      //받아온 accessToken과 refreshToken을 store에 저장해줍니다.
+    // postLogin(data.loginId, data.password)
+    //   //받아온 accessToken과 refreshToken을 store에 저장해줍니다.
+    //   .then((res) => {
+    //     setAccessToken(res.data.response.accessToken);
+    //     setRefreshToken(res.data.response.refreshToken);
+    //     console.log(res.data);
+    //     console.log(res.data.response.accessToken);
+    //     navigate('/main');  
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     console.log(data.loginId, data.password)
+    //   });
+    // console.log('폼데이터', data);
+    axios.post("https://j9c211.p.ssafy.io/api/member-management/members/login",
+    {
+      "loginId": data.loginId,
+      "password": data.password
+      })
       .then((res) => {
-        setAccessToken(res.data.response.accessToken);
-        setRefreshToken(res.data.response.refreshToken);
         console.log(res.data);
         console.log(res.data.response.accessToken);
-        navigate('/main');  
+        console.log(res.data.response.refreshToken);
+        setAccessToken(res.data.response.accessToken);
+        setRefreshToken(res.data.response.refreshToken);
+        navigate('/main');
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log('폼데이터', data);
+
   };
 
   return (
