@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css'; // css파일을 불러와야 달력이 덜 못생김.
 import { ko } from 'date-fns/esm/locale'; // 한국어 사용을 위해 불러오자.
 import dayjs from 'dayjs';
-import { Button } from '@material-tailwind/react';
+import { Button, Input } from '@material-tailwind/react';
 
 /// MUI 데이트 피커
 
@@ -14,14 +14,19 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 // 리액트 DatePicker 보다는 RangePicker가 맞을듯.
 const SavingCreate = () => {
-  const [date, setDate] = useState('2023-09-20'); // 선택한 날짜를 상태로 저장
+  const [date, setDate] = useState('2023-09-27'); // 선택한 날짜를 상태로 저장
   const koreanDate = dayjs(date).format('YYYY년 MM월 DD일'); //
 
   const today = dayjs(); // 오늘 날짜
   const duration = dayjs(date).diff(today, 'day') + 1; // 오늘과 만기일 사이의 날짜 차이
   return (
     <div className="flex flex-col items-center bg-[url('/Card1.png') ">
-      <div className="font-extrabold text-3xl mt-10 text-main">새 적금통 만들기</div>
+      <div className="font-extrabold text-3xl mt-10 ">새로운 적금통 만들기</div>
+      <div className="font-normal text-sm text-base text-gray-500 mt-2 text-center">
+        우리 어플을 통해 절약한 만큼 돈을 모아보아요.
+        <br />
+        만기까지 기다리면 추가 이자를 받을 수 있어요!
+      </div>
       <div>
         <img className="h-64" src="/piggy_bank.png" alt="" />
       </div>
@@ -59,8 +64,10 @@ const SavingCreate = () => {
         inline // 달력이 기본적으로 보여지는 옵션 ( 기본 옵션은 인풋창을 눌러야 달력이 나옴. )
       /> */}
       {/* <div>만기일 : {koreanDate}</div> */}
-      <div className="my-8 text-lg font-bold">만기까지 남은 일자 : {duration}일 </div>
-      <Button className="bg-main">적금통 만들기</Button>
+      <div className="my-4 text-lg font-semibold text-gray-600">만기까지 남은 일자 : {duration}일 </div>
+      <div className="mb-4">출금계좌 : 신한은행 110509677498</div>
+
+      <Button className="bg-main w-4/5 text-lg">적금통 만들기</Button>
     </div>
   );
 };

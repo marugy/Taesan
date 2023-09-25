@@ -58,7 +58,7 @@ const TestPage = () => {
         <div>
           <h1>Axios 통신 리스트</h1>
           <h2>ANALYST 관련 AXIOS 통신 테스트</h2>
-          <Button onClick={postPlace}>장소 등록</Button>
+          {/* <Button onClick={postPlace}>장소 등록</Button>
           <Button onClick={postReceipt}>영수증 등록</Button>
           <hr></hr>
           <h2>AUTH 관련 AXIOS 통신 테스트</h2>
@@ -105,12 +105,12 @@ const TestPage = () => {
           <Button onClick={putPassword}>비밀번호 수정</Button>
           <Button onClick={putSimplePassword}>간편 비밀번호 수정</Button>
           <Button onClick={getSaving}>적립금 조회</Button>
-          <Button onClick={deleteMember}>회원 탈퇴</Button>
+          <Button onClick={deleteMember}>회원 탈퇴</Button> */}
           <hr></hr>
           <h2>TRANSATIONS 관련 AXIOS 통신 테스트</h2>
           {/* <Button onClick={getHistory}>거래 내역 조회</Button> */}
-          <Button onClick={getTransactionDetail}>거래 상세 조회</Button>
-          <Button onClick={getTransactionReceipt}>거래 영수증 조회</Button>
+          {/* <Button onClick={getTransactionDetail}>거래 상세 조회</Button>
+          <Button onClick={getTransactionReceipt}>거래 영수증 조회</Button> */}
           <hr></hr>
         </div>
       </div>
