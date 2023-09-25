@@ -55,17 +55,12 @@ const SingUpForm = () => {
     formState: { errors },
   } = useForm<FormProps>({ resolver: yupResolver(schema) });
 
-  // 이메일 입력 확인
-  const watchedPostcode = watch('postcode');
-  const watchedZonecode = watch('zonecode');
-  const watchedDetailPostcode = watch('detailPostcode');
-
   // 아이디 인증 요청
   const watchedLoginId = watch('loginId');
   const handleRequestLoginId = () => {
     // 아이디 보내기
     axios
-      .get(`http://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
+      .get(`https://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
       .then((res) => {
         console.log(res.data.response);
         if (res.data.response) {
@@ -95,11 +90,11 @@ const SingUpForm = () => {
     } else if (phone.length >= 13) {
       // 전송
       axios
-        .post(`http://j9c211.p.ssafy.io/api/auth-management/auths/sms/send`, {
+        .post(`https://j9c211.p.ssafy.io/api/auth-management/auths/sms/send`, {
           to: extractNumbers(phone),
         })
         .then((res) => {
-          console.log(res.data);
+          console.log('SMS전송');
         })
         .catch((err) => {
           console.log(err);
@@ -119,17 +114,16 @@ const SingUpForm = () => {
   const handleResponseSMS = () => {
     console.log(numberSMS);
     axios
-      .post(`http://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
+      .post(`https://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
         phone: extractNumbers(phone),
         sms: numberSMS,
       })
       .then((res) => {
-        if (res.data.response.success) {
+        if (res.data.success) {
           setValidPhone(1);
         } else {
           setValidPhone(-1);
         }
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -161,9 +155,9 @@ const SingUpForm = () => {
   };
 
   // 핀코드 상태
+  const [viewPincode, setViewPincode] = useState(false);
   const [pincode, setPincode] = useState('');
   const [simplePassword, setSimplePassword] = useState('');
-  const [viewPincode, setViewPincode] = useState(false);
 
   const onValid = (data: FormProps) => {
     // 모든 인증 성공
@@ -205,7 +199,7 @@ const SingUpForm = () => {
           console.log('회원가입 성공함');
           console.log(res);
           setViewPincode(false);
-          navigate('/login');
+          navigate('/');
         })
         .catch((err) => {
           console.log(err);
@@ -220,14 +214,6 @@ const SingUpForm = () => {
 
     console.log(formattedData);
   };
-
-  // const handlePincodeSuccess = () => {
-  //   setViewPincode(false); // 핀코드 입력이 성공적으로 완료되면 모달을 닫습니다.
-  //   console.log(simplePassword);
-  //   if (formData) {
-  //     onSubmit(formData);
-  //   }
-  // };
 
   useEffect(() => {
     if (simplePassword && formData) {
