@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ArrowBack from 'components/Common/ArrowBack';
 import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
+import BottomNav from 'components/Common/BottomNav';
 
 const ProductInfoPage = () => {
   const [title, setTitle] = useState('OOOO 행복적금');
@@ -9,7 +10,9 @@ const ProductInfoPage = () => {
   const [info, setInfo] = useState('');
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center mx-10 space-y-3">
+    <div className='h-screen flex flex-col'>
+      <ArrowBack pageName='적금 정보'/>
+    <div className="flex flex-col items-center mt-24 mx-10 space-y-3">
       <SavingsOutlinedIcon
         className="text-[#816BFF] w-12"
         sx={{
@@ -31,6 +34,8 @@ const ProductInfoPage = () => {
         않습니다. 특징: 계약기간 동안 무단해지 없이 납입을 완료하면, 충성 보너스 이율이 추가로 지급됩니다. 온라인 뱅킹을
         통해 간편하게 가입 가능합니다. 하드코딩 ㅋ
       </div>
+      <BottomNav/>
+    </div>
     </div>
   );
 };

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import SavingCreate from 'components/SavingCreate/SavingCreate';
+import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 const SavingCreatePage = () => {
   // const [createButton, setCreateButton] = useState(false);
   return (
-    <div>
+    <div className='h-screen'>
+      <ArrowBack pageName='적금 만들기'/>
       {/* {createButton ? (
         <div>암호입력 공통 컴포넌트 띄우기</div>
       ) : (
@@ -20,6 +23,7 @@ const SavingCreatePage = () => {
       )} */}
 
       <SavingCreate />
+      <BottomNav/>
     </div>
   );
 };

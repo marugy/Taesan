@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import BuyifList from 'components/BuyIf/BuyifList';
 import AssetCard from 'components/BuyIf/AssetCard';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import BottomNav from 'components/Common/BottomNav';
+import ArrowBack  from 'components/Common/ArrowBack';
 
 const BuyIfPage = () => {
   const navigate = useNavigate();
   return (
-    <div className='my-24'>
+    <div className='mb-28'>
+      <ArrowBack pageName='샀다치고'/>
       <div className='mx-6 my-7 font-bold text-2xl'>내 자산</div>
       <AssetCard />
       <div className='w-[90%] mx-6 my-7 flex justify-between'>
@@ -15,7 +18,7 @@ const BuyIfPage = () => {
         <button onClick={() => navigate('/buyif/create')}><AddCircleIcon  color='primary' fontSize='large'/></button>
       </div>
       <BuyifList/>
-
+      <BottomNav/>
     </div>
   );
 };

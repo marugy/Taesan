@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button,Input,IconButton } from '@material-tailwind/react';
 import axios from 'axios';
 import Swal2 from 'sweetalert2';
+import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 const HabitCreatePage = () => {
   const navigate = useNavigate();
   const [title,setTitle] = useState('');
@@ -39,7 +41,9 @@ const HabitCreatePage = () => {
   }
 
   return (
-    <div>
+    <div className='h-screen'>
+      <ArrowBack pageName='습관 절약'/>
+      <div className=' mx-3 mt-4'>
       <div>
       <Input crossOrigin="anonymous" label="생성할 습관의 제목을 입력하세요." onChange={handleTitle}/>
       </div>
@@ -67,6 +71,8 @@ const HabitCreatePage = () => {
 <div className="flex justify-center mt-10 ">
       <Button color="blue" onClick={createHabit} className="bg-main">습관 생성하기</Button>
       </div>
+      </div>
+      <BottomNav/>
     </div>
   );
 };

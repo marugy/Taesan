@@ -6,7 +6,7 @@ import { CHALLENGE_RESULT_LIST } from 'constants/DUMMY';
 
 const ChallengeResultList = () => {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mt-3 mb-28">
       {CHALLENGE_RESULT_LIST.map((item, index) => (
         <ChallengeResultItem
           key={index}

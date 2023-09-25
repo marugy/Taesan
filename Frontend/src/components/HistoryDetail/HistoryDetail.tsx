@@ -71,7 +71,7 @@ const HistoryDetail = () => {
     
     
     return (
-        <div className='flex flex-col items-center my-24'>
+        <div className='flex flex-col items-center mt-3 '>
                 {receiptImage? 
                 <div className='w-[86%] flex flex-col items-center'>
                     <div className='w-full  flex justify-end'>
@@ -239,7 +239,7 @@ const HistoryDetail = () => {
                             <div>카드</div>
                         </Typography>                    
                     </div>
-                    <div className='border-blue-gray-100 rounded-xl border mt-5 w-full'>
+                    <div className='border-blue-gray-100 rounded-xl border mt-5 w-full mb-28'>
                         <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-m font-bold  '>
                             최근 3개월간 거래 내역
                         </Typography>

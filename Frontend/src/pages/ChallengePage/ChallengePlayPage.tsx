@@ -1,13 +1,13 @@
 import React from 'react';
 
 import ChallengeMemberList from 'components/ChallengePlay/ChallengeMemberList';
-
+import BottomNav from 'components/Common/BottomNav';
 import ArrowBack from 'components/Common/ArrowBack';
 
 const ChallengePlayPage = () => {
   console.log('GET_챌린지 진행정보');
   return (
-    <div>
+    <div className='flex flex-col h-screen'>
       <ArrowBack pageName="진행중인 챌린지" />
 
       <div className="flex flex-col items-center">
@@ -23,6 +23,7 @@ const ChallengePlayPage = () => {
         </div>
         <ChallengeMemberList />
       </div>
+      <BottomNav/>
     </div>
   );
 };

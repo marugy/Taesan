@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { Input,Button } from "@material-tailwind/react";
 import Swal from 'sweetalert2';
+import ArrowBack from 'components/Common/ArrowBack';
 
 
 const BuyifRegister = () => {
@@ -43,7 +44,9 @@ const BuyifRegister = () => {
     }
 
     return (
-        <div className='flex flex-col items-center h-screen'>
+        <div className='flex flex-col h-screen'>
+            <ArrowBack pageName='샀다치고'/>
+            <div className='flex flex-col items-center'>
             <div className='font-bold text-xl w-[90%] text-start my-4'>샀다고 할 물건</div>
                 <div className='bg-white w-[90%] h-[220px] rounded-lg shadow-md flex flex-col justify-around items-center'>
                     <div className='flex justify-around items-center'>
@@ -101,6 +104,7 @@ const BuyifRegister = () => {
                     <div className='text-2xl font-bold w-[80%]'>고민 고민하지마 girl~ girl 헤이 유고걸 데레레레레레 뎃걸</div>
                 </div>
                 :null}
+            </div>
         </div>
     );
 };

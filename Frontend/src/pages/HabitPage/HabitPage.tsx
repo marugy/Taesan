@@ -8,13 +8,14 @@ import OnedaySaveMoney from 'components/Habit/OnedaySaveMoney';
 import HabitList from 'components/Habit/HabitList';
 import ModalSaveMoney from 'components/Habit/ModalSaveMoney';
 import { Button } from '@material-tailwind/react';
-import BottomNav from 'components/Habit/BottomNav';
+import BottomNav from 'components/Common/BottomNav';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery,useMutation } from 'react-query';
 // 한국어로 변환
 import locale from "antd/es/calendar/locale/ko_KR";
 import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
+import ArrowBack from 'components/Common/ArrowBack';
 
 const HabitPage = () => {
   const navigate = useNavigate();
@@ -53,22 +54,25 @@ getTotalCalendarDay(date.format('YYYY'), date.format('MM'), date.format('DD'))
 );
   return (
     <div>
-      {monthData}
-      <div className="text-main text-3xl font-bold">내 습관 절약</div>
-      <div className="text-xl font-semibold mt-5">총 절약 금액 : 45,000원</div>
-      {/* 달력 */}
-      <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange} locale={locale}  />
-      {/* 좋은 습관을 통해 하루에 아낀 돈 */}
-      <OnedaySaveMoney selectedDate={selectedDate} />
-      {/* 습관 생성 페이지 */}
-      <div className="w-full flex justify-end">
-      <Button color="blue" className="mt-5 -mb-6" onClick={()=>{navigate('/habit/create')}}>+</Button>
+      <ArrowBack pageName='습관 절약'/>
+      <div className='mx-3 mt-3 mb-28'>
+        {monthData}
+        <div className="text-main text-3xl font-bold">내 습관 절약</div>
+        <div className="text-xl font-semibold mt-5">총 절약 금액 : 45,000원</div>
+        {/* 달력 */}
+        <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange} locale={locale}  />
+        {/* 좋은 습관을 통해 하루에 아낀 돈 */}
+        <OnedaySaveMoney selectedDate={selectedDate} />
+        {/* 습관 생성 페이지 */}
+        <div className="w-full flex justify-end">
+        <Button color="blue" className="mt-5 -mb-6" onClick={()=>{navigate('/habit/create')}}>+</Button>
+        </div>
+        {/* 진행중 & 완료에 따른 습관 목록 띄우기 */}
+        <HabitList />
+        {/* 오늘의 습관 절약 */}
+        <ModalSaveMoney/>
       </div>
-      {/* 진행중 & 완료에 따른 습관 목록 띄우기 */}
-      <HabitList />
-      {/* 오늘의 습관 절약 */}
-      <ModalSaveMoney/>
-      {/* <BottomNav/> */}
+      <BottomNav/>
     </div>
   );
 };

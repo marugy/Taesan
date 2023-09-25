@@ -8,6 +8,7 @@ import NumericKeypad from 'components/ChallengeCreate/NumericKeypad';
 import { Button, Input } from '@material-tailwind/react';
 import { Slider } from '@material-tailwind/react';
 import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 
 const ChallengeCreatePage = () => {
   const navigate = useNavigate();
@@ -70,8 +71,9 @@ const ChallengeCreatePage = () => {
 
   return (
     <div>
+      <div className="flex flex-col h-screen">
       <ArrowBack pageName="절약 챌린지 생성" />
-      <div className="flex flex-col items-center">
+      <div className = "flex flex-col items-center">
         <div className="m-5 w-[300px] dt:w-[350px]">
           <Input label="챌린지 제목" value={title} onChange={onChange} crossOrigin={false} />
         </div>
@@ -92,7 +94,9 @@ const ChallengeCreatePage = () => {
           <Button className="bg-main tb:text-md dt:text-xl" onClick={() => handleRecruit(title, money, period)}>
             챌린지 생성
           </Button>
+          </div>
         </div>
+        <BottomNav/>
       </div>
     </div>
   );

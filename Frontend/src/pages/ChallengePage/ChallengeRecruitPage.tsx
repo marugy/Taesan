@@ -5,7 +5,7 @@ import ChallengeMemberList from 'components/ChallengeRecruit/ChallengeMemberList
 import RoomCode from 'components/ChallengeRecruit/RoomCode';
 import { Button } from '@material-tailwind/react';
 import ArrowBack from 'components/Common/ArrowBack';
-
+import BottomNav from 'components/Common/BottomNav';
 import Swal from 'sweetalert2';
 import { Toast } from 'components/Common/Toast';
 
@@ -85,7 +85,7 @@ const ChallengeRecruitPage = () => {
     });
   };
   return (
-    <div>
+    <div className='flex flex-col h-screen'>
       <ArrowBack pageName="절약 챌린지 모집" />
       <div className="flex flex-col items-center">
         <div className="m-5">
@@ -118,6 +118,7 @@ const ChallengeRecruitPage = () => {
           </div>
         </div>
       </div>
+      <BottomNav/>
     </div>
   );
 };

@@ -60,7 +60,7 @@ const Graph = () => {
         setCategory(newCategory);
     };
     return (
-        <div className='mx-4 my-24'>
+        <div className='mx-4 mt-11 mb-28'>
             <div className=' font-bold text-blue-gray-600'>
                 설정기간
             </div>
