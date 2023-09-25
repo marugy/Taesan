@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReceiptAnalystRequest {
 
-    String strYearMonth;
+    String year;
+    String month;
+
 
 }

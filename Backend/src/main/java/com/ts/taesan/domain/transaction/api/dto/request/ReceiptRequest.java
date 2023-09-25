@@ -1,11 +1,10 @@
 package com.ts.taesan.domain.transaction.api.dto.request;
 
-import com.ts.taesan.domain.transaction.service.dto.response.Receipt;
+import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,5 +15,5 @@ import java.util.List;
 public class ReceiptRequest {
     String shopName;
     LocalDateTime date;
-    List<Receipt> productList;
+    List<ReceiptDTO> productList;
 }

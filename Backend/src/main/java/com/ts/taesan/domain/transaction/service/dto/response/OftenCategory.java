@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class Card {
-    private String cardNumber;
-    private String name;
-    private String cardCompany;
+public class OftenCategory {
+    private String category;
+    private Integer count;
+    private Long money;
+
 }
