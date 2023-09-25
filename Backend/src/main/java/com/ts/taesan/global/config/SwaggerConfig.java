@@ -47,7 +47,7 @@ public class SwaggerConfig {
                 .apiInfo(this.apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ts.taesan.domain"))
-                .paths(PathSelectors.ant("/**"))
+                .paths(PathSelectors.any())
                 .build();
     }
 }

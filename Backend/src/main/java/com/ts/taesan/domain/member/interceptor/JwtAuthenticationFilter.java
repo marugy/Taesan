@@ -26,7 +26,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        System.out.println("AT : " + ((HttpServletRequest) request).getHeader("ACCESS_TOKEN"));
         log.info(request.toString());
         String token = resolveToken((HttpServletRequest) request);
         try {
@@ -44,7 +43,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private String resolveToken(HttpServletRequest request) {
         System.out.println("resolveToken");
         String accessToken = request.getHeader("ACCESS-TOKEN");
-        
+
         System.out.println("AccessToken : " + accessToken);
         if (accessToken != null && jwtTokenProvider.isValidAccessToken(accessToken)) {
             return accessToken;
