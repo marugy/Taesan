@@ -10,6 +10,9 @@ const AccountRegister = () => {
     setSelectedItem(index);
   };
   return (
+    <div>
+
+
     <div className="flex flex-col items-center">
       <Typography variant="h4" color="gray">
         '태산' 사용을 위해 등록하실
@@ -53,6 +56,7 @@ const AccountRegister = () => {
           </List>
         </Card>
       </div>
+    </div>
     </div>
   );
 };

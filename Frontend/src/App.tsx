@@ -35,6 +35,8 @@ import SavingDetailPage from 'pages/SavingPage/SavingDetailPage';
 import SavingCreatePage from 'pages/SavingPage/SavingCreatePage';
 import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
+import ApproveMyData from 'pages/MainPage/ApproveMyData';
+
 import './App.css';
 function App() {
   return (
@@ -72,6 +74,7 @@ function App() {
           {/* 메인페이지 관련 페이지 */}
           <Route path="/main" element={<MainPage />} />
           <Route path="/main/asset/register" element={<AssetRegisterPage />} />
+          <Route path="/main/mydata" element={<ApproveMyData />} />
 
           {/* 마이페이지 관련 페이지 */}
           <Route path="/mypage" element={<MyPage />} />

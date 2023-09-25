@@ -23,26 +23,26 @@ const BottomNav = () => {
       {/* <IconButton variant="filled"  className="bg-main rounded-full h-[9vh] w-[9vh] max-w-none max-h-none mb-[5vh] flex justify-center items-center" >
           <HiHome className="text-xl"/>
       </IconButton> */}
-      <div className="relative">
+      <div className="relative" onClick={() => {
+            navigate('/main');
+          }}>
         {/* 반지름 20px 짜리 투명색 원 */}
         {/* <div className="w-24 h-24 rounded-full bg-opacity-0 bg-white z-40 absolute bottom-8  left-1/2 transform -translate-x-1/2 "></div> */}
         <IconButton
           variant="filled"
-          onClick={() => {
-            navigate('/main');
-          }}
+          
           className="bg-main  rounded-full z-30 h-[9vh] w-[9vh] max-w-none max-h-none mb-[5vh] flex justify-center items-center"
         >
           <HiHome className="text-xl" />
         </IconButton>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center" onClick={() => {
+              navigate('/mypage');
+            }}>
         <div>
           <BsPerson
             className="text-main text-2xl "
-            onClick={() => {
-              navigate('/mypage');
-            }}
+            
           />
         </div>
         <div className="font-extrabold text-sm text-main font-main">Profile</div>

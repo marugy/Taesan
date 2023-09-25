@@ -36,7 +36,7 @@ const LoginForm = () => {
         setRefreshToken(res.data.response.refreshToken);
         console.log(res.data);
         console.log(res.data.response.accessToken);
-        navigate('/main');
+        navigate('/main');  
       })
       .catch((err) => {
         console.log(err);
