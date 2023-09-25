@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -9,18 +10,28 @@ import PostcodeList from './PostcodeList';
 import { FormProps } from 'types/SignUpForm';
 import axios from 'axios';
 
+import { SignUpPincode } from './SignUpPincode';
+
 const schema = yup.object().shape({
-  loginId: yup.string().required('아이디를 입력하세요.'),
-  password: yup.string().required('비밀번호를 입력하세요.'),
+  loginId: yup.string().required('아이디를 입력해주세요.'),
+  password: yup.string().required('비밀번호를 입력해주세요.'),
   passwordConfirm: yup
     .string()
     .oneOf([yup.ref('password')], '비밀번호가 다릅니다.')
     .required('비밀번호를 확인해주세요.'),
-  name: yup.string().required('이름을 입력하세요.'),
+  name: yup.string().required('이름을 입력해주세요.'),
   phone: yup.string().required(' '),
+  email: yup.string().required('이메일을 입력해주세요.'),
+  postcode: yup.string().required('주소를 선택해주세요.'),
+  zonecode: yup.string().required(' '),
+  detailPostcode: yup.string().required('상세 주소를 입력해주세요.'),
 });
 
 const SingUpForm = () => {
+  const navigate = useNavigate();
+  // 폼 데이터
+  const [formData, setFormData] = useState<FormProps>();
+
   // 휴대폰
   const [phone, setPhone] = useState(''); // 하이픈상태
   const [inputSMS, setInputSMS] = useState(false); // SMS Input View 여부
@@ -35,6 +46,7 @@ const SingUpForm = () => {
   const [validLoginId, setValidLoginId] = useState(0);
   const [numberSMS, setNumberSMS] = useState('');
   const [validPhone, setValidPhone] = useState(0);
+  const [validPin, setValidPin] = useState(0);
 
   const {
     register,
@@ -43,20 +55,37 @@ const SingUpForm = () => {
     formState: { errors },
   } = useForm<FormProps>({ resolver: yupResolver(schema) });
 
+  // 이메일 입력 확인
+  const watchedPostcode = watch('postcode');
+  const watchedZonecode = watch('zonecode');
+  const watchedDetailPostcode = watch('detailPostcode');
+
   // 아이디 인증 요청
   const watchedLoginId = watch('loginId');
   const handleRequestLoginId = () => {
     // 아이디 보내기
-    // 결과 받기 (중복 X)
+    axios
+      .get(`http://j9c211.p.ssafy.io/api/member-management/members/check?loginId=${watchedLoginId}`)
+      .then((res) => {
+        console.log(res.data.response);
+        if (res.data.response) {
+          // 결과 받기 (중복 X)
+          setValidLoginId(1);
+        } else {
+          // 결과 받기 (중복 O)
+          setValidLoginId(-1);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     console.log(watchedLoginId);
-    setValidLoginId(1);
-    // 결과 받기 (중복 O)
-    // setValidLoginId(0);
   };
   useEffect(() => {
     setValidLoginId(0);
   }, [watchedLoginId]);
 
+  // SMS 번호 받기
   const handleRequestSMS = () => {
     if (phone.length < 13) {
       // 유효하지 않은 번호
@@ -65,10 +94,19 @@ const SingUpForm = () => {
       return;
     } else if (phone.length >= 13) {
       // 전송
-      console.log('POST_휴대폰 인증 + 3분');
+      axios
+        .post(`http://j9c211.p.ssafy.io/api/auth-management/auths/sms/send`, {
+          to: extractNumbers(phone),
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       setPhoneLengthError(false);
       setInputSMS(true);
-      setCountDown(18000); // 인증 180(3분) 설정
+      setCountDown(180); // 인증 180(3분) 설정
       return;
     }
   };
@@ -77,10 +115,26 @@ const SingUpForm = () => {
     setNumberSMS(e.target.value);
   };
 
+  // SMS 번호 인증 확인
   const handleResponseSMS = () => {
     console.log(numberSMS);
-    // 확인 완료되면
-    setValidPhone(1);
+    axios
+      .post(`http://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
+        phone: extractNumbers(phone),
+        sms: numberSMS,
+      })
+      .then((res) => {
+        if (res.data.response.success) {
+          setValidPhone(1);
+        } else {
+          setValidPhone(-1);
+        }
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     return;
   };
 
@@ -106,70 +160,87 @@ const SingUpForm = () => {
     return phone.replace(/\D/g, '');
   };
 
-  const onSubmit = (data: FormProps) => {
-   
+  // 핀코드 상태
+  const [pincode, setPincode] = useState('');
+  const [simplePassword, setSimplePassword] = useState('');
+  const [viewPincode, setViewPincode] = useState(false);
+
+  const onValid = (data: FormProps) => {
     // 모든 인증 성공
-    if (validLoginId && validPhone) {
-      axios.post('https://j9c211.p.ssafy.io/api/member-management/members/join', {
-        loginId: data.loginId,
-        password: data.password,
-        email: data.email,
-        name: data.name,
-        phone: extractNumbers(data.phone),
-        address: data.postcode,
-        zipCode: data.zonecode,
-        simplePassword:'123456',
-        addressDetail: data.detailPostcode,
-      }
+    if (validLoginId === 1 && validPhone === 1) {
+      // 간편 비밀번호 설정
+      setViewPincode(true);
+      setFormData(data); // 데이터 저장
+      // 로그인 중복 확인 안함
+    } else if (validLoginId === -1 || validLoginId === 0) {
+      console.log('중복확인필요');
+      setValidLoginId(-1);
+      // 휴대폰 인증 확인 안함
+    } else if (validPhone === -1 || validPhone === 0) {
+      console.log('휴대폰 인증 필요');
+      setValidPhone(-1);
+    } else if (validPin === -1 || validPin === 0) {
+      console.log('간편비밀번호 설정 필요');
+      setValidPin(-1);
+    }
+  };
 
-    
-      ).then((res)=>{
-        console.log('회원가입 성공함')
-        console.log(res);
-      }
-      ).catch((err)=>{
-        console.log(err);
-      })
-
-
-      console.log(extractNumbers(data.phone));
-      console.log('가입성공');
-      // 아이디 중복 확인
-    } else if (validLoginId) {
-      console.log('휴대폰 인증을 해주세요.');
-      // 휴대폰 인증 확인
-    } else if (validPhone) {
-      console.log('아이디 중복을 확인해주세요.');
+  // 회원가입
+  const onSubmit = (data: FormProps) => {
+    // 간편 비밀번호가 설정되면
+    if (simplePassword !== '') {
+      axios
+        .post('https://j9c211.p.ssafy.io/api/member-management/members/join', {
+          loginId: data.loginId,
+          password: data.password,
+          email: data.email,
+          name: data.name,
+          phone: extractNumbers(data.phone),
+          address: data.postcode,
+          zipCode: data.zonecode,
+          simplePassword: simplePassword,
+          addressDetail: data.detailPostcode,
+        })
+        .then((res) => {
+          console.log('회원가입 성공함');
+          console.log(res);
+          setViewPincode(false);
+          navigate('/login');
+        })
+        .catch((err) => {
+          console.log(err);
+          setViewPincode(false);
+        });
     }
 
     const formattedData = {
       ...data,
       phone: extractNumbers(data.phone),
     };
-    console.log('로그인인증', validLoginId);
-    console.log('휴대폰인증', validPhone);
+
     console.log(formattedData);
   };
 
-  // 회원가입 axios
-  // const handleSignUp = () => {
-  //   axios.post('주소입력하기', {
-  //     loginId: loginId,
-  //     password: password,
-  //     email: email,
-  //     name: name,
-  //     phone: phone,
-  //     address: address,
-  //     zipCode: zipCode,
-  //     addressDetail: addressDetail,
-  //   });
+  // const handlePincodeSuccess = () => {
+  //   setViewPincode(false); // 핀코드 입력이 성공적으로 완료되면 모달을 닫습니다.
+  //   console.log(simplePassword);
+  //   if (formData) {
+  //     onSubmit(formData);
+  //   }
   // };
 
+  useEffect(() => {
+    if (simplePassword && formData) {
+      onSubmit(formData);
+      setSimplePassword('');
+    }
+  }, [simplePassword]);
 
   return (
     <div className=" flex flex-col justify-center items-center">
+      {viewPincode && <SignUpPincode pincode={pincode} setPincode={setPincode} setSimplePassword={setSimplePassword} />}
       <div className="text-2xl tb:text-3xl dt:text-4xl mb-5">회원가입</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 justify-center items-center">
             <Input size="lg" label="*아이디" crossOrigin="anonymous" {...register('loginId')} />
@@ -183,6 +254,7 @@ const SingUpForm = () => {
             {/* {validLoginId === 0 && <span className="text-gray-500 ">❓</span>} */}
             {validLoginId === -1 && <span className="text-red-500 ">❌</span>}
             {validLoginId === 1 && <span className="text-blue-500 ">✔</span>}
+            {validLoginId === -1 && <div className="text-red-500 ">아이디 중복 확인을 해주세요.</div>}
           </div>
           {errors.loginId && <span className="text-red-500 ">{errors.loginId.message}</span>}
           <div>
@@ -233,6 +305,7 @@ const SingUpForm = () => {
             {errors.phone && <span className="text-red-500 ">{errors.phone.message}</span>}
             {phoneLengthError && <span className="text-red-500 ">유효하지 않은 번호입니다.</span>}
             {validPhone === 1 && <span className="text-blue-500 ">인증되었습니다.</span>}
+            {validPhone === -1 && <div className="text-red-500 ">휴대폰 인증을 해주세요.</div>}
           </div>
           <div>
             {/* 이메일 */}
@@ -240,13 +313,17 @@ const SingUpForm = () => {
             {errors.email && <span className="text-red-500 ">{errors.email.message}</span>}
           </div>
           {/* 주소 */}
-          <PostcodeList register={register} />
+          <PostcodeList register={register} errors={errors} />
+          {errors.postcode && <span className="text-red-500 ">{errors.postcode.message}</span>}
+          {errors.zonecode && <span className="text-red-500 ">{errors.zonecode.message}</span>}
+          {errors.detailPostcode && <span className="text-red-500 ">{errors.detailPostcode.message}</span>}
+          {/* {(watchedDetailPostcode === '' || watchedZonecode === '' || watchedPostcode === '') && (
+            <div className="text-red-500">주소를 입력해주세요.</div>
+          )} */}
         </div>
         <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
           회원가입
         </Button>
-        {validLoginId === -1 && <div className="text-red-500 ">아이디 중복 확인을 해주세요.</div>}
-        {validPhone === 1 && <div className="text-red-500 ">휴대폰 인증을 해주세요.</div>}
       </form>
     </div>
   );
