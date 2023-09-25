@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.transaction.entity;
 
+import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,8 @@ public class ReceiptList {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "receipt_id")
     private Receipt receipt;
+
+    private String name;
 
     private String category;
 

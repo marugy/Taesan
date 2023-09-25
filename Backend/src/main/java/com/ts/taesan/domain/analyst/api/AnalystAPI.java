@@ -2,16 +2,14 @@ package com.ts.taesan.domain.analyst.api;
 
 import com.ts.taesan.domain.analyst.api.dto.request.PlaceAnalystRequest;
 import com.ts.taesan.domain.analyst.api.dto.request.ReceiptAnalystRequest;
+import com.ts.taesan.domain.analyst.service.dto.AnalystService;
 import com.ts.taesan.domain.analyst.service.dto.response.Info;
 import com.ts.taesan.domain.analyst.service.dto.response.PlaceAnalystResponse;
 import com.ts.taesan.domain.analyst.service.dto.response.ReceiptAnalystResponse;
 import com.ts.taesan.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,30 +23,16 @@ import static com.ts.taesan.global.api.ApiResponse.OK;
 @RequestMapping("/api/analyst-management/analysts")
 public class AnalystAPI {
 
-    @PostMapping("/place")
-    public ApiResponse<PlaceAnalystResponse> analyzePlace(@RequestBody PlaceAnalystRequest request) {
-        List<Info> infos = new ArrayList<>();
-        infos.add(new Info("1", "교통", Long.parseLong("10000")));
-        infos.add(new Info("2", "카페", Long.parseLong("30000")));
-
-        PlaceAnalystResponse placeAnalystResponse = new PlaceAnalystResponse();
-        placeAnalystResponse.setInfos(infos);
-        placeAnalystResponse.setYear("2023");
-        placeAnalystResponse.setMonth("9");
-
-        return OK(placeAnalystResponse);
+    private final AnalystService analystService;
+    @PostMapping("/place/{cardId}")
+    public ApiResponse<PlaceAnalystResponse> analyzePlace(@RequestBody PlaceAnalystRequest request, @PathVariable Long cardId) {
+        PlaceAnalystResponse result = analystService.placeAnlystResponse(cardId, request.getYear(), request.getMonth());
+        return OK(result);
     }
 
     @PostMapping("/receipt")
-    public ApiResponse<ReceiptAnalystResponse> analyzePlace(@RequestBody ReceiptAnalystRequest request) {
-        List<Info> infos = new ArrayList<>();
-        infos.add(new Info("1", "과일/야채", Long.parseLong("10000")));
-        infos.add(new Info("2", "즉석식품", Long.parseLong("30000")));
-        ReceiptAnalystResponse response = new ReceiptAnalystResponse();
-        response.setInfos(infos);
-        response.setYear("2023");
-        response.setMonth("9");
-        return OK(response);
+    public ApiResponse<ReceiptAnalystResponse> analyzePlace(@RequestBody ReceiptAnalystRequest request, @PathVariable Long cardId) {
+        ReceiptAnalystResponse result = analystService.receiptAnalystResponse(cardId, request.getYear(), request.getMonth());
+        return OK(result);
     }
-
 }

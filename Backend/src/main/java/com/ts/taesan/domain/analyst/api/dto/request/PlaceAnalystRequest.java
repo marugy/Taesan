@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlaceAnalystRequest {
 
-//    @JsonProperty("year")
-
-    String strYearMonth;
-
+    String year;
+    String month;
 }

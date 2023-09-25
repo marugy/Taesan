@@ -21,6 +21,10 @@ public class Transaction {
 
     @NotNull
     private Long approvedId;
+
+    @NotNull
+    private String cardHistoryId;
+
     @NotNull
     private LocalDateTime dateTime;
 
