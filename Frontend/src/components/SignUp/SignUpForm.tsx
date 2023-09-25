@@ -10,6 +10,8 @@ import PostcodeList from './PostcodeList';
 import { FormProps } from 'types/SignUpForm';
 import axios from 'axios';
 
+import { Toast } from 'components/Common/Toast';
+
 import { SignUpPincode } from './SignUpPincode';
 
 const schema = yup.object().shape({
@@ -58,11 +60,14 @@ const SingUpForm = () => {
   // 아이디 인증 요청
   const watchedLoginId = watch('loginId');
   const handleRequestLoginId = () => {
+    if (!watchedLoginId) {
+      setValidLoginId(-1);
+      return;
+    }
     // 아이디 보내기
     axios
       .get(`https://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
       .then((res) => {
-        console.log(res.data.response);
         if (res.data.response) {
           // 결과 받기 (중복 X)
           setValidLoginId(1);
@@ -74,11 +79,10 @@ const SingUpForm = () => {
       .catch((err) => {
         console.log(err);
       });
-    console.log(watchedLoginId);
   };
-  useEffect(() => {
-    setValidLoginId(0);
-  }, [watchedLoginId]);
+  // useEffect(() => {
+  //   setValidLoginId(0);
+  // }, [watchedLoginId]);
 
   // SMS 번호 받기
   const handleRequestSMS = () => {
@@ -100,9 +104,9 @@ const SingUpForm = () => {
           console.log(typeof extractNumbers(phone));
           console.log(err);
         });
-      setPhoneLengthError(false);
       setInputSMS(true);
-      setCountDown(180); // 인증 180(3분) 설정
+      setPhoneLengthError(false);
+      setCountDown(10); // 인증 180(3분) 설정
       return;
     }
   };
@@ -111,19 +115,23 @@ const SingUpForm = () => {
     setNumberSMS(e.target.value);
   };
 
+  const [errorSMS, setErrorSMS] = useState('');
+
   // SMS 번호 인증 확인
   const handleResponseSMS = () => {
-    console.log(numberSMS);
     axios
       .post(`https://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
         phone: extractNumbers(phone),
         sms: numberSMS,
       })
       .then((res) => {
-        if (res.data.success) {
+        console.log(res);
+        if (res.data.response) {
           setValidPhone(1);
+          setErrorSMS('');
         } else {
-          setValidPhone(-1);
+          setValidPhone(0);
+          setErrorSMS('잘못된 인증번호입니다.');
         }
       })
       .catch((err) => {
@@ -197,9 +205,11 @@ const SingUpForm = () => {
           addressDetail: data.detailPostcode,
         })
         .then((res) => {
-          console.log('회원가입 성공함');
-          console.log(res);
-          setViewPincode(false);
+          Toast.fire({
+            icon: 'success',
+            title: '회원가입 완료',
+          });
+          setViewPincode(false); // 핀코드 닫기
           navigate('/');
         })
         .catch((err) => {
@@ -230,18 +240,34 @@ const SingUpForm = () => {
       <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 justify-center items-center">
-            <Input size="lg" label="*아이디" crossOrigin="anonymous" {...register('loginId')} />
-            <Button
-              type="button"
-              className="bg-[#0067AC] h-10 w-36 flex items-center justify-center flex-col"
-              onClick={handleRequestLoginId}
-            >
-              중복 확인
-            </Button>
+            <Input
+              size="lg"
+              label="*아이디"
+              crossOrigin="anonymous"
+              disabled={validLoginId === 1}
+              {...register('loginId')}
+            />
+            {(validLoginId === -1 || validLoginId === 0) && (
+              <Button
+                type="button"
+                className="bg-[#0067AC] h-10 w-36 flex items-center justify-center flex-col"
+                onClick={handleRequestLoginId}
+              >
+                중복 확인
+              </Button>
+            )}
+            {validLoginId === 1 && (
+              <Button
+                type="button"
+                className="bg-[#0067AC] h-10 w-36 flex items-center justify-center flex-col"
+                onClick={() => setValidLoginId(0)}
+              >
+                다시 쓰기
+              </Button>
+            )}
             {/* {validLoginId === 0 && <span className="text-gray-500 ">❓</span>} */}
             {validLoginId === -1 && <span className="text-red-500 ">❌</span>}
-            {validLoginId === 1 && <span className="text-blue-500 ">✔</span>}
-            {validLoginId === -1 && <div className="text-red-500 ">아이디 중복 확인을 해주세요.</div>}
+            {watchedLoginId && validLoginId === 1 && <span className="text-blue-500 ">✔</span>}
           </div>
           {errors.loginId && <span className="text-red-500 ">{errors.loginId.message}</span>}
           <div>
@@ -272,12 +298,12 @@ const SingUpForm = () => {
               onChange={onPhoneChange}
               disabled={countDown > 0}
             />
-            {!inputSMS && (
+            {!inputSMS && validPhone !== 1 && (
               <Button type="button" className="bg-[#0067AC] h-10 w-36 mt-1" onClick={handleRequestSMS}>
                 인증번호 전송
               </Button>
             )}
-            {inputSMS && (
+            {inputSMS && validPhone !== 1 && (
               <div className="flex gap-1 mt-1">
                 <Input className="" label="*인증번호" crossOrigin="anonymous" onChange={onChangeSMS} />
                 <Button
@@ -293,6 +319,7 @@ const SingUpForm = () => {
             {phoneLengthError && <span className="text-red-500 ">유효하지 않은 번호입니다.</span>}
             {validPhone === 1 && <span className="text-blue-500 ">인증되었습니다.</span>}
             {validPhone === -1 && <div className="text-red-500 ">휴대폰 인증을 해주세요.</div>}
+            {errorSMS && <span className="text-red-500">{errorSMS}</span>}
           </div>
           <div>
             {/* 이메일 */}

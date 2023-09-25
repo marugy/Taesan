@@ -30,7 +30,7 @@ const PasswordForm = ({ form, setForm }: Props) => {
     } else if (form.newPassword === '' || form.newPassword === form.newPasswordConfirm) {
       setPasswordValid('');
     }
-    if (form.newPassword === form.password) {
+    if (form.password && form.newPassword === form.password) {
       setPasswordValid('다른 비밀번호를 입력해주세요.');
     }
   }, [form.newPassword, form.newPasswordConfirm, form.password]);
