@@ -16,9 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Arrays;
 
 @Configuration
-//@EnableSwagger2
-@EnableWebMvc
-public class SwaggerConfig extends WebMvcConfigurationSupport {
+@EnableSwagger2
+public class SwaggerConfig {
     //    @Bean
 //    public Docket api() {
 //        return new Docket(DocumentationType.OAS_30)
