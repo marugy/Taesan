@@ -65,7 +65,7 @@ const SingUpForm = () => {
   const handleRequestLoginId = () => {
     // 아이디 보내기
     axios
-      .get(`http://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
+      .get(`https://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
       .then((res) => {
         console.log(res.data.response);
         if (res.data.response) {
@@ -95,13 +95,14 @@ const SingUpForm = () => {
     } else if (phone.length >= 13) {
       // 전송
       axios
-        .post(`http://j9c211.p.ssafy.io/api/auth-management/auths/sms/send`, {
+        .post(`https://j9c211.p.ssafy.io/api/auth-management/auths/sms/send`, {
           to: extractNumbers(phone),
         })
         .then((res) => {
           console.log(res.data);
         })
         .catch((err) => {
+          console.log(typeof extractNumbers(phone));
           console.log(err);
         });
       setPhoneLengthError(false);
@@ -119,7 +120,7 @@ const SingUpForm = () => {
   const handleResponseSMS = () => {
     console.log(numberSMS);
     axios
-      .post(`http://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
+      .post(`https://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
         phone: extractNumbers(phone),
         sms: numberSMS,
       })
