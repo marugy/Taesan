@@ -79,6 +79,8 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
+    //openfeign 추가
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.8'
     runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
