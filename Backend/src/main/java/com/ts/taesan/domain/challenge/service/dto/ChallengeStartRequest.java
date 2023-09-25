@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -21,12 +22,14 @@ public class ChallengeStartRequest {
     private Date period;
     private Long price;
     private Member member;
+    private String uuid;
 
     public ChallengeStartRequest(Member member, ChallengeMakeRequest challengeMakeRequest) {
         this.title = challengeMakeRequest.getTitle();
         this.period = new Date(new Date().getTime() + challengeMakeRequest.getPeriod() * 1000 * 60 * 60 * 24);
         this.price = challengeMakeRequest.getPrice();
         this.member = member;
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public Challenge toEntity() {
@@ -35,6 +38,7 @@ public class ChallengeStartRequest {
                 .member(this.member)
                 .period(this.period)
                 .price(this.price)
+                .uuid(this.uuid)
                 .build();
     }
 }

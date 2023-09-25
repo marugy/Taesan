@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,4 +16,6 @@ public class ChallengeInfoResponse {
     private Long price;
 
     private Date period;
+
+    private String uuid;
 }

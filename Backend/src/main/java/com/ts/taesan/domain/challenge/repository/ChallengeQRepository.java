@@ -55,7 +55,8 @@ public class ChallengeQRepository {
                 .select(Projections.constructor(ChallengeInfoResponse.class,
                         challenge.title,
                         challenge.price,
-                        challenge.period
+                        challenge.period,
+                        challenge.uuid
                 ))
                 .from(challenge)
                 .where(challenge.id.eq(challengeId))

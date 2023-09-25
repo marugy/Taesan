@@ -1,9 +1,11 @@
 package com.ts.taesan.domain.challenge.api;
 
 import com.ts.taesan.domain.challenge.dto.reqeust.ChallengeMakeRequest;
+import com.ts.taesan.domain.challenge.dto.reqeust.ParticipateRequest;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeDetailResponse;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeResponse;
+import com.ts.taesan.domain.challenge.entity.Challenge;
 import com.ts.taesan.domain.challenge.service.ChallengeQService;
 import com.ts.taesan.domain.challenge.service.ChallengeService;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeStartRequest;
@@ -67,5 +69,30 @@ public class ChallengeApi {
     public ApiResponse<ChallengeDetailResponse> getChallenge(@PathVariable(value = "id") Long challengeId) {
         ChallengeDetailResponse challengeDetailResponse = challengeQService.getChallengeDetail(challengeId);
         return OK(challengeDetailResponse);
+    }
+
+    @ApiOperation(value = "코드로 챌린지 참가", notes = "uuid로 해당 챌린지 참여 API")
+    @PostMapping("/join")
+    public ApiResponse<?> participate(@AuthenticationPrincipal User user, @RequestBody ParticipateRequest participateRequest) {
+        Long memberId = Long.parseLong(user.getUsername());
+        Member member = memberService.findById(memberId);
+        challengeService.participate(member, participateRequest);
+        return OK(null);
+    }
+
+    @ApiOperation(value = "챌린지에서 나가기", notes = "챌린지 id로 챌린지에서 나가기 API")
+    @PostMapping("/{id}/exit")
+    public ApiResponse<?> exitChallenge(@AuthenticationPrincipal User user, @PathVariable(name = "id") Long challengeId) {
+        Long memberId = Long.parseLong(user.getUsername());
+        Member member = memberService.findById(memberId);
+        challengeService.exit(member, challengeId);
+        return OK(null);
+    }
+
+    @ApiOperation(value = "챌린지 시작하기", notes = "챌린지 id로 챌린지 시작하기 API")
+    @PostMapping("/{id}/start")
+    public ApiResponse<?> startChallenge(@PathVariable(name = "id") Long challengeId) {
+        challengeService.startChallenge(challengeId);
+        return OK(null);
     }
 }

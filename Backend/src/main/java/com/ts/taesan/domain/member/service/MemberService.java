@@ -145,4 +145,18 @@ public class MemberService {
         Member findMember = memberRepository.findById(id).get();
         memberRepository.delete(findMember);
     }
+
+    public Boolean checkPassword(Long memberId, String password) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        if (member.getPassword().equals(password)) {
+            return true;
+        } else return false;
+    }
+
+    public Boolean checkSImplePassword(Long memberId, String simplePassword) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        if (member.getSimplePassword().equals(simplePassword)) {
+            return true;
+        } else return false;
+    }
 }

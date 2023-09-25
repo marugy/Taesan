@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -20,12 +21,15 @@ public class ChallengeDetailResponse {
 
     private Date period;
 
+    private String uuid;
+
     private List<ParticipantResponse> participants;
 
     public ChallengeDetailResponse(ChallengeInfoResponse challengeInfoResponse, List<ParticipantResponse> participants) {
         this.title = challengeInfoResponse.getTitle();
         this.price = challengeInfoResponse.getPrice();
         this.period = challengeInfoResponse.getPeriod();
+        this.uuid = challengeInfoResponse.getUuid();
         this.participants = participants;
     }
 }

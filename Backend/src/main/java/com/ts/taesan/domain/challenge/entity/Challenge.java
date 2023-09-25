@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -28,4 +29,9 @@ public class Challenge extends BaseEntity {
     private Date period;
     private Long price;
     private int state; // 0이면 모집중, 1이면 진행중, 2면 종료
+    private String uuid;
+
+    public void start() {
+        this.state = 1;
+    }
 }
