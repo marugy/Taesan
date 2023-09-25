@@ -5,17 +5,23 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBack from 'components/Common/ArrowBack';
 
 const MAX_LENGTH = 6;
 
-export const Pincode = () => {
-  // 저장된 PinCode 값
+interface Props {
+  pincode: string;
+  setPincode: (value: string) => void;
+  setSimplePassword: (value: string) => void;
+}
+
+export const SignUpPincode = ({ pincode, setPincode, setSimplePassword }: Props) => {
+  // 현재 턴 (1: 입력, 2: 확인)
+  const [turn, setTurn] = useState(1);
 
   // 입력한 PinCode 값
   const [stack, setStack] = useState<string[]>([]);
-  console.log(stack);
 
   // 숫자 입력
   const handlePushPin = (pin: string) => {
@@ -29,9 +35,43 @@ export const Pincode = () => {
     setStack(stack.slice(0, -1));
   };
 
+  useEffect(() => {
+    // 핀코드가 MAX_LENGTH에 도달했는지 확인
+    if (stack.length === MAX_LENGTH) {
+      switch (turn) {
+        case 1: // 첫 번째 턴에서는 핀코드 설정
+          setPincode(stack.join(''));
+          setTurn(2); // 다음 턴으로 이동
+          setStack([]); // 입력 스택 초기화
+          break;
+
+        case 2: // 두 번째 턴에서는 핀코드 재입력 확인
+          // 입력한 핀코드와 재입력한 핀코드가 일치하는지 확인
+          if (pincode === stack.join('')) {
+            setSimplePassword(pincode); // 간편 비밀번호 설정
+          } else {
+            alert('핀코드가 일치하지 않습니다.'); // 경고 메시지 표시
+            setTurn(1); // 첫 번째 턴으로 되돌아감
+            setStack([]); // 입력 스택 초기화
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+  }, [stack, pincode, turn]);
+
   return (
-    <div className="flex-col">
-      <div className="text-main flex justify-center mt-10 text-2xl tb:text-3xl dt:text-4xl font-bold">암호 입력</div>
+    <div className="fixed z-50 flex-col bg-back">
+      {turn === 1 && (
+        <div className="text-main flex justify-center mt-10 text-2xl tb:text-3xl dt:text-4xl font-bold">암호 입력</div>
+      )}
+      {turn === 2 && (
+        <div className="text-main flex justify-center mt-10 text-2xl tb:text-3xl dt:text-4xl font-bold">
+          암호 재입력
+        </div>
+      )}
       <div className="flex justify-center space-x-5 text-main my-16 ">
         {Array.from({ length: MAX_LENGTH }).map((_, index) => {
           if (index < stack.length) {
