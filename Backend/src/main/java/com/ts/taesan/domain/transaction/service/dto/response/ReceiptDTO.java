@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class Receipt {
-    String productName;
-    Integer count;
-    Long price;
+public class ReceiptDTO {
+    private String productName;
+    private Integer count;
+    private Long price;
+    private String category;
 }

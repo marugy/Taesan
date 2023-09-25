@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.ifbuy.dto.request;
+package com.ts.taesan.domain.ifbuy.api.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,5 +13,4 @@ public class IfbuyRegisterRequest {
 
     String name;
     String price;
-    MultipartFile img;
 }

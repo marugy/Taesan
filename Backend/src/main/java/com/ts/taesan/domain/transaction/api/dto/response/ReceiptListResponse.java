@@ -1,6 +1,6 @@
 package com.ts.taesan.domain.transaction.api.dto.response;
 
-import com.ts.taesan.domain.transaction.service.dto.response.Receipt;
+import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReceiptListResponse {
     Long sumPrice;
-    List<Receipt> receipts;
+    List<ReceiptDTO> receipts;
 }

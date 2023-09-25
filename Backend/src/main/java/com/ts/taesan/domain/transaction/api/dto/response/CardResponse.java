@@ -1,7 +1,7 @@
 package com.ts.taesan.domain.transaction.api.dto.response;
 
 import com.ts.taesan.domain.transaction.service.dto.response.Card;
-import com.ts.taesan.domain.transaction.service.dto.response.Transaction;
+import com.ts.taesan.domain.transaction.service.dto.response.TransactionDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,5 +15,5 @@ import java.util.List;
 public class CardResponse {
     Long sumPrice;
     Card card;
-    List<Transaction> transactions;
+    List<TransactionDTO> transactionDTOS;
 }

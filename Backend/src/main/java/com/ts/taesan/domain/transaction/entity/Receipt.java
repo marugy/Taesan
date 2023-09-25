@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.transaction.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,4 +36,13 @@ public class Receipt {
 
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
     private List<ReceiptList> products;
+
+    @Builder
+    public Receipt(Long id, Transaction transaction, String shopName, LocalDateTime transactionDate, List<ReceiptList> products) {
+        this.id = id;
+        this.transaction = transaction;
+        this.shopName = shopName;
+        this.transactionDate = transactionDate;
+        this.products = products;
+    }
 }

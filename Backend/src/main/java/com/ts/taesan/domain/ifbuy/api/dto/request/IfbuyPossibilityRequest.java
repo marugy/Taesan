@@ -1,21 +1,17 @@
-package com.ts.taesan.domain.ifbuy.dto.response;
+package com.ts.taesan.domain.ifbuy.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class IfbuyRegisterResponse {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class IfbuyPossibilityRequest {
 
     @JsonProperty("price")
     Long price;
-
-    @JsonProperty("saved_money")
-    Long savedMoney;
 
 }
