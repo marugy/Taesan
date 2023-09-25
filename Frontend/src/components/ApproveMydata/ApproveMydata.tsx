@@ -41,7 +41,7 @@ const ApproveMydata = () => {
         <div className="font-main">
             <ArrowBack pageName="마이데이터 가입하기" />
             <div className="font-main font-semibold text-2xl mt-10 mx-3">
-                태산에 가입하시면
+                태산(泰山)에 가입하시면
                 마이데이터와 <br/> 오픈뱅킹의  통합자산관리를 <br/> 이용하실 수 있습니다.                
             </div>
             <div>
