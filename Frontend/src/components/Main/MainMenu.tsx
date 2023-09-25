@@ -5,7 +5,7 @@ const MainMenu = () => {
   const navigate = useNavigate();
   return (
     // Grid로 2행 2열로 4개의 버튼이 들어갈 곳을 4개의 div로 각각 배치.
-    <div className="grid grid-cols-2 grid-rows-2 text-center gap-4 mx-8 h-[30vh] dt:h-[40vh] dt:w-[40vh] mt-3 sh">
+    <div className="grid grid-cols-2 grid-rows-2 text-center gap-4 dt:gap-7 x-8 h-[40vh] dt:h-[43vh] w-[80vw] dt:w-[57vh] mt-3 aspect-square">
       <div>
         <div
           onClick={() => {
@@ -14,9 +14,9 @@ const MainMenu = () => {
           className="w-full h-full bg-pink-500 p-1  text-center rounded-2xl shadow-xl"
         >
           <div>
-            <img src="/Main/샀다치고.png" className="h-24 mx-auto" />
+            <img src="/Main/샀다치고.png" className="h-[13vh] mx-auto" />
           </div>
-          <div className="text-white text-lg font-medium">샀다 치고</div>
+          <div className="text-white text-lg font-semibold font-main">샀다 치고</div>
         </div>
       </div>
       <div>
@@ -25,9 +25,9 @@ const MainMenu = () => {
           className="w-full h-full p-1 text-center bg-blue-400 rounded-2xl shadow-xl"
         >
           <div>
-            <img src="/Main/습관저금통.png" className="h-24 mx-auto" />
+            <img src="/Main/습관저금통.png" className="h-[13vh] mx-auto" />
           </div>
-          <div className="text-white text-lg font-medium ">습관 저금통</div>
+          <div className="text-white text-lg font-semibold font-main">습관 저금통</div>
         </div>
       </div>
       <div>
@@ -36,9 +36,9 @@ const MainMenu = () => {
           className="w-full h-full p-1 text-center bg-cyan-300 rounded-2xl shadow-xl"
         >
           <div>
-            <img src="/Main/절약챌린지.png" className="h-24 mx-auto" />
+            <img src="/Main/절약챌린지.png" className="h-[13vh] mx-auto" />
           </div>
-          <div className="text-white text-lg font-medium">절약 챌린지</div>
+          <div className="text-white text-lg font-semibold font-main">절약 챌린지</div>
         </div>
       </div>
       <div>
@@ -47,9 +47,9 @@ const MainMenu = () => {
           className="w-full h-full p-1 text-center bg-deep-purple-500 rounded-2xl shadow-xl"
         >
           <div>
-            <img src="/Main/소비패턴.png" className="h-24 mx-auto" />
+            <img src="/Main/소비패턴.png" className="h-[13vh] mx-auto" />
           </div>
-          <div className="text-white text-lg font-medium ">내 소비 패턴</div>
+          <div className="text-white text-lg font-semibold font-main ">내 소비 패턴</div>
         </div>
       </div>
     </div>
