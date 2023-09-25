@@ -6,6 +6,7 @@ import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountTransactionList;
 import com.taesan.mydata.domain.bank.api.dto.request.*;
 import com.taesan.mydata.domain.bank.api.dto.response.*;
+import com.taesan.mydata.domain.bank.service.AccountQueryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,8 @@ import java.util.List;
 @RequestMapping("/mydata/account-management/accounts")
 public class AccountApi {
 
+    private final AccountQueryService accountQueryService;
+
     @GetMapping
     public ResponseEntity<AccountListResponse> getAccountList(
             @AuthenticationPrincipal User user,
@@ -37,11 +40,8 @@ public class AccountApi {
         log.info("{}", user.getUsername());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountListResponse ret = new AccountListResponse();
-        List<AccountList> list = new ArrayList<>();
-        list.add(new AccountList());
-        ret.setAccountList(list);
-        return new ResponseEntity<>(ret, headers, HttpStatus.OK);
+        AccountListResponse response = accountQueryService.findAccountListById(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @PostMapping("/deposit/basic")

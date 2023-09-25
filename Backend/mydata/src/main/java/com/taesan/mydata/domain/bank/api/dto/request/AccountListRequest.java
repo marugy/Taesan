@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
@@ -16,15 +17,15 @@ public class AccountListRequest {
     @NotBlank
     String org_code;
 
-    @NotBlank
+    @NotNull
     @Positive
-    String search_timestamp;
+    long search_timestamp;
 
-    String next_page;
+    long next_page;
 
-    @NotBlank
+    @NotNull
     @Max(500)
     @Positive
-    String limit;
+    int limit;
 
 }
