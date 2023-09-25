@@ -8,14 +8,14 @@ import { useUserStore } from 'store/UserStore';
 const MyPage = () => {
   const { name } = useUserStore();
   return (
-    <div className='flex flex-col'>
-    <ArrowBack pageName='내 정보'/>
-    <div className="flex-col justify-center mx-10 mt-7">
-      <MyInfo name={name}/>
-      <MyPageList />
-      <div className='h-[80px]'></div>
-      <BottomNav/>
-    </div>
+    <div className="flex flex-col">
+      <ArrowBack pageName="내 정보" />
+      <div className="flex-col justify-center mx-10 mt-7">
+        <MyInfo name={name} />
+        <MyPageList />
+        <div className="h-[80px]"></div>
+        <BottomNav />
+      </div>
     </div>
   );
 };

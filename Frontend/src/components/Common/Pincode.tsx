@@ -4,18 +4,23 @@ import { IconButton } from '@material-tailwind/react';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
-import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBack from 'components/Common/ArrowBack';
+
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
 
 const MAX_LENGTH = 6;
 
-export const Pincode = () => {
-  // 저장된 PinCode 값
+export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) => {
+  const { accessToken, refreshToken } = useUserStore();
+
+  const [simplePassword, setSimplePassword] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   // 입력한 PinCode 값
   const [stack, setStack] = useState<string[]>([]);
-  console.log(stack);
 
   // 숫자 입력
   const handlePushPin = (pin: string) => {
@@ -29,129 +34,150 @@ export const Pincode = () => {
     setStack(stack.slice(0, -1));
   };
 
+  // 숫자 초기화
+  const handleReset = () => {
+    setStack([]);
+  };
+
+  const handleConfirmPincode = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/auth-management/auths/simple-password/check',
+        {
+          simplePassword: simplePassword,
+        },
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          onCorrectPincode(); // onPincode는 상위 컴포넌트로 핀코드 뷰를 닫는 함수가 있어야 함
+        } else {
+          setErrorMessage('잘못된 입력입니다.');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    // 핀코드가 MAX_LENGTH에 도달했는지 확인
+    if (stack.length === MAX_LENGTH) {
+      handleConfirmPincode();
+      setStack([]); // 입력 스택 초기화
+      setErrorMessage('');
+    }
+  }, [stack]);
+
   return (
-    <div className="flex-col">
-      <div className="text-main flex justify-center mt-10 text-2xl tb:text-3xl dt:text-4xl font-bold">암호 입력</div>
-      <div className="flex justify-center space-x-5 text-main my-16 ">
+    <div
+      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-50 flex-col bg-back ${
+        errorMessage ? 'animate-shake' : ''
+      }`}
+    >
+      <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
+        암호 입력
+      </div>
+
+      <div className="flex justify-center space-x-5 text-[#0067AC] mb-5  ">
         {Array.from({ length: MAX_LENGTH }).map((_, index) => {
           if (index < stack.length) {
-            return (
-              <RadioButtonCheckedOutlinedIcon
-                sx={{
-                  fontSize: {
-                    xs: '30px', // 모바일
-                    md: '40px', // 태블릿
-                    lg: '50px', // 데스크톱
-                  },
-                }}
-              />
-            );
+            return <RadioButtonCheckedOutlinedIcon />;
           }
-          return (
-            <RadioButtonUncheckedOutlinedIcon
-              sx={{
-                fontSize: {
-                  xs: '20px', // 모바일
-                  md: '30px', // 태블릿
-                  lg: '40px', // 데스크톱
-                },
-              }}
-            />
-          );
+          return <RadioButtonUncheckedOutlinedIcon />;
         })}
       </div>
-      <div className="flex flex-col mb-16 ">
-        <div className="space-x-5 m-1 flex justify-end">
+      {errorMessage && <div className="text-red-500 text-2xl mb-5">{errorMessage}</div>}
+      <div className="flex flex-col mb-8 ">
+        <div className="space-x-1 m-1 flex justify-center">
           <Button
-            variant="outlined"
-            className="text-4xl tb:text-3xl dt:text-xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('1')}
           >
-            1
+            <img src="/Pincode/one.svg" alt="one" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('2')}
           >
-            2
+            <img src="/Pincode/two.svg" alt="two" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('3')}
           >
-            3
+            <img src="/Pincode/three.svg" alt="three" />
           </Button>
         </div>
-        <div className="space-x-5  m-1 flex justify-end">
+        <div className="space-x-1 m-1 flex justify-center">
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('4')}
           >
-            4
+            <img src="/Pincode/four.svg" alt="four" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('5')}
           >
-            5
+            <img src="/Pincode/five.svg" alt="five" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('6')}
           >
-            6
+            <img src="/Pincode/six.svg" alt="six" />
           </Button>
         </div>
-        <div className="space-x-5 m-1  flex justify-end">
+        <div className="space-x-1 m-1 flex justify-center">
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('7')}
           >
-            7
+            <img src="/Pincode/seven.svg" alt="seven" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('8')}
           >
-            8
+            <img src="/Pincode/eight.svg" alt="eight" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
             onClick={() => handlePushPin('9')}
           >
-            9
+            <img src="/Pincode/nine.svg" alt="nine" />
           </Button>
         </div>
-        <div className="space-x-5 m-1  flex justify-end">
-          <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC]"
-            onClick={() => handlePushPin('0')}
-          >
-            0
+
+        <div className="space-x-1 m-1 flex justify-center">
+          <Button variant="text" className="flex justify-center items-center rounded-full w-32" onClick={handleReset}>
+            <img src="/Pincode/reload.svg" alt="reload" />
           </Button>
           <Button
-            variant="outlined"
-            className="text-5xl tb:text-6xl dt:text-7xl rounded-full text-main border-[#0067AC] flex items-center"
-            onClick={handlePopPin}
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('0')}
           >
-            <BackspaceOutlinedIcon
-              sx={{
-                fontSize: {
-                  xs: '30px', // 모바일
-                  md: '40px', // 태블릿
-                  lg: '50px', // 데스크톱
-                },
-              }}
-            />
+            <img src="/Pincode/zero.svg" alt="zero" />
+          </Button>
+          <Button variant="text" className="flex justify-center items-center rounded-full w-32" onClick={handlePopPin}>
+            <img src="/Pincode/delete.svg" alt="delete" />
           </Button>
         </div>
       </div>
