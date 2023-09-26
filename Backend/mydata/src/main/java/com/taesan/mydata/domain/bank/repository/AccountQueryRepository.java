@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountInfo;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountListResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,22 @@ public class AccountQueryRepository {
                         account.memberCi.eq(memberCi).and(cursorId(cursor))
                 )
                 .limit(limit)
+                .fetch();
+    }
+
+    public List<AccountInfo> findAccountInfoByAccountNum(String accountNum) {
+        return queryFactory
+                .select(Projections.constructor(AccountInfo.class,
+//                        account.currencyCode.as("currency_code"),
+                        account.savingMethod.as("saving_method"),
+                        Expressions.asString("예금주 이름1").as("holder_name"),
+                        account.issueDate.as("issue_date")
+//                        account.expDate.as("exp_date")
+                ))
+                .from(account)
+                .where(
+                        account.accountNum.eq(accountNum)
+                )
                 .fetch();
     }
 

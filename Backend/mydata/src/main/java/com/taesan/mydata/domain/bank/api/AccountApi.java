@@ -40,13 +40,13 @@ public class AccountApi {
         log.info("{}", user.getUsername());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountListResponse response = accountQueryService.findAccountListById(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
+        AccountListResponse response = accountQueryService.findAccountList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @PostMapping("/deposit/basic")
     public ResponseEntity<AccountInfoResponse> getAccountInfo(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @AuthenticationPrincipal User user,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @Valid @RequestBody AccountInfoRequest accountInfoRequest)
@@ -54,11 +54,8 @@ public class AccountApi {
         log.info("{}", accountInfoRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountInfoResponse ret = new AccountInfoResponse();
-        List<AccountInfo> list = new ArrayList<>();
-        list.add(new AccountInfo());
-        ret.setBasicList(list);
-        return new ResponseEntity<>(ret, headers, HttpStatus.OK);
+        AccountInfoResponse response = accountQueryService.findAccountInfo(accountInfoRequest.getAccountNum());
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @PostMapping("/deposit/detail")

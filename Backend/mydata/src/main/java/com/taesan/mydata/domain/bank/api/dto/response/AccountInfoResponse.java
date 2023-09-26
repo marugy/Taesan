@@ -2,10 +2,13 @@ package com.taesan.mydata.domain.bank.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountInfo;
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -20,18 +23,21 @@ public class AccountInfoResponse {
     private String rspMsg;
 
     @JsonProperty("search_timestamp")
-    private String searchTimestamp;
+    private long searchTimestamp;
 
     @JsonProperty("basic_cnt")
-    private String basicCnt;
-
-    @JsonProperty("next_page")
-    private String nextPage;
-
-    @JsonProperty("account_cnt")
-    private String accountCnt;
+    private int basicCnt;
 
     @JsonProperty("basic_list")
     private List<AccountInfo> basicList;
+
+    @Builder
+    public AccountInfoResponse(List<AccountInfo> basicList) {
+        this.rspCode = "200";
+        this.rspMsg = "조회 성공";
+        this.searchTimestamp = new Date().getTime();
+        this.basicCnt = basicList.size();
+        this.basicList = basicList;
+    }
 
 }
