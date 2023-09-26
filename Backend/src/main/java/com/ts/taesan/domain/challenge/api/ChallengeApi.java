@@ -2,10 +2,7 @@ package com.ts.taesan.domain.challenge.api;
 
 import com.ts.taesan.domain.challenge.dto.reqeust.ChallengeMakeRequest;
 import com.ts.taesan.domain.challenge.dto.reqeust.ParticipateRequest;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeProgressDetailResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeRecruitDetailResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeResponse;
+import com.ts.taesan.domain.challenge.dto.response.*;
 import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
 import com.ts.taesan.domain.challenge.service.ChallengeQService;
 import com.ts.taesan.domain.challenge.service.ChallengeService;
@@ -63,6 +60,15 @@ public class ChallengeApi {
         Long memberId = Long.parseLong(user.getUsername());
         List<ChallengeResponse> challengeResponses = challengeQService.getEndChallenges(memberId);
         return OK(challengeResponses);
+    }
+
+    @ApiOperation(value = "종료 챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 종료된 챌린지 상세 조회 API")
+    @GetMapping("/expired/{id}")
+    public ApiResponse<ChallengeExpiredDetailResponse> getExpiredChallenge(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long challengeId) {
+        Long memberId = Long.parseLong(user.getUsername());
+        Member member = memberService.findById(memberId);
+        ChallengeExpiredDetailResponse challengeExpiredDetailResponse = challengeQService.getExpiredChallengeDetail(member, challengeId);
+        return OK(challengeExpiredDetailResponse);
     }
 
     @ApiOperation(value = "모집중인 챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 모집중인 챌린지 상세 조회 API")

@@ -6,12 +6,15 @@ import com.ts.taesan.domain.challenge.repository.ChallengeParticipantRepository;
 import com.ts.taesan.domain.challenge.repository.ChallengeRepository;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeInfoResponse;
 import com.ts.taesan.domain.challenge.repository.ChallengeQRepository;
+import com.ts.taesan.domain.challenge.service.dto.ExpiredChallengeInfoResponse;
 import com.ts.taesan.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.ts.taesan.domain.member.entity.QMember.member;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +52,13 @@ public class ChallengeQService {
         List<ParticipantResponse> participants = challengeQRepository.getParticipants(challengeId);
         ChallengeProgressDetailResponse challengeProgressDetailResponse = new ChallengeProgressDetailResponse(member.getName(), challengeParticipant.getSpare(), challengeInfoResponse, participants);
         return challengeProgressDetailResponse;
+    }
+
+    public ChallengeExpiredDetailResponse getExpiredChallengeDetail(Member member, Long challengeId) {
+        ExpiredChallengeInfoResponse expiredChallengeInfoResponse = challengeQRepository.getExpiredDetailInfo(challengeId);
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(member.getId(), challengeId).orElseThrow();
+        List<ParticipantResponse> participants = challengeQRepository.getParticipants(challengeId);
+        ChallengeExpiredDetailResponse challengeExpiredDetailResponse = new ChallengeExpiredDetailResponse(challengeParticipant.getSpare(), expiredChallengeInfoResponse, participants);
+        return challengeExpiredDetailResponse;
     }
 }
