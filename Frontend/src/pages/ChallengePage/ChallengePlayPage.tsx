@@ -17,6 +17,7 @@ const ChallengePlayPage = () => {
   const [price, setPrice] = useState(0);
   const [period, setPeriod] = useState('');
   const [players, setPlayers] = useState([]);
+  const [spare, setSpare] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +35,7 @@ const ChallengePlayPage = () => {
 
         // 방ID를 이용한 방 정보 불러오기
         const response2 = await axios.get(
-          `https://j9c211.p.ssafy.io/api/challenge-management/challenges/${chID}/progress`,
+          `https://j9c211.p.ssafy.io/api/challenge-management/challenges/progress/${chID}`,
           {
             headers: {
               'ACCESS-TOKEN': accessToken,
@@ -48,6 +49,7 @@ const ChallengePlayPage = () => {
 
         setTitle(challengeState.title);
         setPrice(challengeState.price);
+        setSpare(challengeState.spare);
 
         const today = dayjs(); // 오늘 날짜
         const targetDate = dayjs(challengeState.endDate); // 만기일
@@ -75,7 +77,7 @@ const ChallengePlayPage = () => {
             목표 소비 금액 : ￦ {price}
           </div>
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-            현재 남은 금액 : ￦ myPrice
+            현재 남은 금액 : ￦ {spare}
           </div>
         </div>
         <ChallengeMemberList players={players} price={price} />

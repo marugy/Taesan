@@ -25,54 +25,7 @@ const ChallengeRecruitPage = () => {
   const [price, setPrice] = useState('');
   const [period, setPeriod] = useState('');
   const [players, setPlayers] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // 방 ID 불러오기
-  //       const response1 = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
-  //         headers: {
-  //           'ACCESS-TOKEN': accessToken,
-  //           'REFRESH-TOKEN': refreshToken,
-  //         },
-  //       });
-
-  //       setChallengeId(response1.data.response.challengeId);
-  //       setChallengeState(response1.data.response.state);
-  //       const chID = response1.data.response.challengeId;
-
-  //       // 방ID를 이용한 방 정보 불러오기
-  //       const response2 = await axios.get(
-  //         `https://j9c211.p.ssafy.io/api/challenge-management/challenges/${chID}/recruit`,
-  //         {
-  //           headers: {
-  //             'ACCESS-TOKEN': accessToken,
-  //             'REFRESH-TOKEN': refreshToken,
-  //           },
-  //         },
-  //       );
-
-  //       const challengeState = response2.data.response;
-  //       console.log(challengeState);
-
-  //       setTitle(challengeState.title);
-  //       setPrice(challengeState.price);
-
-  //       const today = dayjs(); // 오늘 날짜
-  //       const targetDate = dayjs(challengeState.endDate); // 만기일
-  //       const duration = targetDate.diff(today, 'day') + 1;
-  //       setPeriod(String(duration));
-
-  //       setRoomcode(challengeState.uuid);
-
-  //       setPlayers(challengeState.participantNames); // 사용자 업데이트
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [challengeId]);
+  const [creator, setCreator] = useState(false);
 
   console.log('챌린지상태', challengeState);
   console.log('챌린지아이디', challengeId);
@@ -114,17 +67,18 @@ const ChallengeRecruitPage = () => {
       setTitle(challengeData.title);
       setPrice(challengeData.price);
 
-      const today = dayjs(); // 오늘 날짜
-      const targetDate = dayjs(challengeData.endDate); // 만기일
-      const duration = targetDate.diff(today, 'day') + 1;
-      setPeriod(String(duration));
+      // const today = dayjs(); // 오늘 날짜
+      // const targetDate = dayjs(challengeData.endDate); // 만기일
+      // const duration = targetDate.diff(today, 'day') + 1;
+      setPeriod(challengeData.period);
 
       setRoomcode(challengeData.uuid);
+      setCreator(challengeData.creator);
 
       setPlayers(challengeData.participantNames); // 사용자 업데이트
     }
   }, [challengeData]);
-
+  console.log(challengeData);
   // 챌린지 시작하기
   const handlePlay = () => {
     Swal.fire({
@@ -147,19 +101,23 @@ const ChallengeRecruitPage = () => {
       // POST 챌린지 시작
       if (result.isConfirmed) {
         axios
-          .post(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/start/${challengeId}`, {
-            headers: {
-              'ACCESS-TOKEN': accessToken,
-              'REFRESH-TOKEN': refreshToken,
+          .post(
+            `https://j9c211.p.ssafy.io/api/challenge-management/challenges/start/${challengeId}`,
+            {},
+            {
+              headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+              },
             },
-          })
+          )
           .then((res) => {
             console.log(res);
             Toast.fire({
               icon: 'success',
               title: '챌린지를 시작했습니다!',
             });
-            navigate('/challenge/play');
+            navigate('/challenge');
           })
           .catch((err) => {
             console.log(err);
@@ -183,12 +141,16 @@ const ChallengeRecruitPage = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .post(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/${challengeId}/exit`, {
-            headers: {
-              'ACCESS-TOKEN': accessToken,
-              'REFRESH-TOKEN': refreshToken,
+          .post(
+            `https://j9c211.p.ssafy.io/api/challenge-management/challenges/exit/${challengeId}`,
+            {},
+            {
+              headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+              },
             },
-          })
+          )
           .then((res) => {
             navigate('/challenge');
             Toast.fire({
@@ -202,6 +164,43 @@ const ChallengeRecruitPage = () => {
       }
     });
   };
+
+  // 챌린지 폭파
+  const handleBomb = () => {
+    Swal.fire({
+      title: '챌린지 삭제',
+      html: `챌린지를 삭제하시겠습니까?`,
+      icon: 'question',
+
+      confirmButtonColor: '#0046ff',
+      confirmButtonText: '삭제하기',
+
+      showCancelButton: true,
+      cancelButtonColor: 'red',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/${challengeId}`, {
+            headers: {
+              'ACCESS-TOKEN': accessToken,
+              'REFRESH-TOKEN': refreshToken,
+            },
+          })
+          .then((res) => {
+            navigate('/challenge');
+            Toast.fire({
+              icon: 'success',
+              title: '챌린지를 삭제했습니다.',
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <ArrowBack pageName="절약 챌린지 모집" />
@@ -219,12 +218,21 @@ const ChallengeRecruitPage = () => {
           <RoomCode roomcode={roomcode} />
           <ChallengeMemberList players={players} />
           <div className="mb-5 space-x-5">
-            <Button className="bg-main tb:text-md dt:text-xl" onClick={handlePlay}>
-              시작하기
-            </Button>
-            <Button className="bg-main tb:text-md dt:text-xl" onClick={handleExit}>
-              나가기
-            </Button>
+            {creator && (
+              <Button className="bg-main tb:text-md dt:text-xl" onClick={handlePlay}>
+                시작하기
+              </Button>
+            )}
+            {!creator && (
+              <Button className="bg-main tb:text-md dt:text-xl" onClick={handleExit}>
+                나가기
+              </Button>
+            )}
+            {creator && (
+              <Button className="bg-main tb:text-md dt:text-xl" onClick={handleBomb}>
+                삭제하기
+              </Button>
+            )}
           </div>
         </div>
       </div>
