@@ -47,7 +47,8 @@ public class ChallengeQRepository {
                         challenge.price,
                         challenge.startDate,
                         challenge.endDate,
-                        challengeParticipant.isExchange
+                        challengeParticipant.isExchange,
+                        challengeParticipant.spare
                 ))
                 .from(challengeParticipant)
                 .join(challenge).on(challengeParticipant.challenge.id.eq(challenge.id))
