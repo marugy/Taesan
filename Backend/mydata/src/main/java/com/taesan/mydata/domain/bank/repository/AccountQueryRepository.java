@@ -28,7 +28,8 @@ public class AccountQueryRepository {
                 .select(Projections.constructor(AccountList.class,
                         account.accountNum.as("account_num"),
                         Expressions.asBoolean(true).as("is_consent"),
-                        Expressions.asString("더미계좌1").as("prod_name"),
+                        account.bank.as("bank"),
+                        account.prodName.as("prod_name"),
                         Expressions.asString("1001").as("account_type"),
                         Expressions.asString("01").as("account_status")
                 ))

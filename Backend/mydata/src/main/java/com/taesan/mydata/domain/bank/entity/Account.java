@@ -18,6 +18,10 @@ public class Account {
 
     private Long memberCi;
 
+    private String bank;
+
+    private String prodName;
+
     private Date issueDate;
 
     private String accountNum;

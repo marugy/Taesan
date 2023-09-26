@@ -34,6 +34,7 @@ public class AccountApi {
     @GetMapping
     public ResponseEntity<AccountListResponse> getAccountList(
 //            @AuthenticationPrincipal User user,
+            @RequestHeader("user-ci") long userCi,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @Valid @ModelAttribute AccountListRequest accountListRequest)
@@ -42,7 +43,7 @@ public class AccountApi {
 //        log.info("{}", user.getUsername());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountListResponse response = accountQueryService.findAccountList(accountListRequest.getUser_ci(), accountListRequest.getNext_page(), accountListRequest.getLimit());
+        AccountListResponse response = accountQueryService.findAccountList(userCi, accountListRequest.getNext_page(), accountListRequest.getLimit());
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 

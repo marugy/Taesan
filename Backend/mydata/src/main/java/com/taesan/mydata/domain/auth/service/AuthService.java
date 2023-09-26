@@ -51,6 +51,8 @@ public class AuthService {
             Date date = dummyUtils.getDate();
             Account account = Account.builder()
                     .memberCi(userCi)
+                    .bank(dummyUtils.getBankName())
+                    .prodName(dummyUtils.getAccountName())
                     .issueDate(date)
                     .accountNum(dummyUtils.getAccountNum())
                     .currencyCode("KRW")

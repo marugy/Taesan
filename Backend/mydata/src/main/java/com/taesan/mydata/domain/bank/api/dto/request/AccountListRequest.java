@@ -21,8 +21,6 @@ public class AccountListRequest {
     @Positive
     long search_timestamp;
 
-    long user_ci;
-
     long next_page;
 
     @NotNull

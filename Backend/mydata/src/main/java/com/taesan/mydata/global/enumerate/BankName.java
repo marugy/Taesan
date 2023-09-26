@@ -1,11 +1,9 @@
 package com.taesan.mydata.global.enumerate;
 
-import lombok.Getter;
-
-public enum CardCompany {
+public enum BankName {
     신한은행, 국민은행, 우리은행, 하나은행, 토스뱅크, 카카오뱅크;
 
-    public static CardCompany valueOf(int value) {
+    public static BankName valueOf(int value) {
         switch (value) {
             case 0: return 신한은행;
             case 1: return 국민은행;

@@ -13,6 +13,10 @@ public class AccountList {
         @JsonProperty("is_consent")
         private Boolean isConsent;
 
+        // 얘는 임시로 제공
+        @JsonProperty("bank")
+        private String bank;
+
         @JsonProperty("seqno")
         private Integer seqNo;
 
@@ -32,9 +36,10 @@ public class AccountList {
         private String accountStatus;
 
         @Builder
-        public AccountList(String accountNum, Boolean isConsent, String prodName, String accountType, String accountStatus) {
+        public AccountList(String accountNum, Boolean isConsent, String bank, String prodName, String accountType, String accountStatus) {
                 this.accountNum = accountNum;
                 this.isConsent = isConsent;
+                this.bank = bank;
                 this.prodName = prodName;
                 this.accountType = accountType;
                 this.accountStatus = accountStatus;

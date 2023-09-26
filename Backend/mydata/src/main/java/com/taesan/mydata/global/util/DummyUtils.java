@@ -1,19 +1,8 @@
 package com.taesan.mydata.global.util;
 
-import com.taesan.mydata.global.enumerate.CardCompany;
-import com.taesan.mydata.global.enumerate.CardName;
-import com.taesan.mydata.global.enumerate.CardRate;
-import com.taesan.mydata.global.enumerate.Shop;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import com.taesan.mydata.global.enumerate.*;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Component
@@ -82,14 +71,32 @@ public class DummyUtils {
      * @return 랜덤 카드 이름
      */
     public String getCardName() {
-        StringBuilder cardName = new StringBuilder();
-        cardName.append(CardCompany.valueOf(random.nextInt(5)))
+        return AccountName.valueOf(random.nextInt(5)).toString();
+    }
+
+    /**
+     * 랜덤 계좌 이름 생성
+     *
+     * @return 랜덤 카드 이름
+     */
+    public String getAccountName() {
+        StringBuilder accountName = new StringBuilder();
+        accountName.append(BankName.valueOf(random.nextInt(5)))
                 .append(' ')
                 .append(CardName.valueOf(random.nextInt(5)))
                 .append(' ')
                 .append(CardRate.valueOf(random.nextInt(5)));
 
-        return cardName.append(" 카드").toString();
+        return accountName.append(" 카드").toString();
+    }
+
+    /**
+     * 랜덤 은행 이름 생성
+     *
+     * @return 랜덤 은행 이름
+     */
+    public String getBankName() {
+        return BankName.valueOf(random.nextInt(5)).name();
     }
 
     /**
