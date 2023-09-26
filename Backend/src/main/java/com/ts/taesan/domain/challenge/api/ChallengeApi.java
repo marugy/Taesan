@@ -116,7 +116,7 @@ public class ChallengeApi {
     }
 
     @ApiOperation(value = "챌린지 제거하기", notes = " 챌린지 폭파하기 API")
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ApiResponse<?> removeChallenge(@PathVariable(name = "id") Long challengeId) {
         challengeService.delete(challengeId);
         return OK(null);
