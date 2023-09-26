@@ -33,16 +33,16 @@ public class AccountApi {
 
     @GetMapping
     public ResponseEntity<AccountListResponse> getAccountList(
-            @AuthenticationPrincipal User user,
+//            @AuthenticationPrincipal User user,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @Valid @ModelAttribute AccountListRequest accountListRequest)
     {
         log.info("{}", accountListRequest.getOrg_code());
-        log.info("{}", user.getUsername());
+//        log.info("{}", user.getUsername());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountListResponse response = accountQueryService.findAccountList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
+        AccountListResponse response = accountQueryService.findAccountList(accountListRequest.getUser_ci(), accountListRequest.getNext_page(), accountListRequest.getLimit());
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
