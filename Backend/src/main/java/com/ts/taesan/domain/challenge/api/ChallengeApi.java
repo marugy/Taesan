@@ -93,6 +93,13 @@ public class ChallengeApi {
         return OK(null);
     }
 
+    @ApiOperation(value = "챌린지 시작하기", notes = "챌린지 id로 챌린지 시작하기 API")
+    @PostMapping("/start/{id}")
+    public ApiResponse<?> startChallenge(@PathVariable(name = "id") Long challengeId) {
+        challengeService.startChallenge(challengeId);
+        return OK(null);
+    }
+
     @ApiOperation(value = "챌린지에서 나가기", notes = "챌린지 id로 챌린지에서 나가기 API")
     @PostMapping("/exit/{id}")
     public ApiResponse<?> exitChallenge(@AuthenticationPrincipal User user, @PathVariable(name = "id") Long challengeId) {
@@ -102,10 +109,10 @@ public class ChallengeApi {
         return OK(null);
     }
 
-    @ApiOperation(value = "챌린지 시작하기", notes = "챌린지 id로 챌린지 시작하기 API")
-    @PostMapping("/start/{id}")
-    public ApiResponse<?> startChallenge(@PathVariable(name = "id") Long challengeId) {
-        challengeService.startChallenge(challengeId);
+    @ApiOperation(value = "챌린지 제거하기", notes = " 챌린지 폭파하기 API")
+    @PostMapping("/delete/{id}")
+    public ApiResponse<?> removeChallenge(@PathVariable(name = "id") Long challengeId) {
+        challengeService.delete(challengeId);
         return OK(null);
     }
 }

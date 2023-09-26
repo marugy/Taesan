@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ChallengeParticipantRepository extends JpaRepository<ChallengeParticipant, Long> {
 
     Optional<ChallengeParticipant> findByMemberIdAndChallengeId(Long memberId, Long challengeId);
+
+    void deleteAllByChallengeId(Long challengeId);
 }
