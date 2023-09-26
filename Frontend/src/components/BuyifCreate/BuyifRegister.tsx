@@ -2,23 +2,66 @@ import React,{useState} from 'react';
 import { Input,Button } from "@material-tailwind/react";
 import Swal from 'sweetalert2';
 import ArrowBack from 'components/Common/ArrowBack';
-
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
+import { useNavigate } from 'react-router';
 
 const BuyifRegister = () => {
     const [buyifbot, setBuyifbot] = useState(false)
     const [changeProfileImage, setChangeProfileImage] = useState<File | null>(null);
     const [itemname, setItemname] = useState('')
     const [itemprice,setItemprice] = useState('')
+    const { accessToken, refreshToken,setName } = useUserStore();
+    const navigate = useNavigate()
 
-    const formData = new FormData();
-    // formData.append('request', new Blob([JSON.stringify(info)], { type: 'application/json' }));
-    if (changeProfileImage) {
-      formData.append('file', changeProfileImage);
-    }
     // 아무것도 안 보내면 사진이 안 바뀜.
     // else {
     //   formData.append('file', '');
     // }
+    const postBuyif =() => {
+        const formData = new FormData();
+        const info ={
+            name: itemname,
+            price: itemprice,
+          };
+
+        formData.append('info', new Blob([JSON.stringify(info)], { type: 'application/json' }));
+        if (changeProfileImage) {
+          formData.append('images', changeProfileImage);
+        }
+
+        if (itemname === '') {
+            Swal.fire({
+              icon: 'warning',
+              title: '사고 싶은 물건이름을 입력해주세요',
+            });
+          }
+        else if(itemprice === ''){
+            Swal.fire({
+                icon: 'warning',
+                title: '물건의 가격을 입력해주세요',
+              }); 
+        }
+        else{
+        axios
+        .post('https://j9c211.p.ssafy.io/api/ifbuy-management/ifbuys',formData,
+        {
+            headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+              } 
+        })
+        .then((respone)=>{
+            console.log(respone)
+            console.log(FormData)
+            navigate('/buyif')
+        })
+        .catch((error)=>{
+            console.log(error)
+            console.log(FormData)
+        })
+    }
+    }
     const handleItemnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setItemname(event.target.value);
       };
@@ -43,15 +86,15 @@ const BuyifRegister = () => {
         } 
     }
 
+
     return (
         <div className='flex flex-col h-screen'>
             <ArrowBack pageName='샀다치고'/>
             <div className='flex flex-col items-center'>
             <div className='font-bold text-xl w-[90%] text-start my-4'>샀다고 할 물건</div>
                 <div className='bg-white w-[90%] h-[220px] rounded-lg shadow-md flex flex-col justify-around items-center'>
-                    <div className='flex justify-around items-center'>
-                    <div className='w-[20%]'>
-                        <div className="flex justify-center h-[90%] aspect-square " onClick={() => document.getElementById('file-input')?.click()}>
+                    <div className='flex w-full justify-around items-center'>
+                        <div className="flex justify-center h-[80%] aspect-square  " onClick={() => document.getElementById('file-input')?.click()}>
                             <input
                                 type="file"
                                 id="file-input"
@@ -72,16 +115,12 @@ const BuyifRegister = () => {
                                 }}
                             />
                             {changeProfileImage ? (
-                                <img src={URL.createObjectURL(changeProfileImage)} alt="buyif-image" className='rounded-md border border-blue-gray-100'/>
+                                <div style={{ backgroundImage: `url(${URL.createObjectURL(changeProfileImage)})`, backgroundSize: '100% 100%' }} className='w-full h-full rounded-md'/>
                             ) : (
-                                <img
-                                className="rounded-md"
-                                src={'/buyif.png'}
-                                alt="buyif-image"
-                                />
+                               
+                                <div style={{ backgroundImage: 'url("/buyif.png")', backgroundSize: '100% 100%' }} className='w-full h-full rounded-md'/>
                             )}
                         </div>
-                    </div>
                     <div className='w-[50%] gap-2'>
                         <div>내가 사고 싶은 물건</div>
                         <Input size="lg" label="내가 사고 싶은 물건" onChange={handleItemnameChange} crossOrigin="anonymous"/>
@@ -93,7 +132,7 @@ const BuyifRegister = () => {
                     <Button variant='gradient' color='blue' onClick={handleAnalys}>
                         <span>사도 될까요?</span>
                     </Button>
-                    <Button variant='gradient' color='blue'>
+                    <Button variant='gradient' color='blue' onClick={postBuyif}>
                         <span>등록</span>
                     </Button>
                 </div>

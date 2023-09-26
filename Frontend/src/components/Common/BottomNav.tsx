@@ -8,7 +8,7 @@ const BottomNav = () => {
   const navigate = useNavigate();
   return (
     <div className="z-10 flex justify-around items-center bg-white h-[8vh] max-w-full fixed bottom-0 left-0 right-0">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-5">
         <div>
           <BsCreditCard
             className="text-main text-xl"
@@ -36,7 +36,7 @@ const BottomNav = () => {
           <HiHome className="text-xl" />
         </IconButton>
       </div>
-      <div className="flex flex-col items-center" onClick={() => {
+      <div className="flex flex-col items-center w-5" onClick={() => {
               navigate('/mypage');
             }}>
         <div>

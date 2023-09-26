@@ -16,38 +16,33 @@ import { Typography } from '@material-tailwind/react';
 const Graph = () => {
     const data = [
         {
-          "id": "go",
-          "label": "go",
-          "value": 409,
-          "color": "hsl(288, 70%, 50%)"
+          "id": "대형마트",
+          "label": "대형마트",
+          "value": 40000,
         },
         {
-          "id": "c",
-          "label": "c",
-          "value": 132,
-          "color": "hsl(260, 70%, 50%)"
+          "id": "편의점",
+          "label": "편의점",
+          "value": 12300,
         },
         {
-          "id": "scala",
-          "label": "scala",
-          "value": 283,
-          "color": "hsl(26, 70%, 50%)"
+          "id": "음식점",
+          "label": "음식점",
+          "value": 45000,
         },
         {
-          "id": "javascript",
-          "label": "javascript",
-          "value": 446,
-          "color": "hsl(204, 70%, 50%)"
+          "id": "카페",
+          "label": "카페",
+          "value": 12200,
         },
         {
-          "id": "sass",
-          "label": "sass",
-          "value": 65,
-          "color": "hsl(105, 70%, 50%)"
+          "id": "여가",
+          "label": "여가",
+          "value": 16000,
         }
       ];
     const [category, setCategory] = useState('');
-    const colortag = [' #7fc97f', '#beaed4', '#fdc086', '#ffff99', '#386cb0', '#f0027f', '#bf5b17', '#666666'];
+    const colortag = [' #a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00','#cab2d6','#6a3d9a',' #ffff99','#b15928'];
     const [tagnum, setTagnum] =useState(0)
     const [year, setYear] = useState('')
     const [month, setMonth] = useState('');
@@ -59,6 +54,7 @@ const Graph = () => {
         setTagnum(newValue)
         setCategory(newCategory);
     };
+    const totalValue = data.reduce((sum, item) => sum + item.value, 0);
     return (
         <div className='mx-4 mt-11 mb-28'>
             <div className=' font-bold text-blue-gray-600'>
@@ -99,7 +95,6 @@ const Graph = () => {
                     </FormControl>
                 </Box>
             </div>
-            {year}{month}{category}
             <div className=' font-bold text-blue-gray-600 my-2'>
                 카테고리 분류
             </div>
@@ -224,10 +219,10 @@ const Graph = () => {
                 </div>
              ))} */}
             { tagnum === 0 ?
-            <div className='flex justify-center '>
-                <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
-                    <div>자주 소비하는 장소</div>
-                </div>
+                <div className='flex justify-center '>
+                    <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
+                        <div>자주 소비하는 장소</div>
+                    </div>
                 </div>
                 :
                 <div className='flex justify-center '>
@@ -236,54 +231,25 @@ const Graph = () => {
                     </div>
                 </div>}
             <div className='w-full flex flex-col items-center mt-4'>
-                <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
-                    <div className='flex gap-4 items-center'>
-                        <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}/>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                            담배
-                        </Typography>
+                {data.map((res,index)=>(
+                    <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
+                        <div className='flex gap-4 items-center'>
+                            <div style={{ backgroundColor: colortag[index], height: '10px', width: '10px', marginRight: '5px' }}/>
+                            <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                                {res.id}
+                            </Typography>
+                        </div>
+                        <div className='flex gap-4'>
+                            <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
+                                {(res.value / totalValue * 100).toFixed(2)}%
+                            </Typography>
+                            <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                                {res.value}원
+                            </Typography>
+                        </div>
                     </div>
-                    <div className='flex gap-4'>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
-                            {30000/2000000}%
-                        </Typography>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                            45000원
-                        </Typography>
-                    </div>
-                </div>
-                <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
-                    <div className='flex gap-4 items-center'>
-                        <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}/>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                            담배
-                        </Typography>
-                    </div>
-                    <div className='flex gap-4'>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
-                            {30000/2000000}%
-                        </Typography>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                            45000원
-                        </Typography>
-                    </div>
-                </div>
-                <div className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
-                    <div className='flex gap-4 items-center'>
-                        <div style={{ backgroundColor: '#7fc97f', height: '10px', width: '10px', marginRight: '5px' }}/>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                            담배
-                        </Typography>
-                    </div>
-                    <div className='flex gap-4'>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
-                            {30000/2000000}%
-                        </Typography>
-                        <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                            45000원
-                        </Typography>
-                    </div>
-                </div>
+                ))}
+                <div className='h-[100px]'/>
             </div>
         </div>
     );
