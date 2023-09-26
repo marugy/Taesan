@@ -71,7 +71,7 @@ public class AuthService {
         for (int i = 0; i < 4; i++) {
             Card card = Card.builder()
                     .memberCi(userCi)
-                    .cardCompany(dummyUtils.getBankName(i))
+                    .cardCompany(dummyUtils.getBankName(i+1))
                     .accountId(accountList.get(i).getId())
                     .cardNum(dummyUtils.getCardNum())
                     .isConsent(true)
