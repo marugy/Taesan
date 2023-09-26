@@ -13,6 +13,5 @@ public class OCRReceiptDTO {
     private String name;
     private Long sumPrice;
     private Long unitPrice;
-    private Integer count;
 
 }

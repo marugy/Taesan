@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReceiptReqDto {
     private String productName;
-    private Integer count;
     private Long price;
 }
