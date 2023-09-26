@@ -2,6 +2,7 @@ package com.taesan.mydata.domain.card.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.taesan.mydata.domain.card.api.dto.inner.CardList;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +34,14 @@ public class CardListResponse {
 
     @JsonProperty("card_list")
     private List<CardList> cardList;
+
+    @Builder
+
+    public CardListResponse(String regDate, Long nextPage, List<CardList> cardList) {
+        this.regDate = regDate;
+        this.nextPage = nextPage;
+        this.cardCnt = cardList.size();
+        this.cardList = cardList;
+    }
 
 }

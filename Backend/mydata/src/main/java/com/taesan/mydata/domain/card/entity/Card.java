@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Date;
 
 @Entity
 @Getter
@@ -31,5 +32,9 @@ public class Card {
     private Integer cardMember;
 
     private String cardType;
+
+    private Long annualFee;
+
+    private Long issueDate;
 
 }

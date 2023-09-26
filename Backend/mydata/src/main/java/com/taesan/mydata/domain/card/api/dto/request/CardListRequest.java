@@ -13,6 +13,8 @@ public class CardListRequest {
 
     private Long search_timestamp;
 
+    private Long member_ci;
+
     private Long next_page;
 
     private Integer limit;

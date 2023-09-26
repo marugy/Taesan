@@ -75,6 +75,8 @@ public class AuthService {
                     .cardName(dummyUtils.getCardName())
                     .cardMember(1)
                     .cardType(dummyUtils.getType(3))
+                    .annualFee(100000L)
+                    .issueDate(new Date().getTime())
                     .build();
             cardList.add(card);
         }

@@ -5,9 +5,6 @@ spring:
     config:
       name: mydata
       profile: local
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
 
 encrypt:
   key: ${ssh-encrypt-key}

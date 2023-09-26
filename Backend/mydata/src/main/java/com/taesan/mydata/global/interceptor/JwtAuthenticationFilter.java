@@ -39,11 +39,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private String resolveToken(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization");
-        log.warn("2: {}", accessToken);
         if (accessToken != null && jwtUtils.validateToken(accessToken)) {
             return accessToken;
         }
-        log.warn("3: {}", accessToken);
         return null;
     }
 
@@ -54,9 +52,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.warn("1: {}", request);
         String token = resolveToken((HttpServletRequest) request);
-        log.warn("4: {}", token);
         try {
             if(token!=null){
                 Authentication authentication = jwtUtils.getAuthentication(token);

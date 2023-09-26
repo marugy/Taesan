@@ -2,12 +2,10 @@ package com.taesan.mydata.domain.card.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.taesan.mydata.domain.card.api.dto.inner.CardList;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.java.Log;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -42,4 +40,27 @@ public class CardInfoResponse {
     @JsonProperty("issue_date")
     private Date issueDate;
 
+//    @Builder
+//    public CardInfoResponse(Boolean isTransPayable, Boolean isCashCard, String linkedBankCode, String cardBrand, Long annualFee, Date issueDate) {
+//        this.isTransPayable = isTransPayable;
+//        this.isCashCard = isCashCard;
+//        this.linkedBankCode = linkedBankCode;
+//        this.cardBrand = cardBrand;
+//        this.annualFee = annualFee;
+//        this.issueDate = issueDate;
+//    }
+
+
+    public CardInfoResponse(Boolean isTransPayable, Boolean isCashCard, String linkedBankCode, String cardBrand, Long annualFee, Long issueDate) {
+
+        this.rspCode = "200";
+        this.rspMsg = "성공";
+        this.searchTimestamp = new Date().getTime();
+        this.isTransPayable = isTransPayable;
+        this.isCashCard = isCashCard;
+        this.linkedBankCode = linkedBankCode;
+        this.cardBrand = cardBrand;
+        this.annualFee = annualFee;
+        this.issueDate = new Date(issueDate);
+    }
 }

@@ -1,7 +1,11 @@
 package com.taesan.mydata.domain.card.api.dto.inner;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class CardList {
 
         @JsonProperty("card_id")

@@ -3,6 +3,8 @@ package com.taesan.mydata.domain.card.api;
 import com.taesan.mydata.domain.card.api.dto.inner.CardList;
 import com.taesan.mydata.domain.card.api.dto.request.*;
 import com.taesan.mydata.domain.card.api.dto.response.*;
+import com.taesan.mydata.domain.card.service.CardQueryService;
+import com.taesan.mydata.domain.card.service.CardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,9 @@ import java.util.List;
 @RequestMapping("/mydata/card-management/cards")
 public class CardApi {
 
+    private final CardQueryService cardQueryService;
+    private final CardService cardService;
+
     @GetMapping
     public ResponseEntity<CardListResponse> getCardList(
             @RequestHeader("x-api-tran-id") String tranId,
@@ -29,24 +34,22 @@ public class CardApi {
         log.info("{}", accountListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        CardListResponse ret = new CardListResponse();
-        List<CardList> list = new ArrayList<>();
-        list.add(new CardList());
-        ret.setCardList(list);
-        return new ResponseEntity<>(ret, headers, HttpStatus.ACCEPTED);
+        CardListResponse cardList = cardQueryService.findCardList(accountListRequest.getMember_ci(), accountListRequest.getNext_page(), accountListRequest.getLimit());
+        return new ResponseEntity<>(cardList, headers, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{card_id}")
-    public ResponseEntity<CardListResponse> getCardInfo(
+    public ResponseEntity<CardInfoResponse> getCardInfo(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
-            @Valid @ModelAttribute CardListRequest cardListRequest)
+            @Valid @ModelAttribute CardInfoRequest cardInfoRequest)
     {
-        log.info("{}", cardListRequest.getOrg_code());
+        log.info("{}", cardInfoRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        return new ResponseEntity<>(new CardListResponse(), headers, HttpStatus.ACCEPTED);
+        CardInfoResponse cardInfo = cardQueryService.findCardInfo(cardId);
+        return new ResponseEntity<>(cardInfo, headers, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{card_id}/approval-domestic")
