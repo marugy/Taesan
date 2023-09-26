@@ -21,10 +21,20 @@ public class ChallengeProgressDetailResponse {
 
     private List<ParticipantResponse> participants;
 
-    public ChallengeProgressDetailResponse(ChallengeInfoResponse challengeInfoResponse, List<ParticipantResponse> participants) {
+    private boolean creator;
+
+    private Long spare;
+
+    public ChallengeProgressDetailResponse(String name, Long spare, ChallengeInfoResponse challengeInfoResponse, List<ParticipantResponse> participants) {
         this.title = challengeInfoResponse.getTitle();
         this.price = challengeInfoResponse.getPrice();
         this.endDate = challengeInfoResponse.getEndDate();
         this.participants = participants;
+        this.spare = spare;
+        if (challengeInfoResponse.getCreator().equals(name)) {
+            this.creator = true;
+        } else {
+            this.creator = false;
+        }
     }
 }

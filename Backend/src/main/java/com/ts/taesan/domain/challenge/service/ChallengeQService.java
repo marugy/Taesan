@@ -1,8 +1,12 @@
 package com.ts.taesan.domain.challenge.service;
 
 import com.ts.taesan.domain.challenge.dto.response.*;
+import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
+import com.ts.taesan.domain.challenge.repository.ChallengeParticipantRepository;
+import com.ts.taesan.domain.challenge.repository.ChallengeRepository;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeInfoResponse;
 import com.ts.taesan.domain.challenge.repository.ChallengeQRepository;
+import com.ts.taesan.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +19,7 @@ import java.util.List;
 public class ChallengeQService {
 
     private final ChallengeQRepository challengeQRepository;
+    private final ChallengeParticipantRepository challengeParticipantRepository;
 
     public ChallengeMakeResponse getState(Long memberId) {
         ChallengeMakeResponse challengeMakeResponse = challengeQRepository.getState(memberId);
@@ -31,17 +36,18 @@ public class ChallengeQService {
         return challengeResponses;
     }
 
-    public ChallengeRecruitDetailResponse getRecruitChallengeDetail(Long challengeId) {
+    public ChallengeRecruitDetailResponse getRecruitChallengeDetail(String name, Long challengeId) {
         ChallengeInfoResponse challengeInfoResponse = challengeQRepository.getDetailInfo(challengeId);
         List<String> participants = challengeQRepository.getParticipantsName(challengeId);
-        ChallengeRecruitDetailResponse challengeRecruitDetailResponse = new ChallengeRecruitDetailResponse(challengeInfoResponse, participants);
+        ChallengeRecruitDetailResponse challengeRecruitDetailResponse = new ChallengeRecruitDetailResponse(name, challengeInfoResponse, participants);
         return challengeRecruitDetailResponse;
     }
 
-    public ChallengeProgressDetailResponse getProgressChallengeDetail(Long challengeId) {
+    public ChallengeProgressDetailResponse getProgressChallengeDetail(Member member, Long challengeId) {
         ChallengeInfoResponse challengeInfoResponse = challengeQRepository.getDetailInfo(challengeId);
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(member.getId(), challengeId).orElseThrow();
         List<ParticipantResponse> participants = challengeQRepository.getParticipants(challengeId);
-        ChallengeProgressDetailResponse challengeProgressDetailResponse = new ChallengeProgressDetailResponse(challengeInfoResponse, participants);
+        ChallengeProgressDetailResponse challengeProgressDetailResponse = new ChallengeProgressDetailResponse(member.getName(), challengeParticipant.getSpare(), challengeInfoResponse, participants);
         return challengeProgressDetailResponse;
     }
 }

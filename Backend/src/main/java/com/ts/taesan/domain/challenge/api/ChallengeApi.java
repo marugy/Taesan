@@ -6,6 +6,7 @@ import com.ts.taesan.domain.challenge.dto.response.ChallengeProgressDetailRespon
 import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeRecruitDetailResponse;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeResponse;
+import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
 import com.ts.taesan.domain.challenge.service.ChallengeQService;
 import com.ts.taesan.domain.challenge.service.ChallengeService;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeStartRequest;
@@ -37,7 +38,6 @@ public class ChallengeApi {
     private final ChallengeQService challengeQService;
 
     private final MemberService memberService;
-    private final MemberQService memberQService;
 
     @ApiOperation(value = "챌린지 상태 조회", notes = "사용자의 챌린지 상태를 조회한다 API")
     @GetMapping("/state")
@@ -66,16 +66,21 @@ public class ChallengeApi {
     }
 
     @ApiOperation(value = "모집중인 챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 모집중인 챌린지 상세 조회 API")
-    @GetMapping("/{id}/recruit")
-    public ApiResponse<ChallengeRecruitDetailResponse> getRecruitChallenge(@PathVariable(value = "id") Long challengeId) {
-        ChallengeRecruitDetailResponse challengeRecruitDetailResponse = challengeQService.getRecruitChallengeDetail(challengeId);
+    @GetMapping("/recruit/{id}")
+    public ApiResponse<ChallengeRecruitDetailResponse> getRecruitChallenge(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long challengeId) {
+        Long memberId = Long.parseLong(user.getUsername());
+        Member member = memberService.findById(memberId);
+        String name = member.getName();
+        ChallengeRecruitDetailResponse challengeRecruitDetailResponse = challengeQService.getRecruitChallengeDetail(name, challengeId);
         return OK(challengeRecruitDetailResponse);
     }
 
     @ApiOperation(value = "진행중인 챌린지 상세 조회", notes = "챌린지 ID를 인자로 진행중인 챌린지 상세 조회 API")
-    @GetMapping("/{id}/progress")
-    public ApiResponse<ChallengeProgressDetailResponse> getProgressChallenge(@PathVariable(value = "id") Long challengeId) {
-        ChallengeProgressDetailResponse challengeProgressDetailResponse = challengeQService.getProgressChallengeDetail(challengeId);
+    @GetMapping("/progress/{id}")
+    public ApiResponse<ChallengeProgressDetailResponse> getProgressChallenge(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long challengeId) {
+        Long memberId = Long.parseLong(user.getUsername());
+        Member member = memberService.findById(memberId);
+        ChallengeProgressDetailResponse challengeProgressDetailResponse = challengeQService.getProgressChallengeDetail(member, challengeId);
         return OK(challengeProgressDetailResponse);
     }
 
@@ -89,7 +94,7 @@ public class ChallengeApi {
     }
 
     @ApiOperation(value = "챌린지에서 나가기", notes = "챌린지 id로 챌린지에서 나가기 API")
-    @PostMapping("/{id}/exit")
+    @PostMapping("/exit/{id}")
     public ApiResponse<?> exitChallenge(@AuthenticationPrincipal User user, @PathVariable(name = "id") Long challengeId) {
         Long memberId = Long.parseLong(user.getUsername());
         Member member = memberService.findById(memberId);
@@ -98,7 +103,7 @@ public class ChallengeApi {
     }
 
     @ApiOperation(value = "챌린지 시작하기", notes = "챌린지 id로 챌린지 시작하기 API")
-    @PostMapping("/{id}/start")
+    @PostMapping("/start/{id}")
     public ApiResponse<?> startChallenge(@PathVariable(name = "id") Long challengeId) {
         challengeService.startChallenge(challengeId);
         return OK(null);

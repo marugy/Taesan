@@ -13,9 +13,13 @@ import java.util.UUID;
 public class ChallengeInfoResponse {
     private String title;
 
+    private int period;
+
     private Long price;
 
     private Date endDate;
 
     private String uuid;
+
+    private String creator;
 }

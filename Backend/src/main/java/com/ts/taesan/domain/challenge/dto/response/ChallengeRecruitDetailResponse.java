@@ -17,17 +17,24 @@ public class ChallengeRecruitDetailResponse {
 
     private Long price;
 
-    private Date endDate;
+    private int period;
 
     private String uuid;
 
     private List<String> participantNames;
 
-    public ChallengeRecruitDetailResponse(ChallengeInfoResponse challengeInfoResponse, List<String> participantNames) {
+    private boolean creator;
+
+    public ChallengeRecruitDetailResponse(String name, ChallengeInfoResponse challengeInfoResponse, List<String> participantNames) {
         this.title = challengeInfoResponse.getTitle();
         this.price = challengeInfoResponse.getPrice();
-        this.endDate = challengeInfoResponse.getEndDate();
+        this.period = challengeInfoResponse.getPeriod();
         this.uuid = challengeInfoResponse.getUuid();
         this.participantNames = participantNames;
+        if (challengeInfoResponse.getCreator().equals(name)) {
+            this.creator = true;
+        } else {
+            this.creator = false;
+        }
     }
 }

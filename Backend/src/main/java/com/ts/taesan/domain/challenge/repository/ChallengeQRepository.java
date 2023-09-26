@@ -56,9 +56,11 @@ public class ChallengeQRepository {
         return queryFactory
                 .select(Projections.constructor(ChallengeInfoResponse.class,
                         challenge.title,
+                        challenge.period,
                         challenge.price,
                         challenge.endDate,
-                        challenge.uuid
+                        challenge.uuid,
+                        challenge.member.name
                 ))
                 .from(challenge)
                 .where(challenge.id.eq(challengeId))
