@@ -106,7 +106,7 @@ const SingUpForm = () => {
         });
       setInputSMS(true);
       setPhoneLengthError(false);
-      setCountDown(10); // 인증 180(3분) 설정
+      setCountDown(180); // 인증 180(3분) 설정
       return;
     }
   };
