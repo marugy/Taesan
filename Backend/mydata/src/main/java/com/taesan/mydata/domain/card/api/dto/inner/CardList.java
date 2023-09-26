@@ -11,6 +11,9 @@ public class CardList {
         @JsonProperty("card_id")
         private Long cardId;
 
+        @JsonProperty("company")
+        private String company;
+
         @JsonProperty("card_num")
         private String cardNum;
 

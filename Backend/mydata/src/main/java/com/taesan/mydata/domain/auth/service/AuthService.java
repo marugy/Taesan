@@ -45,9 +45,9 @@ public class AuthService {
                         .id(userCi)
                         .build());
 
-        // 계좌 3개 생성
+        // 계좌 5개 생성
         List<Account> accountList = new ArrayList<>();
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<5; i++) {
             Date date = dummyUtils.getDate();
             Account account = Account.builder()
                     .memberCi(userCi)
@@ -71,8 +71,9 @@ public class AuthService {
         for (int i = 0; i < 3; i++) {
             Card card = Card.builder()
                     .memberCi(userCi)
+                    .cardCompany(dummyUtils.getBankName())
                     .accountId(accountList.get(i).getId())
-                    .cardNum(dummyUtils.getAccountNum())
+                    .cardNum(dummyUtils.getCardNum())
                     .isConsent(true)
                     .cardName(dummyUtils.getCardName())
                     .cardMember(1)

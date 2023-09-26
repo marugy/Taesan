@@ -28,6 +28,7 @@ public class CardQueryRepository {
     public List<CardList> findCardListByCardId(long memberCi, long cursor, int limit) {
         return queryFactory.select(Projections.constructor(CardList.class,
                         card.id.as("card_id"),
+                        card.cardCompany.as("company"),
                         card.cardNum.as("card_num"),
                         card.isConsent.as("is_consent"),
                         card.cardName.as("card_name"),

@@ -27,6 +27,8 @@ public class Card {
 
     private Boolean isConsent;
 
+    private String cardCompany;
+
     private String cardName;
 
     private Integer cardMember;

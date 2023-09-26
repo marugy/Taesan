@@ -17,6 +17,10 @@ public class AccountList {
         @JsonProperty("bank")
         private String bank;
 
+        // 얘도
+        @JsonProperty("balance")
+        private long balance;
+
         @JsonProperty("seqno")
         private Integer seqNo;
 
@@ -36,8 +40,9 @@ public class AccountList {
         private String accountStatus;
 
         @Builder
-        public AccountList(String accountNum, Boolean isConsent, String bank, String prodName, String accountType, String accountStatus) {
+        public AccountList(String accountNum, double balance, Boolean isConsent, String bank, String prodName, String accountType, String accountStatus) {
                 this.accountNum = accountNum;
+                this.balance = (long) balance;
                 this.isConsent = isConsent;
                 this.bank = bank;
                 this.prodName = prodName;

@@ -27,6 +27,7 @@ public class AccountQueryRepository {
         return queryFactory
                 .select(Projections.constructor(AccountList.class,
                         account.accountNum.as("account_num"),
+                        account.balanceAmt.as("balance"),
                         Expressions.asBoolean(true).as("is_consent"),
                         account.bank.as("bank"),
                         account.prodName.as("prod_name"),

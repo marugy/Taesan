@@ -57,9 +57,12 @@ public class DummyUtils {
     public String getCardNum() {
         StringBuilder cardNum = new StringBuilder();
 
-        cardNum.append(random.nextInt(9) + 1);
-        for(int i=0; i<18; i++) {
-            cardNum.append(random.nextInt(10));
+        for(int i=1; i<20; i++) {
+            if (i % 5 == 0) {
+                cardNum.append('-');
+            } else {
+                cardNum.append(random.nextInt(10));
+            }
         }
 
         return cardNum.toString();
