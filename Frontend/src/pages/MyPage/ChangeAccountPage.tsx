@@ -46,7 +46,8 @@ const ChangeAccountPage = () => {
       </Card>
 
       <hr className="my-5 border-gray-400 border-1 w-full" />
-      <AccountRegister />
+      {/* 얘 나중에 수정해야함 (지헌 할 것) */}
+      <AccountRegister accountList={[]}/>
       <BottomNav/>
     </div>
     </div>

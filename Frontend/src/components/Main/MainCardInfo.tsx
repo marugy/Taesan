@@ -10,8 +10,8 @@ import { Pagination, Navigation } from 'swiper/modules';
 import Card from 'components/Common/Card';
 import './MainCardInfo.css';
 import { useUserStore } from 'store/UserStore';
-
 interface CardInfoProps {
+
   cardList: Array<any>;
 }
 const MainCardInfo: React.FC<CardInfoProps> = ({ cardList }) => {
