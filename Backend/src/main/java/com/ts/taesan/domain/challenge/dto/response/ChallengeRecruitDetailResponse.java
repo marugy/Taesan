@@ -5,31 +5,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChallengeDetailResponse {
+public class ChallengeRecruitDetailResponse {
 
     private String title;
 
     private Long price;
 
-    private Date period;
+    private Date endDate;
 
     private String uuid;
 
-    private List<ParticipantResponse> participants;
+    private List<String> participantNames;
 
-    public ChallengeDetailResponse(ChallengeInfoResponse challengeInfoResponse, List<ParticipantResponse> participants) {
+    public ChallengeRecruitDetailResponse(ChallengeInfoResponse challengeInfoResponse, List<String> participantNames) {
         this.title = challengeInfoResponse.getTitle();
         this.price = challengeInfoResponse.getPrice();
-        this.period = challengeInfoResponse.getPeriod();
+        this.endDate = challengeInfoResponse.getEndDate();
         this.uuid = challengeInfoResponse.getUuid();
-        this.participants = participants;
+        this.participantNames = participantNames;
     }
 }

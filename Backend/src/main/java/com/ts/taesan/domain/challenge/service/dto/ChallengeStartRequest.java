@@ -19,14 +19,14 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ChallengeStartRequest {
     private String title;
-    private Date period;
+    private int period;
     private Long price;
     private Member member;
     private String uuid;
 
     public ChallengeStartRequest(Member member, ChallengeMakeRequest challengeMakeRequest) {
         this.title = challengeMakeRequest.getTitle();
-        this.period = new Date(new Date().getTime() + challengeMakeRequest.getPeriod() * 1000 * 60 * 60 * 24);
+        this.period = challengeMakeRequest.getPeriod();
         this.price = challengeMakeRequest.getPrice();
         this.member = member;
         this.uuid = UUID.randomUUID().toString();

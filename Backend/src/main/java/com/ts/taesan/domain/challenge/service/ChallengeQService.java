@@ -1,10 +1,7 @@
 package com.ts.taesan.domain.challenge.service;
 
-import com.ts.taesan.domain.challenge.dto.response.ChallengeDetailResponse;
-import com.ts.taesan.domain.challenge.dto.response.ParticipantResponse;
+import com.ts.taesan.domain.challenge.dto.response.*;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeInfoResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeResponse;
 import com.ts.taesan.domain.challenge.repository.ChallengeQRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,13 +27,21 @@ public class ChallengeQService {
     }
 
     public List<ChallengeResponse> getEndChallenges(Long memberId) {
-        return challengeQRepository.getEndChallenge(memberId);
+        List<ChallengeResponse> challengeResponses = challengeQRepository.getEndChallenge(memberId);
+        return challengeResponses;
     }
 
-    public ChallengeDetailResponse getChallengeDetail(Long challengeId) {
+    public ChallengeRecruitDetailResponse getRecruitChallengeDetail(Long challengeId) {
+        ChallengeInfoResponse challengeInfoResponse = challengeQRepository.getDetailInfo(challengeId);
+        List<String> participants = challengeQRepository.getParticipantsName(challengeId);
+        ChallengeRecruitDetailResponse challengeRecruitDetailResponse = new ChallengeRecruitDetailResponse(challengeInfoResponse, participants);
+        return challengeRecruitDetailResponse;
+    }
+
+    public ChallengeProgressDetailResponse getProgressChallengeDetail(Long challengeId) {
         ChallengeInfoResponse challengeInfoResponse = challengeQRepository.getDetailInfo(challengeId);
         List<ParticipantResponse> participants = challengeQRepository.getParticipants(challengeId);
-        ChallengeDetailResponse challengeDetailResponse = new ChallengeDetailResponse(challengeInfoResponse, participants);
-        return challengeDetailResponse;
+        ChallengeProgressDetailResponse challengeProgressDetailResponse = new ChallengeProgressDetailResponse(challengeInfoResponse, participants);
+        return challengeProgressDetailResponse;
     }
 }

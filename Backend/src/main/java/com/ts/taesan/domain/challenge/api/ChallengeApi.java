@@ -2,10 +2,10 @@ package com.ts.taesan.domain.challenge.api;
 
 import com.ts.taesan.domain.challenge.dto.reqeust.ChallengeMakeRequest;
 import com.ts.taesan.domain.challenge.dto.reqeust.ParticipateRequest;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeDetailResponse;
+import com.ts.taesan.domain.challenge.dto.response.ChallengeProgressDetailResponse;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
+import com.ts.taesan.domain.challenge.dto.response.ChallengeRecruitDetailResponse;
 import com.ts.taesan.domain.challenge.dto.response.ChallengeResponse;
-import com.ts.taesan.domain.challenge.entity.Challenge;
 import com.ts.taesan.domain.challenge.service.ChallengeQService;
 import com.ts.taesan.domain.challenge.service.ChallengeService;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeStartRequest;
@@ -61,14 +61,22 @@ public class ChallengeApi {
     @GetMapping("/expired")
     public ApiResponse<List<ChallengeResponse>> getExpiredChallenges(@AuthenticationPrincipal User user) {
         Long memberId = Long.parseLong(user.getUsername());
-        return OK(challengeQService.getEndChallenges(memberId));
+        List<ChallengeResponse> challengeResponses = challengeQService.getEndChallenges(memberId);
+        return OK(challengeResponses);
     }
 
-    @ApiOperation(value = "챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 챌린지 상세 조회 API")
-    @GetMapping("/{id}")
-    public ApiResponse<ChallengeDetailResponse> getChallenge(@PathVariable(value = "id") Long challengeId) {
-        ChallengeDetailResponse challengeDetailResponse = challengeQService.getChallengeDetail(challengeId);
-        return OK(challengeDetailResponse);
+    @ApiOperation(value = "모집중인 챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 모집중인 챌린지 상세 조회 API")
+    @GetMapping("/{id}/recruit")
+    public ApiResponse<ChallengeRecruitDetailResponse> getRecruitChallenge(@PathVariable(value = "id") Long challengeId) {
+        ChallengeRecruitDetailResponse challengeRecruitDetailResponse = challengeQService.getRecruitChallengeDetail(challengeId);
+        return OK(challengeRecruitDetailResponse);
+    }
+
+    @ApiOperation(value = "진행중인 챌린지 상세 조회", notes = "챌린지 ID를 인자로 진행중인 챌린지 상세 조회 API")
+    @GetMapping("/{id}/progress")
+    public ApiResponse<ChallengeProgressDetailResponse> getProgressChallenge(@PathVariable(value = "id") Long challengeId) {
+        ChallengeProgressDetailResponse challengeProgressDetailResponse = challengeQService.getProgressChallengeDetail(challengeId);
+        return OK(challengeProgressDetailResponse);
     }
 
     @ApiOperation(value = "코드로 챌린지 참가", notes = "uuid로 해당 챌린지 참여 API")

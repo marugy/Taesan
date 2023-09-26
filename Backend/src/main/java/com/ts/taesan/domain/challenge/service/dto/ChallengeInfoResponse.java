@@ -15,7 +15,7 @@ public class ChallengeInfoResponse {
 
     private Long price;
 
-    private Date period;
+    private Date endDate;
 
     private String uuid;
 }

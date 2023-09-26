@@ -27,7 +27,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false, unique = true, name = "login_id")
@@ -39,13 +39,13 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = false, name = "simple_password")
     private String simplePassword;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true)
     private String hashCode;
 
     @Column(nullable = true, unique = true, name = "account_num")
     private String accountNum;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String phone;
 
     @Embedded

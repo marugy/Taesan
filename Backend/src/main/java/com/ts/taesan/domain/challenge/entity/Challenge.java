@@ -26,12 +26,16 @@ public class Challenge extends BaseEntity {
     @JoinColumn(name = "creator_id")
     private Member member;
     private String title;
-    private Date period;
+    private int period;
+    private Date startDate;
+    private Date endDate;
     private Long price;
     private int state; // 0이면 모집중, 1이면 진행중, 2면 종료
     private String uuid;
 
     public void start() {
         this.state = 1;
+        this.startDate = new Date();
+        this.endDate = new Date(new Date().getTime() + period * 1000 * 60 * 60 * 24);
     }
 }

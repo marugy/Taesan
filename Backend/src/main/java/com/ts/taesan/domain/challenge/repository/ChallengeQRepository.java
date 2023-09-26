@@ -42,11 +42,13 @@ public class ChallengeQRepository {
                         challenge.id,
                         challenge.title,
                         challenge.price,
-                        challenge.createDate,
-                        challenge.period
+                        challenge.startDate,
+                        challenge.endDate,
+                        challengeParticipant.isExchange
                 ))
-                .from(challenge)
-                .where(challenge.member.id.eq(memberId).and(challenge.state.eq(2)))
+                .from(challenge, challengeParticipant)
+                .join(challengeParticipant.challenge, challenge)
+                .where(challengeParticipant.member.id.eq(memberId).and(challenge.state.eq(2)))
                 .fetch();
     }
 
@@ -55,12 +57,24 @@ public class ChallengeQRepository {
                 .select(Projections.constructor(ChallengeInfoResponse.class,
                         challenge.title,
                         challenge.price,
-                        challenge.period,
+                        challenge.endDate,
                         challenge.uuid
                 ))
                 .from(challenge)
                 .where(challenge.id.eq(challengeId))
                 .fetchFirst();
+    }
+
+    public List<String> getParticipantsName(Long challengeId) {
+        List<String> participantNames = queryFactory
+                .select(
+                        challengeParticipant.member.name
+                )
+                .from(challengeParticipant)
+                .join(challengeParticipant.member, member)
+                .where(challengeParticipant.challenge.id.eq(challengeId))
+                .fetch();
+        return participantNames;
     }
 
     public List<ParticipantResponse> getParticipants(Long challengeId) {

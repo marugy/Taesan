@@ -16,6 +16,7 @@ public class ChallengeResponse {
     private Long id;
     private String title;
     private Long price;
-    private LocalDateTime createDate;
-    private Date period;
+    private Date startDate;
+    private Date endDate;
+    private boolean isExchange;
 }

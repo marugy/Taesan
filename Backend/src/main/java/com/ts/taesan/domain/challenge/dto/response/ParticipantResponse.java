@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 public class ParticipantResponse {
     private String name;
     private Long spare;
-
-
 }
