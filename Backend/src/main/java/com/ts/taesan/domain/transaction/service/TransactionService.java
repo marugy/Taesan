@@ -80,7 +80,6 @@ public class TransactionService {
         // Todo: 아직 구현 미완성
         Receipt receipt = Receipt.builder()
                 .transaction(transaction)
-                .shopName(receiptRequest.getShopName())
                 .transactionDate(receiptRequest.getDate())
                 .products(list)
                 .build();
