@@ -2,10 +2,7 @@ package com.ts.taesan.domain.challenge.api;
 
 import com.ts.taesan.domain.challenge.dto.reqeust.ChallengeMakeRequest;
 import com.ts.taesan.domain.challenge.dto.reqeust.ParticipateRequest;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeProgressDetailResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeRecruitDetailResponse;
-import com.ts.taesan.domain.challenge.dto.response.ChallengeResponse;
+import com.ts.taesan.domain.challenge.dto.response.*;
 import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
 import com.ts.taesan.domain.challenge.service.ChallengeQService;
 import com.ts.taesan.domain.challenge.service.ChallengeService;
@@ -65,6 +62,15 @@ public class ChallengeApi {
         return OK(challengeResponses);
     }
 
+    @ApiOperation(value = "종료 챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 종료된 챌린지 상세 조회 API")
+    @GetMapping("/expired/{id}")
+    public ApiResponse<ChallengeExpiredDetailResponse> getExpiredChallenge(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long challengeId) {
+        Long memberId = Long.parseLong(user.getUsername());
+        Member member = memberService.findById(memberId);
+        ChallengeExpiredDetailResponse challengeExpiredDetailResponse = challengeQService.getExpiredChallengeDetail(member, challengeId);
+        return OK(challengeExpiredDetailResponse);
+    }
+
     @ApiOperation(value = "모집중인 챌린지 상세 조회", notes = "챌린지 ID를 인자로 해당 모집중인 챌린지 상세 조회 API")
     @GetMapping("/recruit/{id}")
     public ApiResponse<ChallengeRecruitDetailResponse> getRecruitChallenge(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long challengeId) {
@@ -93,6 +99,13 @@ public class ChallengeApi {
         return OK(null);
     }
 
+    @ApiOperation(value = "챌린지 시작하기", notes = "챌린지 id로 챌린지 시작하기 API")
+    @PostMapping("/start/{id}")
+    public ApiResponse<?> startChallenge(@PathVariable(name = "id") Long challengeId) {
+        challengeService.startChallenge(challengeId);
+        return OK(null);
+    }
+
     @ApiOperation(value = "챌린지에서 나가기", notes = "챌린지 id로 챌린지에서 나가기 API")
     @PostMapping("/exit/{id}")
     public ApiResponse<?> exitChallenge(@AuthenticationPrincipal User user, @PathVariable(name = "id") Long challengeId) {
@@ -102,10 +115,10 @@ public class ChallengeApi {
         return OK(null);
     }
 
-    @ApiOperation(value = "챌린지 시작하기", notes = "챌린지 id로 챌린지 시작하기 API")
-    @PostMapping("/start/{id}")
-    public ApiResponse<?> startChallenge(@PathVariable(name = "id") Long challengeId) {
-        challengeService.startChallenge(challengeId);
+    @ApiOperation(value = "챌린지 제거하기", notes = " 챌린지 폭파하기 API")
+    @DeleteMapping("/{id}")
+    public ApiResponse<?> removeChallenge(@PathVariable(name = "id") Long challengeId) {
+        challengeService.delete(challengeId);
         return OK(null);
     }
 }

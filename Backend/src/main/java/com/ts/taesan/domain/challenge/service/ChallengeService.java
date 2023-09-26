@@ -44,4 +44,10 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow();
         challenge.start();
     }
+
+    public void delete(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow();
+        challengeParticipantRepository.deleteAllByChallengeId(challengeId);
+        challengeRepository.delete(challenge);
+    }
 }

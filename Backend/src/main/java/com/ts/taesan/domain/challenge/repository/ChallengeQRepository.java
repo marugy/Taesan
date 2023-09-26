@@ -10,6 +10,7 @@ import static com.ts.taesan.domain.member.entity.QMember.member;
 import com.ts.taesan.domain.challenge.dto.response.*;
 import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeInfoResponse;
+import com.ts.taesan.domain.challenge.service.dto.ExpiredChallengeInfoResponse;
 import com.ts.taesan.domain.member.entity.QMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -46,10 +47,11 @@ public class ChallengeQRepository {
                         challenge.price,
                         challenge.startDate,
                         challenge.endDate,
-                        challengeParticipant.isExchange
+                        challengeParticipant.isExchange,
+                        challengeParticipant.spare
                 ))
-                .from(challenge, challengeParticipant)
-                .join(challengeParticipant.challenge, challenge)
+                .from(challengeParticipant)
+                .join(challenge).on(challengeParticipant.challenge.id.eq(challenge.id))
                 .where(challengeParticipant.member.id.eq(memberId).and(challenge.state.eq(2)))
                 .fetch();
     }
@@ -92,5 +94,18 @@ public class ChallengeQRepository {
                 .where(challengeParticipant.challenge.id.eq(challengeId))
                 .fetch();
         return participants;
+    }
+
+    public ExpiredChallengeInfoResponse getExpiredDetailInfo(Long challengeId) {
+        return queryFactory
+                .select(Projections.constructor(ExpiredChallengeInfoResponse.class,
+                        challenge.title,
+                        challenge.startDate,
+                        challenge.endDate,
+                        challenge.price
+                ))
+                .from(challenge)
+                .where(challenge.id.eq(challengeId))
+                .fetchFirst();
     }
 }

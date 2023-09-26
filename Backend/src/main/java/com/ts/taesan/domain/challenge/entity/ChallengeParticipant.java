@@ -5,6 +5,7 @@ import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.global.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -19,7 +20,7 @@ public class ChallengeParticipant extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
     @ManyToOne

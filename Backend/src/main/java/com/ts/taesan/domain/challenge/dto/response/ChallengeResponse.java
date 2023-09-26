@@ -19,4 +19,14 @@ public class ChallengeResponse {
     private Date startDate;
     private Date endDate;
     private boolean isExchange;
+    private Long spare;
+
+//    public ChallengeResponse(Long id, String title, Long price, Date startDate, Date endDate, boolean isExchange) {
+//        this.id = id;
+//        this.title = title;
+//        this.price = price;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        this.isExchange = isExchange;
+//    }
 }
