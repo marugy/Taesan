@@ -48,8 +48,8 @@ public class ChallengeQRepository {
                         challenge.endDate,
                         challengeParticipant.isExchange
                 ))
-                .from(challenge, challengeParticipant)
-                .join(challengeParticipant.challenge, challenge)
+                .from(challengeParticipant)
+                .join(challenge).on(challengeParticipant.challenge.id.eq(challenge.id))
                 .where(challengeParticipant.member.id.eq(memberId).and(challenge.state.eq(2)))
                 .fetch();
     }
