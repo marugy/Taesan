@@ -54,14 +54,14 @@ public class ReceiptOcrDto {
     @AllArgsConstructor
     @NoArgsConstructor(access = PUBLIC)
     public static class Name{
-        private String text;
+        private Formatted formatted;
     }
 
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor(access = PUBLIC)
     public static class Count{
-        private String text;
+        private Formatted formatted;
     }
 
     @Getter
