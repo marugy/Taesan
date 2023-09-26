@@ -31,8 +31,10 @@ public class ChallengeQRepository {
                         challenge.id,
                         challenge.state
                 ))
-                .from(challenge)
-                .where(challenge.id.eq(memberId).and(challenge.state.eq(0).or(challenge.state.eq(1))))
+                .from(challengeParticipant, challenge)
+                .join(challengeParticipant.member, member)
+                .join(challengeParticipant.challenge, challenge)
+                .where(challengeParticipant.member.id.eq(memberId).and(challenge.state.eq(0).or(challenge.state.eq(1))))
                 .fetchFirst();
     }
 
