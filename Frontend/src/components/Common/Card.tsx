@@ -25,7 +25,7 @@ const Card = ({cardnumber,name,assetnumber,main}:CardInfo) => {
           <span className="text-white text-sm">{assetnumber}</span>
         </div>
         {main !== '' && (
-          <button className='absolute bottom-12 right-4 bg-blue-700 w-[30%] h-[20%] rounded-lg border-2' onClick={()=>navigate('/history')}>
+          <button className='absolute bottom-12 right-4 bg-blue-700 w-[30%] h-[20%] rounded-lg border-2 flex justify-center items-center' onClick={() => navigate('/history')}>
             <span className="text-white text-sm font-main">거래내역</span>
           </button>
         )}

@@ -4,8 +4,11 @@ import { HistoryData } from 'types/HIstoryForm'
 import { useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 
+
 const HistoryList = () => {
     const navigate = useNavigate()
+    
+    
 
     return (
         <div className='flex flex-col items-center'>
@@ -13,12 +16,10 @@ const HistoryList = () => {
                 거래 내역 
             </div>
             <div className='w-[86%]'>
-            <div onClick={()=>{navigate(`/history/detail/${1}`)}}>
-            {/* <div onClick={()=>{navigate(`/history/detail/${transaction_id}`)}}> */}
-                <div className='text-xl font-bold mt-3'> 8월 08일</div>
-                <HistoryItem/>
-                <hr className='mt-1'/>
-            </div>
+                <div onClick={()=>{navigate(`/history/detail/${1}`)}}>
+                    <HistoryItem/>
+                    <hr className='mt-1'/>
+                </div>
             </div>
         </div>
     );

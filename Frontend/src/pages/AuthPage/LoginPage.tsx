@@ -12,7 +12,7 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className='h-full flex items-center justify-center'>
       {showLanding ? <Landing /> : <LoginForm />}
     </div>
   );

@@ -65,9 +65,9 @@ const LoginForm = () => {
 
   return (
     <div>
-      <Card color="transparent" shadow={false} className="h-screen flex justify-center items-center">
+      <Card color="transparent" shadow={false} className="flex justify-center items-center">
         <div>
-          <img src="/Main/logo.png" className="h-36" alt="" />
+          <img src="/Main/logo.png" className="dt:h-36 tb:h-36 h-28" alt="" />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
           <div className="flex flex-col mb-4 gap-6">
