@@ -66,12 +66,12 @@ public class AuthService {
         }
         accountList = accountRepository.saveAll(accountList);
 
-        // 카드 3개 생성
+        // 카드 4개 생성
         List<Card> cardList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             Card card = Card.builder()
                     .memberCi(userCi)
-                    .cardCompany(dummyUtils.getBankName())
+                    .cardCompany(dummyUtils.getBankName(i))
                     .accountId(accountList.get(i).getId())
                     .cardNum(dummyUtils.getCardNum())
                     .isConsent(true)

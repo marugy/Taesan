@@ -74,14 +74,12 @@ public class DummyUtils {
      * @return 랜덤 카드 이름
      */
     public String getCardName() {
-        StringBuilder accountName = new StringBuilder();
-        accountName.append(BankName.valueOf(random.nextInt(5)))
-                .append(' ')
-                .append(CardName.valueOf(random.nextInt(5)))
+        StringBuilder cardName = new StringBuilder();
+        cardName.append(CardName.valueOf(random.nextInt(5)))
                 .append(' ')
                 .append(CardRate.valueOf(random.nextInt(5)));
 
-        return accountName.append(" 카드").toString();
+        return cardName.append(" 카드").toString();
     }
 
     /**
@@ -100,6 +98,15 @@ public class DummyUtils {
      */
     public String getBankName() {
         return BankName.valueOf(random.nextInt(5)).name();
+    }
+
+    /**
+     * 랜덤 은행 이름 생성
+     *
+     * @return 랜덤 은행 이름
+     */
+    public String getBankName(int idx) {
+        return BankName.valueOf(random.nextInt(idx)).name();
     }
 
     /**
