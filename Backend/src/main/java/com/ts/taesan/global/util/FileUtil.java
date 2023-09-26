@@ -53,7 +53,7 @@ public class FileUtil {
         return uuid + "." + ext;
     }
 
-    private String extractExt(String originalFilename) {
+    public String extractExt(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
 
