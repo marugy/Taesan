@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const { setAccessToken, setRefreshToken } = useUserStore();
+  const { setAccessToken, setRefreshToken,setConnectedAsset } = useUserStore();
   const navigate = useNavigate();
 
   const {
@@ -55,6 +55,8 @@ const LoginForm = () => {
         console.log(res.data.response.refreshToken);
         setAccessToken(res.data.response.accessToken);
         setRefreshToken(res.data.response.refreshToken);
+        // 지워야할 부분 ( 테스트를 위한 코드 )
+        setConnectedAsset(false);
         navigate('/main');
       })
       .catch((err) => {

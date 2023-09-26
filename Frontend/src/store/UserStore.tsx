@@ -6,8 +6,15 @@ interface UserStore {
   setAccessToken: (accessToken: string) => void;
   refreshToken: string;
   setRefreshToken: (refreshToken: string) => void;
+
   name : string;
   setName : (name : string) => void;
+  
+  // 임시 테스트용 store
+  connectedAsset : boolean;
+  setConnectedAsset : (connectedAsset : boolean) => void;
+  isTikkleCreated : boolean;
+  setIsTikkleCreated : (isTikkleCreated : boolean) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -17,8 +24,14 @@ export const useUserStore = create<UserStore>()(
       setAccessToken: (accessToken: string) => set({ accessToken }),
       refreshToken: '',
       setRefreshToken: (refreshToken: string) => set({ refreshToken }),
+
       name : '',
       setName : (name : string) => set({ name }),
+      connectedAsset : false,
+      setConnectedAsset : (connectedAsset : boolean) => set({ connectedAsset }),
+
+      isTikkleCreated : false,
+      setIsTikkleCreated : (isTikkleCreated : boolean) => set({ isTikkleCreated }),
     }),
     {
       name: 'user-storage', // persist key

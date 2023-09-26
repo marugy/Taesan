@@ -56,7 +56,7 @@ function App() {
           {/* 절약 챌린지 관련 페이지 */}
           <Route path="/challenge" element={<ChallengePage />} />
           <Route path="/challenge/result" element={<ChallengeResultPage />} />
-          <Route path="/challenge/result/detail" element={<ChallengeResultDetailPage />} />
+          <Route path="/challenge/result/:id" element={<ChallengeResultDetailPage />} />
           <Route path="/challenge/create" element={<ChallengeCreatePage />} />
           <Route path="/challenge/play" element={<ChallengePlayPage />} />
           <Route path="/challenge/recruit" element={<ChallengeRecruitPage />} />

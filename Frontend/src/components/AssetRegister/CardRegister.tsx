@@ -2,10 +2,21 @@ import React from 'react';
 import { Typography, Button } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 import Swal2 from 'sweetalert2';
-const CardRegister = () => {
+import ArrowBack from 'components/Common/ArrowBack';
+import Card from 'components/Common/Card';
+import { useUserStore } from 'store/UserStore';
+
+interface CardRegisterProps {
+  cardList : Array<any>;
+
+}
+
+const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
   const navigate = useNavigate();
+  const { name,setConnectedAsset } = useUserStore();
   return (
     <div>
+      <ArrowBack pageName="카드 불러오기"/>
       <div className="text-center my-10">
         <Typography variant="h5" color="blue-gray">
           '태산' 사용을 위해
@@ -14,65 +25,18 @@ const CardRegister = () => {
           회원님의 카드 목록을 불러 왔습니다.
         </Typography>
       </div>
-      <div className="flex flex-col gap-5 justify-center items-center">
-        {/* <div>
-          <img src="/Card/Card1.png" className="h-36" />
-        </div> */}
-        <div className="relative">
-          <img src="/Card/Card1.png" className="h-36" alt="Card1" />
+      <div className="flex flex-col gap-3 justify-center items-center">
+      {cardList.map((card, index) => (
+                <Card
+                  cardId={card.card_id}
+                  cardCompany={card.company}
+                  cardNumber={card.card_num}
+                  cardType={`${card.card_name}`}
+                  main=""
+                  name={name}
+                />
+          ))}
 
-          <div className="absolute top-4 left-4">
-            <span className="text-white text-md">Credit</span>
-          </div>
-          <div className="absolute bottom-10 left-4">
-            <span className="text-white text-sm">LEE JI HEON</span>
-          </div>
-          <div className="absolute bottom-5 left-4">
-            <span className="text-white text-sm">6011 - 6175 - 8192 - 2346</span>
-          </div>
-        </div>
-
-        {/* <img src="/Card/Card2.png" /> */}
-        <div className="relative">
-          <img src="/Card/Card4.png" className="h-36" alt="Card1" />
-
-          <div className="absolute top-4 left-4">
-            <span className="text-white text-md">Credit</span>
-          </div>
-          <div className="absolute bottom-10 left-4">
-            <span className="text-white text-sm">LEE JI HEON</span>
-          </div>
-          <div className="absolute bottom-5 left-4">
-            <span className="text-white text-sm">6011 - 6175 - 8192 - 2346</span>
-          </div>
-        </div>
-        <div className="relative">
-          <img src="/Card/Card5.png" className="h-36" alt="Card1" />
-
-          <div className="absolute top-4 left-4">
-            <span className="text-white text-md">Credit</span>
-          </div>
-          <div className="absolute bottom-10 left-4">
-            <span className="text-white text-sm">LEE JI HEON</span>
-          </div>
-          <div className="absolute bottom-5 left-4">
-            <span className="text-white text-sm">6011 - 6175 - 8192 - 2346</span>
-          </div>
-        </div>
-        <div className="relative">
-          <img src="/Card/Card3.png" className="h-36" alt="Card1" />
-
-          <div className="absolute top-4 left-4">
-            <span className="text-white text-md">Credit</span>
-          </div>
-          <div className="absolute bottom-10 left-4">
-            <span className="text-white text-sm">LEE JI HEON</span>
-          </div>
-          <div className="absolute bottom-5 left-4">
-            <span className="text-white text-sm">6011 - 6175 - 8192 - 2346</span>
-          </div>
-        </div>
-        {/* <img src="/Card/Card6.png" /> */}
       </div>
       <div className="text-center mt-10">
         <Button
@@ -86,6 +50,7 @@ const CardRegister = () => {
             }).then(() => {
               navigate('/main');
             });
+            setConnectedAsset(true);
           }}
         >
           자산 연동하기

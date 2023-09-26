@@ -13,8 +13,54 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 
+import Swal from 'sweetalert2';
+import { Toast } from 'components/Common/Toast';
+
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
+
 const MyPageList = () => {
   const navigate = useNavigate();
+  const { accessToken, refreshToken, setAccessToken, setRefreshToken, setName } = useUserStore();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: '로그아웃',
+      html: `로그아웃하시겠습니까?`,
+      icon: 'question',
+
+      confirmButtonColor: '#0046ff',
+      confirmButtonText: '확인',
+
+      showCancelButton: true,
+      cancelButtonColor: 'red',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .get(`https://j9c211.p.ssafy.io/api/member-management/members/logout`, {
+            headers: {
+              'ACCESS-TOKEN': accessToken,
+              'REFRESH-TOKEN': refreshToken,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            setAccessToken('');
+            setRefreshToken('');
+            setName('');
+            navigate('/');
+            Toast.fire({
+              icon: 'success',
+              title: '로그아웃했습니다!',
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
   return (
     <div className="space-y-5">
       <Button
@@ -81,7 +127,10 @@ const MyPageList = () => {
         <ArrowForwardOutlinedIcon className="text-gray-500" />
       </Button>
 
-      <Button className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14">
+      <Button
+        className="flex items-center justify-between p-2 border rounded-xl bg-white w-full h-14"
+        onClick={handleLogout}
+      >
         <div className="flex items-center space-x-3">
           <LogoutOutlinedIcon className="text-[#8EB4B5] " />
           <div className="text-red-500 tb:text-sm dt:text-xl">로그아웃</div>

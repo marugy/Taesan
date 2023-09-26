@@ -37,11 +37,17 @@ const HistoryPage = () => {
   
   return (
     <div>
-      <ArrowBack pageName='거래내역'/>
-      <Card name='LEE JI HEON' assetnumber='6011 - 6175 - 8192 - 2346' cardnumber={1} main=''/>
-      {/* <Card name={cardUser} assetnumber={cardNumber} cardnumber={cardCompany} main=''/> */}
+      <ArrowBack pageName="거래내역" />
+      <Card
+        name="LEE JI HEON"
+        cardNumber="6011 - 6175 - 8192 - 2346"
+        cardCompany="신한은행"
+        main=""
+        cardId={123}
+        cardType="Credit"
+      />
       <HistoryList />
-      <BottomNav/>
+      <BottomNav />
     </div>
   );
 };

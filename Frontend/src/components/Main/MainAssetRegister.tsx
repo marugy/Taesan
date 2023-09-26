@@ -8,7 +8,7 @@ const MainAssetRegister = () => {
       <div className="w-72 relative">
         <img
           onClick={() => {
-            navigate('/main/asset/register');
+            navigate('/main/mydata');
           }}
           src="/Card/before_register.png"
           alt="asset_register"
