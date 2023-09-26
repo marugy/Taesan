@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountDetail;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountInfo;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountListResponse;
@@ -46,6 +47,22 @@ public class AccountQueryRepository {
                         Expressions.asString("예금주 이름1").as("holder_name"),
                         account.issueDate.as("issue_date")
 //                        account.expDate.as("exp_date")
+                ))
+                .from(account)
+                .where(
+                        account.accountNum.eq(accountNum)
+                )
+                .fetch();
+    }
+
+    public List<AccountDetail> findAccountDetailByAccountNum(String accountNum) {
+        return queryFactory
+                .select(Projections.constructor(AccountDetail.class,
+                        Expressions.asString("KRW").as("currency_code"),
+                        account.balanceAmt.as("balance_amt"),
+                        account.withdrawableAmt.as("withdrawable_amt"),
+                        account.offeredRate.as("offered_rate")
+//                        account.expDate.as("last_paid_in_cnt")
                 ))
                 .from(account)
                 .where(

@@ -60,7 +60,7 @@ public class AccountApi {
 
     @PostMapping("/deposit/detail")
     public ResponseEntity<AccountDetailResponse> getAccountDetail(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @AuthenticationPrincipal User user,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @Valid @RequestBody AccountDetailRequest accountDetailRequest)
@@ -68,11 +68,8 @@ public class AccountApi {
         log.info("{}", accountDetailRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountDetailResponse ret = new AccountDetailResponse();
-        List<AccountDetail> list = new ArrayList<>();
-        list.add(new AccountDetail());
-        ret.setDetailList(list);
-        return new ResponseEntity<>(ret, headers, HttpStatus.OK);
+        AccountDetailResponse detail = accountQueryService.findAccountDetail(accountDetailRequest.getAccountNum());
+        return new ResponseEntity<>(detail, headers, HttpStatus.OK);
     }
 
     @PostMapping("/deposit/transactions")

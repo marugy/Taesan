@@ -1,7 +1,9 @@
 package com.taesan.mydata.domain.bank.service;
 
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountDetail;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountInfo;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
+import com.taesan.mydata.domain.bank.api.dto.response.AccountDetailResponse;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountInfoResponse;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountListResponse;
 import com.taesan.mydata.domain.bank.repository.AccountQueryRepository;
@@ -33,6 +35,15 @@ public class AccountQueryService {
 
         return AccountInfoResponse.builder()
                 .basicList(accountInfos)
+                .build();
+    }
+
+    public AccountDetailResponse findAccountDetail(String accountNum) {
+
+        List<AccountDetail> accountInfos = accountQueryRepository.findAccountDetailByAccountNum(accountNum);
+
+        return AccountDetailResponse.builder()
+                .detailList(accountInfos)
                 .build();
     }
 

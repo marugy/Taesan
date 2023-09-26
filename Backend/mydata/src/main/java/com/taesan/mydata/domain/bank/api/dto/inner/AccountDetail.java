@@ -1,22 +1,32 @@
 package com.taesan.mydata.domain.bank.api.dto.inner;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
 public class AccountDetail {
 
         @JsonProperty("currency_code")
         private String currencyCode;
 
         @JsonProperty("balance_amt")
-        private String balanceAmt;
+        private Double balanceAmt;
 
         @JsonProperty("withdrawable_amt")
-        private String withdrawableAmt;
+        private Double withdrawableAmt;
 
         @JsonProperty("offered_rate")
-        private String offeredRate;
+        private Double offeredRate;
 
         @JsonProperty("last_paid_in_cnt")
         private String lastPaidInCnt;
 
-    }
+        @Builder
+        public AccountDetail(String currencyCode, Double balanceAmt, Double withdrawableAmt, Double offeredRate) {
+                this.currencyCode = currencyCode;
+                this.balanceAmt = balanceAmt;
+                this.withdrawableAmt = withdrawableAmt;
+                this.offeredRate = offeredRate;
+        }
+}

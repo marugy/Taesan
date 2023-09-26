@@ -36,7 +36,7 @@ public class Account {
 
     private Double withdrawableAmt;
 
-    private Double offered_rate;
+    private Double offeredRate;
 
     private Integer lastPaidInCnt;
 
