@@ -34,6 +34,8 @@ public class CardHistory {
 
     private String merchantRegno;
 
+    private Long approvedAmt;
+
     private Long modifiedAmt;
 
     private String totalInstallCnt;

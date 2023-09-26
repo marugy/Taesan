@@ -46,6 +46,21 @@ public class DummyUtils {
     }
 
     /**
+     * 1000 ~ 50000 사이의 금액 리턴
+     *
+     * @return 랜덤 결제 금액
+     */
+    public long getPayAmt() {
+        long min = 1000;   // 최소 값
+        long max = 50000; // 최대 값
+        long range = max - min + 1;
+
+        long randomLong = min + (long)(random.nextDouble() * range);
+
+        return ((randomLong + 99) / 100) * 100;
+    }
+
+    /**
      * 19자리의 랜덤 카드번호 리턴
      *
      * @return 랜덤 카드번호

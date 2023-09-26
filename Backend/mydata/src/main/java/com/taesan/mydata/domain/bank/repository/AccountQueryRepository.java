@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountDetail;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountInfo;
 import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
+import com.taesan.mydata.domain.bank.api.dto.inner.AccountTransactionList;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

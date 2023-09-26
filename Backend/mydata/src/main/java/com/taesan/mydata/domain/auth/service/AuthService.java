@@ -55,6 +55,9 @@ public class AuthService {
                     .accountNum(dummyUtils.getAccountNum())
                     .currencyCode("KRW")
                     .savingMethod(dummyUtils.getType(2))
+                    .offeredRate(0.1)
+                    .balanceAmt(10000000.0)
+                    .withdrawableAmt(10000000.0)
                     .expDate(new Date(date.getTime() + 157788000000L))
                     .build();
             accountList.add(account);
@@ -84,14 +87,16 @@ public class AuthService {
                 if (result) {
                     Shop shop = dummyUtils.getShop();
                     Date payTime = new Date(new Date().getTime() - (i * 86400000L) - (j * 3600000));
+                    Card card = cardList.get(new Random().nextInt(3));
                     CardHistory cardHistory = CardHistory.builder()
-                            .card(cardList.get(new Random().nextInt(3)))
+                            .card(card)
                             .approvedNum("12345678")
                             .approvedDtime(payTime.toString())
                             .status("01")
                             .payType(dummyUtils.getType(2))
                             .merchantName(shop.name())
                             .merchantRegno(shop.getRegistrationNumber())
+                            .approvedAmt(dummyUtils.getPayAmt())
                             .build();
 
                     cardHistoryRepository.save(cardHistory);

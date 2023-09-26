@@ -6,6 +6,7 @@ import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountDetailResponse;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountInfoResponse;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountListResponse;
+import com.taesan.mydata.domain.bank.api.dto.response.AccountTransactionListResponse;
 import com.taesan.mydata.domain.bank.repository.AccountQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

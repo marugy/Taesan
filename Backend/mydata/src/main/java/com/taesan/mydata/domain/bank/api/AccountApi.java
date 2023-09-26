@@ -7,6 +7,7 @@ import com.taesan.mydata.domain.bank.api.dto.inner.AccountTransactionList;
 import com.taesan.mydata.domain.bank.api.dto.request.*;
 import com.taesan.mydata.domain.bank.api.dto.response.*;
 import com.taesan.mydata.domain.bank.service.AccountQueryService;
+import com.taesan.mydata.domain.bank.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,7 @@ import java.util.List;
 public class AccountApi {
 
     private final AccountQueryService accountQueryService;
+    private final AccountService accountService;
 
     @GetMapping
     public ResponseEntity<AccountListResponse> getAccountList(
@@ -72,29 +74,39 @@ public class AccountApi {
         return new ResponseEntity<>(detail, headers, HttpStatus.OK);
     }
 
-    @PostMapping("/deposit/transactions")
-    public ResponseEntity<AccountTransactionListResponse> getTransactions(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestHeader("x-api-tran-id") String tranId,
-            @RequestHeader("x-api-type") String type,
-            @Valid @RequestBody AccountTransactionListRequest accountTransactionListRequest)
+//    @PostMapping("/deposit/transactions")
+//    public ResponseEntity<AccountTransactionListResponse> getTransactions(
+//            @AuthenticationPrincipal User user,
+//            @RequestHeader("x-api-tran-id") String tranId,
+//            @RequestHeader("x-api-type") String type,
+//            @Valid @RequestBody AccountTransactionListRequest accountTransactionListRequest)
+//    {
+//        log.info("{}", accountTransactionListRequest.getOrgCode());
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("x-api-tran-id", "1234567890M00000000000001");
+//        AccountTransactionListResponse ret = new AccountTransactionListResponse();
+//        List<AccountTransactionList> list = new ArrayList<>();
+//        list.add(new AccountTransactionList());
+//        ret.setTransList(list);
+//        return new ResponseEntity<>(ret, headers, HttpStatus.OK);
+//    }
+
+    @PostMapping("/charge")
+    public ResponseEntity<ChargeResponse> charge(
+            @Valid @RequestBody ChargeRequest chargeRequest)
     {
-        log.info("{}", accountTransactionListRequest.getOrgCode());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("x-api-tran-id", "1234567890M00000000000001");
-        AccountTransactionListResponse ret = new AccountTransactionListResponse();
-        List<AccountTransactionList> list = new ArrayList<>();
-        list.add(new AccountTransactionList());
-        ret.setTransList(list);
-        return new ResponseEntity<>(ret, headers, HttpStatus.OK);
+        log.info("{}", chargeRequest.getSenderAccNum());
+        accountService.charge(chargeRequest.getSenderAccNum(), chargeRequest.getTransAmt());
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @PostMapping("/transfer")
     public ResponseEntity<TransferResponse> transfer(
             @Valid @RequestBody TransferRequest transferRequest)
     {
-        log.info("{}", transferRequest.getSenderAccNum());
-        return new ResponseEntity<>(new TransferResponse(), HttpStatus.OK);
+        log.info("{}", transferRequest.getTransAmt());
+        accountService.transfer(transferRequest.getReceiverAccNum(), transferRequest.getTransAmt());
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 }

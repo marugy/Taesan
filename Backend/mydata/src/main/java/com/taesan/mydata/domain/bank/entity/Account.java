@@ -40,4 +40,12 @@ public class Account {
 
     private Integer lastPaidInCnt;
 
+    public void withdraw(int amt) {
+        balanceAmt -= amt;
+    }
+
+    public void deposit(int amt) {
+        balanceAmt += amt;
+    }
+
 }
