@@ -9,39 +9,13 @@ import './styles.css';
 import { Pagination, Navigation } from 'swiper/modules';
 import Card from 'components/Common/Card';
 import './MainCardInfo.css';
-const MainCardInfo = () => {
-  const dummyData = [
-    {
-      cardnumber: 9,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 8,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 3,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 4,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 5,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 6,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-  ];
+import { useUserStore } from 'store/UserStore';
+
+interface CardInfoProps {
+  cardList: Array<any>;
+}
+const MainCardInfo: React.FC<CardInfoProps> = ({ cardList }) => {
+  const { name } = useUserStore();
   return (
     <div className="w-full flex justify-center">
       <div className="w-[70vw] dt:w-[30vw] ">
@@ -56,10 +30,18 @@ const MainCardInfo = () => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          {dummyData.map((data, index) => (
+          {cardList.map((data, index) => (
             <SwiperSlide key={index}>
               <div className="w-full h-full bg-back flex justify-center items-center">
-                <Card cardnumber={data.cardnumber} name={data.name} assetnumber={data.assetnumber} main='1' />
+                {/* <Card cardnumber={data.cardId} name={data.cardCompany} assetnumber={data.cardCompany} main="1" /> */}
+                <Card
+                  cardId={data.cardId}
+                  cardCompany={data.cardCompany}
+                  cardNumber={data.cardNumber}
+                  cardType={data.cardType}
+                  main="1"
+                  name={name}
+                />
               </div>
             </SwiperSlide>
           ))}
