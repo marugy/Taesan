@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReceiptRequest {
-    String shopName;
     LocalDateTime date;
-    List<ReceiptDTO> productList;
+    List<ReceiptReqDto> productList;
 }
