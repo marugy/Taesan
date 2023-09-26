@@ -41,7 +41,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             className=""
             color="blue"
             onClick={() => {
-              navigate('/main/asset/register');
+              navigate('/main/mydata');
             }}
           >
             자산 등록

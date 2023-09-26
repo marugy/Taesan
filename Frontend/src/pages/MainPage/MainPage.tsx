@@ -10,20 +10,33 @@ import { useUserStore } from 'store/UserStore';
 
 const MainPage = () => {
   // 스토어에서 AT,RT 가져오기
-  const { accessToken, refreshToken, setName } = useUserStore();
+  const { accessToken, refreshToken, setName,connectedAsset,setConnectedAsset } = useUserStore();
 
   // 사용자 자산 관련 State
   const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
-  const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
+  // const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
   const [bankName, setBankName] = useState('카카오뱅크'); // 은행 이름
   const [accountNumber, setAccountNumber] = useState('110509677498'); // 계좌 번호
-  const [balance, setBalance] = useState(0); // 잔액
+  const [balance, setBalance] = useState(870120); // 잔액
   const [cardList, setCardList] = useState([
+    // Axios 쏘고 응답값 갈아 끼우기
     {
       cardId: 12312321321123121212,
       cardCompany: '신한은행',
-      cardNumber: '1234-1234-1234-1234',
+      cardNumber: '2391-2812-3851-2847',
       cardType: 'Credit',
+    },
+    {
+      cardId: 12312321321123121213,
+      cardCompany: '카카오뱅크',
+      cardNumber: '1364-1254-1634-1434',
+      cardType: 'Credit',
+    },
+    {
+      cardId: 12312321321123121213,
+      cardCompany: '토스뱅크',
+      cardNumber: '1534-1934-7834-9734',
+      cardType: 'Check',
     },
     {
       cardId: 12312321321123121213,
@@ -36,7 +49,7 @@ const MainPage = () => {
   // useQuery를 이용해 사용자 정보 호출 ( 2개의 쿼리 사용 )
   // 쿼리 1
   const getInfo = async () => {
-    const { data: userProfileInfo } = await axios.get('https://j9c211.p.ssafy.io/api/member-management/members/info', {
+    const { data: userProfileInfo, } = await axios.get('https://j9c211.p.ssafy.io/api/member-management/members/info', {
       headers: {
         'ACCESS-TOKEN': accessToken,
         'REFRESH-TOKEN': refreshToken,
@@ -77,9 +90,10 @@ const MainPage = () => {
         </div>
 
         {/* 자산 등록 여부에 따라 다른 화면 띄우기 */}
-        {/* <MainAssetRegister /> */}
         <div className="dt:w-[50vw] dt:flex dt:flex-col dt:justify-center dt:items-center">
-          <MainCardInfo cardList={cardList} />
+          {connectedAsset? <MainCardInfo cardList={cardList} />: <MainAssetRegister />}
+        
+          
           <MainAssetInfo
             createdTikkle={createdTikkle}
             connectedAsset={connectedAsset}

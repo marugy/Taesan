@@ -11,7 +11,7 @@ const OnedaySaveMoney: React.FC<OnedaySaveMoneyProps> = ({ selectedDate }) => {
       <div className="font-semibold">{selectedDate}</div>
       <div className="w-full flex justify-between mt-2">
         <ListItemPrefix>
-          <Avatar variant="square" className="p-1" alt="candice" src="Account/KB.jpg" />
+          <Avatar variant="circular" className="p-1" alt="candice" src="/Habit/smoking.png" />
         </ListItemPrefix>
         <div className="w-full flex justify-between">
           <div>
@@ -34,7 +34,7 @@ const OnedaySaveMoney: React.FC<OnedaySaveMoneyProps> = ({ selectedDate }) => {
       </div>
       <div className="w-full flex justify-between mt-2">
         <ListItemPrefix>
-          <Avatar variant="square" className="p-1" alt="candice" src="Account/KB.jpg" />
+          <Avatar variant="circular" className="p-1" alt="candice" src="/Habit/drinking.png" />
         </ListItemPrefix>
         <div className="w-full flex justify-between">
           <div>
