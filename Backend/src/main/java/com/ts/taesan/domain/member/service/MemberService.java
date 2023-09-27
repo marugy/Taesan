@@ -47,6 +47,7 @@ public class MemberService {
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .userId(member.getId())
                 .build();
     }
 
