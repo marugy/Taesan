@@ -74,10 +74,10 @@ const ChallengePlayPage = () => {
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-10 tb:text-md dt:text-xl font-bold">{title}</div>
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">남은 기간 : {period}일</div>
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-            목표 소비 금액 : ￦ {price}
+            목표 소비 금액 : {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
           </div>
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-            현재 남은 금액 : ￦ {spare}
+            현재 남은 금액 : {spare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
           </div>
         </div>
         <ChallengeMemberList players={players} price={price} />

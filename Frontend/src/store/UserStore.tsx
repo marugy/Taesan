@@ -7,14 +7,16 @@ interface UserStore {
   refreshToken: string;
   setRefreshToken: (refreshToken: string) => void;
 
-  name : string;
-  setName : (name : string) => void;
-  
+  name: string;
+  setName: (name: string) => void;
+  userId: string;
+  setUserId: (userId: string) => void;
+
   // 임시 테스트용 store
-  connectedAsset : boolean;
-  setConnectedAsset : (connectedAsset : boolean) => void;
-  isTikkleCreated : boolean;
-  setIsTikkleCreated : (isTikkleCreated : boolean) => void;
+  connectedAsset: boolean;
+  setConnectedAsset: (connectedAsset: boolean) => void;
+  isTikkleCreated: boolean;
+  setIsTikkleCreated: (isTikkleCreated: boolean) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -25,13 +27,15 @@ export const useUserStore = create<UserStore>()(
       refreshToken: '',
       setRefreshToken: (refreshToken: string) => set({ refreshToken }),
 
-      name : '',
-      setName : (name : string) => set({ name }),
-      connectedAsset : false,
-      setConnectedAsset : (connectedAsset : boolean) => set({ connectedAsset }),
+      name: '',
+      setName: (name: string) => set({ name }),
+      connectedAsset: false,
+      setConnectedAsset: (connectedAsset: boolean) => set({ connectedAsset }),
 
-      isTikkleCreated : false,
-      setIsTikkleCreated : (isTikkleCreated : boolean) => set({ isTikkleCreated }),
+      isTikkleCreated: false,
+      setIsTikkleCreated: (isTikkleCreated: boolean) => set({ isTikkleCreated }),
+      userId: '',
+      setUserId: (userId: string) => set({ userId }),
     }),
     {
       name: 'user-storage', // persist key
