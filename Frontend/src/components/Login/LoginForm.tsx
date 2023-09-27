@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const { setAccessToken, setRefreshToken,setConnectedAsset } = useUserStore();
+  const { setAccessToken, setRefreshToken, setConnectedAsset, setUserId } = useUserStore();
   const navigate = useNavigate();
 
   const {
@@ -37,17 +37,17 @@ const LoginForm = () => {
     //     setRefreshToken(res.data.response.refreshToken);
     //     console.log(res.data);
     //     console.log(res.data.response.accessToken);
-    //     navigate('/main');  
+    //     navigate('/main');
     //   })
     //   .catch((err) => {
     //     console.log(err);
     //     console.log(data.loginId, data.password)
     //   });
     // console.log('폼데이터', data);
-    axios.post("https://j9c211.p.ssafy.io/api/member-management/members/login",
-    {
-      "loginId": data.loginId,
-      "password": data.password
+    axios
+      .post('https://j9c211.p.ssafy.io/api/member-management/members/login', {
+        loginId: data.loginId,
+        password: data.password,
       })
       .then((res) => {
         console.log(res.data);
@@ -55,6 +55,7 @@ const LoginForm = () => {
         console.log(res.data.response.refreshToken);
         setAccessToken(res.data.response.accessToken);
         setRefreshToken(res.data.response.refreshToken);
+        setUserId(res.data.response.userId);
         // 지워야할 부분 ( 테스트를 위한 코드 )
         setConnectedAsset(false);
         navigate('/main');
@@ -62,7 +63,6 @@ const LoginForm = () => {
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   return (

@@ -211,7 +211,7 @@ const ChallengeRecruitPage = () => {
             절약 기간 <br /> {period}일
           </div>
           <div className="mr-14 tb:mr-14 dt:mr-32 tb:text-md dt:text-xl font-bold">
-            목표소비금액 <br /> ￦ {price}원
+            목표소비금액 <br /> {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
           </div>
         </div>
         <div className="flex flex-col items-center bg-[#E3E9ED] w-[400px] dt:w-[500px] rounded-xl mb-5">

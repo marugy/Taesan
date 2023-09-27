@@ -10,7 +10,7 @@ import { useUserStore } from 'store/UserStore';
 
 const MainPage = () => {
   // 스토어에서 AT,RT 가져오기
-  const { accessToken, refreshToken, setName,connectedAsset,setConnectedAsset } = useUserStore();
+  const { accessToken, refreshToken, setName, connectedAsset, setConnectedAsset } = useUserStore();
 
   // 사용자 자산 관련 State
   const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
@@ -49,7 +49,7 @@ const MainPage = () => {
   // useQuery를 이용해 사용자 정보 호출 ( 2개의 쿼리 사용 )
   // 쿼리 1
   const getInfo = async () => {
-    const { data: userProfileInfo, } = await axios.get('https://j9c211.p.ssafy.io/api/member-management/members/info', {
+    const { data: userProfileInfo } = await axios.get('https://j9c211.p.ssafy.io/api/member-management/members/info', {
       headers: {
         'ACCESS-TOKEN': accessToken,
         'REFRESH-TOKEN': refreshToken,
@@ -61,24 +61,24 @@ const MainPage = () => {
   };
   const query = useQuery('getInfo', getInfo);
 
-  // 쿼리 2
-  const getSaving = async () => {
-    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets', {
-      headers: {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      },
-    });
-    console.log(userAssetInfo);
-    setCreatedTikkle(userAssetInfo.response.createdTikkle);
-    setConnectedAsset(userAssetInfo.response.connetedAsset);
-    setBankName(userAssetInfo.response.account.bank);
-    setAccountNumber(userAssetInfo.response.account.accountNum);
-    setBalance(userAssetInfo.response.account.balance);
-    setCardList(userAssetInfo.response.cardList);
-    return userAssetInfo;
-  };
-  const query2 = useQuery('getSaving', getSaving);
+  // 쿼리 2 ( API 관련 임시 주석처리 )
+  // const getSaving = async () => {
+  //   const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets', {
+  //     headers: {
+  //       'ACCESS-TOKEN': accessToken,
+  //       'REFRESH-TOKEN': refreshToken,
+  //     },
+  //   });
+  //   console.log(userAssetInfo);
+  //   setCreatedTikkle(userAssetInfo.response.createdTikkle);
+  //   setConnectedAsset(userAssetInfo.response.connetedAsset);
+  //   setBankName(userAssetInfo.response.account.bank);
+  //   setAccountNumber(userAssetInfo.response.account.accountNum);
+  //   setBalance(userAssetInfo.response.account.balance);
+  //   setCardList(userAssetInfo.response.cardList);
+  //   return userAssetInfo;
+  // };
+  // const query2 = useQuery('getSaving', getSaving);
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);
@@ -91,9 +91,8 @@ const MainPage = () => {
 
         {/* 자산 등록 여부에 따라 다른 화면 띄우기 */}
         <div className="dt:w-[50vw] dt:flex dt:flex-col dt:justify-center dt:items-center">
-          {connectedAsset? <MainCardInfo cardList={cardList} />: <MainAssetRegister />}
-        
-          
+          {connectedAsset ? <MainCardInfo cardList={cardList} /> : <MainAssetRegister />}
+
           <MainAssetInfo
             createdTikkle={createdTikkle}
             connectedAsset={connectedAsset}
