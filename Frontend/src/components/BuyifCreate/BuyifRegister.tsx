@@ -140,7 +140,7 @@ const BuyifRegister = () => {
             {buyifbot?
                 <div className='w-full flex flex-col items-center gap-6'> 
                     <img src={'/buyifchatbot.png'} alt="chatbot" className='w-[40%] aspect-square my-6' />
-                    <div className='text-2xl font-bold w-[80%]'>고민 고민하지마 girl~ girl 헤이 유고걸 데레레레레레 뎃걸</div>
+                    <div className='text-2xl font-bold w-[80%] text-center'>현재 자산에 올바르지 않은 소비 같아요</div>
                 </div>
                 :null}
             </div>
