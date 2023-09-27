@@ -8,8 +8,8 @@ const ChallengeSaving = () => {
         도전 해볼까요?
       </div>
       <img src="/Challenge/ChallengeHome.png" alt="ChallengeHome" className="w-96 h-96" />
-      <div className="font-bold text-center tb:text-md dt:text-xl">챌린지를 통해 절약한 금액</div>
-      <div className="font-bold text-center tb:text-md dt:text-xl">￦ ChallengeSaveMoney</div>
+      {/* <div className="font-bold text-center tb:text-md dt:text-xl">챌린지를 통해 절약한 금액</div>
+      <div className="font-bold text-center tb:text-md dt:text-xl">￦ ChallengeSaveMoney</div> */}
     </div>
   );
 };
