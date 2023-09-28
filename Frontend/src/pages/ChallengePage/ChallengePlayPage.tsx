@@ -69,15 +69,16 @@ const ChallengePlayPage = () => {
     <div className="flex flex-col h-screen">
       <ArrowBack pageName="진행중인 챌린지" />
 
-      <div className="flex flex-col items-center">
-        <div className="m-5">
-          <div className="mr-14 tb:mr-14 dt:mr-32 mb-10 tb:text-md dt:text-xl font-bold">{title}</div>
-          <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">남은 기간 : {period}일</div>
+      <div className="flex flex-col items-center z-10">
+        <img src="/Challenge/ChallengePlay2.png" alt="ChallengePlay" className="w-auto h-24 dt:w-auto dt:h-52 " />
+        <div className=" border-4 rounded-xl p-3">
+          <div className="mr-14 tb:mr-14 dt:mr-32 mb-5 tb:text-md dt:text-xl font-bold">{title}</div>
+          <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">{period}일 남았습니다!</div>
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-            목표 소비 금액 : {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+            목표 소비 금액은 {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원입니다
           </div>
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-            현재 남은 금액 : {spare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+            현재 남은 금액은 {spare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원입니다
           </div>
         </div>
         <ChallengeMemberList players={players} price={price} />

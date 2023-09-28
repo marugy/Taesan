@@ -25,7 +25,7 @@ const RoomCode = ({ roomcode }: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-5 bg-gray-100 tb:text-md dt:text-xl rounded-lg  font-bold">
+    <div className="flex justify-center items-center mt-5 bg-gray-100 tb:text-md dt:text-xl rounded-lg  font-bold p-2">
       {roomcode}
       <IconButton className="font-bold m-1 tb:text-md dt:text-xl bg-main" onClick={() => handleCopyClipBoard(roomcode)}>
         <ContentCopyOutlinedIcon />
