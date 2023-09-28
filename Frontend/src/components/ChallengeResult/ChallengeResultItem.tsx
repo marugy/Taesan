@@ -46,10 +46,10 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
 
   return (
     <div className="tb:w-[450px] dt:w-[500px] border">
-      <div className="flex flex-col items-center ml-10 mr-20">
+      <div className="flex flex-col items-center ml-10 mr-20  ">
         <Button
           variant="text"
-          className="font-bold text-lg dt:text-[25px] my-2"
+          className="font-bold text-lg dt:text-[25px] my-2 border-2 rounded-xl"
           onClick={() => navigate(`/challenge/result/${id}`)}
         >
           {title}

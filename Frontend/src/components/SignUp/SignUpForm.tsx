@@ -236,11 +236,11 @@ const SingUpForm = () => {
   }, [simplePassword]);
 
   return (
-    <div className=" flex flex-col justify-center items-center">
+    <div className=" flex flex-col justify-center items-center my-5">
       {viewPincode && <SignUpPincode pincode={pincode} setPincode={setPincode} setSimplePassword={setSimplePassword} />}
       <div className="text-2xl tb:text-3xl dt:text-4xl mb-5">회원가입</div>
       <form onSubmit={handleSubmit(onValid)}>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-1">
           <div className="flex gap-1 justify-center items-center">
             <Input
               size="lg"
@@ -272,11 +272,11 @@ const SingUpForm = () => {
             {watchedLoginId && validLoginId === 1 && <span className="text-blue-500 ">✔</span>}
           </div>
           {errors.loginId && <span className="text-red-500 ">{errors.loginId.message}</span>}
-          <div>
+          <div className="mt-2">
             <Input size="lg" label="*비밀번호" crossOrigin="anonymous" {...register('password')} type="password" />
             {errors.password && <span className="text-red-500 ">{errors.password.message}</span>}
           </div>
-          <div>
+          <div className="mt-2">
             <Input
               size="lg"
               label="*비밀번호 확인"
@@ -286,11 +286,11 @@ const SingUpForm = () => {
             />
             {errors.passwordConfirm && <span className="text-red-500 ">{errors.passwordConfirm.message}</span>}
           </div>
-          <div>
+          <div className="mt-2">
             <Input size="lg" label="*이름" crossOrigin="anonymous" {...register('name')} />
             {errors.name && <span className="text-red-500 ">{errors.name.message}</span>}
           </div>
-          <div className="">
+          <div className="mt-2">
             <Input
               size="lg"
               label="*휴대폰 번호"
@@ -323,21 +323,23 @@ const SingUpForm = () => {
             {errors.phone && <div className="text-red-500 ">{errors.phone.message}</div>}
             {errorSMS && <span className="text-red-500">{errorSMS}</span>}
           </div>
-          <div>
+          <div className="mt-2">
             {/* 이메일 */}
             <EmailInput register={register} errors={errors} />
             {errors.email && <span className="text-red-500 ">{errors.email.message}</span>}
           </div>
-          {/* 주소 */}
-          {/* <PostcodeList register={register} errors={errors} /> */}
-          {/* <NewPostcode register={register} errors={errors} /> */}
-          <NewPostcode2 register={register} errors={errors} />
-          {errors.postcode && <span className="text-red-500 ">{errors.postcode.message}</span>}
-          {errors.zonecode && <span className="text-red-500 ">{errors.zonecode.message}</span>}
-          {errors.detailPostcode && <span className="text-red-500 ">{errors.detailPostcode.message}</span>}
-          {/* {(watchedDetailPostcode === '' || watchedZonecode === '' || watchedPostcode === '') && (
+          <div className="mt-2">
+            {/* 주소 */}
+            {/* <PostcodeList register={register} errors={errors} /> */}
+            {/* <NewPostcode register={register} errors={errors} /> */}
+            <NewPostcode2 register={register} errors={errors} />
+            {errors.postcode && <span className="text-red-500 ">{errors.postcode.message}</span>}
+            {errors.zonecode && <span className="text-red-500 ">{errors.zonecode.message}</span>}
+            {errors.detailPostcode && <span className="text-red-500 ">{errors.detailPostcode.message}</span>}
+            {/* {(watchedDetailPostcode === '' || watchedZonecode === '' || watchedPostcode === '') && (
             <div className="text-red-500">주소를 입력해주세요.</div>
           )} */}
+          </div>
         </div>
         <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
           회원가입

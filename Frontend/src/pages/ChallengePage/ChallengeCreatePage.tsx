@@ -12,6 +12,7 @@ import BottomNav from 'components/Common/BottomNav';
 
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
+import ArrowBackParam from 'components/Common/ArrowBackParam';
 
 const ChallengeCreatePage = () => {
   const navigate = useNavigate();
@@ -97,7 +98,7 @@ const ChallengeCreatePage = () => {
   return (
     <div>
       <div className="flex flex-col h-screen">
-        <ArrowBack pageName="절약 챌린지 생성" />
+        <ArrowBackParam pageName="절약 챌린지 생성" param="/challenge" />
         <div className="flex flex-col items-center">
           <div className="m-5 w-[300px] dt:w-[350px]">
             <Input label="챌린지 제목" value={title} onChange={onChange} crossOrigin="anonymous" />

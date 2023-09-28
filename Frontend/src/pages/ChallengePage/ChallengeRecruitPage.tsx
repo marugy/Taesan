@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ChallengeMemberList from 'components/ChallengeRecruit/ChallengeMemberList';
 import RoomCode from 'components/ChallengeRecruit/RoomCode';
 import { Button } from '@material-tailwind/react';
-import ArrowBack from 'components/Common/ArrowBack';
+import ArrowBackParam from 'components/Common/ArrowBackParam';
 import BottomNav from 'components/Common/BottomNav';
 import Swal from 'sweetalert2';
 import { Toast } from 'components/Common/Toast';
@@ -203,7 +203,7 @@ const ChallengeRecruitPage = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <ArrowBack pageName="절약 챌린지 모집" />
+      <ArrowBackParam pageName="절약 챌린지 모집" param="/challenge" />
       <div className="flex flex-col items-center">
         <img src="/Challenge/ChallengeRecruit.png" alt="ChallengeRecruit" className="w-auto h-24 dt:w-auto dt:h-52 " />
         <div className=" border-4 rounded-xl p-3 mb-2">

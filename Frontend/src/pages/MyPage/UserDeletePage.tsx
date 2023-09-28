@@ -57,10 +57,13 @@ const UserDeletePage = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center mx-10 space-y-3">
-      <Button className="bg-red-500" onClick={handleDeleteUser}>
-        탈퇴하기
-      </Button>
+    <div>
+      <ArrowBack pageName="회원 탈퇴" />
+      <div className="h-screen flex flex-col justify-center items-center mx-10 space-y-3">
+        <Button className="bg-red-500" onClick={handleDeleteUser}>
+          탈퇴하기
+        </Button>
+      </div>
     </div>
   );
 };
