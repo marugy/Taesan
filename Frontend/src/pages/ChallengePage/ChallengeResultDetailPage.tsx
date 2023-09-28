@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BottomNav from 'components/Common/BottomNav';
 import ChallengeMemberList from 'components/ChallengeResultDetail/ChallengeMemberList';
-import ArrowBack from 'components/Common/ArrowBack';
+import ArrowBackParam from 'components/Common/ArrowBackParam';
 
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
@@ -53,9 +53,9 @@ const ChallengeResultDetailPage = () => {
 
   return (
     <div className="h-screen">
-      <ArrowBack pageName="이전 챌린지" />
+      <ArrowBackParam pageName="이전 챌린지" param="/challenge/result" />
       <div className="flex flex-col items-center">
-        <div className="m-5 flex flex-col justify-center items-center tb:text-md dt:text-xl font-bold">
+        <div className="m-5 flex flex-col justify-center items-center tb:text-md dt:text-xl font-bold border-2 rounded-lg p-3">
           <div className="mb-5">{title}</div>
           <div>절약 기간</div>
           <div className="mb-2 font">

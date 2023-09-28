@@ -75,11 +75,11 @@ const LoginForm = () => {
           <div className="flex flex-col mb-4 gap-6">
             <div>
               <Input size="lg" label="아이디" crossOrigin="anonymous" {...register('loginId')} />
-              {errors.loginId && <p className="font-thin text-sm">{errors.loginId.message}</p>}
+              {errors.loginId && <div className="font-thin text-sm text-red-500">{errors.loginId.message}</div>}
             </div>
             <div>
               <Input size="lg" label="비밀번호" crossOrigin="anonymous" {...register('password')} type="password" />
-              {errors.password && <p className="font-thin text-sm">{errors.password.message}</p>}
+              {errors.password && <div className="font-thin text-sm text-red-500">{errors.password.message}</div>}
             </div>
           </div>
           <Checkbox

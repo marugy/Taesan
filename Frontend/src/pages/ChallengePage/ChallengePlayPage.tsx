@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import ChallengeMemberList from 'components/ChallengePlay/ChallengeMemberList';
 import BottomNav from 'components/Common/BottomNav';
-import ArrowBack from 'components/Common/ArrowBack';
 
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 import dayjs from 'dayjs';
+import ArrowBackParam from 'components/Common/ArrowBackParam';
 
 const ChallengePlayPage = () => {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const ChallengePlayPage = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <ArrowBack pageName="진행중인 챌린지" />
+      <ArrowBackParam pageName="진행중인 챌린지" param="/challenge" />
 
       <div className="flex flex-col items-center z-10">
         <img src="/Challenge/ChallengePlay2.png" alt="ChallengePlay" className="w-auto h-24 dt:w-auto dt:h-52 " />

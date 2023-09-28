@@ -39,7 +39,7 @@ const SavingCreate = () => {
   };
 
   const handleCreate = () => {
-    if (duration === 0) {
+    if (duration < 1) {
       setErrorMessage('만기 날짜를 선택해주세요!');
     } else {
       // 핀코드 인증 ()
