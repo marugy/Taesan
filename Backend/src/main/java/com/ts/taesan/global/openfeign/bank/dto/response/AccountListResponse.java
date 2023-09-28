@@ -2,14 +2,17 @@ package com.ts.taesan.global.openfeign.bank.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountList;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
 public class AccountListResponse {
 
     @JsonProperty("rsp_code")
@@ -32,5 +35,16 @@ public class AccountListResponse {
 
     @JsonProperty("account_list")
     private List<AccountList> accountList;
+
+    @Builder
+    public AccountListResponse(String regDate, Long nextPage, List<AccountList> accountList) {
+        this.rspCode = "200";
+        this.rspMsg = "조회 성공";
+        this.searchTimestamp = new Date().getTime();
+        this.regDate = regDate;
+        this.nextPage = nextPage;
+        this.accountCnt = accountList.size();
+        this.accountList = accountList;
+    }
 
 }

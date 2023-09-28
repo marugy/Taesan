@@ -7,10 +7,13 @@ import com.ts.taesan.domain.member.dto.response.TokenResponse;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
+import com.ts.taesan.global.openfeign.auth.AuthClient;
+import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthClient authClient;
 
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
@@ -33,6 +37,18 @@ public class MemberService {
 
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
+        // 마이데이터 동의 로직인데 잘못 만듬. 나중에 옮기자.
+        String tranId = "1234567890M00000000000001";
+        String apiType = "user-search";
+        TokenRequest tokenRequest = TokenRequest.builder()
+                .org_code("ssafy00001")
+                .grant_type("authorization_code")
+                .client_id("taesan")
+                .client_id("taesanSecretPassword")
+                .redirect_uri("https://j9c211.p.ssafy.io/blahblah")
+                .build();
+        String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccessToken();
+        member.earnMydataAccessToken(accessToken);
         memberRepository.save(member);
     }
 
