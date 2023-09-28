@@ -29,11 +29,11 @@ const MyPageList = () => {
       html: `로그아웃하시겠습니까?`,
       icon: 'question',
 
-      confirmButtonColor: '#0046ff',
+      confirmButtonColor: '#ef4444',
       confirmButtonText: '확인',
 
       showCancelButton: true,
-      cancelButtonColor: 'red',
+      cancelButtonColor: '#64748b',
       cancelButtonText: '취소',
     }).then((result) => {
       if (result.isConfirmed) {
