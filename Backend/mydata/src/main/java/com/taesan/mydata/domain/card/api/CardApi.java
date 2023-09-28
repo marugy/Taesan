@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,7 +29,7 @@ public class CardApi {
 
     @GetMapping
     public ResponseEntity<CardListResponse> getCardList(
-            @RequestHeader("user-ci") long userCi,
+            @AuthenticationPrincipal User user,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @Valid @ModelAttribute CardListRequest accountListRequest)
@@ -35,7 +37,7 @@ public class CardApi {
         log.info("{}", accountListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        CardListResponse cardList = cardQueryService.findCardList(userCi, accountListRequest.getNext_page(), accountListRequest.getLimit());
+        CardListResponse cardList = cardQueryService.findCardList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
         return new ResponseEntity<>(cardList, headers, HttpStatus.ACCEPTED);
     }
 
