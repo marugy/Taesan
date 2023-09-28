@@ -7,6 +7,8 @@ import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/re
 import { formatPhone } from 'hooks/useFormatPhone';
 import EmailInput from './EmailInput';
 import PostcodeList from './PostcodeList';
+import NewPostcode from './NewPostcode';
+import NewPostcode2 from './NewPostcode2';
 import { FormProps } from 'types/SignUpForm';
 import axios from 'axios';
 
@@ -22,7 +24,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password')], '비밀번호가 다릅니다.')
     .required('비밀번호를 확인해주세요.'),
   name: yup.string().required('이름을 입력해주세요.'),
-  phone: yup.string().required(' '),
+  phone: yup.string().required('휴대폰을 인증해주세요.'),
   email: yup.string().required('이메일을 입력해주세요.'),
   postcode: yup.string().required('주소를 선택해주세요.'),
   zonecode: yup.string().required(' '),
@@ -238,7 +240,7 @@ const SingUpForm = () => {
       {viewPincode && <SignUpPincode pincode={pincode} setPincode={setPincode} setSimplePassword={setSimplePassword} />}
       <div className="text-2xl tb:text-3xl dt:text-4xl mb-5">회원가입</div>
       <form onSubmit={handleSubmit(onValid)}>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-5">
           <div className="flex gap-1 justify-center items-center">
             <Input
               size="lg"
@@ -315,10 +317,10 @@ const SingUpForm = () => {
                 </Button>
               </div>
             )}
-            {errors.phone && <span className="text-red-500 ">{errors.phone.message}</span>}
-            {phoneLengthError && <span className="text-red-500 ">유효하지 않은 번호입니다.</span>}
+            {phoneLengthError && <span className="text-red-500 p-2">유효하지 않은 번호입니다.</span>}
             {validPhone === 1 && <span className="text-blue-500 ">인증되었습니다.</span>}
             {validPhone === -1 && <div className="text-red-500 ">휴대폰 인증을 해주세요.</div>}
+            {errors.phone && <div className="text-red-500 ">{errors.phone.message}</div>}
             {errorSMS && <span className="text-red-500">{errorSMS}</span>}
           </div>
           <div>
@@ -327,7 +329,9 @@ const SingUpForm = () => {
             {errors.email && <span className="text-red-500 ">{errors.email.message}</span>}
           </div>
           {/* 주소 */}
-          <PostcodeList register={register} errors={errors} />
+          {/* <PostcodeList register={register} errors={errors} /> */}
+          {/* <NewPostcode register={register} errors={errors} /> */}
+          <NewPostcode2 register={register} errors={errors} />
           {errors.postcode && <span className="text-red-500 ">{errors.postcode.message}</span>}
           {errors.zonecode && <span className="text-red-500 ">{errors.zonecode.message}</span>}
           {errors.detailPostcode && <span className="text-red-500 ">{errors.detailPostcode.message}</span>}
