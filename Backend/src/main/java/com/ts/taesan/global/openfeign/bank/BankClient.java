@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(name = "bank", url = "${api.base-uri.mydata}/account-management/accounts", configuration = OpenFeignConfig.class)
@@ -19,8 +20,7 @@ public interface BankClient {
 //    public Optional<KakaoResult> loadUserByUsername(@RequestHeader("Authorization") String key, @PathVariable String name);
     @GetMapping
     ResponseEntity<AccountListResponse> getAccountList(
-//            @RequestHeader("Authorization") String token,
-            @RequestHeader("user-ci") long userCi,
+            @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @SpringQueryMap AccountListRequest accountListRequest);
@@ -28,24 +28,26 @@ public interface BankClient {
 
     @PostMapping("/deposit/basic")
     ResponseEntity<AccountInfoResponse> getAccountInfo(
-//            @AuthenticationPrincipal User user,
+            @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            @SpringQueryMap AccountInfoRequest accountInfoRequest);
+            @RequestBody AccountInfoRequest accountInfoRequest);
 
     @PostMapping("/deposit/detail")
     ResponseEntity<AccountDetailResponse> getAccountDetail(
-//            @AuthenticationPrincipal User user,
+            @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
-            @SpringQueryMap AccountDetailRequest accountDetailRequest);
+            @RequestBody AccountDetailRequest accountDetailRequest);
 
     @PostMapping("/charge")
     ResponseEntity<ChargeResponse> charge(
-            @SpringQueryMap ChargeRequest chargeRequest);
+            @RequestHeader("Authorization") String token,
+            @RequestBody ChargeRequest chargeRequest);
 
     @PostMapping("/transfer")
     ResponseEntity<TransferResponse> transfer(
-            @SpringQueryMap TransferResponse transferRequest);
+            @RequestHeader("Authorization") String token,
+            @RequestBody TransferResponse transferRequest);
 
 }

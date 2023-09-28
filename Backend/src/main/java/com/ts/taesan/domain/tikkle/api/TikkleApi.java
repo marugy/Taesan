@@ -54,6 +54,7 @@ public class TikkleApi {
         Member member = memberRepository.findById(userId).get();
         String tranId = "1234567890M00000000000001";
         String apiType = "user-search";
+        String accessToken = member.getMydataAccessToken();
 
         AccountInfoRequest accountInfoRequest = AccountInfoRequest.builder()
                 .org_code("ssafy00001")
@@ -71,6 +72,7 @@ public class TikkleApi {
                 .search_timestamp(new Date().getTime())
                 .build();
 
+        // 조회 여기서 안쓰는데 잘못만듬. 나중에 옮기자.
 //        AccountListRequest request = AccountListRequest.builder()
 //                .org_code("ssafy00001")
 //                .search_timestamp(1265275107687L)
@@ -79,8 +81,8 @@ public class TikkleApi {
 //                .build();
 
 //        List<AccountList> accountList = bankClient.getAccountList(Long.parseLong(user.getUsername()), tranId, apiType, request).getBody().getAccountList();
-        AccountInfo accountInfo = bankClient.getAccountInfo(tranId, apiType, accountInfoRequest).getBody().getBasicList().get(0);
-        AccountDetail accountDetail = bankClient.getAccountDetail(tranId, apiType, accountDetailRequest).getBody().getDetailList().get(0);
+        AccountInfo accountInfo = bankClient.getAccountInfo(accessToken, tranId, apiType, accountInfoRequest).getBody().getBasicList().get(0);
+        AccountDetail accountDetail = bankClient.getAccountDetail(accessToken, tranId, apiType, accountDetailRequest).getBody().getDetailList().get(0);
         Account account = Account.builder()
                 .bank(accountInfo.getBank())
                 .accountNum(member.getAccountNum())
@@ -94,7 +96,7 @@ public class TikkleApi {
                 .limit(500)
                 .build();
 
-        List<CardList> cardList = cardClient.getCardList(userId, tranId, apiType, cardListRequest).getBody().getCardList();
+        List<CardList> cardList = cardClient.getCardList(accessToken, tranId, apiType, cardListRequest).getBody().getCardList();
         List<Card> retCardList = cardList.stream().map(Card::new).collect(Collectors.toList());
 
         return AssetResponse.builder()

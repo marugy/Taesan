@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 
 @Service
 @Slf4j
@@ -37,9 +38,13 @@ public class MemberService {
 
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
-        // 마이데이터 동의 로직인데 잘못 만듬. 나중에 옮기자.
+        member = memberRepository.save(member);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("user_ci", Long.toString(member.getId()));
+        authClient.registerAuth(map);
+        // 마이데이터 동의 로직인데 여기에 임시로 만듬. 나중에 옮기자.
         String tranId = "1234567890M00000000000001";
-        String apiType = "user-search";
         TokenRequest tokenRequest = TokenRequest.builder()
                 .org_code("ssafy00001")
                 .grant_type("authorization_code")
@@ -49,7 +54,6 @@ public class MemberService {
                 .build();
         String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccessToken();
         member.earnMydataAccessToken(accessToken);
-        memberRepository.save(member);
     }
 
     public TokenResponse login(String loginId, String password) throws IOException {
