@@ -205,13 +205,18 @@ const ChallengeRecruitPage = () => {
     <div className="flex flex-col h-screen">
       <ArrowBack pageName="절약 챌린지 모집" />
       <div className="flex flex-col items-center">
-        <div className="m-5">
-          <div className="mr-14 tb:mr-14 dt:mr-32 mb-10 tb:text-md dt:text-xl font-bold">{title}</div>
-          <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl font-bold">
-            절약 기간 <br /> {period}일
-          </div>
-          <div className="mr-14 tb:mr-14 dt:mr-32 tb:text-md dt:text-xl font-bold">
-            목표소비금액 <br /> {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+        <img src="/Challenge/ChallengeRecruit.png" alt="ChallengeRecruit" className="w-auto h-24 dt:w-auto dt:h-52 " />
+        <div className=" border-4 rounded-xl p-3 mb-2">
+          <div className="mr-14 tb:mr-14 dt:mr-32 mb-5 tb:text-md dt:text-xl font-bold">{title}</div>
+          <div className="flex">
+            <div className="mr-14 tb:mr-14 dt:mr-32 mb-2 tb:text-md dt:text-xl">
+              <div className=" font-bold">절약 기간</div>
+              <div>{period}일</div>
+            </div>
+            <div className="mr-14 tb:mr-14 dt:mr-32  tb:text-md dt:text-xl ">
+              <div className="font-bold">목표소비금액</div>
+              <div>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+            </div>
           </div>
         </div>
         <div className="flex flex-col items-center bg-[#E3E9ED] w-[400px] dt:w-[500px] rounded-xl mb-5">
