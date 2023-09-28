@@ -8,6 +8,7 @@ import locale from 'antd/es/calendar/locale/ko_KR';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 const HabitCalendar = () => {
+  // 이게 아님 이거 안 쓰는 컴포넌트.
   const [date, setDate] = useState<Dayjs>(dayjs());
   const selectedDate = date.format('YYYY년 MM월 DD일');
 
@@ -63,7 +64,7 @@ const HabitCalendar = () => {
         onSelect={onSelect}
         onPanelChange={onPanelChange}
         dateCellRender={dateCellRender}
-        locale={locale}
+        locale={locale} 
       />
       <OnedaySaveMoney selectedDate={selectedDate} />
     </div>

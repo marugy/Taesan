@@ -36,6 +36,7 @@ import SavingCreatePage from 'pages/SavingPage/SavingCreatePage';
 import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
 import ApproveMyData from 'pages/MainPage/ApproveMyData';
+import NotFound from 'components/Common/NotFound';
 
 import './App.css';
 function App() {
@@ -97,6 +98,9 @@ function App() {
           <Route path="/saving/detail" element={<SavingDetailPage />} />
           <Route path="/saving/create" element={<SavingCreatePage />} />
           <Route path="/saving/delete" element={<SavingDeletePage />} />
+
+          {/* 예외처리를 위한 404 페이지  */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>

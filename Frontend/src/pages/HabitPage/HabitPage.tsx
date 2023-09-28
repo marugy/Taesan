@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 // 한국어로 변환
-import locale from 'antd/es/calendar/locale/ko_KR';
 import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
 import ArrowBack from 'components/Common/ArrowBack';
 
@@ -149,7 +148,10 @@ const HabitPage = () => {
         <div className="text-main text-3xl font-extrabold font-main">내 습관 절약</div>
         <div className="text-xl font-semibold mt-5 font-main">총 절약 금액 : 45,000원</div>
         {/* 달력 */}
-        <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange} locale={locale} cellRender={cellRender} />
+        <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange}  cellRender={cellRender}
+        
+        
+        />
         {/* 좋은 습관을 통해 하루에 아낀 돈 */}
         <OnedaySaveMoney selectedDate={selectedDate} />
         {/* 습관 생성 페이지 */}
