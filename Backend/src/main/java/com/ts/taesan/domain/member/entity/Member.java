@@ -51,7 +51,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Embedded
     private Address address;
 
-    @Column(nullable = true, name = "mydata_access_token") // 초기에는 없음
+    @Column(nullable = true, name = "mydata_access_token", length = 400) // 초기에는 없음
     private String mydataAccessToken;
 
     @Column(nullable = true, name = "refresh_token") // 초기에는 없음

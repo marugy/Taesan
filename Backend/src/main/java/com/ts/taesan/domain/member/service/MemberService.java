@@ -53,6 +53,7 @@ public class MemberService {
                 .redirect_uri("https://j9c211.p.ssafy.io/blahblah")
                 .build();
         String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccessToken();
+        log.warn("{}", accessToken);
         member.earnMydataAccessToken(accessToken);
     }
 
