@@ -11,7 +11,7 @@ const MainMenu = () => {
           onClick={() => {
             navigate('/buyif');
           }}
-          className="w-full h-full bg-pink-500 p-1  text-center rounded-2xl shadow-xl"
+          className="w-full h-full bg-pink-500 p-1  text-center rounded-2xl shadow-xl cursor-pointer hover:bg-pink-600 "
         >
           <div>
             <img src="/Main/샀다치고.png" className="h-[13vh] mx-auto dt:h-[23vh]" />
@@ -22,7 +22,7 @@ const MainMenu = () => {
       <div>
         <div
           onClick={() => navigate('/habit')}
-          className="w-full h-full p-1 text-center bg-blue-400 rounded-2xl shadow-xl"
+          className="w-full h-full p-1 text-center bg-blue-400 rounded-2xl shadow-2xl hover:bg-blue-600 cursor-pointer"
         >
           <div>
             <img src="/Main/습관저금통.png" className="h-[13vh] mx-auto dt:h-[23vh]" />
@@ -33,18 +33,18 @@ const MainMenu = () => {
       <div>
         <div
           onClick={() => navigate('/challenge')}
-          className="w-full h-full p-1 text-center bg-cyan-300 rounded-2xl shadow-xl"
+          className="w-full h-full p-1 text-center bg-cyan-300 rounded-2xl shadow-xl cursor-pointer hover:bg-cyan-500 hover:animate-bounce"
         >
           <div>
             <img src="/Main/절약챌린지.png" className="h-[13vh] mx-auto dt:h-[23vh]" />
           </div>
-          <div className="text-white text-lg font-semibold font-main dt:text-3xl">절약 챌린지</div>
+          <div className="text-white text-lg font-semibold font-main dt:text-3xl ">절약 챌린지</div>
         </div>
       </div>
       <div>
         <div
           onClick={() => navigate('/pattern')}
-          className="w-full h-full p-1 text-center bg-deep-purple-500 rounded-2xl shadow-xl"
+          className="w-full h-full p-1 text-center bg-deep-purple-500 rounded-2xl shadow-xl cursor-pointer hover:bg-deep-purple-600" 
         >
           <div>
             <img src="/Main/소비패턴.png" className="h-[13vh] mx-auto dt:h-[23vh]" />

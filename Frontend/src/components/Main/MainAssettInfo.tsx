@@ -31,7 +31,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             </div>
           </div>
 
-          <div className="flex items-center font-main font-semibold">{balance}원</div>
+          <div className="flex items-center font-main font-semibold">{balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
         </div>
       ) : (
         <div className="flex justify-between">
