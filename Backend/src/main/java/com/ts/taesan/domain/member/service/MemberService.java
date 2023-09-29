@@ -160,4 +160,9 @@ public class MemberService {
             return true;
         } else return false;
     }
+
+    public void addAccount(Long memberId, String account) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.addAccount(account);
+    }
 }

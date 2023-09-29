@@ -83,6 +83,10 @@ public class Member extends BaseEntity implements UserDetails {
         this.simplePassword = simplePassword;
     }
 
+    public void addAccount(String account) {
+        this.accountNum = account;
+    }
+
     ////////////////////////
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
