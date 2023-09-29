@@ -2,37 +2,45 @@ import React, { useState } from 'react';
 import HabitListCompleted from './HabitListCompleted';
 import HabitListProceeding from './HabitListProceeding';
 import { useNavigate } from 'react-router-dom';
+import { Tabs, TabsHeader, TabsBody, Tab, TabPanel } from '@material-tailwind/react';
+import { Square3Stack3DIcon, UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 const HabitList = () => {
   const navigate = useNavigate();
-  const [isCompleted, setIsCompleted] = useState(true);
-  const [isProceeding, setIsProceeding] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('proceeding');
+  const data = [
+    {
+      label: '진행 중인 습관',
+      value: 'proceeding',
+      icon: Square3Stack3DIcon,
+    },
+    {
+      label: '완료된 습관',
+      value: 'completed',
+      icon: UserCircleIcon,
+    },
+  ];
   return (
-    <div>
-      <button
-        onClick={() => {
-          setIsCompleted(true);
-          setIsProceeding(false);
-        }}
-      >
-        완료된 습관
-      </button>
-      <button
-        onClick={() => {
-          setIsCompleted(false);
-          setIsProceeding(true);
-        }}
-      >
-        진행중인 습관
-      </button>
-      {isCompleted ? <HabitListCompleted /> : null}
-      {isProceeding ? <HabitListProceeding /> : null}
-      <button
-        onClick={() => {
-          navigate('/habit/create');
-        }}
-      >
-        습관 생성하기
-      </button>
+    <div className="mt-10">
+      <Tabs value={selectedTab}>
+        <TabsHeader>
+          {data.map(({ label, value, icon }) => (
+            <Tab key={value} value={value} onClick={() => setSelectedTab(value)}>
+              <div className="flex items-center gap-2">
+                {React.createElement(icon, { className: 'w-5 h-5' })}
+                {label}
+              </div>
+            </Tab>
+          ))}
+        </TabsHeader>
+        <TabsBody>
+          <TabPanel value="proceeding">
+            <HabitListProceeding /> 
+          </TabPanel>
+          <TabPanel value="completed">
+            <HabitListCompleted />
+          </TabPanel>
+        </TabsBody>
+      </Tabs>
     </div>
   );
 };

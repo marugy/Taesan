@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePostcodePopup } from 'hooks/usePostcodePopup';
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+
+import TextField from '@mui/material/TextField';
+import { Button } from '@material-tailwind/react';
+import { Input } from '@material-tailwind/react';
 
 interface Props {
-  postcode: string;
-  zonecode: string;
-  detailPostcode: string;
-  setPostcode: (value: string) => void;
-  setZoncode: (value: string) => void;
-  setDetailPostcode: (value: string) => void;
+  register: UseFormRegister<any>;
+  errors?: FieldErrors;
 }
 
-const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZoncode, setDetailPostcode }: Props) => {
+const PostcodeList = ({ register }: Props) => {
+  const { onChange: onZonecodeChange, ...zonecodeRest } = register('zonecode');
+  const { onChange: onPostcodeChange, ...postcodeRest } = register('postcode');
+  const [postcode, setPostcode] = useState('');
+  const [zonecode, setZonecode] = useState('');
+  const [detailPostcode, setDetailPostcode] = useState('');
+
   const open = usePostcodePopup();
 
   const handleComplete = (data: any) => {
@@ -27,8 +34,11 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZonc
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    setPostcode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-    setZoncode(data.zonecode);
+    setPostcode(fullAddress);
+    onPostcodeChange({ target: { value: fullAddress, name: 'postcode' } });
+
+    setZonecode(data.zonecode);
+    onZonecodeChange({ target: { value: data.zonecode, name: 'zonecode' } });
   };
 
   const handleClick = () => {
@@ -36,26 +46,52 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZonc
   };
 
   // 상세 주소 추가
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeDetailPostcode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetailPostcode(e.target.value);
   };
 
   return (
-    <div>
-      <div>
-        w
-        <input type="text" placeholder="우편번호" readOnly defaultValue={zonecode} />
-        <button type="button" onClick={handleClick}>
+    <div className="space-y-2 border rounded-lg p-5">
+      <div className="space-x-1 flex items-center">
+        <Input
+          type="text"
+          label="우편번호"
+          {...register('zonecode')}
+          className=""
+          crossOrigin="anonymous"
+          disabled
+          value={zonecode}
+        />
+        <Button type="button" className="bg-[#0067AC] h-10 w-24" onClick={handleClick}>
           찾기
-        </button>
+        </Button>
       </div>
-      <div>
-        <input type="text" placeholder="주소" readOnly defaultValue={postcode} />
-        <input type="text" placeholder="상세주소" onChange={onChange} />
+      <div className="gap-1 flex flex-col">
+        <Input
+          className=""
+          type="text"
+          label="주소"
+          {...register('postcode')}
+          crossOrigin="anonymous"
+          disabled
+          value={postcode}
+        />
+        <Input
+          className=""
+          type="text"
+          label="상세주소"
+          maxLength={20}
+          {...register('detailPostcode')}
+          onChange={(e) => onChangeDetailPostcode(e)}
+          crossOrigin="anonymous"
+        />
       </div>
-      <div>
-        {zonecode} {postcode} {detailPostcode}
-      </div>
+      {zonecode && (
+        <div className="text-xs text-gray-500">
+          [{zonecode}] {postcode}, <br />
+          {detailPostcode}
+        </div>
+      )}
     </div>
   );
 };

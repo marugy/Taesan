@@ -2,12 +2,12 @@ import React from 'react';
 
 import ChallengeResultItem from './ChallengeResultItem';
 
-import { DUMMY } from 'constants/CHALLENGE_RESULT_LIST';
+import { CHALLENGE_RESULT_LIST } from 'constants/DUMMY';
 
 const ChallengeResultList = () => {
   return (
     <div className="space-y-2">
-      {DUMMY.map((item, index) => (
+      {CHALLENGE_RESULT_LIST.map((item, index) => (
         <ChallengeResultItem
           key={index}
           title={item.title}
