@@ -25,6 +25,9 @@ const ChallengeMemberList = ({ players, price }: Props) => {
             bgColor="#0046FF"
             customLabel={String(Math.round((player.spare / price) * 100)) + '%'}
             animateOnRender
+            transitionDuration="3s"
+            height="20px"
+            borderRadius="5px"
           />
         </div>
       ))}
