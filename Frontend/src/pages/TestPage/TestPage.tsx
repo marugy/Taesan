@@ -41,8 +41,12 @@ import {
 import { getBuyIf, postBuyIf, getPos } from 'api/ifbuys';
 import { getHistory, getTransactionDetail, getTransactionReceipt } from 'api/transactions';
 
+import { Notification } from 'components/Common/Notification';
+
 const TestPage = () => {
   const navigate = useNavigate();
+
+  Notification.fire({});
 
   return (
     <div>
