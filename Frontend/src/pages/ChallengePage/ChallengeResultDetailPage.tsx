@@ -52,19 +52,19 @@ const ChallengeResultDetailPage = () => {
   }, []);
 
   return (
-    <div className="h-screen">
+    <div className="h-full overflow-hidden">
       <ArrowBackParam pageName="이전 챌린지" param="/challenge/result" />
       <div className="flex flex-col items-center">
-        <div className="m-5 flex flex-col justify-center items-center tb:text-md dt:text-xl font-bold border-2 rounded-lg p-3">
-          <div className="mb-5">{title}</div>
-          <div>절약 기간</div>
-          <div className="mb-2 font">
+        <div className="m-5 flex flex-col justify-center items-center tb:text-md dt:text-xl border-2 rounded-lg p-3">
+          <div className="mb-3 font-bold ">{title}</div>
+          <div className="font-bold ">절약 기간</div>
+          <div className="mb-1 font ">
             {startDate} ~ {endDate}
           </div>
-          <div>목표소비금액</div>
-          <div className="mb-2">￦ {price}</div>
-          <div>내가 아낀 금액</div>
-          <div>￦ {spare}</div>
+          <div className="font-bold ">목표소비금액</div>
+          <div className="mb-1">￦ {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+          <div className="font-bold ">내가 아낀 금액</div>
+          <div>￦ {spare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
         </div>
         <ChallengeMemberList players={players} price={price} />
       </div>

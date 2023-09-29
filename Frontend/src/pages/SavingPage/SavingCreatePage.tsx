@@ -6,7 +6,7 @@ import BottomNav from 'components/Common/BottomNav';
 const SavingCreatePage = () => {
   // const [createButton, setCreateButton] = useState(false);
   return (
-    <div className="h-screen">
+    <div className="h-full overflow-hidden">
       <ArrowBack pageName="적금 만들기" />
       {/* {createButton ? (
         <div>암호입력 공통 컴포넌트 띄우기</div>

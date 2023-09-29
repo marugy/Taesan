@@ -88,8 +88,8 @@ const ChallengeButtonList = () => {
   };
 
   return (
-    <div className="flex flex-col items-center mb-5">
-      <div className="m-5 space-x-5">
+    <div className="flex flex-col items-center">
+      <div className="m-5 space-x-7">
         {challengeState === 0 && (
           <Button className="bg-main tb:text-md dt:text-xl" onClick={() => navigate('/challenge/create')}>
             생성하기
