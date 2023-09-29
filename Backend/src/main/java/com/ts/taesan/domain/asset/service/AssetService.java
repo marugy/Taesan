@@ -34,8 +34,8 @@ public class AssetService {
                 .client_id("taesanSecretPassword")
                 .redirect_uri("https://j9c211.p.ssafy.io/blahblah")
                 .build();
-        String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccessToken();
-        member.earnMydataAccessToken(accessToken);
+        String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccess_token();
+        member.earnMydataAccessToken("Bearer " + accessToken);
     }
 
 }

@@ -41,7 +41,6 @@ public class AssetQueryService {
     @Value("${org-code}")
     private String orgCode;
 
-    @GetMapping
     public AssetResponse getMyAssets(long memberId) {
         Member member = memberRepository.findById(memberId).get();
 

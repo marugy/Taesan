@@ -21,7 +21,7 @@ import java.util.Map;
 public interface AuthClient {
 
     @PostMapping("/token")
-    ResponseEntity<? extends TokenResponse> getAccessToken(
+    ResponseEntity<TokenResponse> getAccessToken(
             @RequestHeader("x-user-ci") long userCI,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestBody TokenRequest tokenRequest);

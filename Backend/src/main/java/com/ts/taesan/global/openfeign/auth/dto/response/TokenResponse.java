@@ -10,13 +10,16 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class TokenResponse {
 
-    @JsonProperty("token_type")
-    private String tokenType;
+    private String token_type;
 
-    @JsonProperty("access_token")
-    private String accessToken;
+    private String access_token;
 
-    @JsonProperty("expires_in")
-    private String expiresIn;
+    private String expires_in;
+
+    private String refresh_token;
+
+    private String refresh_token_expires_in;
+
+    private String scope;
 
 }
