@@ -48,7 +48,7 @@ public class AssetApi {
         return OK(assetQueryService.getMyCardList(Long.parseLong(user.getUsername())));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/authenticate")
     public ApiResponse<Void> connectAssets(
             @AuthenticationPrincipal User user
     ) {
