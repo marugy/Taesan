@@ -9,12 +9,14 @@ import com.taesan.mydata.domain.bank.api.dto.response.AccountListResponse;
 import com.taesan.mydata.domain.bank.api.dto.response.AccountTransactionListResponse;
 import com.taesan.mydata.domain.bank.repository.AccountQueryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AccountQueryService {
 
     private final AccountQueryRepository accountQueryRepository;
@@ -22,7 +24,7 @@ public class AccountQueryService {
     public AccountListResponse findAccountList(long memberCi, long cursor, int limit) {
 
         List<AccountList> accountList = accountQueryRepository.findAccountListByMemberCi(memberCi, cursor, limit);
-
+        log.warn("{}", memberCi);
         return AccountListResponse.builder()
                 .accountList(accountList)
                 .regDate("20170203")

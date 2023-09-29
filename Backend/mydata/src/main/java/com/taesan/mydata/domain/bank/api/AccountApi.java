@@ -39,7 +39,7 @@ public class AccountApi {
             @Valid @ModelAttribute AccountListRequest accountListRequest)
     {
         log.info("{}", accountListRequest.getOrg_code());
-//        log.info("{}", user.getUsername());
+        log.info("{}", user.getUsername());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountListResponse response = accountQueryService.findAccountList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
