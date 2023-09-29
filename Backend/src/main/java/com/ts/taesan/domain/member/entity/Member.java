@@ -86,13 +86,12 @@ public class Member extends BaseEntity implements UserDetails {
         this.simplePassword = simplePassword;
     }
 
-<<<<<<< HEAD
     public void addAccount(String account) {
         this.accountNum = account;
-=======
+    }
+    
     public void earnMydataAccessToken(String mydataAccessToken) {
         this.mydataAccessToken = mydataAccessToken;
->>>>>>> 7831b1a0e27255e7095b3cb145774c0c6fd96a83
     }
 
     ////////////////////////
