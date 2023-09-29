@@ -6,6 +6,7 @@ import com.ts.taesan.domain.tikkle.api.dto.response.Account;
 import com.ts.taesan.domain.tikkle.api.dto.response.AssetResponse;
 import com.ts.taesan.domain.tikkle.api.dto.response.Card;
 import com.ts.taesan.domain.tikkle.service.TikkleQueryService;
+import com.ts.taesan.domain.tikkle.service.TikkleService;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountDetail;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountInfo;
@@ -39,17 +40,26 @@ import static com.ts.taesan.global.api.ApiResponse.OK;
 public class TikkleApi {
 
     private final TikkleQueryService tikkleQueryService;
+    private final TikkleService tikkleService;
 
-    @PostMapping("/tikkle")
-    public ApiResponse<Integer> getSavingInfo() {
-        return OK(30000);
-    }
+//    @PostMapping("/tikkle")
+//    public ApiResponse<Integer> getSavingInfo() {
+//        return OK(30000);
+//    }
 
     @GetMapping
     public ApiResponse<AssetResponse> getMyAssets(
             @AuthenticationPrincipal User user
     ) {
         return OK(tikkleQueryService.getMyAssets(Long.parseLong(user.getUsername())));
+    }
+
+    @PostMapping
+    public ApiResponse<Void> connectAssets(
+            @AuthenticationPrincipal User user
+    ) {
+        tikkleService.connectAssets(Long.parseLong(user.getUsername()));
+        return OK(null);
     }
 
 }

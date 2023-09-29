@@ -43,18 +43,6 @@ public class MemberService {
         HashMap<String, String> map = new HashMap<>();
         map.put("user_ci", Long.toString(member.getId()));
         authClient.registerAuth(map);
-        // 마이데이터 동의 로직인데 여기에 임시로 만듬. 나중에 옮기자.
-        String tranId = "1234567890M00000000000001";
-        TokenRequest tokenRequest = TokenRequest.builder()
-                .org_code("ssafy00001")
-                .grant_type("authorization_code")
-                .client_id("taesan")
-                .client_id("taesanSecretPassword")
-                .redirect_uri("https://j9c211.p.ssafy.io/blahblah")
-                .build();
-        String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccessToken();
-        log.warn("{}", accessToken);
-        member.earnMydataAccessToken(accessToken);
     }
 
     public TokenResponse login(String loginId, String password) throws IOException {
