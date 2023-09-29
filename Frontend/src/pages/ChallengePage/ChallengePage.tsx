@@ -5,13 +5,12 @@ import BottomNav from 'components/Common/BottomNav';
 import ArrowBackParam from 'components/Common/ArrowBackParam';
 const ChallengePage = () => {
   return (
-    <div className="h-full">
+    <div className="h-full overflow-hidden">
       <ArrowBackParam pageName="절약 챌린지" param="/main" />
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center ">
         <ChallengeSaving />
         <ChallengeButtonList />
       </div>
-      <div className="h-[80px]" />
     </div>
   );
 };

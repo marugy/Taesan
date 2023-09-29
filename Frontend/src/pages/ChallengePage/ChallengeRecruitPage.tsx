@@ -202,7 +202,7 @@ const ChallengeRecruitPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full overflow-hidden">
       <ArrowBackParam pageName="절약 챌린지 모집" param="/challenge" />
       <div className="flex flex-col items-center">
         <img src="/Challenge/ChallengeRecruit.png" alt="ChallengeRecruit" className="w-auto h-24 dt:w-auto dt:h-52 " />
@@ -219,10 +219,10 @@ const ChallengeRecruitPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center bg-[#E3E9ED] w-[400px] dt:w-[500px] rounded-xl mb-5">
+        <div className="flex flex-col items-center bg-[#E3E9ED] w-11/12 p-1 rounded-xl ">
           <RoomCode roomcode={roomcode} />
           <ChallengeMemberList players={players} />
-          <div className="mb-5 space-x-5">
+          <div className="mb-3 space-x-5">
             {creator && (
               <Button className="bg-main tb:text-md dt:text-xl" onClick={handlePlay}>
                 시작하기
@@ -241,7 +241,6 @@ const ChallengeRecruitPage = () => {
           </div>
         </div>
       </div>
-      <BottomNav />
     </div>
   );
 };

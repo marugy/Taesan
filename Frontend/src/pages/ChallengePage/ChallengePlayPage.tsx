@@ -66,7 +66,7 @@ const ChallengePlayPage = () => {
   }, [challengeId]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full overflow-hidden">
       <ArrowBackParam pageName="진행중인 챌린지" param="/challenge" />
 
       <div className="flex flex-col items-center z-10">
@@ -83,7 +83,6 @@ const ChallengePlayPage = () => {
         </div>
         <ChallengeMemberList players={players} price={price} />
       </div>
-      <BottomNav />
     </div>
   );
 };

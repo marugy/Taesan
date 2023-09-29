@@ -47,7 +47,7 @@ const SavingCreate = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center h-screen mt-5">
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} />}
       {completeVisible && <SavingComplete onComplete={handleConfirm} />}
       <div className="font-extrabold text-3xl  ">새로운 적금통 만들기</div>
@@ -57,7 +57,7 @@ const SavingCreate = () => {
         만기까지 기다리면 추가 이자를 받을 수 있어요!
       </div>
       <div>
-        <img className="h-64" src="/piggy_bank.png" alt="" />
+        <img className="h-44 dt:h-64" src="/piggy_bank.png" alt="pig" />
       </div>
 
       {/* MUI 달력 */}
