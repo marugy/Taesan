@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.tikkle.api.dto.response;
+package com.ts.taesan.domain.asset.api.dto.inner;
 
 import com.ts.taesan.global.openfeign.card.dto.inner.CardList;
 import lombok.Builder;

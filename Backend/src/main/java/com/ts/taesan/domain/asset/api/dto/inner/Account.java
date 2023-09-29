@@ -1,6 +1,6 @@
-package com.ts.taesan.domain.tikkle.api.dto.response;
+package com.ts.taesan.domain.asset.api.dto.inner;
 
-import com.ts.taesan.domain.member.entity.Address;
+import com.ts.taesan.global.openfeign.bank.dto.inner.AccountList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +18,13 @@ public class Account {
         this.bank = bank;
         this.accountNum = accountNum;
         this.balance = balance;
+    }
+
+    @Builder
+    public Account(AccountList accountList) {
+        this.bank = accountList.getBank();
+        this.accountNum = accountList.getAccountNum();
+        this.balance = accountList.getBalance();
     }
 
 }

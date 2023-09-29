@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.tikkle.service;
+package com.ts.taesan.domain.asset.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,6 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-
 public class TikkleQueryService {
+
 }

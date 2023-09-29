@@ -12,6 +12,7 @@ import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
@@ -20,12 +21,12 @@ import java.util.Map;
 public interface AuthClient {
 
     @PostMapping("/token")
-    ResponseEntity<? extends TokenResponse> getAccessToken(
+    ResponseEntity<TokenResponse> getAccessToken(
             @RequestHeader("x-user-ci") long userCI,
             @RequestHeader("x-api-tran-id") String tranId,
-            @SpringQueryMap TokenRequest tokenRequest);
+            @RequestBody TokenRequest tokenRequest);
 
     @PostMapping("/register")
     ResponseEntity<Void> registerAuth(
-            @SpringQueryMap Map<String, String> body);
+            @RequestBody Map<String, String> body);
 }

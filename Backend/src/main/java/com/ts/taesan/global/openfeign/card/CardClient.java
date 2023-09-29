@@ -13,24 +13,21 @@ import com.ts.taesan.global.openfeign.card.dto.response.PayResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "card", url = "${api.base-uri.mydata}/card-management/cards", configuration = OpenFeignConfig.class)
 public interface CardClient {
 
     @GetMapping
     ResponseEntity<CardListResponse> getCardList(
-//            @RequestHeader("Authorization") String token,
-            @RequestHeader("user-ci") long userCi,
+            @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @SpringQueryMap CardListRequest cardListRequest);
 
     @GetMapping("/{card_id}")
     ResponseEntity<CardInfoResponse> getCardInfo(
+            @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
@@ -38,6 +35,7 @@ public interface CardClient {
 
     @GetMapping("/{card_id}/approval-domestic")
     ResponseEntity<CardListResponse> getCardTransactionList(
+            @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
@@ -45,7 +43,8 @@ public interface CardClient {
 
     @PostMapping("/{card_id}/pay")
     ResponseEntity<PayResponse> pay(
+            @RequestHeader("Authorization") String token,
             @PathVariable("card_id") long cardId,
-            @SpringQueryMap PayRequest payRequest);
+            @RequestBody PayRequest payRequest);
 
 }

@@ -133,5 +133,13 @@ public class MemberApi {
         memberService.deleteMember(memberId);
         return OK(null);
     }
-    
+
+    @ApiOperation(value = "계좌 등록", notes = "회원 탈퇴 API")
+    @PostMapping("/account")
+    public ApiResponse<?> addAccount(@AuthenticationPrincipal User user, @RequestBody Map<String, String> body) {
+        Long memberId = Long.parseLong(user.getUsername());
+        String account = body.get("account");
+        memberService.addAccount(memberId, account);
+        return OK(null);
+    }
 }

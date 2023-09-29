@@ -51,7 +51,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Embedded
     private Address address;
 
-    @Column(nullable = true, name = "mydata_access_token") // 초기에는 없음
+    @Column(nullable = true, name = "mydata_access_token", length = 400) // 초기에는 없음
     private String mydataAccessToken;
 
     @Column(nullable = true, name = "refresh_token") // 초기에는 없음
@@ -86,6 +86,10 @@ public class Member extends BaseEntity implements UserDetails {
         this.simplePassword = simplePassword;
     }
 
+    public void addAccount(String account) {
+        this.accountNum = account;
+    }
+    
     public void earnMydataAccessToken(String mydataAccessToken) {
         this.mydataAccessToken = mydataAccessToken;
     }
