@@ -13,6 +13,7 @@ public class Card {
     private String cardNumber;
     private String cardCompany;
     private String cardType;
+    private String cardName;
 
     @Builder
     public Card(Long cardId, String cardNumber, String cardCompany, String cardType) {
@@ -23,6 +24,7 @@ public class Card {
     }
 
     public Card(CardList cardList) {
+        this.cardName = cardList.getCardName();
         this.cardId = cardList.getCardId();
         this.cardNumber = cardList.getCardNum();
         this.cardCompany = cardList.getCompany();

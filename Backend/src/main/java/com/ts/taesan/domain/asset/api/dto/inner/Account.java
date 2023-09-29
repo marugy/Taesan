@@ -11,6 +11,7 @@ public class Account {
 
     private String bank;
     private String accountNum;
+    private String accountName;
     private Long balance;
 
     @Builder
@@ -24,6 +25,7 @@ public class Account {
     public Account(AccountList accountList) {
         this.bank = accountList.getBank();
         this.accountNum = accountList.getAccountNum();
+        this.accountName = accountList.getProdName();
         this.balance = accountList.getBalance();
     }
 
