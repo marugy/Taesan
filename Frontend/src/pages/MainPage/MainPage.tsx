@@ -10,11 +10,11 @@ import { useUserStore } from 'store/UserStore';
 
 const MainPage = () => {
   // 스토어에서 AT,RT 가져오기
-  const { accessToken, refreshToken, setName, connectedAsset, setConnectedAsset } = useUserStore();
+  const { accessToken, refreshToken, setName } = useUserStore();
 
   // 사용자 자산 관련 State
   const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
-  // const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
+  const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
   const [bankName, setBankName] = useState('카카오뱅크'); // 은행 이름
   const [accountNumber, setAccountNumber] = useState('110509677498'); // 계좌 번호
   const [balance, setBalance] = useState(870120); // 잔액
@@ -62,23 +62,23 @@ const MainPage = () => {
   const query = useQuery('getInfo', getInfo);
 
   // 쿼리 2 ( API 관련 임시 주석처리 )
-  // const getSaving = async () => {
-  //   const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets', {
-  //     headers: {
-  //       'ACCESS-TOKEN': accessToken,
-  //       'REFRESH-TOKEN': refreshToken,
-  //     },
-  //   });
-  //   console.log(userAssetInfo);
-  //   setCreatedTikkle(userAssetInfo.response.createdTikkle);
-  //   setConnectedAsset(userAssetInfo.response.connetedAsset);
-  //   setBankName(userAssetInfo.response.account.bank);
-  //   setAccountNumber(userAssetInfo.response.account.accountNum);
-  //   setBalance(userAssetInfo.response.account.balance);
-  //   setCardList(userAssetInfo.response.cardList);
-  //   return userAssetInfo;
-  // };
-  // const query2 = useQuery('getSaving', getSaving);
+  const getSaving = async () => {
+    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    });
+    console.log(userAssetInfo);
+    setCreatedTikkle(userAssetInfo.response.createdTikkle);
+    setConnectedAsset(userAssetInfo.response.connetedAsset);
+    setBankName(userAssetInfo.response.account.bank);
+    setAccountNumber(userAssetInfo.response.account.accountNum);
+    setBalance(userAssetInfo.response.account.balance);
+    setCardList(userAssetInfo.response.cardList);
+    return userAssetInfo;
+  };
+  const query2 = useQuery('getSaving', getSaving);
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);

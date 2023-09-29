@@ -13,7 +13,7 @@ interface CardRegisterProps {
 
 const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
   const navigate = useNavigate();
-  const { name,setConnectedAsset } = useUserStore();
+  const { name} = useUserStore();
   return (
     <div>
       <ArrowBack pageName="카드 불러오기"/>
@@ -28,10 +28,10 @@ const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
       <div className="flex flex-col gap-3 justify-center items-center">
       {cardList.map((card, index) => (
                 <Card
-                  cardId={card.card_id}
-                  cardCompany={card.company}
-                  cardNumber={card.card_num}
-                  cardType={`${card.card_name}`}
+                  cardId={card.cardId}
+                  cardCompany={card.cardCompany}
+                  cardNumber={card.cardNum}
+                  cardType={`${card.cardName}`}
                   main=""
                   name={name}
                 />
@@ -50,7 +50,6 @@ const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
             }).then(() => {
               navigate('/main');
             });
-            setConnectedAsset(true);
           }}
         >
           자산 연동하기
