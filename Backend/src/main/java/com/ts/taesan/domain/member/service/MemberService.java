@@ -7,16 +7,20 @@ import com.ts.taesan.domain.member.dto.response.TokenResponse;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
+import com.ts.taesan.global.openfeign.auth.AuthClient;
+import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 
 @Service
 @Slf4j
@@ -26,6 +30,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthClient authClient;
 
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
@@ -33,7 +38,11 @@ public class MemberService {
 
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
-        memberRepository.save(member);
+        member = memberRepository.save(member);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("user_ci", Long.toString(member.getId()));
+        authClient.registerAuth(map);
     }
 
     public TokenResponse login(String loginId, String password) throws IOException {

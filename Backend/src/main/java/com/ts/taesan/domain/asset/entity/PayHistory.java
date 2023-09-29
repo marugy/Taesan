@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.tikkle.entity;
+package com.ts.taesan.domain.asset.entity;
 
 import com.ts.taesan.global.entity.BaseEntity;
 
@@ -11,11 +11,13 @@ public class PayHistory extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "saving_id")
-    private Saving saving;
+    @JoinColumn(name = "tikkle_id")
+    private Tikkle tikkle;
 
     @Column(name = "trans_type")
     private Integer transType;
-    @Column(name = "trans_Amt")
+
+    @Column(name = "trans_amt")
     private Long transAmount;
+
 }
