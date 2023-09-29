@@ -1,4 +1,4 @@
-package com.ts.taesan.domain.tikkle.entity;
+package com.ts.taesan.domain.asset.entity;
 
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.global.entity.BaseEntity;

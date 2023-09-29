@@ -1,6 +1,7 @@
-package com.ts.taesan.domain.tikkle.api.dto.response;
+package com.ts.taesan.domain.asset.api.dto.response;
 
-import com.ts.taesan.domain.member.entity.Address;
+import com.ts.taesan.domain.asset.api.dto.inner.Account;
+import com.ts.taesan.domain.asset.api.dto.inner.Card;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

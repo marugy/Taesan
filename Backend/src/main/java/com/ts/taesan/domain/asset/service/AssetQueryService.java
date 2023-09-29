@@ -1,23 +1,25 @@
-package com.ts.taesan.domain.tikkle.service;
+package com.ts.taesan.domain.asset.service;
 
+import com.ts.taesan.domain.asset.api.dto.inner.Account;
+import com.ts.taesan.domain.asset.api.dto.response.AccountListResponse;
+import com.ts.taesan.domain.asset.api.dto.response.AssetResponse;
+import com.ts.taesan.domain.asset.api.dto.inner.Card;
+import com.ts.taesan.domain.asset.api.dto.response.CardListResponse;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
-import com.ts.taesan.domain.tikkle.api.dto.response.Account;
-import com.ts.taesan.domain.tikkle.api.dto.response.AssetResponse;
-import com.ts.taesan.domain.tikkle.api.dto.response.Card;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountDetail;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountInfo;
+import com.ts.taesan.global.openfeign.bank.dto.inner.AccountList;
 import com.ts.taesan.global.openfeign.bank.dto.request.AccountDetailRequest;
 import com.ts.taesan.global.openfeign.bank.dto.request.AccountInfoRequest;
+import com.ts.taesan.global.openfeign.bank.dto.request.AccountListRequest;
 import com.ts.taesan.global.openfeign.card.CardClient;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardList;
 import com.ts.taesan.global.openfeign.card.dto.request.CardListRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class TikkleQueryService {
+public class AssetQueryService {
 
     private final BankClient bankClient;
     private final CardClient cardClient;
@@ -51,8 +53,8 @@ public class TikkleQueryService {
                     .cardList(null)
                     .build();
         } else {
-            String tranId = "1234567890M00000000000001";
-            String apiType = "user-search";
+            String tranId = getTranId();
+            String apiType = getApiType();
             String accessToken = member.getMydataAccessToken();
 
             AccountInfo accountInfo = getAccountInfo(tranId, apiType, accessToken, member);
@@ -70,15 +72,43 @@ public class TikkleQueryService {
                     .build();
         }
 
-        // 계좌 목록 조회 여기서 안쓰는데 잘못만듬. 나중에 옮기자.
-//        AccountListRequest request = AccountListRequest.builder()
-//                .org_code("ssafy00001")
-//                .search_timestamp(1265275107687L)
-//                .next_page(0)
-//                .limit(500)
-//                .build();
+    }
 
-//        List<AccountList> accountList = bankClient.getAccountList(Long.parseLong(user.getUsername()), tranId, apiType, request).getBody().getAccountList();
+    public AccountListResponse getMyAccountList(long memberId) {
+        String tranId = getTranId();
+        String apiType = getApiType();
+        Member member = memberRepository.findById(memberId).get();
+
+        AccountListRequest request = AccountListRequest.builder()
+                .org_code(orgCode)
+                .search_timestamp(new Date().getTime())
+                .next_page(0)
+                .limit(500)
+                .build();
+
+        List<AccountList> accountList = bankClient.getAccountList(member.getMydataAccessToken(), tranId, apiType, request).getBody().getAccountList();
+        List<Account> retAccountList = accountList.stream().map(Account::new).collect(Collectors.toList());
+
+        return new AccountListResponse(retAccountList);
+    }
+
+    public CardListResponse getMyCardList(long memberId) {
+        String tranId = getTranId();
+        String apiType = getApiType();
+        Member member = memberRepository.findById(memberId).get();
+
+        List<CardList> cardList = cardClient.getCardList(member.getMydataAccessToken(), tranId, apiType, getCardListRequest()).getBody().getCardList();
+        List<Card> retCardList = cardList.stream().map(Card::new).collect(Collectors.toList());
+
+        return new CardListResponse(retCardList);
+    }
+
+    private String getApiType() {
+        return "user-search";
+    }
+
+    private String getTranId() {
+        return "1234567890M00000000000001";
     }
 
     private Account getAccount(Member member, AccountInfo accountInfo, AccountDetail accountDetail) {
