@@ -12,11 +12,7 @@ interface UserStore {
   userId: string;
   setUserId: (userId: string) => void;
 
-  // 임시 테스트용 store
-  connectedAsset: boolean;
-  setConnectedAsset: (connectedAsset: boolean) => void;
-  isTikkleCreated: boolean;
-  setIsTikkleCreated: (isTikkleCreated: boolean) => void;
+
 }
 
 export const useUserStore = create<UserStore>()(
@@ -29,11 +25,7 @@ export const useUserStore = create<UserStore>()(
 
       name: '',
       setName: (name: string) => set({ name }),
-      connectedAsset: false,
-      setConnectedAsset: (connectedAsset: boolean) => set({ connectedAsset }),
-
-      isTikkleCreated: false,
-      setIsTikkleCreated: (isTikkleCreated: boolean) => set({ isTikkleCreated }),
+      
       userId: '',
       setUserId: (userId: string) => set({ userId }),
     }),

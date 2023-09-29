@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 const ApproveMydata = () => {
   const navigate = useNavigate();
-  const { accessToken, refreshToken, userId } = useUserStore();
+  const { accessToken, refreshToken } = useUserStore();
   const [checkEntireApprove, setCheckEntireApprove] = useState(false);
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
@@ -34,10 +34,10 @@ const ApproveMydata = () => {
     if (check1 && check2 && check3) {
       axios
         .post(
-          'https://j9c211.p.ssafy.io/mydata/auth-management/oauth/2.0/register',
-          {
-            user_ci: userId,
-          },
+          'https://j9c211.p.ssafy.io/api/asset-management/assets/authenticate',
+          // {
+          //   user_ci: userId,
+          // },
           {
             headers: {
               'ACCESS-TOKEN': accessToken,
