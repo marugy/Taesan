@@ -5,6 +5,7 @@ import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.tikkle.api.dto.response.Account;
 import com.ts.taesan.domain.tikkle.api.dto.response.AssetResponse;
 import com.ts.taesan.domain.tikkle.api.dto.response.Card;
+import com.ts.taesan.domain.tikkle.service.TikkleQueryService;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountDetail;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountInfo;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,76 +38,18 @@ import static com.ts.taesan.global.api.ApiResponse.OK;
 @Slf4j
 public class TikkleApi {
 
-    private final BankClient bankClient;
-    private final CardClient cardClient;
-    private final MemberRepository memberRepository;
+    private final TikkleQueryService tikkleQueryService;
 
-    @GetMapping("/saving")
+    @PostMapping("/tikkle")
     public ApiResponse<Integer> getSavingInfo() {
         return OK(30000);
     }
 
     @GetMapping
-    public AssetResponse getMyAssets(
+    public ApiResponse<AssetResponse> getMyAssets(
             @AuthenticationPrincipal User user
     ) {
-        log.warn("{}", user.getUsername());
-        long userId = Long.parseLong(user.getUsername());
-        Member member = memberRepository.findById(userId).get();
-        String tranId = "1234567890M00000000000001";
-        String apiType = "user-search";
-        String accessToken = member.getMydataAccessToken();
-
-        AccountInfoRequest accountInfoRequest = AccountInfoRequest.builder()
-                .org_code("ssafy00001")
-                .account_num(member.getAccountNum())
-                .seqno(1)
-                .search_timestamp(new Date().getTime())
-                .next_page(0L)
-                .limit(500)
-                .build();
-
-        AccountDetailRequest accountDetailRequest = AccountDetailRequest.builder()
-                .org_code("ssafy00001")
-                .account_num(member.getAccountNum())
-                .seqno(1)
-                .search_timestamp(new Date().getTime())
-                .build();
-
-        // 조회 여기서 안쓰는데 잘못만듬. 나중에 옮기자.
-//        AccountListRequest request = AccountListRequest.builder()
-//                .org_code("ssafy00001")
-//                .search_timestamp(1265275107687L)
-//                .next_page(0)
-//                .limit(500)
-//                .build();
-
-//        List<AccountList> accountList = bankClient.getAccountList(Long.parseLong(user.getUsername()), tranId, apiType, request).getBody().getAccountList();
-        AccountInfo accountInfo = bankClient.getAccountInfo(accessToken, tranId, apiType, accountInfoRequest).getBody().getBasicList().get(0);
-        AccountDetail accountDetail = bankClient.getAccountDetail(accessToken, tranId, apiType, accountDetailRequest).getBody().getDetailList().get(0);
-        Account account = Account.builder()
-                .bank(accountInfo.getBank())
-                .accountNum(member.getAccountNum())
-                .balance((long) accountDetail.getBalanceAmt())
-                .build();
-
-        CardListRequest cardListRequest = CardListRequest.builder()
-                .org_code("ssafy00001")
-                .search_timestamp(new Date().getTime())
-                .next_page(0L)
-                .limit(500)
-                .build();
-
-        List<CardList> cardList = cardClient.getCardList(accessToken, tranId, apiType, cardListRequest).getBody().getCardList();
-        List<Card> retCardList = cardList.stream().map(Card::new).collect(Collectors.toList());
-
-        return AssetResponse.builder()
-                .connectedAsset(true)
-                .createdTikkle(true)
-                .account(account)
-                .cardList(retCardList)
-                .build();
-
+        return OK(tikkleQueryService.getMyAssets(Long.parseLong(user.getUsername())));
     }
 
 }

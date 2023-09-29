@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @SuperBuilder
 @DynamicInsert
-public class Saving extends BaseEntity {
+public class Tikkle extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

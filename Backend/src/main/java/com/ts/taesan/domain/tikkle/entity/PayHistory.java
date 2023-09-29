@@ -11,11 +11,13 @@ public class PayHistory extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "saving_id")
-    private Saving saving;
+    @JoinColumn(name = "tikkle_id")
+    private Tikkle tikkle;
 
     @Column(name = "trans_type")
     private Integer transType;
-    @Column(name = "trans_Amt")
+
+    @Column(name = "trans_amt")
     private Long transAmount;
+
 }
