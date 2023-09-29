@@ -3,7 +3,7 @@ package com.taesan.mydata.domain.card.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,7 +22,7 @@ public class CardHistory {
 
     private String approvedNum;
 
-    private String approvedDtime;
+    private Date approvedDtime;
 
     private String status;
 
@@ -38,6 +38,6 @@ public class CardHistory {
 
     private Long modifiedAmt;
 
-    private String totalInstallCnt;
+    private Integer totalInstallCnt;
 
 }

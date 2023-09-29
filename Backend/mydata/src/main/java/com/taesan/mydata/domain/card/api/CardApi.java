@@ -1,8 +1,10 @@
 package com.taesan.mydata.domain.card.api;
 
 import com.taesan.mydata.domain.card.api.dto.inner.CardList;
+import com.taesan.mydata.domain.card.api.dto.inner.CardTransactionList;
 import com.taesan.mydata.domain.card.api.dto.request.*;
 import com.taesan.mydata.domain.card.api.dto.response.*;
+import com.taesan.mydata.domain.card.service.CardHistoryQueryService;
 import com.taesan.mydata.domain.card.service.CardQueryService;
 import com.taesan.mydata.domain.card.service.CardService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import java.util.List;
 public class CardApi {
 
     private final CardQueryService cardQueryService;
+    private final CardHistoryQueryService cardHistoryQueryService;
     private final CardService cardService;
 
     @GetMapping
@@ -55,8 +58,8 @@ public class CardApi {
         return new ResponseEntity<>(cardInfo, headers, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{card_id}/approval-domestic")
-    public ResponseEntity<CardListResponse> getCardTransactionList(
+    @GetMapping("/{card_id}/approval-domestic/test")
+    public ResponseEntity<CardTransactionListResponse> getCardTransactionList(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
@@ -65,7 +68,7 @@ public class CardApi {
         log.info("{}", cardTransactionListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        return new ResponseEntity<>(new CardListResponse(), headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/{card_id}/pay")

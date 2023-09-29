@@ -1,9 +1,13 @@
 package com.taesan.mydata.domain.card.api.dto.inner;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
+@Data
+@AllArgsConstructor
 public class CardTransactionList {
 
         @JsonProperty("approved_num")
@@ -28,10 +32,10 @@ public class CardTransactionList {
         private String merchantRegno;
 
         @JsonProperty("approved_amt")
-        private Integer approvedAmt;
+        private Long approvedAmt;
 
         @JsonProperty("modified_amt")
-        private Integer modifiedAmt;
+        private Long modifiedAmt;
 
         @JsonProperty("total_install_cnt")
         private Integer totalInstallCnt;

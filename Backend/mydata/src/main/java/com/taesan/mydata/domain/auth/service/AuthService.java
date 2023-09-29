@@ -91,12 +91,12 @@ public class AuthService {
                 boolean result = dummyUtils.drawLots(15);
                 if (result) {
                     Shop shop = dummyUtils.getShop();
-                    Date payTime = new Date(new Date().getTime() - (i * 86400000L) - (j * 3600000));
+                    Date payTime = new Date(new Date().getTime() - (i * 86400000L) + (j * 3600000));
                     Card card = cardList.get(new Random().nextInt(3));
                     CardHistory cardHistory = CardHistory.builder()
                             .card(card)
                             .approvedNum("12345678")
-                            .approvedDtime(payTime.toString())
+                            .approvedDtime(payTime)
                             .status("01")
                             .payType(dummyUtils.getType(2))
                             .merchantName(shop.name())
