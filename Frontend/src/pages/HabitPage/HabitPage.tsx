@@ -89,13 +89,18 @@ const HabitPage = () => {
   const dateCellRender = (value: Dayjs) => {
     const listData = getListData(value);
     return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.content}>
-            <Badge status={item.type as BadgeProps['status']} text={item.content} />
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col justify-center items-center">
+      {/* <div className="font-main text-[3px]">+</div> */}
+      <img src="/Habit/check.png" className="h-5 dt:h-8 flex justify-center items-center" />
+      <div className="font-main text-center flex h-full items-center justify-center hidden lg:flex">+14,500원</div>
+      </div>
+      // <ul className="events">
+      //   {listData.map((item) => (
+      //     <li key={item.content}>
+      //       <Badge status={item.type as BadgeProps['status']} text={item.content} />
+      //     </li>
+      //   ))}
+      // </ul>
     );
   };
 
