@@ -28,7 +28,7 @@ public class AccountQueryService {
         return AccountListResponse.builder()
                 .accountList(accountList)
                 .regDate("20170203")
-                .nextPage(cursor + limit + 1)
+                .nextPage(cursor + limit)
                 .build();
     }
 
