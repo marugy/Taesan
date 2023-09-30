@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import logo from './logo.svg';
 
 import { Router, Route, Routes } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import LoginPage from 'pages/AuthPage/LoginPage';
 import SingUpPage from 'pages/AuthPage/SignUpPage';
 import BuyifPage from 'pages/BuyifPage/BuyifPage';
@@ -37,11 +38,29 @@ import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
 import ApproveMyData from 'pages/MainPage/ApproveMyData';
 import NotFound from 'components/Common/NotFound';
+
 import 'animate.css';
-import { Notification } from 'components/Common/Notification';
 import './App.css';
+
+// import { useUserStore } from 'store/UserStore';
+// import Notification from 'components/Common/Notification';
+
 function App() {
-  Notification();
+  // const location = useLocation();
+  // const { readyNotification, setReadyNotification } = useUserStore();
+  // const timerRef = useRef<number | NodeJS.Timeout | null>(null); // 타이머 ID를 저장할 ref
+
+  // // readyNotification이 true일 때 로직을 실행
+  // if (readyNotification && location.pathname === '/main') {
+  //   // readyNotification을 false로 설정
+  //   setReadyNotification(false);
+
+  //   // 10초 후에 readyNotification을 true로 설정
+  //   timerRef.current = setTimeout(() => {
+  //     console.log('NOW', readyNotification);
+  //     setReadyNotification(true);
+  //   }, 10000);
+  // }
 
   return (
     <div className="App  flex justify-center bg-back overflow-y-auto h-screen">

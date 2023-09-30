@@ -47,16 +47,7 @@ const TestPage = () => {
   const navigate = useNavigate();
 
   // 스토어에서 AT,RT 가져오기
-  const {
-    accessToken,
-    refreshToken,
-    setName,
-    connectedAsset,
-    setConnectedAsset,
-    isNotify,
-    setIsNotify,
-    isTikkleCreated,
-  } = useUserStore();
+  const { accessToken, refreshToken, setName } = useUserStore();
 
   return (
     <div>
