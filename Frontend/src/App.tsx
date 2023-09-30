@@ -37,9 +37,12 @@ import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
 import ApproveMyData from 'pages/MainPage/ApproveMyData';
 import NotFound from 'components/Common/NotFound';
-
+import 'animate.css';
+import { Notification } from 'components/Common/Notification';
 import './App.css';
 function App() {
+  Notification();
+
   return (
     <div className="App  flex justify-center bg-back overflow-y-auto h-screen">
       <div className="w-screen tb:w-[60vw] dt:w-[50vw] border">

@@ -41,8 +41,22 @@ import {
 import { getBuyIf, postBuyIf, getPos } from 'api/ifbuys';
 import { getHistory, getTransactionDetail, getTransactionReceipt } from 'api/transactions';
 
+import { useUserStore } from 'store/UserStore';
+
 const TestPage = () => {
   const navigate = useNavigate();
+
+  // 스토어에서 AT,RT 가져오기
+  const {
+    accessToken,
+    refreshToken,
+    setName,
+    connectedAsset,
+    setConnectedAsset,
+    isNotify,
+    setIsNotify,
+    isTikkleCreated,
+  } = useUserStore();
 
   return (
     <div>

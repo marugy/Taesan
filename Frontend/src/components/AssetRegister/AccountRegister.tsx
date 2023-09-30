@@ -48,11 +48,11 @@ const AccountRegister:React.FC<AccountProps> = ( {accountList} ) => {
                       {account.bank}
                     </Typography>
                     <Typography variant="small" color="blue-gray">
-                    {account.prod_name} 
+                    {account.accountName} 
 
                     </Typography>
                     <Typography variant="paragraph" color="gray" className="font-normal">
-                      {account.account_num}
+                      {account.accountNum}
                     </Typography>
                   </div>
 
