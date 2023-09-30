@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.transaction.entity;
 
+import com.ts.taesan.domain.transaction.req.CategoryResult;
 import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,13 @@ public class ReceiptList {
     private String category; // 상품의 카테고리
 
     private Long price; // 상품의 가격
+
+    public static ReceiptList of(Receipt receipt, CategoryResult categoryResult){
+        ReceiptList result = new ReceiptList();
+        result.setReceipt(receipt);
+        result.setName(categoryResult.getProductName());
+        result.setPrice(categoryResult.getPrice());
+        result.setCategory(categoryResult.getCategory());
+        return result;
+    }
 }
