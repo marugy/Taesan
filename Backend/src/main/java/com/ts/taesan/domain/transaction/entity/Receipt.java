@@ -17,6 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+// 영수증에 대한 Entity
 public class Receipt {
     @Id
     @Column(name = "id")
@@ -26,16 +27,16 @@ public class Receipt {
     @NotNull
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "id")
-    private Transaction transaction;
+    private Transaction transaction; // 영수증이 속한 거래내역 참조
 
     @NotNull
-    private String shopName;
+    private String shopName; // 상점의 상호명
 
     @NotNull
-    private LocalDateTime transactionDate;
+    private LocalDateTime transactionDate; // 거래내역
 
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
-    private List<ReceiptList> products;
+    private List<ReceiptList> products; // 영수증의 상세목록
 
     @Builder
     public Receipt(Long id, Transaction transaction, String shopName, LocalDateTime transactionDate, List<ReceiptList> products) {
