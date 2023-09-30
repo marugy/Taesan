@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient(name = "AI", url = "http://localhost:8099", configuration = OpenFeignConfig.class)
+@FeignClient(name = "AI", url = "http://ai-model:8099", configuration = OpenFeignConfig.class)
 public interface AIModelClient {
 @PostMapping("")
 public Optional<List<CategoryResult>> getCatetory(@RequestBody List<ReceiptReqDto> request);
