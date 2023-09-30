@@ -20,12 +20,14 @@ public class CardHistoryQueryService {
 
     private final CardHistoryQueryRepository cardHistoryQueryRepository;
 
-    public CardTransactionListResponse findCardHistory(long cardId, long cursor, int limit) {
+    public CardTransactionListResponse findCardHistory(long cardId, Long cursor, int limit) {
         List<CardTransactionList> cardList = cardHistoryQueryRepository.findCardTransactionList(cardId, cursor, limit);
-
+//        if (cursor == null) {
+//            cursor = cardHistoryQueryRepository.count(cardId);
+//        }
         return CardTransactionListResponse.builder()
-                .nextPage(cursor + limit)
-                .approvedList(cardList)
+                .nextPage(cardList.size()==11 ? cardList.get(cardList.size()-1).getId() : null)
+                .approvedList(cardList.subList(0, cardList.size()-1))
                 .build();
     }
 

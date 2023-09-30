@@ -10,6 +10,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class CardTransactionList {
 
+        @JsonProperty("history_id")
+        private Long id;
+
         @JsonProperty("approved_num")
         private String approvedNum;
 

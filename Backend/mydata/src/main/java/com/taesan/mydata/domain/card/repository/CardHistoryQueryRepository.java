@@ -24,8 +24,9 @@ public class CardHistoryQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<CardTransactionList> findCardTransactionList(long cardId, long cursor, int limit) {
+    public List<CardTransactionList> findCardTransactionList(long cardId, Long cursor, int limit) {
         return queryFactory.select(Projections.constructor(CardTransactionList.class,
+                        cardHistory.id.as("history_id"),
                         cardHistory.approvedNum.as("approved_num"),
                         cardHistory.approvedDtime.as("approved_dtime"),
                         cardHistory.status.as("status"),
@@ -39,15 +40,22 @@ public class CardHistoryQueryRepository {
         ))
                 .from(cardHistory)
                 .where(
-                        cardHistory.card.id.eq(cardId).and(cursorId(cursor))
+                        cardHistory.card.id.eq(cardId).and(ltCursor(cursor))
                 )
                 .orderBy(new OrderSpecifier<>(Order.DESC, cardHistory.id))
-                .limit(limit)
+                .limit(limit + 1)
                 .fetch();
     }
 
-    private BooleanExpression cursorId(Long cursorId){
-        return cursorId == null ? null : cardHistory.id.gt(cursorId);
+    public Long count(long cardId) {
+        return queryFactory.select(cardHistory.count())
+                .from(cardHistory)
+                .where(cardHistory.card.id.eq(cardId))
+                .fetchFirst();
+    }
+
+    private BooleanExpression ltCursor(Long cursorId){
+        return cursorId == null ? null : cardHistory.id.loe(cursorId);
     }
 
 }
