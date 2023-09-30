@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {Avatar,ListItemPrefix,Typography,Button,Input} from '@material-tailwind/react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -9,16 +9,22 @@ import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
 import Swal from 'sweetalert2';
+import { useUserStore } from 'store/UserStore';
+import { useParams } from 'react-router-dom';
+import { response } from 'express';
 
 
 const HistoryDetail = () => {
+    // const { transactionId } = useParams<{ transactionId: string }>();
     const [analys, setAnalys] = useState(false)
     const [receiptImage, setReceiptImage] = useState<File | null>(null);
     const [originalItem, setOriginalItem] = useState<{ name: string; price: string }>({ name: '', price: '' });
     const [addItem,setAddItem] = useState(false)
     const [newItemName,setNewItemName] = useState('')
     const [newItemPrice,setNewItemPrice] = useState('')
-    
+    const { accessToken, refreshToken} = useUserStore();
+    const [imgRegister,setImgRegister] = useState(false)
+
     const [clovaAnalys, setClovaAnalys] = useState({
         items: [
           {
@@ -35,9 +41,56 @@ const HistoryDetail = () => {
           },
         ],
       });
+    const [canalys,setcAnalys]= useState([])
+    
   
     const [editableItemIndex, setEditableItemIndex] = useState<number | null>(null);
-  
+      
+    // const postOCR=()=>{
+    //     const formData = new FormData();
+    //     if (receiptImage) {
+    //         formData.append('img', receiptImage);
+    //         axios
+    //         .post('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt',formData,
+    //         {
+    //             headers: {
+    //                 'ACCESS-TOKEN': accessToken,
+    //                 'REFRESH-TOKEN': refreshToken,
+    //               } 
+    //         })
+    //         .then((response)=>{
+    //             console.log(response.data)
+    //             setImgRegister(true)
+    //             setcAnalys(response.data.response.list)
+    //             console.log(canalys)
+    //         })
+    //         .catch((error)=>{
+    //             console.log(formData)
+    //         })
+    //     }
+    // }
+    const getOCR=()=>{
+        axios.get('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/test',
+        {
+            headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+                } 
+        })
+        .then((response)=>{
+            // console.log(response.data.response.list)
+            setClovaAnalys(response.data.response.list)
+            console.log(clovaAnalys)
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    }
+    useEffect(()=>{
+        // postOCR()
+        getOCR()
+    },[])
+
     const handleEdit = (index: number) => {
         setEditableItemIndex(index);
         setOriginalItem(clovaAnalys.items[index]);
@@ -148,7 +201,7 @@ const HistoryDetail = () => {
     }
     return (
         <div className='flex flex-col items-center mt-3 '>
-                {receiptImage? 
+                {imgRegister? 
                 <div className='w-[86%] flex flex-col items-center'>
                     <div className='w-full  flex justify-end'>
                         <button onClick={handleOpenAddItem}><AddCircleIcon  color='primary' fontSize='large'/></button>
@@ -245,6 +298,7 @@ const HistoryDetail = () => {
                                             const selectedImage = e.target.files[0] as File;
                                             setReceiptImage(selectedImage);
                                             console.log(selectedImage);
+                                            
                                         }
                                         }}
                                     />

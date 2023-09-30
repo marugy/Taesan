@@ -1,6 +1,13 @@
 import React from 'react';
 import { Avatar } from '@material-tailwind/react';
-const AssetCard = () => {
+interface PropsUserinfo {
+  userbalance:number,
+  userbank:string,
+  tikkle:number,
+  mostbuy:string,
+  mostbuyprice:number
+}
+const AssetCard = ({userbalance,userbank,tikkle}:PropsUserinfo) => {
   return (
     <div className="flex justify-center items-center mx-auto">
         <div>
@@ -10,12 +17,12 @@ const AssetCard = () => {
             </div>
             <div className='w-[90%] flex justify-between'>
               <div className='font-main text-white text-lg'>잔액</div>
-              <div className='font-main text-white font-bold text-lg'>₩30,000원</div>
+              <div className='font-main text-white font-bold text-lg'>₩{userbalance?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
             </div>
             <div className='bg-white w-[90%] h-[40%] rounded-md my-2 flex flex-col items-center justify-evenly'>
               <div className='w-[90%] flex justify-between'>
                 <div className='font-main'>티끌 머니</div>
-                <div className='font-main font-bold'>₩5,600원</div>
+                <div className='font-main font-bold'>₩{tikkle?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
               </div>
               <div className='w-[90%] flex justify-between'>
                 <div className='font-main'>커피로 환산하면?</div>

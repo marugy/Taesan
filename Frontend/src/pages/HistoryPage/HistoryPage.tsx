@@ -5,7 +5,7 @@ import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
-import { response } from 'express';
+import { useInfiniteQuery } from 'react-query';
 
 
 const HistoryPage = () => {
@@ -13,27 +13,84 @@ const HistoryPage = () => {
   const [cardUser,setCardUser]= useState('')
   const [cardNumber,setCradNumber]=useState('')
   const [cardCompany,setCradCompany]=useState('')
+  const [transactionDTOList,setTransactionDTOList]=useState([])
+  const [page,setPage] = useState(null);
 
-  // const getHistory = () =>{
-  //   axios.get(`https://j9c211.p.ssafy.io/api/transactions/hisotry/${cardid}`, {
-  //       headers: {
-  //       'ACCESS-TOKEN': accessToken,
-  //       'REFRESH-TOKEN': refreshToken,
-  //       },
-  //   })
-  //   .then((response)=>{
+  
+  // const getHistory = async (page:number) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://j9c211.p.ssafy.io/mydata/card-management/cards/1/approval-domestic/test`,
+  //       {
+  //         params: {
+  //           cardId: cardid,
+  //           cursor: page,
+  //           limit: 10
+  //         },
+  //         headers: {
+  //           'ACCESS-TOKEN': accessToken,
+  //           'REFRESH-TOKEN': refreshToken,
+  //         },
+  //       }
+  //     );
   //     setCardUser(response.data.card.name)
   //     setCradNumber(response.data.card.cardNumber)
   //     setCradCompany(response.data.card.cardCompany)
-  //     console.log(response)
-  //   })
-  //   .catch((error)=>{
-  //     console.log(error)
-  //   })
-  // }
-  // useEffect(
-  //   getHistory
-  // ,[])
+  //     setTransactionDTOList(response.data.transactionDTOList)
+  //     setPage(response.data.next_page)
+  //     console.log(page)
+  //     console.log(response.data)
+  //     return response.data.transactionDTOList;
+  //   } catch (error) {
+  //     console.error(error);
+  //     return [];
+  //   }
+  // };
+
+  const getHistory = async (page:any) => {
+    try {
+      const response = await axios.get(
+        `https://j9c211.p.ssafy.io/mydata/card-management/cards/1/approval-domestic/test`,
+        {
+          params: {
+            org_code: "ssafy101",
+            from_date: "20230811",
+            to_date: "20230811",
+            next_page: page,
+            limit: 10
+          },
+          headers: {
+            'x-api-tran-id': "1",
+            'x-api-type': "1",
+          },
+        }
+      );
+      setPage(response.data.next_page)
+      console.log(page)
+      console.log(response.data)
+      return response.data.approved_list;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
+
+  
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useInfiniteQuery('transactions', () => getHistory(page), {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.length === 10) {
+        // 다음 페이지가 있는 경우 다음 페이지 번호 반환
+        return lastPage[lastPage.length - 1].page + 1;
+      } else {
+        return false; // 더 이상 데이터가 없는 경우 false 반환
+      }
+    },
+  });
   
   return (
     <div>
@@ -45,11 +102,44 @@ const HistoryPage = () => {
         main=""
         cardId={123}
         cardType="Credit"
+        />
+      <HistoryList
+        transactionDTOList={data ? data.pages.flat() : []}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={!!hasNextPage}
+        isFetching={isFetching}
       />
-      <HistoryList />
       <BottomNav />
     </div>
   );
 };
 
 export default HistoryPage;
+
+// const getHistory = () =>{
+//   axios.get(`https://j9c211.p.ssafy.io/api/transactions/hisotry/${cardid}`, {
+//   params: {
+//     cardId: cardid,
+//     cursor: 0,
+//     limit: 20,
+//   },    
+//   headers: {
+//       'ACCESS-TOKEN': accessToken,
+//       'REFRESH-TOKEN': refreshToken,
+//       },
+//   })
+//   .then((response)=>{
+//     setCardUser(response.data.card.name)
+//     setCradNumber(response.data.card.cardNumber)
+//     setCradCompany(response.data.card.cardCompany)
+//     setTransactionDTOList(response.data.transactionDTOList)
+//     console.log(response)
+//   })
+//   .catch((error)=>{
+//     console.log(error)
+//   })
+// }
+
+// useEffect(
+//   getHistory
+// ,[])
