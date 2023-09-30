@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @NoArgsConstructor
 @Entity
@@ -26,5 +27,8 @@ public class Tikkle extends BaseEntity {
 
     @Column(name = "money")
     private Long money;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
 }
