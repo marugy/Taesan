@@ -1,10 +1,11 @@
 import React,{useState} from 'react';
-import { Input,Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import Swal from 'sweetalert2';
 import ArrowBack from 'components/Common/ArrowBack';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 import { useNavigate } from 'react-router';
+import { Input } from 'antd';
 
 const BuyifRegister = () => {
     const [buyifbot, setBuyifbot] = useState(false)
@@ -123,9 +124,9 @@ const BuyifRegister = () => {
                         </div>
                     <div className='w-[50%] gap-2'>
                         <div>내가 사고 싶은 물건</div>
-                        <Input size="lg" label="내가 사고 싶은 물건" onChange={handleItemnameChange} crossOrigin="anonymous"/>
+                        <Input  placeholder="내가 사고 싶은 물건" onChange={handleItemnameChange} />
                         <div>물건 가격</div>
-                        <Input size="lg" label="물건 가격" type='number' onChange={handleItempriceChange} crossOrigin="anonymous"/>
+                        <Input  placeholder="물건 가격" type='number' onChange={handleItempriceChange} />
                     </div>
                 </div>
                 <div className='w-[90%] flex justify-end gap-6'>

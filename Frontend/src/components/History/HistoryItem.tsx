@@ -1,7 +1,15 @@
 import React from 'react';
 import {Avatar,ListItemPrefix,Typography} from '@material-tailwind/react'
 
-const HistoryItem = () => {
+interface Propstransaction{
+    afterTransAmt: number,
+    approvedAmount: number,
+    category: string,
+    dateTime: string,
+    shopName: string,
+}
+
+const HistoryItem = ({category,dateTime,shopName,approvedAmount,afterTransAmt}:Propstransaction) => {
     return (
         <div className='w-full flex justify-between mt-2'>
             <ListItemPrefix>
@@ -10,18 +18,18 @@ const HistoryItem = () => {
             <div className="w-full flex justify-between">
                 <div>
                 <Typography variant="h6" color="blue-gray">
-                    영화관
+                    영화관{shopName}
                 </Typography>
                 <Typography variant="small" color="gray" className="font-normal">
-                    08:13
+                    08:13{dateTime}
                 </Typography>
                 </div>
                 <div>
                     <Typography variant="h6" color="green" className="text-end">
-                    3,000원
+                    3,000원{approvedAmount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
                     </Typography>
                     <Typography variant="small" color="blue-gray" className="font-normal text-end">
-                      3,000원
+                      3,000원{afterTransAmt}
                     </Typography>
                 {/* {transaction.type === 1 ? (
                     // 원단위 절삭
