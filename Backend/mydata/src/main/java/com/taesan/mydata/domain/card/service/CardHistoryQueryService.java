@@ -26,7 +26,7 @@ public class CardHistoryQueryService {
 //            cursor = cardHistoryQueryRepository.count(cardId);
 //        }
         return CardTransactionListResponse.builder()
-                .nextPage(cardList.size()==11 ? cardList.get(cardList.size()-1).getId() : null)
+                .nextPage(cardList.size()==limit+1 ? cardList.get(cardList.size()-1).getId() : null)
                 .approvedList(cardList.subList(0, cardList.size()-1))
                 .build();
     }

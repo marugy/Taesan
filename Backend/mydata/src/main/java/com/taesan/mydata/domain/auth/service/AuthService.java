@@ -86,7 +86,7 @@ public class AuthService {
         cardRepository.saveAll(cardList);
 
         // 15% 확률로 카드 내역 생성
-        for (int i = 30; i >= 0; i--) {
+        for (int i = 60; i >= 0; i--) {
             for (int j = 0; j < 24; j++) {
                 boolean result = dummyUtils.drawLots(15);
                 if (result) {
