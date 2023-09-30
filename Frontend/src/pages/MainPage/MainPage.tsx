@@ -8,6 +8,8 @@ import axios from 'axios';
 import BottomNav from 'components/Common/BottomNav';
 import { useUserStore } from 'store/UserStore';
 
+import Notification from 'components/Common/Notification';
+
 const MainPage = () => {
   // 스토어에서 AT,RT 가져오기
   const { accessToken, refreshToken, setName } = useUserStore();
@@ -84,6 +86,7 @@ const MainPage = () => {
   // console.log(mutation);
   return (
     <div className="flex flex-col items-center h-full">
+      <Notification />
       <div className="dt:w-screen dt:h-screen dt:flex">
         <div className="mt-3 dt:fixed dt:top-3 dt:left-6">
           <img src="/Main/logo.png" className="h-16" />

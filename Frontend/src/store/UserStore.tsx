@@ -19,8 +19,8 @@ interface UserStore {
   setIsTikkleCreated: (isTikkleCreated: boolean) => void;
 
   // 알림 여부
-  isNotify: boolean;
-  setIsNotify: (isNotify: boolean) => void;
+  storeDate: string;
+  setStoreDate: (storeDate: string) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -39,22 +39,11 @@ export const useUserStore = create<UserStore>()(
       isTikkleCreated: false,
       setIsTikkleCreated: (isTikkleCreated: boolean) => set({ isTikkleCreated }),
 
-      isNotify: false,
-      setIsNotify: (isNotify: boolean) => {
-        if (isNotify) {
-          // isNotify를 true로 설정
-          set({ isNotify: true });
-
-          // 1시간 마다 알림 isNotify를 false로 자동 설정 ()
-          // 1시간 3600000 / 30분 1800000
-          setTimeout(() => {
-            set({ isNotify: false });
-          }, 10000);
-        }
-      },
-
       userId: '',
       setUserId: (userId: string) => set({ userId }),
+
+      storeDate: '',
+      setStoreDate: (storeDate: string) => set({ storeDate }),
     }),
     {
       name: 'user-storage', // persist key

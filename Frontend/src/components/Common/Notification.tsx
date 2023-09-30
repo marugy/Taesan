@@ -1,57 +1,66 @@
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router';
-import { useLocation } from 'react-router-dom';
 import { useUserStore } from 'store/UserStore';
 
-export const Notification = () => {
+const Notification = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const {
-    accessToken,
-    refreshToken,
-    setName,
-    connectedAsset,
-    setConnectedAsset,
-    isNotify,
-    setIsNotify,
-    isTikkleCreated,
-  } = useUserStore();
+  const { accessToken, refreshToken, connectedAsset, isTikkleCreated, storeDate, setStoreDate } = useUserStore();
 
-  // 알림 여부
-  console.log('알림이 울렸니?', isNotify);
-  // 메인 페이지이면서 알림 쿨탐이 돌았을 때만
-  console.log('계좌등록여부', connectedAsset, '적금통생성여부', isTikkleCreated);
-  if (location.pathname === '/main' && isNotify === false) {
-    setIsNotify(true);
-    // 계좌등록 여부
-    if (!connectedAsset) {
-      AccountPush.fire().then((result) => {
-        console.log(isNotify);
-        if (result.isConfirmed) {
-          navigate('/main/mydata'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
-        }
-      });
-    } else {
-      // 적금통 생성 여부
-      if (!isTikkleCreated) {
-        TikklePush.fire().then((result) => {
-          console.log(isNotify);
-          if (result.isConfirmed) {
-            navigate('/saving/create'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
-          }
-        });
-      } else {
-        // IF (계좌 등록 + 적금동 생성)
-        // RANDOM
-        // 영수증 등록 가능한 결제 내역 조회 API 0.4
-        // 절약 챌린지 남은 금액 조회 API 0.15
-        // 습관 저금 저금 가능한 내역 조회 API 0.15
-        // 샀다 치고 이동 0.15
-        // 소비 패턴 분석 이동 0.15
-      }
-    }
+  const now = new Date();
+  const cooldown = new Date(storeDate);
+
+  const COOL_TIME = 10000;
+
+  console.log('현재', now.getTime());
+  console.log('쿨타임', cooldown.getTime());
+
+  // 알림 쿨타임이 남았다면
+  if (cooldown.getTime() > now.getTime()) {
+    console.log('알림 쿨타임');
+    return null;
   }
+
+  // 알림 쿨타임이 끝났다면
+  // 쿨타임 재설정
+  setStoreDate(String(new Date(now.getTime() + COOL_TIME)));
+
+  // 계좌 등록 안되었으면 계좌등록알림
+  if (!connectedAsset) {
+    console.log('계좌등록');
+    AccountPush.fire().then((result) => {
+      if (result.isConfirmed) {
+        navigate('/main/mydata'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+      }
+    });
+    return null;
+  }
+
+  // 적금통 생성 안했으면 적금통 생성 알림
+  if (!isTikkleCreated) {
+    console.log('적금통 생성');
+    TikklePush.fire().then((result) => {
+      if (result.isConfirmed) {
+        navigate('/saving/create'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+      }
+    });
+    return null;
+  }
+
+  // IF (계좌 등록 + 적금동 생성) RANDOM 알림
+
+  // 등록 안된 영수증 조회 API ()
+  // 절약 챌린지 상태 조회 API
+  // 습관 저금 여부 조회 API
+  // 적금통 기간 조회 API
+  // 샀다치고 권유 알림
+  // 소비패턴분석 알림
+
+  return null;
 };
+
+export default Notification;
+
+// ########################### 알림 ########################
 
 export const AccountPush = Swal.mixin({
   // imageUrl: '/Card/before_register.png',
@@ -107,4 +116,34 @@ export const TikklePush = Swal.mixin({
     toast.addEventListener('mouseenter', Swal.stopTimer);
     toast.addEventListener('mouseleave', Swal.resumeTimer);
   },
+});
+
+export const ChallengeCreatePush = Swal.mixin({
+  //
+});
+export const ChallengeRecruitPush = Swal.mixin({
+  //
+});
+export const ChallengePlayPush = Swal.mixin({
+  //
+});
+
+export const EnrollReceiptPush = Swal.mixin({
+  //
+});
+
+export const EnrollHabitPush = Swal.mixin({
+  //
+});
+
+export const SavingDurationPush = Swal.mixin({
+  //
+});
+
+export const PatternPush = Swal.mixin({
+  //
+});
+
+export const BuyIfPush = Swal.mixin({
+  //
 });
