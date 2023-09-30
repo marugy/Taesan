@@ -76,25 +76,25 @@ public class TransactionService {
 
     public ReceiptResultResponse setReciptInfo(Long transactionId, ReceiptRequest receiptRequest){
         ReceiptResultResponse result = new ReceiptResultResponse();
-//        Transaction transaction = transactionRepository.getTransactionById(transactionId);
+        Transaction transaction = transactionRepository.getTransactionById(transactionId);
 
         List<CategoryResult> aiResult = aiModelClient.getCatetory(receiptRequest.getProductList()).get();
 
 
         // list에 파이썬 결과물 추가
         List<ReceiptList> list = new ArrayList<>();
-//        Receipt receipt = Receipt.builder()
-//                .transaction(transaction)
-//                .transactionDate(receiptRequest.getDate())
-//                .products(list)
-//                .build();
+        Receipt receipt = Receipt.builder()
+                .transaction(transaction)
+                .transactionDate(receiptRequest.getDate())
+                .products(list)
+                .build();
         for(CategoryResult temp : aiResult){
-//            list.add(ReceiptList.of(receipt, temp));
+            list.add(ReceiptList.of(receipt, temp));
             log.info(temp.getProductName() + " " + temp.getCategory());
         }
-        // Todo: 아직 구현 미완성
+        // Todo: 1차 구현 완료
 
-//        receiptRepository.save(receipt);
+        receiptRepository.save(receipt);
 
         return result;
     }
