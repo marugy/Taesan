@@ -58,8 +58,22 @@ public class CardApi {
         return new ResponseEntity<>(cardInfo, headers, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{card_id}/approval-domestic/test")
+    @GetMapping("/{card_id}/approval-domestic")
     public ResponseEntity<CardTransactionListResponse> getCardTransactionList(
+            @RequestHeader("x-api-tran-id") String tranId,
+            @RequestHeader("x-api-type") String type,
+            @PathVariable("card_id") long cardId,
+            @Valid @ModelAttribute CardTransactionListRequest cardTransactionListRequest)
+    {
+        log.info("{}", cardTransactionListRequest.getOrg_code());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-api-tran-id", "1234567890M00000000000001");
+        return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.ACCEPTED);
+    }
+
+    // 무한 스크롤 테스트용
+    @GetMapping("/{card_id}/approval-domestic/test")
+    public ResponseEntity<CardTransactionListResponse> getCardTransactionListTest(
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,
             @PathVariable("card_id") long cardId,
