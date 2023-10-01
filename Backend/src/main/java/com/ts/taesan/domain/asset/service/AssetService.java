@@ -81,7 +81,6 @@ public class AssetService {
     private CardTransactionListRequest getCardTransactionList() {
         return CardTransactionListRequest.builder()
                 .org_code(orgCode)
-                .next_page(0L)
                 .limit(500)
                 .build();
     }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class Transaction {
         this.category = category;
         this.approvedNum = history.getApprovedNum();
         this.cardHistoryId = history.getId();
-        this.dateTime = history.getApprovedDtime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        this.dateTime = new Timestamp(history.getApprovedDtime().getTime()).toLocalDateTime();
         this.shopName = history.getMerchantName();
         this.shopNumber = history.getMerchantRegno();
         this.approvedAmount = history.getApprovedAmt();
