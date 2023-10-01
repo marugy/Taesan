@@ -25,6 +25,7 @@ public class AssetService {
     private String orgCode;
 
     public void connectAssets(Long memberId) {
+        log.warn("2: {}", memberId);
         Member member = memberRepository.findById(memberId).get();
         String tranId = "1234567890M00000000000001";
         TokenRequest tokenRequest = TokenRequest.builder()
@@ -35,7 +36,9 @@ public class AssetService {
                 .redirect_uri("https://j9c211.p.ssafy.io/blahblah")
                 .build();
         String accessToken = authClient.getAccessToken(member.getId(), tranId, tokenRequest).getBody().getAccess_token();
+        log.warn("3: {}", accessToken);
         member.earnMydataAccessToken("Bearer " + accessToken);
+        log.warn("4: {}", accessToken);
     }
 
 }

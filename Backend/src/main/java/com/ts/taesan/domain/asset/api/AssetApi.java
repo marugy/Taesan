@@ -52,6 +52,7 @@ public class AssetApi {
     public ApiResponse<Void> connectAssets(
             @AuthenticationPrincipal User user
     ) {
+        log.warn("1: {}", user.getUsername());
         assetService.connectAssets(Long.parseLong(user.getUsername()));
         return OK(null);
     }
