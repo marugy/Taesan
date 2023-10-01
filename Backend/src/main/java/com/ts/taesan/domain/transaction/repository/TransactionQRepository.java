@@ -25,15 +25,15 @@ public class TransactionQRepository {
 
     public List<TransactionDTO> findTransactionListByCardId(Long id, Integer cursor, Integer limit){
         return queryFactory.select(Projections.fields(TransactionDTO.class,
-                transaction.id.as("transactionId"), transaction.approvedId, transaction.dateTime,
-                transaction.approvedAmount, transaction.afterTransAmt, transaction.shopName, transaction.category))
+                transaction.id.as("transactionId"), transaction.approvedNum, transaction.dateTime,
+                transaction.approvedAmount, transaction.shopName, transaction.category))
                 .from(transaction).where(transaction.cardId.eq(id)).offset(cursor).limit(limit).orderBy(transaction.dateTime.desc()).fetch();
     }
 
     public TransactionDTO findTransactionDetailByCardId(Long id){
         return queryFactory.select(Projections.fields(TransactionDTO.class,
-                transaction.id.as("transactionId"), transaction.approvedId, transaction.dateTime,
-                transaction.approvedAmount, transaction.afterTransAmt, transaction.shopName, transaction.category,
+                transaction.id.as("transactionId"), transaction.approvedNum, transaction.dateTime,
+                transaction.approvedAmount, transaction.shopName, transaction.category,
                 transaction.cardType, transaction.shopNumber)).from(transaction).where(transaction.id.eq(id)).fetchFirst();
     }
 
@@ -50,8 +50,8 @@ public class TransactionQRepository {
 
     public List<TransactionDTO> findTransactionListByMonth(Long id, LocalDate startDate, LocalDate endDate, String category){
         return queryFactory.select(Projections.fields(TransactionDTO.class,
-                        transaction.id.as("transactionId"), transaction.approvedId, transaction.dateTime,
-                        transaction.approvedAmount, transaction.afterTransAmt, transaction.shopName, transaction.category))
+                        transaction.id.as("transactionId"), transaction.approvedNum, transaction.dateTime,
+                        transaction.approvedAmount, transaction.shopName, transaction.category))
                 .from(transaction).where(transaction.cardId.eq(id).and(transaction.category.eq(category)
                         .and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))).fetch();
     }

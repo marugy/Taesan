@@ -40,25 +40,6 @@ public class TransactionService {
     private final TransactionsClient transactionsClient;
     private final AIModelClient aiModelClient;
 
-    Map<String, String> categoryInfo = new ConcurrentHashMap<>();
-    @PostConstruct
-    private void init() {
-        // 초기화 처리
-        categoryInfo.put("MT1", "대형마트");
-        categoryInfo.put("CS2", "편의점");
-        categoryInfo.put("FD6", "음식점");
-        categoryInfo.put("CE7", "카페");
-        categoryInfo.put("HP8", "병원");
-        categoryInfo.put("PM9", "병원");
-        categoryInfo.put("PK6", "교통");
-        categoryInfo.put("SW8", "교통");
-        categoryInfo.put("OL7", "교통");
-        categoryInfo.put("AT4", "여가");
-        categoryInfo.put("AD5", "여가");
-        categoryInfo.put("CT1", "여가");
-
-    }
-
     public TransactionListResponse getTransactions(Long cardId, Integer cursor, Integer limit){
         // Todo: 2023-09-21: Card 객체 용현이 API에서 가져와야 함
         Card card = new Card();
@@ -149,15 +130,6 @@ public class TransactionService {
         oftenCategories.addAll(transactions);
         oftenCategories.addAll(receipts);
         return oftenCategories;
-    }
-
-    public boolean loadTransactions(LoadTransactions request){
-        String key = "KakaoAK b0031b39d59b99bd310f4b741d4c7d63";
-        // TODO : [용현] 카카오 API 키 값 config 서버에 넣기 및 용현이 디비에서 데이터 가져오면 카카오API 쏴서 DB에 넣기
-        
-        KakaoResult result = transactionsClient.loadUserByUsername(key,"전주24시콩나물국밥", 1, 1).get();
-        log.info(categoryInfo.get(result.getDocuments().get(0).getCategory_group_code()));
-        return true;
     }
 
 }

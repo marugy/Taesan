@@ -7,6 +7,7 @@ import com.ts.taesan.domain.member.dto.response.TokenResponse;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
+import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
 import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
 import io.jsonwebtoken.Claims;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final TransactionService transactionService;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthClient authClient;
 

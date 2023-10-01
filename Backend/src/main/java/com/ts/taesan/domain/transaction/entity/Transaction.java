@@ -1,10 +1,14 @@
 package com.ts.taesan.domain.transaction.entity;
 
+import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
@@ -21,10 +25,10 @@ public class Transaction {
     private Long cardId; // 속한 카드 Id
 
     @NotNull
-    private Long approvedId; // 거래내역의 승인 Id
+    private String approvedNum; // 거래내역의 승인 Id
 
     @NotNull
-    private String cardHistoryId; 
+    private Long cardHistoryId;
 
     @NotNull
     private LocalDateTime dateTime; // 거래내역 날짜
@@ -36,14 +40,24 @@ public class Transaction {
     private Long approvedAmount; // 승인 금액
 
     @NotNull
-    private Long afterTransAmt; // 승인 된 후 잔여 금액
-
-    @NotNull
     private String category; // 카테고리
 
     @NotNull
-    private Character cardType; // 신용인지, 체크인지
+    private String cardType; // 신용인지, 체크인지
 
     @NotNull
     private String shopNumber;
+
+    public Transaction(CardHistoryList history, Long cardId, String category) {
+        this.cardId = cardId;
+        this.category = category;
+        this.approvedNum = history.getApprovedNum();
+        this.cardHistoryId = history.getId();
+        this.dateTime = history.getApprovedDtime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        this.shopName = history.getMerchantName();
+        this.shopNumber = history.getMerchantRegno();
+        this.approvedAmount = history.getApprovedAmt();
+        this.cardType = history.getPayType();
+    }
+
 }

@@ -62,12 +62,4 @@ public class TransactionAPI {
         return OK(result);
     }
 
-    @ApiOperation(value = "최초 거래내역 불러오기(미완성)", notes = "최초 카드Id 마다 거래내역 불러오기 API")
-    @PostMapping("/load/transaction")
-//    public ApiResponse<String> loadTransactions(@RequestBody LoadTransactions request){
-    public ApiResponse<String> loadTransactions(){
-        transactionService.loadTransactions(new LoadTransactions(new ArrayList<>()));
-        return OK("Success");
-
-    }
 }
