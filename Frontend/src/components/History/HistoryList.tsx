@@ -4,6 +4,7 @@ import { HistoryData } from 'types/HIstoryForm'
 import { useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 import { Spin } from 'antd';
+import {Typography} from '@material-tailwind/react'
 
 // import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -42,8 +43,19 @@ interface PropstransactionDTOList{
 }
 
 const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:PropstransactionDTOList) => {
+    const groupedTransactions: Record<string, any[]> = {};
     const navigate = useNavigate()
     const bottomRef = useRef(null);
+    transactionDTOList.forEach((transaction) => {
+        const date = dayjs(transaction.approved_dtime).format('MM/DD');
+    
+        if (!groupedTransactions[date]) {
+          groupedTransactions[date] = [];
+        }
+    
+        groupedTransactions[date].push(transaction);
+      });
+    const groupedTransactionDates = Object.keys(groupedTransactions);
     useEffect(() => {
         const options = {
           root: null, // viewport를 기준으로 감시
@@ -72,22 +84,22 @@ const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:P
                 거래 내역 
             </div>
             <div className='w-[86%]'>
-                {transactionDTOList.map((transaction,index)=>(
-                    <div key={index} onClick={()=>{navigate(`/history/detail/${1}`)}}>
-                        {/* <HistoryItem 
-                            category={transaction.category} 
-                            dateTime={transaction.dateTime} 
-                            shopName={transaction.shopName} 
-                            approvedAmount={transaction.approvedAmount}
-                            afterTransAmt={transaction.afterTransAmt}/> */}
-                        <HistoryItem 
-                        category={'하위'} 
-                        dateTime={transaction.approved_dtime} 
-                        shopName={transaction.merchant_name} 
+            {groupedTransactionDates.map((date) => (
+                <div key={date}>
+                    <Typography variant="h6" color="blue-gray">{date}</Typography>
+                    {groupedTransactions[date].map((transaction, index) => (
+                    <div key={index} onClick={() => navigate(`/history/detail/${1}`)}>
+                        <HistoryItem
+                        category={'하위'}
+                        dateTime={transaction.approved_dtime}
+                        shopName={transaction.merchant_name}
                         approvedAmount={transaction.approved_amt}
-                        afterTransAmt={transaction.modified_amt}/>
-                        <hr className='mt-1'/>
+                        />
+                        <hr className="mt-1" />
                     </div>
+                    ))}
+                    <div className='h-[18px]'></div>
+                </div>
                 ))}
                 <div className='w-full h-10 flex justify-center'>
                     {hasNextPage ? (
