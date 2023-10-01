@@ -46,6 +46,10 @@ public class CardQueryRepository {
     public CardInfoResponse findCardInfoById(long cardId) {
         return queryFactory
                 .select(Projections.constructor(CardInfoResponse.class,
+                        card.id.as("card_id"),
+                        card.cardCompany.as("company"),
+                        card.cardNum.as("card_num"),
+                        card.cardType.as("card_type"),
                         Expressions.asBoolean(true).as("is_trans_payable"),
                         Expressions.asBoolean(true).as("is_cash_card"),
                         Expressions.asString("SSAFY_BANK").as("linked_bank_code"),

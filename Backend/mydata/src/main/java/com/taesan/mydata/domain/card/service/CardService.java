@@ -6,6 +6,8 @@ import com.taesan.mydata.domain.card.entity.CardHistory;
 import com.taesan.mydata.domain.card.repository.CardHistoryRepository;
 import com.taesan.mydata.domain.card.repository.CardRepository;
 import com.taesan.mydata.global.enumerate.Shop;
+import com.taesan.mydata.global.openfeign.transaction.TransactionClient;
+import com.taesan.mydata.global.openfeign.transaction.dto.request.CardHistoryList;
 import com.taesan.mydata.global.util.DummyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class CardService {
 
     private final CardRepository cardRepository;
     private final CardHistoryRepository cardHistoryRepository;
+    private final TransactionClient transactionClient;
     private final DummyUtils dummyUtils;
 
     public PayResponse pay(Long cardId, String shopName, Long amount) {
@@ -37,6 +40,7 @@ public class CardService {
                 .approvedAmt(amount)
                 .build();
         cardHistoryRepository.save(cardHistory);
+        transactionClient.saveNewTransaction(new CardHistoryList(cardHistory));
 
         return PayResponse.builder()
                 .rspCode("200")

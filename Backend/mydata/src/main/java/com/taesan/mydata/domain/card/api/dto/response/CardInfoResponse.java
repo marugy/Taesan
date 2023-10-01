@@ -22,6 +22,18 @@ public class CardInfoResponse {
     @JsonProperty("search_timestamp")
     private Long searchTimestamp;
 
+    @JsonProperty("card_id")
+    private Long cardId;
+
+    @JsonProperty("company")
+    private String company;
+
+    @JsonProperty("card_num")
+    private String cardNum;
+
+    @JsonProperty("card_type")
+    private String cardType;
+
     @JsonProperty("is_trans_payable")
     private Boolean isTransPayable;
 
@@ -51,11 +63,15 @@ public class CardInfoResponse {
 //    }
 
 
-    public CardInfoResponse(Boolean isTransPayable, Boolean isCashCard, String linkedBankCode, String cardBrand, Long annualFee, Long issueDate) {
+    public CardInfoResponse(Long cardId, String company, String cardNum, String cardType, Boolean isTransPayable, Boolean isCashCard, String linkedBankCode, String cardBrand, Long annualFee, Long issueDate) {
 
         this.rspCode = "200";
         this.rspMsg = "성공";
         this.searchTimestamp = new Date().getTime();
+        this.cardId = cardId;
+        this.company = company;
+        this.cardNum = cardNum;
+        this.cardType = cardType;
         this.isTransPayable = isTransPayable;
         this.isCashCard = isCashCard;
         this.linkedBankCode = linkedBankCode;
