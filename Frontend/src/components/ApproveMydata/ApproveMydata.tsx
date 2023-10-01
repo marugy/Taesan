@@ -34,21 +34,23 @@ const ApproveMydata = () => {
     if (check1 && check2 && check3) {
       axios
         .post(
-          'https://j9c211.p.ssafy.io/api/asset-management/assets/authenticate',
-          // {
-          //   user_ci: userId,
-          // },
+          // Post 요청할 때는 빈값일때는 {}를 보내자
+          'https://j9c211.p.ssafy.io/api/asset-management/assets/authenticate',{
+          },
           {
             headers: {
-              'ACCESS-TOKEN': accessToken,
-              'REFRESH-TOKEN': refreshToken,
+              "ACCESS-TOKEN": accessToken,
+              "REFRESH-TOKEN": refreshToken,
             },
           },
+          
         )
         .then((response) => {
           navigate('/main/asset/register');
         })
         .catch((error) => {
+          console.log(accessToken);
+          console.log(refreshToken);
           console.log(error);
         });
     } else {
@@ -105,11 +107,12 @@ const ApproveMydata = () => {
         * 가입한 마이데이터 이용현황은 마이데이터 종합포털(www.mydatacenter.or.kr)에서 확인하실 수 있습니다.
         <br />
       </div>
-      <div className="flex justify-center mt-5  ">
+      <div className="flex justify-center mt-5">
         <Button color="blue" className="w-full text-xl" onClick={handleNext}>
           마이데이터 동의하기
         </Button>
       </div>
+      <div className="h-5"></div>
     </div>
   );
 };

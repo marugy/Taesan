@@ -60,7 +60,7 @@ const UserDeletePage = () => {
   return (
     <div>
       <ArrowBack pageName="회원 탈퇴" />
-      <div className="h-screen flex flex-col  justify-center mx-10 space-y-3 font-main ">
+      <div className="h-screen flex flex-col  justify-center mx-10 space-y-3 font-main mt-10 ">
         <div className="flex justify-center w-full mb-7">
         <img src="/MyPage/deleteUser.png" className="aspect-square w-40 dt:w-72"/>
         </div>
@@ -74,6 +74,7 @@ const UserDeletePage = () => {
         <Button size="lg" className="bg-red-500" onClick={handleDeleteUser}>
           탈퇴하기
         </Button>
+        
       </div>
     </div>
   );

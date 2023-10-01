@@ -5,14 +5,17 @@ import ArrowBack from 'components/Common/ArrowBack';
 
 interface AccountProps {
   accountList: Array<any>;
+  setAccount : any;
 }
-const AccountRegister:React.FC<AccountProps> = ( {accountList} ) => {
+const AccountRegister:React.FC<AccountProps> = ( {accountList,setAccount} ) => {
   // 더미데이터
   
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleItemClick = (index: any) => {
+  const handleItemClick = (index: any, accountNum: string) => {
     setSelectedItem(index);
+    setAccount(accountNum); // setAccount 함수에 accountNum 전달
+    // console.log(accountNum);
   };
   return (
     <div>
@@ -34,7 +37,7 @@ const AccountRegister:React.FC<AccountProps> = ( {accountList} ) => {
             {accountList.map((account, index) => (
               <ListItem
                 key={index}
-                onClick={() => handleItemClick(index)}
+                onClick={() => handleItemClick(index,account.accountNum)}
                 className={`${
                   selectedItem === index ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
                 } mb-4 `}
