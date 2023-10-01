@@ -6,7 +6,7 @@ import BottomNav from 'components/Common/BottomNav';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 import { useInfiniteQuery } from 'react-query';
-
+import { useAssetStore } from 'store/AssetStore';
 
 const HistoryPage = () => {
   const { accessToken, refreshToken } = useUserStore();
@@ -15,6 +15,7 @@ const HistoryPage = () => {
   const [cardCompany,setCradCompany]=useState('')
   const [transactionDTOList,setTransactionDTOList]=useState([])
   const [page,setPage] = useState(null);
+  const {selectedCardId} = useAssetStore()
 
   
   // const getHistory = async (page:number) => {
@@ -90,6 +91,8 @@ const HistoryPage = () => {
         return false; // 더 이상 데이터가 없는 경우 false 반환
       }
     },
+    refetchOnWindowFocus: false,
+    cacheTime:0
   });
   
   return (
@@ -117,9 +120,9 @@ const HistoryPage = () => {
 export default HistoryPage;
 
 // const getHistory = () =>{
-//   axios.get(`https://j9c211.p.ssafy.io/api/transactions/hisotry/${cardid}`, {
+//   axios.get(`https://j9c211.p.ssafy.io/api/transactions/hisotry/${selectedCardId}`, {
 //   params: {
-//     cardId: cardid,
+//     cardId: selectedCardId,
 //     cursor: 0,
 //     limit: 20,
 //   },    

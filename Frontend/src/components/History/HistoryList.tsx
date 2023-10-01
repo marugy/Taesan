@@ -35,7 +35,8 @@ interface PropstransactionDTOList{
 		merchant_regno: string,
 		approved_amt: number,
 		modified_amt: number,
-		total_install_cnt: number
+		total_install_cnt: number,
+        history_id:number
         }[],
         fetchNextPage: () => void
         hasNextPage:boolean,
@@ -88,7 +89,7 @@ const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:P
                 <div key={date}>
                     <Typography variant="h6" color="blue-gray">{date}</Typography>
                     {groupedTransactions[date].map((transaction, index) => (
-                    <div key={index} onClick={() => navigate(`/history/detail/${1}`)}>
+                    <div key={index} onClick={() => navigate(`/history/detail/${transaction.history_id}`)}>
                         <HistoryItem
                         category={'하위'}
                         dateTime={transaction.approved_dtime}

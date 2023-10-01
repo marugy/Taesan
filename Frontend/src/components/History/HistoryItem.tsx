@@ -13,7 +13,7 @@ const HistoryItem = ({category,dateTime,shopName,approvedAmount}:Propstransactio
     return (
         <div className='w-full flex justify-between mt-2'>
             <ListItemPrefix>
-                <Avatar variant="square" className="p-1" alt="candice" src={`.png`} />
+                <Avatar variant="square" className="p-1" alt="candice" src={`${category}.png`} />
             </ListItemPrefix>
             <div className="w-full flex justify-between">
                 <div>
