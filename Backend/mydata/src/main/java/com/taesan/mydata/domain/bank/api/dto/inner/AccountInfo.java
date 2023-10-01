@@ -9,6 +9,10 @@ import java.util.Date;
 @Data
 public class AccountInfo {
 
+        // 얘는 임시로 제공
+        @JsonProperty("bank")
+        private String bank;
+
         @JsonProperty("currency_code")
         private String currencyCode;
 
@@ -31,7 +35,8 @@ public class AccountInfo {
         private Double monthlyPaidInAmt;
 
         @Builder
-        public AccountInfo(String savingMethod, String holderName, Date issueDate) {
+        public AccountInfo(String bank, String savingMethod, String holderName, Date issueDate) {
+                this.bank = bank;
                 this.savingMethod = savingMethod;
                 this.holderName = holderName;
                 this.issueDate = issueDate;

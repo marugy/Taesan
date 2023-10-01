@@ -7,6 +7,10 @@ import lombok.Data;
 @Data
 public class AccountDetail {
 
+        // 얘는 임시로 제공
+        @JsonProperty("account_name")
+        private String accountName;
+
         @JsonProperty("currency_code")
         private String currencyCode;
 
@@ -23,7 +27,8 @@ public class AccountDetail {
         private String lastPaidInCnt;
 
         @Builder
-        public AccountDetail(String currencyCode, Double balanceAmt, Double withdrawableAmt, Double offeredRate) {
+        public AccountDetail(String accountName, String currencyCode, Double balanceAmt, Double withdrawableAmt, Double offeredRate) {
+                this.accountName = accountName;
                 this.currencyCode = currencyCode;
                 this.balanceAmt = balanceAmt;
                 this.withdrawableAmt = withdrawableAmt;

@@ -46,6 +46,7 @@ public class AccountQueryRepository {
         return queryFactory
                 .select(Projections.constructor(AccountInfo.class,
 //                        account.currencyCode.as("currency_code"),
+                        account.bank.as("bank"),
                         account.savingMethod.as("saving_method"),
                         Expressions.asString("예금주 이름1").as("holder_name"),
                         account.issueDate.as("issue_date")
@@ -61,6 +62,7 @@ public class AccountQueryRepository {
     public List<AccountDetail> findAccountDetailByAccountNum(String accountNum) {
         return queryFactory
                 .select(Projections.constructor(AccountDetail.class,
+                        account.prodName.as("account_name"),
                         Expressions.asString("KRW").as("currency_code"),
                         account.balanceAmt.as("balance_amt"),
                         account.withdrawableAmt.as("withdrawable_amt"),
