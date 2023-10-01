@@ -4,6 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css'; // css파일을 불러와�
 import { ko } from 'date-fns/esm/locale'; // 한국어 사용을 위해 불러오자.
 import dayjs from 'dayjs';
 import { Button, Input } from '@material-tailwind/react';
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
 
 /// MUI 데이트 피커
 
@@ -16,6 +18,7 @@ import { Pincode } from 'components/Common/Pincode';
 import SavingComplete from './SavingComplete';
 
 const SavingCreate = () => {
+  const { accessToken,refreshToken } = useUserStore();
   const [date, setDate] = useState('2023-09-27'); // 선택한 날짜를 상태로 저장
   const koreanDate = dayjs(date).format('YYYY년 MM월 DD일'); //
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
@@ -28,9 +31,27 @@ const SavingCreate = () => {
 
   const onCorrectPincode = () => {
     setPincodeVisible(false);
-    // 적금통 생성 API (body : 만기일)
-    console.log('POST: BODY(만기일)', duration);
-    setCompleteVisible(true);
+    // 지헌(적금통 생성 API 쏘기)
+    axios.post('https://j9c211.p.ssafy.io/api/asset-management/tikkle',
+    {
+      'endDate':date,
+    },
+    {
+      headers : {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      }
+    })
+    .then((response) => {
+      // 적금통 생성 API 요청이 성공한 경우
+      console.log('POST: BODY(만기일)', date);
+      setCompleteVisible(true);
+    })
+    .catch((error) => {
+      // 에러 처리
+      console.error('적금통 생성 실패', error);
+    });
+    
   };
 
   const handleConfirm = () => {
