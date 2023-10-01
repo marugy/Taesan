@@ -116,6 +116,7 @@ public class AssetQueryService {
         return Account.builder()
                 .bank(accountInfo.getBank())
                 .accountNum(member.getAccountNum())
+                .accountName(accountDetail.getAccountName())
                 .balance((long) accountDetail.getBalanceAmt())
                 .build();
     }
