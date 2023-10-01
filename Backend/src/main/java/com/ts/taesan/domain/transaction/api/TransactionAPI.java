@@ -1,6 +1,8 @@
 package com.ts.taesan.domain.transaction.api;
 
 
+import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
+import com.ts.taesan.domain.asset.api.dto.response.CardHistoryListResponse;
 import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
 import com.ts.taesan.domain.transaction.api.dto.request.ReceiptRequest;
 import com.ts.taesan.domain.transaction.api.dto.response.*;
@@ -9,8 +11,11 @@ import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.api.ApiResponse;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,8 +31,8 @@ public class TransactionAPI {
     private final TransactionService transactionService;
     @ApiOperation(value = "기본 거래내역 목록 불러오기", notes = "카드Id, 불러올 offset, 가져올 크기 지정")
     @GetMapping("/history/{cardId}")
-    public ApiResponse<TransactionListResponse> getTransactions(@PathVariable Long cardId, @RequestParam Integer cursor, @RequestParam Integer limit){
-        TransactionListResponse result = transactionService.getTransactions(cardId, cursor, limit);
+    public ApiResponse<TransactionListResponse> getTransactions(@Parameter(hidden = true) @AuthenticationPrincipal User user, @PathVariable Long cardId, @RequestParam Integer cursor, @RequestParam Integer limit){
+        TransactionListResponse result = transactionService.getTransactions(Long.valueOf(user.getUsername()), cardId, cursor, limit);
         return OK(result);
     }
 
@@ -60,6 +65,16 @@ public class TransactionAPI {
             , @RequestParam String category){
         ReceiptListResponse result = transactionService.getReceiptDetail(cardId,Integer.parseInt(year), Integer.parseInt(month), category);
         return OK(result);
+    }
+
+    @ApiOperation(value = "거래내역 추가 요청", notes = "결제가 발생했을때 카드 서버는 이 API를 호출하여 우리 서버의 거래내역을 최신화합니다.")
+    @PostMapping("/transaction/{card_id}")
+    public ApiResponse<Void> addNewTransaction(
+            @PathVariable("card_id") Long cardId,
+            @ModelAttribute CardHistoryList history
+    ) {
+        transactionService.saveNewTransaction(cardId, history);
+        return OK(null);
     }
 
 }

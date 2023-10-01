@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Card {
+    private Long cardId;
     private String cardNumber;
-    private String name;
     private String cardCompany;
+    private String cardType;
 }

@@ -1,5 +1,8 @@
 package com.ts.taesan.domain.transaction.service;
 
+import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
+import com.ts.taesan.domain.member.entity.Member;
+import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
 import com.ts.taesan.domain.transaction.api.dto.request.ReceiptRequest;
 import com.ts.taesan.domain.transaction.api.dto.response.*;
@@ -14,8 +17,13 @@ import com.ts.taesan.domain.transaction.req.CategoryResult;
 import com.ts.taesan.domain.transaction.req.KakaoResult;
 import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.dto.response.*;
+import com.ts.taesan.global.openfeign.card.CardClient;
+import com.ts.taesan.global.openfeign.card.dto.request.CardInfoRequest;
+import com.ts.taesan.global.openfeign.card.dto.response.CardInfoResponse;
+import com.ts.taesan.global.util.KakaoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +31,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -37,12 +42,26 @@ public class TransactionService {
     private final TransactionQRepository qRepository;
     private final TransactionRepository transactionRepository;
     private final ReceiptRepository receiptRepository;
+    private final MemberRepository memberRepository;
     private final TransactionsClient transactionsClient;
+    private final CardClient cardClient;
     private final AIModelClient aiModelClient;
+    private final KakaoUtil kakaoUtil;
 
-    public TransactionListResponse getTransactions(Long cardId, Integer cursor, Integer limit){
-        // Todo: 2023-09-21: Card 객체 용현이 API에서 가져와야 함
-        Card card = new Card();
+    @Value("${org-code}")
+    private String orgCode;
+
+    public TransactionListResponse getTransactions(Long memberId, Long cardId, Integer cursor, Integer limit){
+        Member member = memberRepository.findById(memberId).get();
+        CardInfoRequest cardInfoRequest = CardInfoRequest.builder()
+                .org_code(orgCode)
+                .search_timestamp(new Date().getTime())
+                .next_page(0L)
+                .limit(500)
+                .build();
+        CardInfoResponse cardResponse = cardClient.getCardInfo(member.getMydataAccessToken(), getTranId(), getApiType(), cardId, cardInfoRequest).getBody();
+
+        Card card = new Card(cardResponse.getCardId(), cardResponse.getCardNum(), cardResponse.getCompany(), cardResponse.getCardType());
         List<TransactionDTO> list = qRepository.findTransactionListByCardId(cardId, cursor, limit);
         TransactionListResponse response = new TransactionListResponse(cursor.toString(), card, limit.toString(), list);
         return response;
@@ -130,6 +149,19 @@ public class TransactionService {
         oftenCategories.addAll(transactions);
         oftenCategories.addAll(receipts);
         return oftenCategories;
+    }
+
+    public void saveNewTransaction(Long cardId, CardHistoryList history) {
+        String category = kakaoUtil.getCategory(history.getMerchantName());
+        transactionRepository.save(new Transaction(history, cardId, category));
+    }
+
+    private String getApiType() {
+        return "user-search";
+    }
+
+    private String getTranId() {
+        return "1234567890M00000000000001";
     }
 
 }
