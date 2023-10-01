@@ -26,8 +26,8 @@ public class TikkleApi {
     private final TikkleQueryService tikkleQueryService;
     private final TikkleService tikkleService;
 
-    @PostMapping("/tikkle")
-    public ApiResponse<Integer> getSavingInfo(
+    @PostMapping
+    public ApiResponse<Integer> createTikkle(
             @AuthenticationPrincipal User user,
             @RequestBody TikkleCreateRequest tikkleCreateRequest
             ) {
