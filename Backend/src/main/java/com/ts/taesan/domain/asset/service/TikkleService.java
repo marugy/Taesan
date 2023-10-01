@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +27,12 @@ public class TikkleService {
     @Value("${org-code}")
     private String orgCode;
 
-    public void save(Long memberId) {
+    public void save(Long memberId, Date endDate) {
         Member member = memberRepository.findById(memberId).get();
         Tikkle tikkle = Tikkle.builder()
                 .member(member)
                 .money(0L)
+                .endDate(endDate)
                 .build();
         tikkleRepository.save(tikkle);
     }

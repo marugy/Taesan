@@ -9,6 +9,8 @@ import com.ts.taesan.domain.transaction.entity.Transaction;
 import com.ts.taesan.domain.transaction.repository.ReceiptRepository;
 import com.ts.taesan.domain.transaction.repository.TransactionQRepository;
 import com.ts.taesan.domain.transaction.repository.TransactionRepository;
+import com.ts.taesan.domain.transaction.req.AIModelClient;
+import com.ts.taesan.domain.transaction.req.CategoryResult;
 import com.ts.taesan.domain.transaction.req.KakaoResult;
 import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.dto.response.*;
@@ -36,6 +38,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final ReceiptRepository receiptRepository;
     private final TransactionsClient transactionsClient;
+    private final AIModelClient aiModelClient;
 
     Map<String, String> categoryInfo = new ConcurrentHashMap<>();
     @PostConstruct
@@ -75,14 +78,22 @@ public class TransactionService {
         ReceiptResultResponse result = new ReceiptResultResponse();
         Transaction transaction = transactionRepository.getTransactionById(transactionId);
 
+        List<CategoryResult> aiResult = aiModelClient.getCatetory(receiptRequest.getProductList()).get();
+
+
         // list에 파이썬 결과물 추가
         List<ReceiptList> list = new ArrayList<>();
-        // Todo: 아직 구현 미완성
         Receipt receipt = Receipt.builder()
                 .transaction(transaction)
                 .transactionDate(receiptRequest.getDate())
                 .products(list)
                 .build();
+        for(CategoryResult temp : aiResult){
+            list.add(ReceiptList.of(receipt, temp));
+            log.info(temp.getProductName() + " " + temp.getCategory());
+        }
+        // Todo: 1차 구현 완료
+
         receiptRepository.save(receipt);
 
         return result;

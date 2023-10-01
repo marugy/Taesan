@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.transaction.entity;
 
+import com.ts.taesan.domain.transaction.req.CategoryResult;
 import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(access = PROTECTED)
+// 영수증의 상세 품목에 대한 Entity
 public class ReceiptList {
     @Id
     @Column(name = "id")
@@ -24,13 +26,20 @@ public class ReceiptList {
     @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "receipt_id")
-    private Receipt receipt;
+    private Receipt receipt; // 품목이 속한 영수증에 대한 참조 객체
 
-    private String name;
+    private String name; // 상품명
 
-    private String category;
+    private String category; // 상품의 카테고리
 
-    private Integer count;
+    private Long price; // 상품의 가격
 
-    private Long price;
+    public static ReceiptList of(Receipt receipt, CategoryResult categoryResult){
+        ReceiptList result = new ReceiptList();
+        result.setReceipt(receipt);
+        result.setName(categoryResult.getProductName());
+        result.setPrice(categoryResult.getPrice());
+        result.setCategory(categoryResult.getCategory());
+        return result;
+    }
 }

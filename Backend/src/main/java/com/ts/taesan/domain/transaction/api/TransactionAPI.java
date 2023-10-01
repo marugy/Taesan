@@ -3,13 +3,10 @@ package com.ts.taesan.domain.transaction.api;
 
 import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
 import com.ts.taesan.domain.transaction.api.dto.request.ReceiptRequest;
-import com.ts.taesan.domain.transaction.api.dto.response.ReceiptListResponse;
-import com.ts.taesan.domain.transaction.api.dto.response.TransactionListResponse;
-import com.ts.taesan.domain.transaction.api.dto.response.TransactionResponse;
+import com.ts.taesan.domain.transaction.api.dto.response.*;
 import com.ts.taesan.domain.transaction.req.KakaoResult;
 import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.TransactionService;
-import com.ts.taesan.domain.transaction.api.dto.response.CardResponse;
 import com.ts.taesan.global.api.ApiResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +40,9 @@ public class TransactionAPI {
 
     @ApiOperation(value = "영수증 정보 등록하기(미완성)", notes = "분석이 완료된 영수증 정보를 등록")
     @PostMapping("/{transactionId}/receipt")
-    public ApiResponse<String> setReciptInfo(@PathVariable Long transactionId, @RequestBody ReceiptRequest receiptRequest){
-
-        return OK("Success");
+    public ApiResponse<ReceiptResultResponse> setReciptInfo(@PathVariable Long transactionId, @RequestBody ReceiptRequest receiptRequest){
+        ReceiptResultResponse result = transactionService.setReciptInfo(transactionId, receiptRequest);
+        return OK(result);
     }
 
     @ApiOperation(value = "카드 카테고리 상세내역", notes = "패턴분석에서 위치 카테고리의 상세 내용")
