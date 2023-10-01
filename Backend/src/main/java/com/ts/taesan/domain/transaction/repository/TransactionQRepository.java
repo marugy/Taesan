@@ -70,16 +70,20 @@ public class TransactionQRepository {
                 )).from(transaction).where(transaction.cardId.eq(id).
                 and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(transaction.category)
-                .orderBy(transaction.count().desc()).limit(5).fetch();
+                .orderBy(transaction.count().desc()).limit(3).fetch();
     }
 
     public List<OftenCategory> findOftenReceipt(Long id, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(OftenCategory.class, receiptList.category,
                 receiptList.count().as("count"), receiptList.price.sum().as("money"))).from(receiptList)
                 .where(receiptList.receipt.transaction.cardId.eq(id)
+                        .and(receiptList.category.eq("커피/차").or(receiptList.category.eq("과자/간식")
+                                .or(receiptList.category.eq("제과/잼").or(receiptList.category.eq("완구")
+                                        .or(receiptList.category.eq("잡화/명품").or(receiptList.category.eq("문구/도서")
+                                                .or(receiptList.category.eq("담배"))))))))
                         .and(receiptList.receipt.transactionDate.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(receiptList.category)
-                .orderBy(receiptList.count().desc()).limit(5).fetch();
+                .orderBy(receiptList.count().desc()).limit(3).fetch();
     }
 
     public List<Info> findTransactionAnal(Long cardId, LocalDate startDate, LocalDate endDate){

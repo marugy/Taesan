@@ -109,7 +109,7 @@ public class TransactionService {
         LocalDate endDate = toSearch.atEndOfMonth();
         List<TransactionDTO> list = qRepository.findTransactionListByMonth(cardId,startDate, endDate, category);
 
-        Long sum = new Long(0);
+        Long sum = Long.parseLong("0");
         for(TransactionDTO temp: list){
             sum += temp.getApprovedAmount();
         }
@@ -126,7 +126,8 @@ public class TransactionService {
         LocalDate startDate = toSearch.atDay(1);
         LocalDate endDate = toSearch.atEndOfMonth();
         List<ReceiptDTO> list = qRepository.findReceiptsByMonth(cardId, startDate, endDate, category);
-        Long sum = new Long(0);
+        Long sum = Long.parseLong("0");
+
         for(ReceiptDTO temp: list){
             sum += temp.getPrice();
         }
@@ -152,7 +153,7 @@ public class TransactionService {
 
     public boolean loadTransactions(LoadTransactions request){
         String key = "KakaoAK b0031b39d59b99bd310f4b741d4c7d63";
-        // TODO : [하영] 카카오 API 키 값 config 서버에 넣기 및 용현이 디비에서 데이터 가져오면 카카오API 쏴서 DB에 넣기
+        // TODO : [용현] 카카오 API 키 값 config 서버에 넣기 및 용현이 디비에서 데이터 가져오면 카카오API 쏴서 DB에 넣기
         
         KakaoResult result = transactionsClient.loadUserByUsername(key,"전주24시콩나물국밥", 1, 1).get();
         log.info(categoryInfo.get(result.getDocuments().get(0).getCategory_group_code()));
