@@ -1,6 +1,5 @@
 package com.ts.taesan.domain.transaction.api.dto.request;
 
-import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
