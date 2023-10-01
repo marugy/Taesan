@@ -5,12 +5,11 @@ import Swal2 from 'sweetalert2';
 import ArrowBack from 'components/Common/ArrowBack';
 import Card from 'components/Common/Card';
 import { useUserStore } from 'store/UserStore';
+import axios from 'axios';
 
 interface CardRegisterProps {
   cardList : Array<any>;
-
 }
-
 const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
   const navigate = useNavigate();
   const { name} = useUserStore();
@@ -38,7 +37,7 @@ const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
           ))}
 
       </div>
-      <div className="text-center mt-10">
+      {/* <div className="text-center mt-10">
         <Button
           color="blue"
           onClick={() => {
@@ -54,7 +53,7 @@ const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
         >
           자산 연동하기
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

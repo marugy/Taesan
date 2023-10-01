@@ -7,8 +7,8 @@ import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
 import BottomNav from 'components/Common/BottomNav';
 import { useUserStore } from 'store/UserStore';
-
 import Notification from 'components/Common/Notification';
+
 
 const MainPage = () => {
   // 스토어에서 AT,RT 가져오기
@@ -58,14 +58,15 @@ const MainPage = () => {
       },
     });
     console.log(userProfileInfo);
+    console.log(accessToken);
     setName(userProfileInfo.response.name);
     return userProfileInfo;
   };
   const query = useQuery('getInfo', getInfo);
 
   // 쿼리 2 ( API 관련 임시 주석처리 )
-  const getSaving = async () => {
-    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+  const getAsset = async () => {
+    const { data: userAssetInfo, } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
       headers: {
         'ACCESS-TOKEN': accessToken,
         'REFRESH-TOKEN': refreshToken,
@@ -73,14 +74,14 @@ const MainPage = () => {
     });
     console.log(userAssetInfo);
     setCreatedTikkle(userAssetInfo.response.createdTikkle);
-    setConnectedAsset(userAssetInfo.response.connetedAsset);
+    setConnectedAsset(userAssetInfo.response.connectedAsset);
     setBankName(userAssetInfo.response.account.bank);
     setAccountNumber(userAssetInfo.response.account.accountNum);
     setBalance(userAssetInfo.response.account.balance);
     setCardList(userAssetInfo.response.cardList);
     return userAssetInfo;
   };
-  const query2 = useQuery('getSaving', getSaving);
+  const query2 = useQuery('getAsset', getAsset);
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);

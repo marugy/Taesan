@@ -5,10 +5,14 @@ import { Button } from '@material-tailwind/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
+import Swal2 from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const AssetRegisterPage = () => {
+  const navigate = useNavigate();
   const [nextButton, setNextButton] = useState(false);
   const { accessToken, refreshToken, userId } = useUserStore();
+  const [account,setAccount] = useState('');
 
   // useQuery를 이용해 계좌 정보 호출
 
@@ -64,6 +68,34 @@ const AssetRegisterPage = () => {
   };
   const useCardQuery = useQuery('getCardList', getCardList);
 
+  const enrollAsset = () => {
+    // 자산 등록 API 
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/account', 
+      
+      {account:account},
+      {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      }
+    ,
+
+    })
+    .then((response) => {
+      console.log(response);
+      console.log(account,'계좌번호');
+      navigate('/main');
+    }
+    )
+    .catch((error) => {
+      console.log(error);
+    })
+    ;
+      
+      
+    
+  }
+
   return (
     <div>
       {/* 다음 버튼이 눌리면 카드 등록 페이지로 이동 
@@ -75,9 +107,26 @@ const AssetRegisterPage = () => {
           <CardRegister cardList={useCardQuery.data.response.cardList} />
         ) : null
       ) : useAccountQuery.data && useAccountQuery.data.response.accountList ? (
-        <AccountRegister accountList={useAccountQuery.data.response.accountList} />
+        <AccountRegister setAccount={setAccount} accountList={useAccountQuery.data.response.accountList} />
       ) : null}
-      {nextButton ? null : (
+      {nextButton ? <div className="text-center mt-10">
+        <Button
+          color="blue"
+          onClick={() => {
+            enrollAsset();
+            Swal2.fire({
+              icon: 'success',
+              title: '자산 연동이 완료되었습니다.',
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              navigate('/main');
+            });
+          }}
+        >
+          자산 연동하기
+        </Button>
+      </div> : (
         <div className="flex justify-center mt-5">
           <Button
             color="blue"
