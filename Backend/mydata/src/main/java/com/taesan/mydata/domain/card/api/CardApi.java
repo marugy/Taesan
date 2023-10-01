@@ -76,8 +76,8 @@ public class CardApi {
             @PathVariable("card_id") long cardId,
             @Valid @RequestBody PayRequest payRequest)
     {
-        log.info("{}", payRequest.getMerchantRegno());
-        return new ResponseEntity<>(new PayResponse(), HttpStatus.ACCEPTED);
+        PayResponse pay = cardService.pay(cardId, payRequest.getShopName(), payRequest.getPayAmt());
+        return new ResponseEntity<>(pay, HttpStatus.ACCEPTED);
     }
 
 }
