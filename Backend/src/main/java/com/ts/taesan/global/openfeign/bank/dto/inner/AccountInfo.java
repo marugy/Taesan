@@ -3,10 +3,12 @@ package com.ts.taesan.global.openfeign.bank.dto.inner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class AccountInfo {
 
         @JsonProperty("bank")

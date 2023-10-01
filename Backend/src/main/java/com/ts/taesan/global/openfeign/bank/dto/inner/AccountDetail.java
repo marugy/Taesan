@@ -3,8 +3,10 @@ package com.ts.taesan.global.openfeign.bank.dto.inner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AccountDetail {
 
         @JsonProperty("currency_code")
