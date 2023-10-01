@@ -64,7 +64,7 @@ function App() {
 
   return (
     <div className="App  flex justify-center bg-back overflow-y-auto h-screen">
-      <div className="w-screen tb:w-[60vw] dt:w-[50vw] border">
+      <div className="w-screen tb:w-[60vw] dt:w-[50vw]">
         <Routes>
           <Route path="/test" element={<TestPage />} />
 
