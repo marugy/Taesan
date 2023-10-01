@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { List, ListItem, ListItemPrefix, Avatar, Card, Typography } from '@material-tailwind/react';
 import { ACCOUNT_DATA } from 'constants/DUMMY';
 import ArrowBack from 'components/Common/ArrowBack';
+import { useQuery } from 'react-query';
 
 interface AccountProps {
   accountList: Array<any>;
@@ -15,7 +16,7 @@ const AccountRegister:React.FC<AccountProps> = ( {accountList,setAccount} ) => {
   const handleItemClick = (index: any, accountNum: string) => {
     setSelectedItem(index);
     setAccount(accountNum); // setAccount 함수에 accountNum 전달
-    // console.log(accountNum);
+    console.log(accountNum);
   };
   return (
     <div>
