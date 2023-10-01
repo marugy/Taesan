@@ -12,6 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReceiptResultResponse {
-    String ShopName;
     List<ReceiptDTO> productList;
 }

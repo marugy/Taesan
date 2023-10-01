@@ -38,6 +38,13 @@ public class TransactionAPI {
         return OK(transaction);
     }
 
+    @ApiOperation(value = "거래내역에 대한 영수증 목록 불러오기", notes = "거래내역을 눌렀을 때 등록된 영수증에 대한 정보 불러오기")
+    @GetMapping("/{transactionId}/receipt")
+    public ApiResponse<ReceiptListResponse> getReceipts(@PathVariable Long transactionId){
+        ReceiptListResponse receipts = transactionService.getReceipts(transactionId);
+        return OK(receipts);
+    }
+
     @ApiOperation(value = "영수증 정보 등록하기(미완성)", notes = "분석이 완료된 영수증 정보를 등록")
     @PostMapping("/{transactionId}/receipt")
     public ApiResponse<ReceiptResultResponse> setReciptInfo(@PathVariable Long transactionId, @RequestBody ReceiptRequest receiptRequest){
