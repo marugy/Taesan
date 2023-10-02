@@ -21,6 +21,8 @@ interface UserStore {
   // 알림 여부
   storeDate: string;
   setStoreDate: (storeDate: string) => void;
+  pushInfo: string;
+  setPushInfo: (pushInfo: string) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -44,6 +46,8 @@ export const useUserStore = create<UserStore>()(
 
       storeDate: '',
       setStoreDate: (storeDate: string) => set({ storeDate }),
+      pushInfo: '',
+      setPushInfo: (pushInfo: string) => set({ pushInfo }),
     }),
     {
       name: 'user-storage', // persist key

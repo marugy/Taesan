@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useUserStore } from 'store/UserStore';
 import { NavigateFunction } from 'react-router-dom';
@@ -12,6 +13,18 @@ interface PushItem {
   weight: number;
 }
 
+interface Props {
+  navigate: NavigateFunction;
+  accessToken: string;
+  refreshToken: string;
+  connectedAsset: boolean;
+  isTikkleCreated: boolean;
+  storeDate: string;
+  setStoreDate: (date: string) => void;
+  pushInfo: string;
+  setPushInfo: (date: string) => void;
+}
+
 const Notification = async ({
   navigate,
   accessToken,
@@ -20,18 +33,16 @@ const Notification = async ({
   isTikkleCreated,
   storeDate,
   setStoreDate,
-}: {
-  navigate: NavigateFunction;
-  accessToken: string;
-  refreshToken: string;
-  connectedAsset: boolean;
-  isTikkleCreated: boolean;
-  storeDate: string;
-  setStoreDate: (date: string) => void;
-}) => {
+  pushInfo,
+  setPushInfo,
+}: Props) => {
+  // info : 모집된 인원
+  // info : 남은 소비 금액
+  // info : 저금할 수 있는 습관
+  // info : 남은 만기일
+
   const now = new Date();
   const cooldown = new Date(storeDate);
-
   const COOL_TIME = 10000;
 
   // 알림 쿨타임이 남았다면
@@ -43,7 +54,7 @@ const Notification = async ({
   // 쿨타임 재설정
   setStoreDate(String(new Date(now.getTime() + COOL_TIME)));
 
-  // // 계좌 등록 안되었으면 계좌등록알림
+  // 계좌 등록 안되었으면 계좌등록알림
   // if (!connectedAsset) {
   //   console.log('계좌등록');
   //   AccountPush.fire().then((result) => {
@@ -65,15 +76,63 @@ const Notification = async ({
   //   return null;
   // }
 
+  const ChallengeRecruitPush = Swal.mixin({
+    title: `현재 절약챌린지 ${pushInfo}명을 모집했습니다!<br/>확인하시겠습니까?`,
+    toast: true,
+    position: 'top',
+    showConfirmButton: true,
+    confirmButtonText: '확인',
+    confirmButtonColor: '#0067AC',
+    showCancelButton: true,
+    cancelButtonColor: '#f44336',
+    cancelButtonText: '취소',
+    timer: 5000,
+    timerProgressBar: true,
+    showClass: {
+      popup: 'animate__animated animate__slideInDown',
+    },
+    hideClass: {
+      popup: 'animate__animated animate__slideOutUp',
+    },
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
+
+  const ChallengePlayPush = Swal.mixin({
+    title: `현재 절약 챌린지 남은 금액 ${pushInfo}원! <br/>확인하시겠습니까?`,
+    toast: true,
+    position: 'top',
+    showConfirmButton: true,
+    confirmButtonText: '확인',
+    confirmButtonColor: '#0067AC',
+    showCancelButton: true,
+    cancelButtonColor: '#f44336',
+    cancelButtonText: '취소',
+    timer: 5000,
+    timerProgressBar: true,
+    showClass: {
+      popup: 'animate__animated animate__slideInDown',
+    },
+    hideClass: {
+      popup: 'animate__animated animate__slideOutUp',
+    },
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
+
   const initPush = [
-    { id: 'challengeCreate', push: ChallengeCreatePush, url: '/challenge/create', weight: 1 },
-    { id: 'challengeRecruit', push: ChallengeRecruitPush, url: '/challenge/recruit', weight: 1 },
+    { id: 'challengeCreate', push: ChallengeCreatePush, url: '/challenge/create', weight: 0 },
+    { id: 'challengeRecruit', push: ChallengeRecruitPush, url: '/challenge/recruit', weight: 0 },
     { id: 'challengePlay', push: ChallengePlayPush, url: '/challenge/play', weight: 1 },
-    { id: 'EnrollRecipt', push: EnrollReceiptPush, url: '/history', weight: 1 },
-    { id: 'EnrollHabit', push: EnrollHabitPush, url: '/habit', weight: 1 },
-    { id: 'SavingDuration', push: SavingDurationPush, url: '/saving', weight: 1 },
-    { id: 'Pattern', push: PatternPush, url: '/pattern', weight: 1 },
-    { id: 'BuyIf', push: BuyIfPush, url: '/buyif', weight: 1 },
+    { id: 'EnrollRecipt', push: EnrollReceiptPush, url: '/history', weight: 0 },
+    { id: 'EnrollHabit', push: EnrollHabitPush, url: '/habit', weight: 0 },
+    { id: 'SavingDuration', push: SavingDurationPush, url: '/saving', weight: 0 },
+    { id: 'Pattern', push: PatternPush, url: '/pattern', weight: 0 },
+    { id: 'BuyIf', push: BuyIfPush, url: '/buyif', weight: 0 },
   ];
 
   const filtering = async (initPush: PushItem[]) => {
@@ -87,7 +146,7 @@ const Notification = async ({
             'REFRESH-TOKEN': refreshToken,
           },
         })
-        .then((res) => {
+        .then(async (res) => {
           console.log('절챌 상황', res.data.response.state);
           if (res.data.response.state === 0) {
             if (pushItem.id === 'challengeCreate') {
@@ -95,10 +154,50 @@ const Notification = async ({
             }
           } else if (res.data.response.state === 1) {
             if (pushItem.id === 'challengeRecruit') {
+              const response = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
+                headers: {
+                  'ACCESS-TOKEN': accessToken,
+                  'REFRESH-TOKEN': refreshToken,
+                },
+              });
+              const chID = response.data.response.challengeId;
+              await axios
+                .get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/recruit/${chID}`, {
+                  headers: {
+                    'ACCESS-TOKEN': accessToken,
+                    'REFRESH-TOKEN': refreshToken,
+                  },
+                })
+                .then((res) => {
+                  setPushInfo(res.data.response.participantNames.length);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
               return true;
             }
           } else if (res.data.response.state === 2) {
             if (pushItem.id === 'challengePlay') {
+              const response = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
+                headers: {
+                  'ACCESS-TOKEN': accessToken,
+                  'REFRESH-TOKEN': refreshToken,
+                },
+              });
+              const chID = response.data.response.challengeId;
+              await axios
+                .get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/progress/${chID}`, {
+                  headers: {
+                    'ACCESS-TOKEN': accessToken,
+                    'REFRESH-TOKEN': refreshToken,
+                  },
+                })
+                .then((res) => {
+                  setPushInfo(res.data.response.spare);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
               return true;
             }
           }
@@ -191,7 +290,6 @@ export const AccountPush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -219,7 +317,6 @@ export const TikklePush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -244,55 +341,6 @@ export const ChallengeCreatePush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
-    popup: 'animate__animated animate__slideOutUp',
-  },
-  didOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
-  },
-});
-export const ChallengeRecruitPush = Swal.mixin({
-  title: '현재 절약챌린지 $challengeData.participantNames.length명을 모집했습니다!<br/>확인하시겠습니까?',
-  toast: true,
-  position: 'top',
-  showConfirmButton: true,
-  confirmButtonText: '확인',
-  confirmButtonColor: '#0067AC',
-  showCancelButton: true,
-  cancelButtonColor: '#f44336',
-  cancelButtonText: '취소',
-  timer: 5000,
-  timerProgressBar: true,
-  showClass: {
-    popup: 'animate__animated animate__slideInDown',
-  },
-  hideClass: {
-    // popup: 'animate__animated animate__hinge',
-    popup: 'animate__animated animate__slideOutUp',
-  },
-  didOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
-  },
-});
-export const ChallengePlayPush = Swal.mixin({
-  title: '진행중인 절약 챌린지 $challengeState.spare원 남았습니다!<br/>확인하시겠습니까?',
-  toast: true,
-  position: 'top',
-  showConfirmButton: true,
-  confirmButtonText: '확인',
-  confirmButtonColor: '#0067AC',
-  showCancelButton: true,
-  cancelButtonColor: '#f44336',
-  cancelButtonText: '취소',
-  timer: 5000,
-  timerProgressBar: true,
-  showClass: {
-    popup: 'animate__animated animate__slideInDown',
-  },
-  hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -301,8 +349,56 @@ export const ChallengePlayPush = Swal.mixin({
   },
 });
 
+// export const ChallengeRecruitPush = Swal.mixin({
+//   title: `현재 절약챌린지 ${pushInfo}명을 모집했습니다!<br/>확인하시겠습니까?`,
+//   toast: true,
+//   position: 'top',
+//   showConfirmButton: true,
+//   confirmButtonText: '확인',
+//   confirmButtonColor: '#0067AC',
+//   showCancelButton: true,
+//   cancelButtonColor: '#f44336',
+//   cancelButtonText: '취소',
+//   timer: 5000,
+//   timerProgressBar: true,
+//   showClass: {
+//     popup: 'animate__animated animate__slideInDown',
+//   },
+//   hideClass: {
+//     popup: 'animate__animated animate__slideOutUp',
+//   },
+//   didOpen: (toast) => {
+//     toast.addEventListener('mouseenter', Swal.stopTimer);
+//     toast.addEventListener('mouseleave', Swal.resumeTimer);
+//   },
+// });
+
+// export const ChallengePlayPush = Swal.mixin({
+//   title: '진행중인 절약 챌린지 $challengeState.spare원 남았습니다!<br/>확인하시겠습니까?',
+//   toast: true,
+//   position: 'top',
+//   showConfirmButton: true,
+//   confirmButtonText: '확인',
+//   confirmButtonColor: '#0067AC',
+//   showCancelButton: true,
+//   cancelButtonColor: '#f44336',
+//   cancelButtonText: '취소',
+//   timer: 5000,
+//   timerProgressBar: true,
+//   showClass: {
+//     popup: 'animate__animated animate__slideInDown',
+//   },
+//   hideClass: {
+//     popup: 'animate__animated animate__slideOutUp',
+//   },
+//   didOpen: (toast) => {
+//     toast.addEventListener('mouseenter', Swal.stopTimer);
+//     toast.addEventListener('mouseleave', Swal.resumeTimer);
+//   },
+// });
+
 export const EnrollReceiptPush = Swal.mixin({
-  title: '등록하지 않은 영수증 있어.<br/>영수증 등록 할래?',
+  title: '최근 등록하지 않은 영수증이 있습니다.<br/>영수증 등록 하실래요?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -317,7 +413,6 @@ export const EnrollReceiptPush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -327,7 +422,7 @@ export const EnrollReceiptPush = Swal.mixin({
 });
 
 export const EnrollHabitPush = Swal.mixin({
-  title: '오늘 $habit 안했네?<br/>습관 저금할래?',
+  title: '오늘 저금하지 않은 습관이 있습니다.<br/>습관 저금하실래요?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -342,7 +437,6 @@ export const EnrollHabitPush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -352,7 +446,7 @@ export const EnrollHabitPush = Swal.mixin({
 });
 
 export const SavingDurationPush = Swal.mixin({
-  title: '너 적금통 만기일 $duration 남았어.<br/>확인할래?',
+  title: '현재 적금통 만기일 $duration 남았습니다.<br/>확인하실래요?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -367,7 +461,6 @@ export const SavingDurationPush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -377,7 +470,7 @@ export const SavingDurationPush = Swal.mixin({
 });
 
 export const PatternPush = Swal.mixin({
-  title: '현재까지 소비패턴분석해볼래?',
+  title: '현재까지 소비 패턴을 확인하실래요?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -392,7 +485,6 @@ export const PatternPush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {
@@ -402,7 +494,7 @@ export const PatternPush = Swal.mixin({
 });
 
 export const BuyIfPush = Swal.mixin({
-  title: '사고싶은 물품이 있니?<br/>혹시 샀다치고 저금해볼래?',
+  title: '사고싶은 물품이 있으신가요?<br/>혹시 샀다치고 저금하실래요?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -417,7 +509,6 @@ export const BuyIfPush = Swal.mixin({
     popup: 'animate__animated animate__slideInDown',
   },
   hideClass: {
-    // popup: 'animate__animated animate__hinge',
     popup: 'animate__animated animate__slideOutUp',
   },
   didOpen: (toast) => {

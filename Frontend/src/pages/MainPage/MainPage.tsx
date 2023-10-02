@@ -14,7 +14,8 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   // 스토어에서 AT,RT 가져오기
-  const { accessToken, refreshToken, setName, isTikkleCreated, storeDate, setStoreDate } = useUserStore();
+  const { accessToken, refreshToken, setName, isTikkleCreated, storeDate, setStoreDate, pushInfo, setPushInfo } =
+    useUserStore();
 
   // 사용자 자산 관련 State
   const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
@@ -99,11 +100,15 @@ const MainPage = () => {
         isTikkleCreated,
         storeDate,
         setStoreDate,
+        pushInfo,
+        setPushInfo,
       });
     };
 
     handleNotification();
   }, []);
+
+  console.log(createdTikkle);
 
   return (
     <div className="flex flex-col items-center h-full">
