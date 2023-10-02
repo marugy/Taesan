@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.analyst.service.dto.response.Info;
+import com.ts.taesan.domain.ifbuy.api.dto.response.MostBuyItem;
 import com.ts.taesan.domain.transaction.entity.ReceiptList;
 import com.ts.taesan.domain.transaction.service.dto.response.OftenCategory;
 import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
@@ -120,9 +121,9 @@ public class TransactionQRepository {
                 .fetch();
     }
 
-
     private BooleanExpression ltCursor(Long cursorId){
         return cursorId == null ? null : transaction.cardHistoryId.loe(cursorId);
     }
 
+//    public MostBuyItem findMostBuyItem()
 }
