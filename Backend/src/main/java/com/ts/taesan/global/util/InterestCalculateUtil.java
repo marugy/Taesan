@@ -6,6 +6,7 @@ import com.ts.taesan.domain.asset.repository.PayHistoryRepository;
 import com.ts.taesan.domain.transaction.req.KakaoResult;
 import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class InterestCalculateUtil {
 
     private final PayHistoryRepository payHistoryRepository;
@@ -33,7 +35,8 @@ public class InterestCalculateUtil {
             long daysDifference = ChronoUnit.DAYS.between(payHistory.getCreateDate(), LocalDateTime.now());
             long originalMoney = payHistory.getTransAmount();
             totalOriginalMoney += originalMoney;
-            totalInterest += (long) (originalMoney * daysDifference / 365 * rate);
+            totalInterest += (long) (originalMoney * (daysDifference / 365) * (rate / 100));
+            log.warn("{}", totalInterest);
         }
 
         if (new Date().before(tikkle.getEndDate())) {

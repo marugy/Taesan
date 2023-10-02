@@ -58,7 +58,7 @@ public class AssetApi {
     public ApiResponse<Void> pay(
             @AuthenticationPrincipal User user,
             @PathVariable("card_id") Long cardId,
-            @RequestParam PayRequest payRequest
+            @RequestBody PayRequest payRequest
             ) {
         assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
         return OK(null);
