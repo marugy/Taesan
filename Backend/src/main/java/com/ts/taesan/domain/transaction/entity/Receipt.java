@@ -26,7 +26,7 @@ public class Receipt {
 
     @NotNull
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "transaction_id")
     private Transaction transaction; // 영수증이 속한 거래내역 참조
 
 
