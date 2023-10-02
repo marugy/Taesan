@@ -70,11 +70,11 @@ public class TransactionService {
         }
     }
 
-    public TransactionResponse getTransactionDetail(Long transactionId){
+    public TransactionResponse getTransactionDetail(Long transactionId, Long memberId){
         TransactionDTO transactionDTO = qRepository.findTransactionDetailByCardId(transactionId);
         LocalDate now = LocalDate.now();
         now = now.minusMonths(3);
-        RecentTransaction recentTransaction = qRepository.findRecentTransactionByShopName(transactionDTO.getShopName(), now);
+        RecentTransaction recentTransaction = qRepository.findRecentTransactionByShopName(transactionDTO.getShopName(), now, memberId);
         TransactionResponse result = new TransactionResponse(transactionDTO, recentTransaction);
         return result;
     }
