@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.transaction.service;
 
 import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
+import com.ts.taesan.domain.challenge.service.ChallengeService;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
@@ -47,11 +48,12 @@ public class TransactionService {
     private final CardClient cardClient;
     private final AIModelClient aiModelClient;
     private final KakaoUtil kakaoUtil;
+    private final ChallengeService challengeService;
 
     @Value("${org-code}")
     private String orgCode;
 
-    public TransactionListResponse getTransactions(Long memberId, Long cardId, Long cursor, Integer limit){
+    public TransactionListResponse getTransactions(Long memberId, Long cardId, Long cursor, Integer limit) {
         Member member = memberRepository.findById(memberId).get();
         CardInfoRequest cardInfoRequest = CardInfoRequest.builder()
                 .org_code(orgCode)
@@ -66,11 +68,11 @@ public class TransactionService {
         if (list.isEmpty()) {
             return new TransactionListResponse(null, card, limit.toString(), list);
         } else {
-            return new TransactionListResponse(list.size()==limit+1 ? list.get(list.size()-1).getCardHistoryId().toString() : null, card, limit.toString(), list.subList(0, list.size()-1));
+            return new TransactionListResponse(list.size() == limit + 1 ? list.get(list.size() - 1).getCardHistoryId().toString() : null, card, limit.toString(), list.subList(0, list.size() - 1));
         }
     }
 
-    public TransactionResponse getTransactionDetail(Long transactionId, Long memberId){
+    public TransactionResponse getTransactionDetail(Long transactionId, Long memberId) {
         TransactionDTO transactionDTO = qRepository.findTransactionDetailByCardId(transactionId);
         LocalDate now = LocalDate.now();
         now = now.minusMonths(3);
@@ -79,13 +81,13 @@ public class TransactionService {
         return result;
     }
 
-    public ReceiptListResponse getReceipts(Long transactionId){
+    public ReceiptListResponse getReceipts(Long transactionId) {
         List<ReceiptDTO> result = qRepository.findReceiptByTransactionId(transactionId);
         ReceiptListResponse response = new ReceiptListResponse(Long.parseLong("0"), result);
         return response;
     }
 
-    public ReceiptResultResponse setReciptInfo(Long transactionId, ReceiptRequest receiptRequest){
+    public ReceiptResultResponse setReciptInfo(Long transactionId, ReceiptRequest receiptRequest) {
         ReceiptResultResponse result = new ReceiptResultResponse();
         Transaction transaction = transactionRepository.getTransactionById(transactionId);
 
@@ -98,7 +100,7 @@ public class TransactionService {
                 .transaction(transaction)
                 .products(list)
                 .build();
-        for(CategoryResult temp : aiResult){
+        for (CategoryResult temp : aiResult) {
             list.add(ReceiptList.of(receipt, temp));
             log.info(temp.getProductName() + " " + temp.getCategory());
         }
@@ -109,7 +111,7 @@ public class TransactionService {
         return result;
     }
 
-    public CardResponse getCardDetail(Long memberId, Long cardId, Integer year, Integer month, String category){
+    public CardResponse getCardDetail(Long memberId, Long cardId, Integer year, Integer month, String category) {
         Member member = memberRepository.findById(memberId).get();
         CardInfoRequest cardInfoRequest = CardInfoRequest.builder()
                 .org_code(orgCode)
@@ -125,10 +127,10 @@ public class TransactionService {
         YearMonth toSearch = YearMonth.of(year, month);
         LocalDate startDate = toSearch.atDay(1);
         LocalDate endDate = toSearch.atEndOfMonth();
-        List<TransactionDTO> list = qRepository.findTransactionListByMonth(cardId,startDate, endDate, category);
+        List<TransactionDTO> list = qRepository.findTransactionListByMonth(cardId, startDate, endDate, category);
 
         Long sum = Long.parseLong("0");
-        for(TransactionDTO temp: list){
+        for (TransactionDTO temp : list) {
             sum += temp.getApprovedAmount();
         }
 
@@ -138,7 +140,7 @@ public class TransactionService {
         return result;
     }
 
-    public ReceiptListResponse getReceiptDetail(Long cardId, Integer year, Integer month, String category){
+    public ReceiptListResponse getReceiptDetail(Long cardId, Integer year, Integer month, String category) {
         // 월의 첫날부터 끝날 구함
         YearMonth toSearch = YearMonth.of(year, month);
         LocalDate startDate = toSearch.atDay(1);
@@ -146,17 +148,17 @@ public class TransactionService {
         List<ReceiptDTO> list = qRepository.findReceiptsByMonth(cardId, startDate, endDate, category);
         Long sum = Long.parseLong("0");
 
-        for(ReceiptDTO temp: list){
+        for (ReceiptDTO temp : list) {
             sum += temp.getPrice();
         }
 
-        ReceiptListResponse result = new ReceiptListResponse(sum,list);
+        ReceiptListResponse result = new ReceiptListResponse(sum, list);
 
         return result;
     }
 
     // ToDo: 규람이 쓸 카테고리 최근 목록 -> 테스트 해야함
-    public List<OftenCategory> getOftenCategory(Long cardId){
+    public List<OftenCategory> getOftenCategory(Long cardId) {
         List<OftenCategory> oftenCategories = new ArrayList<>();
         LocalDate now = LocalDate.now();
         now = now.minusMonths(1);
@@ -173,6 +175,7 @@ public class TransactionService {
         String category = kakaoUtil.getCategory(history.getMerchantName());
         Member member = memberRepository.findById(memberId).get();
         transactionRepository.save(new Transaction(history, cardId, category, member));
+        challengeService.changeSpare(memberId, history.getApprovedAmt());
     }
 
     private String getApiType() {

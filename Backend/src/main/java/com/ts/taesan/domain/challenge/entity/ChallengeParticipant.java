@@ -42,6 +42,10 @@ public class ChallengeParticipant extends BaseEntity {
         this.spare = challenge.getPrice();
     }
 
+    public void changeSpare(Long money) {
+        this.spare -= money;
+    }
+
     public void settle() {
         this.isExchange = true;
     }
