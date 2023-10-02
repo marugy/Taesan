@@ -71,9 +71,10 @@ public class IfBuyService {
         
         // 샀다 치고 객체 가져오기
         List<IfbuyItem> list =ifBuyQRepository.findByMember(member.getId());
+        List<String> info = productInfo.get(mostBuyItem.getName());
         IfbuyListResponse ifbuyListResponse = IfbuyListResponse.builder()
-                .mostBuy(mostBuyItem.getName())
-                .mostBuyPrice(mostBuyItem.getPrice())
+                .mostBuy(info.get(0))
+                .mostBuyPrice(Long.parseLong(info.get(1)))
                 .itemList(list).build();
 
         return ifbuyListResponse;
