@@ -85,7 +85,7 @@ public class HabitQRepository {
                         habitLog.saveMoney
                 ))
                 .from(habitLog)
-                .join(habit).on(habit.id.eq(habitLog.id))
+                .join(habit).on(habit.id.eq(habitLog.habit.id))
                 .where(habit.member.id.eq(memberId).and(habitLog.saveDay.year().eq(year).and(habitLog.saveDay.month().eq(month).and(habitLog.saveDay.dayOfMonth().eq(day)))))
                 .fetch();
         return totalCalendarDetails;
