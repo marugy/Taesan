@@ -41,7 +41,7 @@ public class CardApi {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         CardListResponse cardList = cardQueryService.findCardList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
-        return new ResponseEntity<>(cardList, headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cardList, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{card_id}")
@@ -55,7 +55,7 @@ public class CardApi {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         CardInfoResponse cardInfo = cardQueryService.findCardInfo(cardId);
-        return new ResponseEntity<>(cardInfo, headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cardInfo, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{card_id}/approval-domestic")
@@ -68,7 +68,7 @@ public class CardApi {
         log.info("{}", cardTransactionListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.OK);
     }
 
     // 무한 스크롤 테스트용
@@ -82,16 +82,17 @@ public class CardApi {
         log.info("{}", cardTransactionListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.OK);
     }
 
     @PostMapping("/{card_id}/pay")
     public ResponseEntity<PayResponse> pay(
+            @AuthenticationPrincipal User user,
             @PathVariable("card_id") long cardId,
             @Valid @RequestBody PayRequest payRequest)
     {
-        PayResponse pay = cardService.pay(cardId, payRequest.getShopName(), payRequest.getPayAmt());
-        return new ResponseEntity<>(pay, HttpStatus.ACCEPTED);
+        PayResponse pay = cardService.pay(Long.parseLong(user.getUsername()), cardId, payRequest.getShopName(), payRequest.getPayAmt());
+        return new ResponseEntity<>(pay, HttpStatus.OK);
     }
 
 }

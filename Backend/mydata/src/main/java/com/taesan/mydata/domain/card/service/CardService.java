@@ -27,7 +27,10 @@ public class CardService {
     private final TransactionClient transactionClient;
     private final DummyUtils dummyUtils;
 
-    public PayResponse pay(Long cardId, String shopName, Long amount) {
+    public PayResponse pay(Long memberId, Long cardId, String shopName, Long amount) {
+        if (!cardRepository.existsByMemberCi(memberId)) {
+            throw new RuntimeException("당신의 카드가 아닙니다.");
+        }
         Card card = cardRepository.findById(cardId).get();
         CardHistory cardHistory = CardHistory.builder()
                 .card(card)
