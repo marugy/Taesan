@@ -12,6 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReceiptRequest {
-    LocalDateTime date;
     List<ReceiptReqDto> productList;
 }
