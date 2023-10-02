@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.ts.taesan.domain.habit.entity.QHabit.habit;
 import static com.ts.taesan.domain.habit.entity.QHabitLog.habitLog;
+import static com.ts.taesan.domain.member.entity.QMember.member;
 import static com.ts.taesan.domain.transaction.entity.QReceipt.receipt;
 import static com.ts.taesan.domain.transaction.entity.QReceiptList.receiptList;
 import static com.ts.taesan.domain.transaction.entity.QTransaction.transaction;
@@ -125,6 +126,8 @@ public class HabitQRepository {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
 
+        System.out.println("시작일 : " + startOfDay + " 종료일 : " + endOfDay);
+
         Date today = new Date();
 
         // 현재 날짜의 시작 시간을 계산합니다. (시간, 분, 초, 밀리초를 0으로 설정)
@@ -152,19 +155,25 @@ public class HabitQRepository {
                 ))
                 .from(habit)
                 .where(habit.state.eq(0)
-                                .and(habit.habitName.notIn(
-                                        JPAExpressions.select(
-                                                        receiptList.category).distinct()
-                                                .from(receiptList)
-                                                .where(receiptList.receipt.transaction.member.id.eq(memberId).and(receiptList.receipt.transaction.dateTime.between(startOfDay, endOfDay))))
-                                )
-//                                .and(habit.habitName.notIn(
-//                        queryFactory.select(
-//                                        receiptList.category).distinct()
-//                                .from(receiptList)
-//                                .join(habitLog).on(habitLog.habit.id.eq(habit.id))
-//                                .where(habitLog.habit.member.id.eq(memberId).and(habitLog.saveDay.between(startDay, endDay)))
-//                ))
+                        .and(habit.habitName.notIn(
+                                JPAExpressions.select(
+                                                receiptList.category).distinct()
+                                        .from(receiptList)
+                                        .join(receipt).on(receiptList.receipt.id.eq(receipt.id))
+                                        .join(transaction).on(receipt.transaction.id.eq(transaction.id))
+                                        .join(member).on(transaction.member.id.eq(member.id))
+                                        .where(transaction.member.id.eq(memberId)
+                                                .and(transaction.dateTime.between(startOfDay, endOfDay))
+                                        ))
+                        )
+                        .and(habit.habitName.notIn(
+                                JPAExpressions.select(
+                                                habit.habitName).distinct()
+                                        .from(habit)
+                                        .join(habitLog).on(habitLog.habit.id.eq(habit.id))
+                                        .join(member).on(member.id.eq(habit.member.id))
+                                        .where(member.id.eq(memberId).and(habitLog.saveDay.between(startDay, endDay)))
+                        ))
                 )
                 .fetch();
         return saveHabit;
