@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainAssetInfo from 'components/Main/MainAssettInfo';
 import MainMenu from 'components/Main/MainMenu';
 import MainAssetRegister from 'components/Main/MainAssetRegister';
@@ -8,11 +8,13 @@ import axios from 'axios';
 import BottomNav from 'components/Common/BottomNav';
 import { useUserStore } from 'store/UserStore';
 import Notification from 'components/Common/Notification';
-
+import { useNavigate } from 'react-router';
 
 const MainPage = () => {
+  const navigate = useNavigate();
+
   // 스토어에서 AT,RT 가져오기
-  const { accessToken, refreshToken, setName } = useUserStore();
+  const { accessToken, refreshToken, setName, isTikkleCreated, storeDate, setStoreDate } = useUserStore();
 
   // 사용자 자산 관련 State
   const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
@@ -66,7 +68,7 @@ const MainPage = () => {
 
   // 쿼리 2 ( API 관련 임시 주석처리 )
   const getAsset = async () => {
-    const { data: userAssetInfo, } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
       headers: {
         'ACCESS-TOKEN': accessToken,
         'REFRESH-TOKEN': refreshToken,
@@ -85,9 +87,26 @@ const MainPage = () => {
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);
+
+  // 알림
+  useEffect(() => {
+    const handleNotification = async () => {
+      await Notification({
+        navigate,
+        accessToken,
+        refreshToken,
+        connectedAsset,
+        isTikkleCreated,
+        storeDate,
+        setStoreDate,
+      });
+    };
+
+    handleNotification();
+  }, []);
+
   return (
     <div className="flex flex-col items-center h-full">
-      <Notification />
       <div className="dt:w-screen dt:h-screen dt:flex">
         <div className="mt-3 dt:fixed dt:top-3 dt:left-6">
           <img src="/Main/logo.png" className="h-16" />
