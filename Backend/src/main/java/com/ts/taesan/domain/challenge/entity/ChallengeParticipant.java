@@ -26,7 +26,7 @@ public class ChallengeParticipant extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    private Long spare;
+    private Long spare; //10만원으로 살기 -> 6000
     @ColumnDefault("false")
     private Boolean isExchange;
 
