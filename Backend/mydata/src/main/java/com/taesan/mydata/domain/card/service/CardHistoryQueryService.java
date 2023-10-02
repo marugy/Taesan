@@ -22,13 +22,17 @@ public class CardHistoryQueryService {
 
     public CardTransactionListResponse findCardHistory(long cardId, Long cursor, int limit) {
         List<CardTransactionList> cardList = cardHistoryQueryRepository.findCardTransactionList(cardId, cursor, limit);
-//        if (cursor == null) {
-//            cursor = cardHistoryQueryRepository.count(cardId);
-//        }
-        return CardTransactionListResponse.builder()
-                .nextPage(cardList.size()==limit+1 ? cardList.get(cardList.size()-1).getId() : null)
-                .approvedList(cardList.subList(0, cardList.size()-1))
-                .build();
+        if (cardList.isEmpty()) {
+            return CardTransactionListResponse.builder()
+                    .nextPage(null)
+                    .approvedList(cardList)
+                    .build();
+        } else {
+            return CardTransactionListResponse.builder()
+                    .nextPage(cardList.size()==limit+1 ? cardList.get(cardList.size()-1).getId() : null)
+                    .approvedList(cardList.subList(0, cardList.size()-1))
+                    .build();
+        }
     }
 
 }
