@@ -3,6 +3,7 @@ package com.ts.taesan.domain.asset.service;
 import com.ts.taesan.domain.asset.api.dto.inner.Card;
 import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
 import com.ts.taesan.domain.asset.api.dto.response.CardHistoryListResponse;
+import com.ts.taesan.domain.asset.entity.Tikkle;
 import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
@@ -10,12 +11,16 @@ import com.ts.taesan.domain.transaction.entity.Transaction;
 import com.ts.taesan.domain.transaction.repository.TransactionRepository;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
 import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
+import com.ts.taesan.global.openfeign.bank.BankClient;
+import com.ts.taesan.global.openfeign.bank.dto.request.ChargeRequest;
+import com.ts.taesan.global.openfeign.bank.dto.request.TransferRequest;
 import com.ts.taesan.global.openfeign.card.CardClient;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardList;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardTransactionList;
 import com.ts.taesan.global.openfeign.card.dto.request.CardListRequest;
 import com.ts.taesan.global.openfeign.card.dto.request.CardTransactionListRequest;
 import com.ts.taesan.global.openfeign.card.dto.request.PayRequest;
+import com.ts.taesan.global.util.InterestCalculateUtil;
 import com.ts.taesan.global.util.KakaoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,17 +40,42 @@ import java.util.stream.Collectors;
 public class AssetService {
 
     private final MemberRepository memberRepository;
+    private final TikkleRepository tikkleRepository;
     private final TransactionRepository transactionRepository;
     private final AuthClient authClient;
+    private final BankClient bankClient;
     private final CardClient cardClient;
     private final KakaoUtil kakaoUtil;
+    private final InterestCalculateUtil calculateUtil;
 
     @Value("${org-code}")
     private String orgCode;
 
-    public void pay(Long memberId, Long pay_amt, PayRequest payRequest) {
+    // 적금통 해지시 이 로직 사용
+    public void transfer(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
-        cardClient.pay(member.getMydataAccessToken(), pay_amt, payRequest);
+        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
+        TransferRequest transferRequest = TransferRequest.builder()
+                .receiverAccNum(member.getAccountNum())
+                .transAmt(calculateUtil.calculate(tikkle))
+                .build();
+        bankClient.transfer(member.getMydataAccessToken(), transferRequest);
+    }
+
+    // 다른 서비스에서 적금통으로 금액 저장시 이 로직 사용
+    public void charge(Long memberId) {
+        Member member = memberRepository.findById(memberId).get();
+        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
+        ChargeRequest chargeRequest = ChargeRequest.builder()
+                .senderAccNum(member.getAccountNum())
+                .transAmt(calculateUtil.calculate(tikkle))
+                .build();
+        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
+    }
+
+    public void pay(Long memberId, Long cardId, PayRequest payRequest) {
+        Member member = memberRepository.findById(memberId).get();
+        cardClient.pay(member.getMydataAccessToken(), cardId, payRequest);
     }
 
     public void connectAssets(Long memberId) {

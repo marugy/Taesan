@@ -42,4 +42,11 @@ public class TikkleApi {
         return OK(tikkleQueryService.getMyTikkleInfo(Long.parseLong(user.getUsername())));
     }
 
+    @DeleteMapping
+    public ApiResponse<TikkleInfoResponse> deleteTikkle(
+            @AuthenticationPrincipal User user
+    ) {
+        return OK(tikkleQueryService.getMyTikkleInfo(Long.parseLong(user.getUsername())));
+    }
+
 }

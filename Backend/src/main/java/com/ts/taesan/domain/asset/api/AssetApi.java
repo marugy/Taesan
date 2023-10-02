@@ -55,12 +55,28 @@ public class AssetApi {
     }
 
     @PostMapping("/{card_id}/pay")
-    public ApiResponse<Void> connectAssets(
+    public ApiResponse<Void> pay(
             @AuthenticationPrincipal User user,
             @PathVariable("card_id") Long cardId,
             @RequestParam PayRequest payRequest
             ) {
-        assetService.connectAssets(Long.parseLong(user.getUsername()));
+        assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
+        return OK(null);
+    }
+
+    @PostMapping("/transfer")
+    public ApiResponse<Void> transfer(
+            @AuthenticationPrincipal User user
+    ) {
+        assetService.transfer(Long.parseLong(user.getUsername()));
+        return OK(null);
+    }
+
+    @PostMapping("/charge")
+    public ApiResponse<Void> charge(
+            @AuthenticationPrincipal User user
+    ) {
+        assetService.charge(Long.parseLong(user.getUsername()));
         return OK(null);
     }
 

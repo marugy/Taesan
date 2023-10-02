@@ -16,6 +16,6 @@ public class ChargeRequest {
     private String senderAccNum;
 
     @JsonProperty("trans_amt")
-    private Integer transAmt;
+    private Long transAmt;
 
 }
