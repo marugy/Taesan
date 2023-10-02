@@ -86,13 +86,13 @@ public class AuthService {
         cardRepository.saveAll(cardList);
 
         // 15% 확률로 카드 내역 생성
-        for (int i = 60; i >= 0; i--) {
+        for (int i = 60; i > 0; i--) {
             for (int j = 0; j < 24; j++) {
                 boolean result = dummyUtils.drawLots(15);
                 if (result) {
                     Shop shop = dummyUtils.getShop();
                     Date payTime = new Date(new Date().getTime() - (i * 86400000L) + (j * 3600000));
-                    Card card = cardList.get(new Random().nextInt(3));
+                    Card card = cardList.get(new Random().nextInt(4));
                     CardHistory cardHistory = CardHistory.builder()
                             .card(card)
                             .approvedNum("12345678")
