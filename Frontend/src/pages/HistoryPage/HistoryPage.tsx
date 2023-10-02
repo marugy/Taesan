@@ -9,11 +9,12 @@ import { useInfiniteQuery } from 'react-query';
 import { useAssetStore } from 'store/AssetStore';
 
 const HistoryPage = () => {
-  const { accessToken, refreshToken } = useUserStore();
-  const [cardUser,setCardUser]= useState('')
+  const { accessToken, refreshToken,name } = useUserStore();
+  const [cardId,setCardId]= useState(0)
   const [cardNumber,setCradNumber]=useState('')
   const [cardCompany,setCradCompany]=useState('')
   const [transactionDTOList,setTransactionDTOList]=useState([])
+  const [cardType,setCardType]=useState('')
   const [page,setPage] = useState(null);
   const {selectedCardId} = useAssetStore()
 
@@ -51,30 +52,59 @@ const HistoryPage = () => {
   const getHistory = async (page:any) => {
     try {
       const response = await axios.get(
-        `https://j9c211.p.ssafy.io/mydata/card-management/cards/1/approval-domestic/test`,
+        `https://j9c211.p.ssafy.io/api/transactions/history/${selectedCardId}`,
         {
           params: {
-            org_code: "ssafy101",
-            from_date: "20230811",
-            to_date: "20230811",
-            next_page: page,
+            cursor: page,
             limit: 10
           },
           headers: {
-            'x-api-tran-id': "1",
-            'x-api-type': "1",
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
           },
         }
       );
-      setPage(response.data.next_page)
-      console.log(page)
+      setPage(response.data.response.cursor)
+      setCradNumber(response.data.response.card.cardNumber)
+      setCradCompany(response.data.response.card.cardCompany)
+      setCardType(response.data.response.card.cardType)
+      setCardId(response.data.response.card.cardId)
+      
       console.log(response.data)
-      return response.data.approved_list;
+      return response.data.response.transactionDTOList;
     } catch (error) {
       console.error(error);
       return [];
     }
   };
+
+  // const getHistory = async (page:any) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://j9c211.p.ssafy.io/mydata/card-management/cards/1/approval-domestic/test`,
+  //       {
+  //         params: {
+  //           org_code: "ssafy101",
+  //           from_date: "20230811",
+  //           to_date: "20230811",
+  //           next_page: page,
+  //           limit: 10
+  //         },
+  //         headers: {
+  //           'x-api-tran-id': "1",
+  //           'x-api-type': "1",
+  //         },
+  //       }
+  //     );
+  //     setPage(response.data.next_page)
+  //     console.log(page)
+  //     console.log(response.data)
+  //     return response.data.approved_list;
+  //   } catch (error) {
+  //     console.error(error);
+  //     return [];
+  //   }
+  // };
 
   
   const {
@@ -99,12 +129,12 @@ const HistoryPage = () => {
     <div>
       <ArrowBack pageName="거래내역" />
       <Card
-        name="LEE JI HEON"
-        cardNumber="6011 - 6175 - 8192 - 2346"
-        cardCompany="신한은행"
+        name={name}
+        cardNumber={cardNumber}
+        cardCompany={cardCompany}
         main=""
-        cardId={123}
-        cardType="Credit"
+        cardId={cardId}
+        cardType={cardType}
         />
       <HistoryList
         transactionDTOList={data ? data.pages.flat() : []}
@@ -122,7 +152,7 @@ export default HistoryPage;
 // const getHistory = () =>{
 //   axios.get(`https://j9c211.p.ssafy.io/api/transactions/hisotry/${selectedCardId}`, {
 //   params: {
-//     cardId: selectedCardId,
+//     cardId: cardid,
 //     cursor: 0,
 //     limit: 20,
 //   },    

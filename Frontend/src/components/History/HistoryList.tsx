@@ -8,47 +8,47 @@ import {Typography} from '@material-tailwind/react'
 
 // import InfiniteScroll from 'react-infinite-scroll-component';
 
-// interface PropstransactionDTOList{
-//     transactionDTOList:{
-//         afterTransAmt: number,
-//         approvedAmount: number,
-//         approvedId: number,
-//         cardType: string,
-//         category: string,
-//         dateTime: string,
-//         shopName: string,
-//         shopNumber: string,
-//         transactionId: number
-//         }[],
-//         fetchNextPage: () => void
-//         hasNextPage:string,
-//         isFetching:string
-// }
 interface PropstransactionDTOList{
     transactionDTOList:{
-        approved_num: string,
-		approved_dtime: string,
-		status: string,
-		pay_type: string,
-		trans_dtime:string,
-		merchant_name: string,
-		merchant_regno: string,
-		approved_amt: number,
-		modified_amt: number,
-		total_install_cnt: number,
-        history_id:number
+        cardHistoryId:number,
+        approvedAmount: number,
+        approvedNum: number,
+        cardType: string,
+        category: string,
+        dateTime: string,
+        shopName: string,
+        shopNumber: string,
+        transactionId: number
         }[],
         fetchNextPage: () => void
         hasNextPage:boolean,
         isFetching:boolean
 }
+// interface PropstransactionDTOList{
+//     transactionDTOList:{
+//         approved_num: string,
+//         approved_dtime: string,
+//         status: string,
+//         pay_type: string,
+//         trans_dtime:string,
+//         merchant_name: string,
+//         merchant_regno: string,
+//         approved_amt: number,
+//         modified_amt: number,
+//         total_install_cnt: number,
+//         history_id:number
+//         }[],
+//         fetchNextPage: () => void
+//         hasNextPage:boolean,
+//         isFetching:boolean
+// }
 
 const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:PropstransactionDTOList) => {
     const groupedTransactions: Record<string, any[]> = {};
     const navigate = useNavigate()
     const bottomRef = useRef(null);
     transactionDTOList.forEach((transaction) => {
-        const date = dayjs(transaction.approved_dtime).format('MM/DD');
+        const date = dayjs(transaction.dateTime).format('MM/DD');
     
         if (!groupedTransactions[date]) {
           groupedTransactions[date] = [];
@@ -89,12 +89,12 @@ const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:P
                 <div key={date}>
                     <Typography variant="h6" color="blue-gray">{date}</Typography>
                     {groupedTransactions[date].map((transaction, index) => (
-                    <div key={index} onClick={() => navigate(`/history/detail/${transaction.history_id}`)}>
+                    <div key={index} onClick={() => navigate(`/history/detail/${transaction.transactionId}`)}>
                         <HistoryItem
-                        category={'하위'}
-                        dateTime={transaction.approved_dtime}
-                        shopName={transaction.merchant_name}
-                        approvedAmount={transaction.approved_amt}
+                        category={transaction.category}
+                        dateTime={transaction.datetime}
+                        shopName={transaction.shopName}
+                        approvedAmount={transaction.approvedAmount}
                         />
                         <hr className="mt-1" />
                     </div>

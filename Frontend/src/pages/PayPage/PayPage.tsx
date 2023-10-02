@@ -10,9 +10,13 @@ import { Pincode } from 'components/Common/Pincode';
 import {Typography} from '@material-tailwind/react'
 import { Button } from '@material-tailwind/react';
 import { useUserStore } from 'store/UserStore';
+import { useAssetStore } from 'store/AssetStore';
 import axios from 'axios';
+import { useQuery,} from 'react-query';
+
 const PayPage = () => {
   const navigate = useNavigate();
+  const {selectedCardId}=useAssetStore()
   const [itemname, setItemname] = useState('')
   const [itemprice,setItemprice] = useState('')
   const [cardid,setCardid] = useState('')
@@ -46,6 +50,18 @@ const PayPage = () => {
     },
   ]); // 카드 리스트
 
+  const getAsset = async () => {
+    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    });
+    console.log(userAssetInfo);
+    setCardList(userAssetInfo.response.cardList);
+    return userAssetInfo;
+  };
+  const query2 = useQuery('getAsset', getAsset);
   const handlePay = () => {
     Swal.fire({
       title: '결제',
@@ -80,7 +96,7 @@ const PayPage = () => {
   const onCorrectPincode = () => {
     setPincodeVisible(false);
     // POST_결제 API
-    axios.post(`https://j9c211.p.ssafy.io/api/${cardid}/pay`,{
+    axios.post(`https://j9c211.p.ssafy.io/api/${selectedCardId}/pay`,{
       name:{itemname},
       price:{itemprice}
     },
@@ -111,7 +127,7 @@ const PayPage = () => {
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} />}
       <ArrowBack pageName="결제" />
       <div className="flex flex-col justify-center items-center gap-5">
-        <MainCardInfo cardList={cardList} />
+        <MainCardInfo cardList={cardList} main={''}/>
         <div className="border-4 rounded-xl p-5 gap-5 w-4/5 h-3/5 flex flex-col justify-center">
         <Typography variant="h4" color="black"  >결제 내용</Typography>
           <Typography variant="h6" color="black" className='mx-3 my-1' >결제 장소</Typography>

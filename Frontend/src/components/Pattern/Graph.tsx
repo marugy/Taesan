@@ -17,7 +17,7 @@ import { useUserStore } from 'store/UserStore';
 import { useAssetStore } from 'store/AssetStore';
 
 interface CategoryData {
-    info: {
+    infos: {
       id: string;
       label: string;
       value: number;
@@ -26,33 +26,33 @@ interface CategoryData {
     year: string
   }
 const Graph = () => {
-    const data = [
-        {
-          "id": "대형마트",
-          "label": "대형마트",
-          "value": 40000,
-        },
-        {
-          "id": "편의점",
-          "label": "편의점",
-          "value": 12300,
-        },
-        {
-          "id": "음식점",
-          "label": "음식점",
-          "value": 45000,
-        },
-        {
-          "id": "카페",
-          "label": "카페",
-          "value": 12200,
-        },
-        {
-          "id": "여가",
-          "label": "여가",
-          "value": 16000,
-        }
-      ];
+    // const data = [
+    //     {
+    //       "id": "대형마트",
+    //       "label": "대형마트",
+    //       "value": 40000,
+    //     },
+    //     {
+    //       "id": "편의점",
+    //       "label": "편의점",
+    //       "value": 12300,
+    //     },
+    //     {
+    //       "id": "음식점",
+    //       "label": "음식점",
+    //       "value": 45000,
+    //     },
+    //     {
+    //       "id": "카페",
+    //       "label": "카페",
+    //       "value": 12200,
+    //     },
+    //     {
+    //       "id": "여가",
+    //       "label": "여가",
+    //       "value": 16000,
+    //     }
+    //   ];
     const [category, setCategory] = useState<CategoryData>();
     const colortag = [' #a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00','#cab2d6','#6a3d9a',' #ffff99','#b15928'];
     const [tagnum, setTagnum] =useState(0)
@@ -79,7 +79,7 @@ const Graph = () => {
                 } 
         })
         .then((res)=>{
-            console.log(res)
+            console.log(res.data.response.infos)
             setCategory(res.data.response)
         })
         .catch((err)=>{
@@ -98,7 +98,7 @@ const Graph = () => {
                 } 
         })
         .then((res)=>{
-            console.log(res)
+            console.log(res.data.response.infos)
             setCategory(res.data.response)
         })
         .catch((err)=>{
@@ -106,15 +106,15 @@ const Graph = () => {
         })
     }
     useEffect(()=>{
-        // if(tagnum===0){
-        //     analyzePlace()
-        // }
-        // if(tagnum===1){
-        //     analyzeReceipt()
-        // }
+        if(tagnum===0){
+            analyzePlace()
+        }
+        if(tagnum===1){
+            analyzeReceipt()
+        }
         
     },[month,year,tagnum])
-    // const data = category?.info || [];
+    const data = category?.infos || [];
     const totalValue = data.reduce((sum, item) => sum + item.value, 0);
     return (
         <div className='mx-4 mt-11 mb-28'>
@@ -165,153 +165,152 @@ const Graph = () => {
                     <Tab label="상세 내역" />
                 </Tabs>
             </Box>
-            <div className='w-[100%] aspect-square'>
-                <ResponsivePie
-                    data={data}
-                    margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-                    startAngle={-180}
-                    innerRadius={0.5}
-                    padAngle={0.7}
-                    cornerRadius={3}
-                    activeOuterRadiusOffset={8}
-                    colors={{ scheme: 'paired' }}
-                    borderWidth={1}
-                    borderColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                0.2
+            {data && data.length > 0? (
+            <div>
+                <div className='w-[100%] aspect-square'>
+                    <ResponsivePie
+                        data={data}
+                        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                        startAngle={-180}
+                        innerRadius={0.5}
+                        padAngle={0.7}
+                        cornerRadius={3}
+                        activeOuterRadiusOffset={8}
+                        colors={{ scheme: 'paired' }}
+                        borderWidth={1}
+                        borderColor={{
+                            from: 'color',
+                            modifiers: [
+                                [
+                                    'darker',
+                                    0.2
+                                ]
                             ]
-                        ]
-                    }}
-                    enableArcLinkLabels={false}
-                    arcLinkLabelsSkipAngle={10}
-                    arcLinkLabelsTextColor="#333333"
-                    arcLinkLabelsThickness={2}
-                    arcLinkLabelsColor={{ from: 'color' }}
-                    arcLabelsSkipAngle={10}
-                    arcLabelsTextColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                2
+                        }}
+                        enableArcLinkLabels={false}
+                        arcLinkLabelsSkipAngle={10}
+                        arcLabel="id"
+                        arcLinkLabelsTextColor="#333333"
+                        arcLinkLabelsThickness={2}
+                        arcLinkLabelsColor={{ from: 'color' }}
+                        arcLabelsSkipAngle={10}
+                        arcLabelsTextColor={{
+                            from: 'color',
+                            modifiers: [
+                                [
+                                    'darker',
+                                    2
+                                ]
                             ]
-                        ]
-                    }}
-                    defs={[
-                        {
-                            id: 'dots',
-                            type: 'patternDots',
-                            background: 'inherit',
-                            color: 'rgba(255, 255, 255, 0.3)',
-                            size: 4,
-                            padding: 1,
-                            stagger: true
-                        },
-                        {
-                            id: 'lines',
-                            type: 'patternLines',
-                            background: 'inherit',
-                            color: 'rgba(255, 255, 255, 0.3)',
-                            rotation: -45,
-                            lineWidth: 6,
-                            spacing: 10
-                        }
-                    ]}
-                    fill={[
-                        {
-                            match: {
-                                id: 'ruby'
+                        }}
+                        defs={[
+                            {
+                                id: 'dots',
+                                type: 'patternDots',
+                                background: 'inherit',
+                                color: 'rgba(255, 255, 255, 0.3)',
+                                size: 4,
+                                padding: 1,
+                                stagger: true
                             },
-                            id: 'dots'
-                        },
-                        {
-                            match: {
-                                id: 'c'
+                            {
+                                id: 'lines',
+                                type: 'patternLines',
+                                background: 'inherit',
+                                color: 'rgba(255, 255, 255, 0.3)',
+                                rotation: -45,
+                                lineWidth: 6,
+                                spacing: 10
+                            }
+                        ]}
+                        fill={[
+                            {
+                                match: {
+                                    id: 'ruby'
+                                },
+                                id: 'dots'
                             },
-                            id: 'dots'
-                        },
-                        {
-                            match: {
-                                id: 'go'
+                            {
+                                match: {
+                                    id: 'c'
+                                },
+                                id: 'dots'
                             },
-                            id: 'dots'
-                        },
-                        {
-                            match: {
-                                id: 'python'
+                            {
+                                match: {
+                                    id: 'go'
+                                },
+                                id: 'dots'
                             },
-                            id: 'dots'
-                        },
-                        {
-                            match: {
-                                id: 'scala'
+                            {
+                                match: {
+                                    id: 'python'
+                                },
+                                id: 'dots'
                             },
-                            id: 'lines'
-                        },
-                        {
-                            match: {
-                                id: 'lisp'
+                            {
+                                match: {
+                                    id: 'scala'
+                                },
+                                id: 'lines'
                             },
-                            id: 'lines'
-                        },
-                        {
-                            match: {
-                                id: 'elixir'
+                            {
+                                match: {
+                                    id: 'lisp'
+                                },
+                                id: 'lines'
                             },
-                            id: 'lines'
-                        },
-                        {
-                            match: {
-                                id: 'javascript'
+                            {
+                                match: {
+                                    id: 'elixir'
+                                },
+                                id: 'lines'
                             },
-                            id: 'lines'
-                        }
-                    ]}
-                    legends={[]}
-                />
-            </div>
-            {/* {category?.list.map((tag, index) => (
-                <div className='flex items-center h-[16px]'>
-                    <div style={{ backgroundColor: colortag[index], height: '10px', width: '10px', marginRight: '5px' }}></div>
-                    {tag.id} : {((tag.value / category.sum) * 100).toFixed(1)}%
-                </div>
-             ))} */}
-            { tagnum === 0 ?
-                <div className='flex justify-center '>
-                    <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
-                        <div>자주 소비하는 장소</div>
+                            {
+                                match: {
+                                    id: 'javascript'
+                                },
+                                id: 'lines'
+                            }
+                        ]}
+                        legends={[]}
+                        />
                     </div>
-                </div>
-                :
-                <div className='flex justify-center '>
-                    <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
-                        <div>자주 소비하는 카테고리</div>
-                    </div>
-                </div>}
-            <div className='w-full flex flex-col items-center mt-4'>
-                {data.map((res,index)=>(
-                    <div key={index} className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
-                        <div className='flex gap-4 items-center'>
-                            <div style={{ backgroundColor: colortag[index], height: '10px', width: '10px', marginRight: '5px' }}/>
-                            <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                                {res.id}
-                            </Typography>
+                    { tagnum === 0 ?
+                        <div className='flex justify-center '>
+                            <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
+                                <div>자주 소비하는 장소</div>
+                            </div>
                         </div>
-                        <div className='flex gap-4'>
-                            <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
-                                {(res.value / totalValue * 100).toFixed(2)}%
-                            </Typography>
-                            <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
-                                {res.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
-                            </Typography>
-                        </div>
-                    </div>
-                ))}
-                <div className='h-[100px]'/>
-            </div>
+                        :
+                        <div className='flex justify-center '>
+                            <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
+                                <div>자주 소비하는 카테고리</div>
+                            </div>
+                        </div>}
+                    <div className='w-full flex flex-col items-center mt-4'>
+                        {data.map((res,index)=>(
+                            <div key={index} className='flex items-center h-[16px] my-5 w-[90%] justify-between'>
+                                <div className='flex gap-4 items-center'>
+                                    <div style={{ backgroundColor: colortag[index%12], height: '10px', width: '10px', marginRight: '5px' }}/>
+                                    <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                                        {res.id}
+                                    </Typography>
+                                </div>
+                                <div className='flex gap-4'>
+                                    <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-blue-gray-500 text-xl">
+                                        {(res.value / totalValue * 100).toFixed(2)}%
+                                    </Typography>
+                                    <Typography variant="h6" color="blue-gray" className="font-normal text-end text-m font-bold text-xl">
+                                        {res.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+                                    </Typography>
+                                </div>
+                            </div>
+                        ))}
+                    <div className='h-[100px]'/>
+                </div>
+            </div>):(<div className='w-full flex justify-center items-center h-48'>{tagnum===0?(<Typography variant="h4" color="black" className='w-fit' >소비내역이 없어요</Typography>):(<Typography variant="h4" color="black" className='w-fit' >등록된 영수증이 없어요</Typography>)}</div>)}
+
         </div>
     );
 };
