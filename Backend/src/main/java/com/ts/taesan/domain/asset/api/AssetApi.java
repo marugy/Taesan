@@ -72,12 +72,12 @@ public class AssetApi {
         return OK(null);
     }
 
-    @PostMapping("/charge")
-    public ApiResponse<Void> charge(
-            @AuthenticationPrincipal User user
-    ) {
-        assetService.charge(Long.parseLong(user.getUsername()));
-        return OK(null);
-    }
+//    @PostMapping("/charge")
+//    public ApiResponse<Void> charge(
+//            @AuthenticationPrincipal User user
+//    ) {
+//        assetService.charge(Long.parseLong(user.getUsername()));
+//        return OK(null);
+//    }
 
 }
