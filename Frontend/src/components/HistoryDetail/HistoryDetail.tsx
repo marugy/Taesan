@@ -368,11 +368,9 @@ const HistoryDetail = () => {
                 </div>:
                 <div className='w-[86%] flex flex-col items-center'>
                     <div className='w-full flex justify-between mt-2'>
-                        <ListItemPrefix>
-                            <Avatar variant="square" className="p-1" alt="candice" src={`.png`} />
-                        </ListItemPrefix>
+                        <Avatar variant="square" className="p-1" alt="candice" src={`/Category/${category}.png`} />
                         <div className="w-full flex justify-between">
-                            <div className='flex items-center'>
+                            <div className='flex items-center ml-3'>
                                 <Typography variant="h6" color="blue-gray">
                                     {shopName}
                                 </Typography>
@@ -429,7 +427,7 @@ const HistoryDetail = () => {
                     <div className='border-blue-gray-100 rounded-xl border mt-12 w-full'>
                         <div className=' flex justify-between mt-2 mx-5'>
                             <ListItemPrefix>
-                                <Avatar variant="square" className="p-1" alt="candice" src={`.png`} />
+                                <Avatar variant="square" className="p-1" alt="candice" src={`/Category/${category}.png`} />
                             </ListItemPrefix>
 
                             <div className='flex items-center'>
@@ -458,8 +456,8 @@ const HistoryDetail = () => {
                             최근 3개월간 거래 내역
                         </Typography>
                         <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-m font-bold w-[90%] text-blue-gray-500 '>
-                            <div>거래 횟수:{recentCount}</div>
-                            <div>총 거래 금액:{recentSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+                            <div>거래 횟수:{recentSum}</div>
+                            <div>총 거래 금액:{recentCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
                         </Typography>
                     </div>
                 </div>

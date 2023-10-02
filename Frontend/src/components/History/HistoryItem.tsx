@@ -12,10 +12,8 @@ interface Propstransaction{
 const HistoryItem = ({category,dateTime,shopName,approvedAmount}:Propstransaction) => {
     return (
         <div className='w-full flex justify-between mt-2'>
-            <ListItemPrefix>
-                <Avatar variant="square" className="p-1" alt="candice" src={`${category}.png`} />
-            </ListItemPrefix>
-            <div className="w-full flex justify-between">
+                <Avatar variant="square" className="p-1" alt="candice" src={`/Category/${category}.png`} />
+            <div className="w-full flex justify-between ml-4">
                 <div>
                 <Typography variant="h6" color="blue-gray">
                     {shopName}

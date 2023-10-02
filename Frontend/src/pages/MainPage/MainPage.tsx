@@ -114,7 +114,7 @@ const MainPage = () => {
 
         {/* 자산 등록 여부에 따라 다른 화면 띄우기 */}
         <div className="dt:w-[50vw] dt:flex dt:flex-col dt:justify-center dt:items-center">
-          {connectedAsset ? <MainCardInfo cardList={cardList} /> : <MainAssetRegister />}
+          {connectedAsset ? <MainCardInfo cardList={cardList} main={'1'} /> : <MainAssetRegister />}
 
           <MainAssetInfo
             createdTikkle={createdTikkle}
