@@ -31,4 +31,7 @@ public class Tikkle extends BaseEntity {
     @Column(name = "end_date")
     private Date endDate;
 
+    public void updateMoney(Long amt) {
+        this.money += amt;
+    }
 }

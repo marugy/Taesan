@@ -23,6 +23,7 @@ public class PayHistory extends BaseEntity {
     @JoinColumn(name = "tikkle_id")
     private Tikkle tikkle;
 
+    // 0: 샀다치고, 1: 습관저금, 2: 절약챌린지
     @Column(name = "trans_type")
     private Integer transType;
 
