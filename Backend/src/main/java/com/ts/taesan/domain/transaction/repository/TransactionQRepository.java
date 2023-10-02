@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.analyst.service.dto.response.Info;
+import com.ts.taesan.domain.ifbuy.api.dto.response.MostBuyItem;
 import com.ts.taesan.domain.transaction.entity.ReceiptList;
 import com.ts.taesan.domain.transaction.service.dto.response.OftenCategory;
 import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
@@ -50,9 +51,9 @@ public class TransactionQRepository {
                 .where(receiptList.receipt.transaction.id.eq(id)).fetch();
     }
 
-    public RecentTransaction findRecentTransactionByShopName(String shopName, LocalDate startDate){
+    public RecentTransaction findRecentTransactionByShopName(String shopName, LocalDate startDate, Long memberId){
         return queryFactory.select(Projections.fields(RecentTransaction.class, transaction.count().as("count"), transaction.approvedAmount.sum().as("sum")
-                )).from(transaction).where(transaction.shopName.eq(shopName).and(transaction.dateTime.after(startDate.atStartOfDay()))).fetchFirst();
+                )).from(transaction).where(transaction.shopName.eq(shopName).and(transaction.member.id.eq(memberId)).and(transaction.dateTime.after(startDate.atStartOfDay()))).fetchFirst();
     }
 
     public List<TransactionDTO> findTransactionListByMonth(Long id, LocalDate startDate, LocalDate endDate, String category){
@@ -120,9 +121,16 @@ public class TransactionQRepository {
                 .fetch();
     }
 
-
     private BooleanExpression ltCursor(Long cursorId){
         return cursorId == null ? null : transaction.cardHistoryId.loe(cursorId);
     }
 
+    public MostBuyItem findMostBuyItem(Long memberId){
+        return queryFactory.select(Projections.fields(MostBuyItem.class,
+                transaction.category.as("name"), transaction.approvedAmount.sum().as("price")
+                )).from(transaction)
+                .where(transaction.member.id.eq(memberId))
+                .groupBy(transaction.category)
+                .orderBy(transaction.count().desc()).fetchFirst();
+    }
 }

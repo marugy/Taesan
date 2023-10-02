@@ -6,8 +6,6 @@ import com.ts.taesan.domain.asset.api.dto.response.CardHistoryListResponse;
 import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
 import com.ts.taesan.domain.transaction.api.dto.request.ReceiptRequest;
 import com.ts.taesan.domain.transaction.api.dto.response.*;
-import com.ts.taesan.domain.transaction.req.KakaoResult;
-import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.api.ApiResponse;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
 
@@ -38,8 +34,9 @@ public class TransactionAPI {
 
     @ApiOperation(value = "상세 거래내역 불러오기", notes = "위의 거래내역 목록에서 transactionId를 통해 검색")
     @GetMapping("/{transactionId}/detail")
-    public ApiResponse<TransactionResponse> getTransactionDetail(@PathVariable Long transactionId){
-        TransactionResponse transaction = transactionService.getTransactionDetail(transactionId);
+    public ApiResponse<TransactionResponse> getTransactionDetail(@AuthenticationPrincipal User user, @PathVariable Long transactionId){
+        Long memberId = Long.valueOf(user.getUsername());
+        TransactionResponse transaction = transactionService.getTransactionDetail(transactionId, memberId);
         return OK(transaction);
     }
 
@@ -77,10 +74,12 @@ public class TransactionAPI {
     @ApiOperation(value = "거래내역 추가 요청", notes = "결제가 발생했을때 카드 서버는 이 API를 호출하여 우리 서버의 거래내역을 최신화합니다.")
     @PostMapping("/transaction/{card_id}")
     public ApiResponse<Void> addNewTransaction(
+            @AuthenticationPrincipal User user,
             @PathVariable("card_id") Long cardId,
             @ModelAttribute CardHistoryList history
     ) {
-        transactionService.saveNewTransaction(cardId, history);
+
+        transactionService.saveNewTransaction(cardId, history, Long.parseLong(user.getUsername()));
         return OK(null);
     }
 

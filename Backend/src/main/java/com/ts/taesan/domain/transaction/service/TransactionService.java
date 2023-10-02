@@ -70,11 +70,11 @@ public class TransactionService {
         }
     }
 
-    public TransactionResponse getTransactionDetail(Long transactionId){
+    public TransactionResponse getTransactionDetail(Long transactionId, Long memberId){
         TransactionDTO transactionDTO = qRepository.findTransactionDetailByCardId(transactionId);
         LocalDate now = LocalDate.now();
         now = now.minusMonths(3);
-        RecentTransaction recentTransaction = qRepository.findRecentTransactionByShopName(transactionDTO.getShopName(), now);
+        RecentTransaction recentTransaction = qRepository.findRecentTransactionByShopName(transactionDTO.getShopName(), now, memberId);
         TransactionResponse result = new TransactionResponse(transactionDTO, recentTransaction);
         return result;
     }
@@ -169,9 +169,10 @@ public class TransactionService {
         return oftenCategories;
     }
 
-    public void saveNewTransaction(Long cardId, CardHistoryList history) {
+    public void saveNewTransaction(Long cardId, CardHistoryList history, Long memberId) {
         String category = kakaoUtil.getCategory(history.getMerchantName());
-        transactionRepository.save(new Transaction(history, cardId, category));
+        Member member = memberRepository.findById(memberId).get();
+        transactionRepository.save(new Transaction(history, cardId, category, member));
     }
 
     private String getApiType() {
