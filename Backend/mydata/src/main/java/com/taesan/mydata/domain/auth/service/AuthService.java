@@ -39,6 +39,11 @@ public class AuthService {
     private final DummyUtils dummyUtils;
 
     public void registerToken(long userCi) {
+        if (authRepository.existsById(userCi)) {
+            log.warn("이미 이 회원에 대해 더미데이터를 생성했습니다!!");
+            return;
+        }
+
         // 인증 정보 저장
         Auth auth = authRepository.save(
                 Auth.builder()
