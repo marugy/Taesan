@@ -18,7 +18,7 @@ import { Pincode } from 'components/Common/Pincode';
 import SavingComplete from './SavingComplete';
 
 const SavingCreate = () => {
-  const { accessToken,refreshToken } = useUserStore();
+  const { accessToken, refreshToken, setCreatedTikkle } = useUserStore();
   const [date, setDate] = useState('2023-09-27'); // 선택한 날짜를 상태로 저장
   const koreanDate = dayjs(date).format('YYYY년 MM월 DD일'); //
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
@@ -32,26 +32,29 @@ const SavingCreate = () => {
   const onCorrectPincode = () => {
     setPincodeVisible(false);
     // 지헌(적금통 생성 API 쏘기)
-    axios.post('https://j9c211.p.ssafy.io/api/asset-management/tikkle',
-    {
-      'endDate':date,
-    },
-    {
-      headers : {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      }
-    })
-    .then((response) => {
-      // 적금통 생성 API 요청이 성공한 경우
-      console.log('POST: BODY(만기일)', date);
-      setCompleteVisible(true);
-    })
-    .catch((error) => {
-      // 에러 처리
-      console.error('적금통 생성 실패', error);
-    });
-    
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/asset-management/tikkle',
+        {
+          endDate: date,
+        },
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((response) => {
+        // 적금통 생성 API 요청이 성공한 경우
+        console.log('POST: BODY(만기일)', date);
+        setCreatedTikkle(true);
+        setCompleteVisible(true);
+      })
+      .catch((error) => {
+        // 에러 처리
+        console.error('적금통 생성 실패', error);
+      });
   };
 
   const handleConfirm = () => {

@@ -31,7 +31,9 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             </div>
           </div>
 
-          <div className="flex items-center font-main font-semibold">{balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+          <div className="flex items-center font-main font-semibold">
+            {balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+          </div>
         </div>
       ) : (
         <div className="flex justify-between">
@@ -63,7 +65,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             적금통 조회
           </Button>
         </div>
-      ) : (
+      ) : connectedAsset ? (
         <div className="flex justify-between mt-1">
           <div className="flex items-center font-semibold font-main">적금통을 생성해주세요.</div>
           <Button
@@ -76,7 +78,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             적금통 만들기
           </Button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

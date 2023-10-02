@@ -8,14 +8,14 @@ import { useUserStore } from 'store/UserStore';
 import axios from 'axios';
 
 interface CardRegisterProps {
-  cardList : Array<any>;
+  cardList: Array<any>;
 }
-const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
+const CardRegister: React.FC<CardRegisterProps> = ({ cardList }) => {
   const navigate = useNavigate();
-  const { name} = useUserStore();
+  const { name } = useUserStore();
   return (
     <div>
-      <ArrowBack pageName="카드 불러오기"/>
+      <ArrowBack pageName="카드 불러오기" />
       <div className="text-center my-10">
         <Typography variant="h5" color="blue-gray">
           '태산' 사용을 위해
@@ -25,17 +25,16 @@ const CardRegister:React.FC<CardRegisterProps>= ({cardList}) => {
         </Typography>
       </div>
       <div className="flex flex-col gap-3 justify-center items-center">
-      {cardList.map((card, index) => (
-                <Card
-                  cardId={card.cardId}
-                  cardCompany={card.cardCompany}
-                  cardNumber={card.cardNum}
-                  cardType={`${card.cardName}`}
-                  main=""
-                  name={name}
-                />
-          ))}
-
+        {cardList.map((card, index) => (
+          <Card
+            cardId={card.cardId}
+            cardCompany={card.cardCompany}
+            cardNumber={card.cardNum}
+            cardType={`${card.cardName}`}
+            main=""
+            name={name}
+          />
+        ))}
       </div>
       {/* <div className="text-center mt-10">
         <Button
