@@ -79,6 +79,7 @@ const ChallengeRecruitPage = () => {
     }
   }, [challengeData]);
   console.log(challengeData);
+
   // 챌린지 시작하기
   const handlePlay = () => {
     Swal.fire({

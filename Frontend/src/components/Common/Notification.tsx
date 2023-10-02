@@ -1,22 +1,41 @@
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router';
 import { useUserStore } from 'store/UserStore';
+import { NavigateFunction } from 'react-router-dom';
+import { get } from 'http';
 
-const Notification = () => {
-  const navigate = useNavigate();
-  const { accessToken, refreshToken, connectedAsset, isTikkleCreated, storeDate, setStoreDate } = useUserStore();
+import axios from 'axios';
 
+interface PushItem {
+  id: string;
+  push: typeof Swal;
+  url: string;
+  weight: number;
+}
+
+const Notification = async ({
+  navigate,
+  accessToken,
+  refreshToken,
+  connectedAsset,
+  isTikkleCreated,
+  storeDate,
+  setStoreDate,
+}: {
+  navigate: NavigateFunction;
+  accessToken: string;
+  refreshToken: string;
+  connectedAsset: boolean;
+  isTikkleCreated: boolean;
+  storeDate: string;
+  setStoreDate: (date: string) => void;
+}) => {
   const now = new Date();
   const cooldown = new Date(storeDate);
 
   const COOL_TIME = 10000;
 
-  console.log('현재', now.getTime());
-  console.log('쿨타임', cooldown.getTime());
-
   // 알림 쿨타임이 남았다면
   if (cooldown.getTime() > now.getTime()) {
-    console.log('알림 쿨타임');
     return null;
   }
 
@@ -24,38 +43,129 @@ const Notification = () => {
   // 쿨타임 재설정
   setStoreDate(String(new Date(now.getTime() + COOL_TIME)));
 
-  // 계좌 등록 안되었으면 계좌등록알림
-  if (!connectedAsset) {
-    console.log('계좌등록');
-    AccountPush.fire().then((result) => {
-      if (result.isConfirmed) {
-        navigate('/main/mydata'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+  // // 계좌 등록 안되었으면 계좌등록알림
+  // if (!connectedAsset) {
+  //   console.log('계좌등록');
+  //   AccountPush.fire().then((result) => {
+  //     if (result.isConfirmed) {
+  //       navigate('/main/mydata'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+  //     }
+  //   });
+  //   return null;
+  // }
+
+  // // 적금통 생성 안했으면 적금통 생성 알림
+  // if (!isTikkleCreated) {
+  //   console.log('적금통 생성');
+  //   TikklePush.fire().then((result) => {
+  //     if (result.isConfirmed) {
+  //       navigate('/saving/create'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+  //     }
+  //   });
+  //   return null;
+  // }
+
+  const initPush = [
+    { id: 'challengeCreate', push: ChallengeCreatePush, url: '/challenge/create', weight: 1 },
+    { id: 'challengeRecruit', push: ChallengeRecruitPush, url: '/challenge/recruit', weight: 1 },
+    { id: 'challengePlay', push: ChallengePlayPush, url: '/challenge/play', weight: 1 },
+    { id: 'EnrollRecipt', push: EnrollReceiptPush, url: '/history', weight: 1 },
+    { id: 'EnrollHabit', push: EnrollHabitPush, url: '/habit', weight: 1 },
+    { id: 'SavingDuration', push: SavingDurationPush, url: '/saving', weight: 1 },
+    { id: 'Pattern', push: PatternPush, url: '/pattern', weight: 1 },
+    { id: 'BuyIf', push: BuyIfPush, url: '/buyif', weight: 1 },
+  ];
+
+  const filtering = async (initPush: PushItem[]) => {
+    // 조회 가능한 알림 필터
+    return initPush.filter(async (pushItem) => {
+      // 챌린지 상태 조회 후 true 필터
+      await axios
+        .get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        })
+        .then((res) => {
+          console.log('절챌 상황', res.data.response.state);
+          if (res.data.response.state === 0) {
+            if (pushItem.id === 'challengeCreate') {
+              return true;
+            }
+          } else if (res.data.response.state === 1) {
+            if (pushItem.id === 'challengeRecruit') {
+              return true;
+            }
+          } else if (res.data.response.state === 2) {
+            if (pushItem.id === 'challengePlay') {
+              return true;
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // 영수증 등록 가능 여부 조회 후 true 필터
+      if (pushItem.id === 'EnrollRecipt') {
+        return true;
       }
-    });
-    return null;
-  }
 
-  // 적금통 생성 안했으면 적금통 생성 알림
-  if (!isTikkleCreated) {
-    console.log('적금통 생성');
-    TikklePush.fire().then((result) => {
-      if (result.isConfirmed) {
-        navigate('/saving/create'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+      // 습관 저금 등록 가능 여부 조회 후 true 필터
+      if (pushItem.id === 'EnrollHabit') {
+        return true;
       }
+
+      // 적금통 만기 조회 후 true 필터
+      if (pushItem.id === 'SavingDuration') {
+        return true;
+      }
+
+      // 소비패턴분석 항상 true
+      if (pushItem.id === 'Pattern') {
+        return true;
+      }
+
+      // 샀다치고 항상 true
+      if (pushItem.id === 'BuyIf') {
+        return true;
+      }
+
+      return false;
     });
-    return null;
-  }
+  };
 
-  // IF (계좌 등록 + 적금동 생성) RANDOM 알림
+  const filteredPush = await filtering(initPush);
 
-  // 등록 안된 영수증 조회 API ()
-  // 절약 챌린지 상태 조회 API
-  // 습관 저금 여부 조회 API
-  // 적금통 기간 조회 API
-  // 샀다치고 권유 알림
-  // 소비패턴분석 알림
+  console.log('필터링된 알림', filteredPush);
 
-  return null;
+  const getRandomPush = (Pushs: PushItem[]) => {
+    // 총 가중치 합계를 계산합니다.
+    const totalWeight = Pushs.reduce((sum, item) => sum + item.weight, 0);
+
+    // 0부터 totalWeight 사이의 랜덤 값을 선택합니다.
+    let randomValue = Math.random() * totalWeight;
+
+    // 선택한 랜덤 값이 어느 항목의 누적 가중치 범위에 속하는지 확인하고 해당 항목을 반환합니다.
+    for (const pushItem of Pushs) {
+      randomValue -= pushItem.weight;
+      if (randomValue <= 0) {
+        return pushItem;
+      }
+    }
+
+    // 여기까지 왔다면 배열의 마지막 항목을 반환합니다 (이 부분에 도달하는 일은 거의 없습니다).
+    return Pushs[Pushs.length - 1];
+  };
+
+  const getPush = getRandomPush(filteredPush);
+
+  getPush.push.fire().then((result) => {
+    if (result.isConfirmed) {
+      navigate(getPush.url); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+    }
+  });
 };
 
 export default Notification;
@@ -66,7 +176,7 @@ export const AccountPush = Swal.mixin({
   // imageUrl: '/Card/before_register.png',
   // imageHeight: '50px',
   // imageWidth: '50px',
-  title: '아직 등록한 계좌가 없네요.<br/> 계좌를 등록하시겠습니까?',
+  title: '아직 등록한 계좌가 없습니다.<br/>계좌를 등록하시겠습니까?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -94,7 +204,7 @@ export const TikklePush = Swal.mixin({
   // imageUrl: '/Card/before_register.png',
   // imageHeight: '50px',
   // imageWidth: '50px',
-  title: '현재 생선된 적금통이 없습니다.<br/> 적금통을 생성하시겠습니까?',
+  title: '현재 생성된 적금통이 없습니다.<br/>적금통을 생성하시겠습니까?',
   toast: true,
   position: 'top',
   showConfirmButton: true,
@@ -119,31 +229,199 @@ export const TikklePush = Swal.mixin({
 });
 
 export const ChallengeCreatePush = Swal.mixin({
-  //
+  title: '절약 챌린지에 한 번 도전해보실래요?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '도전할래요!',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '안 할래요',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 export const ChallengeRecruitPush = Swal.mixin({
-  //
+  title: '현재 절약챌린지 $challengeData.participantNames.length명을 모집했습니다!<br/>확인하시겠습니까?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 export const ChallengePlayPush = Swal.mixin({
-  //
+  title: '진행중인 절약 챌린지 $challengeState.spare원 남았습니다!<br/>확인하시겠습니까?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 
 export const EnrollReceiptPush = Swal.mixin({
-  //
+  title: '등록하지 않은 영수증 있어.<br/>영수증 등록 할래?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 
 export const EnrollHabitPush = Swal.mixin({
-  //
+  title: '오늘 $habit 안했네?<br/>습관 저금할래?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 
 export const SavingDurationPush = Swal.mixin({
-  //
+  title: '너 적금통 만기일 $duration 남았어.<br/>확인할래?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 
 export const PatternPush = Swal.mixin({
-  //
+  title: '현재까지 소비패턴분석해볼래?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
 
 export const BuyIfPush = Swal.mixin({
-  //
+  title: '사고싶은 물품이 있니?<br/>혹시 샀다치고 저금해볼래?',
+  toast: true,
+  position: 'top',
+  showConfirmButton: true,
+  confirmButtonText: '확인',
+  confirmButtonColor: '#0067AC',
+  showCancelButton: true,
+  cancelButtonColor: '#f44336',
+  cancelButtonText: '취소',
+  timer: 5000,
+  timerProgressBar: true,
+  showClass: {
+    popup: 'animate__animated animate__slideInDown',
+  },
+  hideClass: {
+    // popup: 'animate__animated animate__hinge',
+    popup: 'animate__animated animate__slideOutUp',
+  },
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
 });
