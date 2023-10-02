@@ -73,7 +73,7 @@ public class IfBuyService {
         List<IfbuyItem> list =ifBuyQRepository.findByMember(member.getId());
         IfbuyListResponse ifbuyListResponse = IfbuyListResponse.builder()
                 .mostBuy(mostBuyItem.getName())
-                .mostBuyPrice(Long.parseLong(mostBuyItem.getPrice()))
+                .mostBuyPrice(mostBuyItem.getPrice())
                 .itemList(list).build();
 
         return ifbuyListResponse;

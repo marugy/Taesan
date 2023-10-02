@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MostBuyItem {
     private String name;
-    private String price;
+    private Long price;
 
 }
