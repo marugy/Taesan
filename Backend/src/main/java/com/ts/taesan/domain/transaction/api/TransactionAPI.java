@@ -29,9 +29,9 @@ import static com.ts.taesan.global.api.ApiResponse.OK;
 public class TransactionAPI {
 
     private final TransactionService transactionService;
-    @ApiOperation(value = "기본 거래내역 목록 불러오기", notes = "카드Id, 불러올 offset, 가져올 크기 지정")
+    @ApiOperation(value = "기본 거래내역 목록 불러오기", notes = "카드Id, 불러올 cursor, 가져올 크기 지정")
     @GetMapping("/history/{cardId}")
-    public ApiResponse<TransactionListResponse> getTransactions(@Parameter(hidden = true) @AuthenticationPrincipal User user, @PathVariable Long cardId, @RequestParam Integer cursor, @RequestParam Integer limit){
+    public ApiResponse<TransactionListResponse> getTransactions(@Parameter(hidden = true) @AuthenticationPrincipal User user, @PathVariable Long cardId, @RequestParam(required = false) Long cursor, @RequestParam Integer limit){
         TransactionListResponse result = transactionService.getTransactions(Long.valueOf(user.getUsername()), cardId, cursor, limit);
         return OK(result);
     }

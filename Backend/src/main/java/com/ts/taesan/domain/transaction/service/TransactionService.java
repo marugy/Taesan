@@ -51,7 +51,7 @@ public class TransactionService {
     @Value("${org-code}")
     private String orgCode;
 
-    public TransactionListResponse getTransactions(Long memberId, Long cardId, Integer cursor, Integer limit){
+    public TransactionListResponse getTransactions(Long memberId, Long cardId, Long cursor, Integer limit){
         Member member = memberRepository.findById(memberId).get();
         CardInfoRequest cardInfoRequest = CardInfoRequest.builder()
                 .org_code(orgCode)
@@ -63,8 +63,11 @@ public class TransactionService {
 
         Card card = new Card(cardResponse.getCardId(), cardResponse.getCardNum(), cardResponse.getCompany(), cardResponse.getCardType());
         List<TransactionDTO> list = qRepository.findTransactionListByCardId(cardId, cursor, limit);
-        TransactionListResponse response = new TransactionListResponse(cursor.toString(), card, limit.toString(), list);
-        return response;
+        if (list.isEmpty()) {
+            return new TransactionListResponse(null, card, limit.toString(), list);
+        } else {
+            return new TransactionListResponse(list.size()==limit+1 ? list.get(list.size()-1).getCardHistoryId().toString() : null, card, limit.toString(), list.subList(0, list.size()-1));
+        }
     }
 
     public TransactionResponse getTransactionDetail(Long transactionId){
