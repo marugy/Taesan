@@ -125,5 +125,12 @@ public class TransactionQRepository {
         return cursorId == null ? null : transaction.cardHistoryId.loe(cursorId);
     }
 
-//    public MostBuyItem findMostBuyItem()
+    public MostBuyItem findMostBuyItem(Long memberId){
+        return queryFactory.select(Projections.fields(MostBuyItem.class,
+                transaction.category.as("name"), transaction.approvedAmount.sum().as("price")
+                )).from(transaction)
+                .where(transaction.member.id.eq(memberId))
+                .groupBy(transaction.category)
+                .orderBy(transaction.count().desc()).fetchFirst();
+    }
 }

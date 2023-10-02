@@ -98,7 +98,7 @@ public class AssetService {
             List<Transaction> transactionList = new ArrayList<>();
             for (CardHistoryList history : historyList) {
                 String category = kakaoUtil.getCategory(history.getMerchantName());
-                transactionList.add(new Transaction(history, card.getCardId(), category));
+                transactionList.add(new Transaction(history, card.getCardId(), category, member));
             }
             transactionRepository.saveAll(transactionList);
         }

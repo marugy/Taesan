@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.transaction.entity;
 
 import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
+import com.ts.taesan.domain.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -49,7 +50,12 @@ public class Transaction {
     @NotNull
     private String shopNumber;
 
-    public Transaction(CardHistoryList history, Long cardId, String category) {
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public Transaction(CardHistoryList history, Long cardId, String category, Member member) {
         this.cardId = cardId;
         this.category = category;
         this.approvedNum = history.getApprovedNum();
@@ -59,6 +65,7 @@ public class Transaction {
         this.shopNumber = history.getMerchantRegno();
         this.approvedAmount = history.getApprovedAmt();
         this.cardType = history.getPayType();
+        this.member = member;
     }
 
 }

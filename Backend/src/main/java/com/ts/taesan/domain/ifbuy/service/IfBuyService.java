@@ -4,11 +4,14 @@ import com.sun.xml.bind.v2.TODO;
 import com.ts.taesan.domain.ifbuy.api.dto.request.IfbuyRegisterRequest;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyItem;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyListResponse;
+import com.ts.taesan.domain.ifbuy.api.dto.response.MostBuyItem;
 import com.ts.taesan.domain.ifbuy.entity.IfBuyEntity;
 import com.ts.taesan.domain.ifbuy.repository.IfBuyQRepository;
 import com.ts.taesan.domain.ifbuy.repository.IfBuyRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
+import com.ts.taesan.domain.transaction.repository.TransactionQRepository;
+import com.ts.taesan.domain.transaction.repository.TransactionRepository;
 import com.ts.taesan.global.entity.UploadFile;
 import com.ts.taesan.global.util.FileUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ public class IfBuyService {
     private final IfBuyQRepository ifBuyQRepository;
     private final IfBuyRepository ifBuyRepository;
     private final MemberRepository memberRepository;
+    private final TransactionQRepository transactionRepository;
     private final FileUtil fileStore;
 
     Map<String, List<String>> productInfo = new ConcurrentHashMap<>();
@@ -59,14 +63,18 @@ public class IfBuyService {
     public IfbuyListResponse getIfbuyList(Long memberId){
 
         Member member = memberRepository.findById(memberId).get();
-        // 가장 많이 하는 소비 가져오기 + 금액
-        // TODO [하영] : 가장 많이하는 소비 가져오기 
+
+        MostBuyItem mostBuyItem = transactionRepository.findMostBuyItem(memberId);
+
         // 은행 정보, 잔액 가져오기
         // TODO [하영] : 은행 정보 가져오기
         
         // 샀다 치고 객체 가져오기
         List<IfbuyItem> list =ifBuyQRepository.findByMember(member.getId());
-        IfbuyListResponse ifbuyListResponse = IfbuyListResponse.builder().itemList(list).build();
+        IfbuyListResponse ifbuyListResponse = IfbuyListResponse.builder()
+                .mostBuy(mostBuyItem.getName())
+                .mostBuyPrice(Long.parseLong(mostBuyItem.getPrice()))
+                .itemList(list).build();
 
         return ifbuyListResponse;
     }
