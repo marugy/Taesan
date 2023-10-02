@@ -50,7 +50,8 @@ public class IfBuyService {
         productInfo.put("카페", Arrays.asList("아메리카노", "4500"));
         productInfo.put("병원", Arrays.asList("타이레놀", "3000"));
         productInfo.put("교통", Arrays.asList("택시비", "12000"));
-        productInfo.put("여가", Arrays.asList("참쌀선과", "4000"));
+        productInfo.put("여가", Arrays.asList("영화관", "15000"));
+        productInfo.put("기타", Arrays.asList("카카오톡 이모티콘", "2000"));
         productInfo.put("간편식", Arrays.asList("라면4봉", "4000"));
         productInfo.put("커피/차", Arrays.asList("맥심커피", "3000"));
         productInfo.put("과자/간식", Arrays.asList("꼬북칩", "1500"));
