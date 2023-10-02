@@ -37,9 +37,16 @@ public class KakaoUtil {
         categoryInfo.put("CT1", "여가");
     }
 
-    // TODO: [하영] 기타 처리 해줘~
+    // TODO: [하영] 기타 처리 해줘~ 했어~
     public String getCategory(String shopName) {
         KakaoResult result = transactionsClient.loadUserByUsername(key, shopName, 1, 1).get();
-        return categoryInfo.get(result.getDocuments().get(0).getCategory_group_code());
+        String categoryResult = result.getDocuments().get(0).getCategory_group_code();
+        if(categoryResult != null){
+            String finalCategory = categoryInfo.get(categoryResult);
+            if(finalCategory != null){
+                return finalCategory;
+            }
+        }
+        return "기타";
     }
 }

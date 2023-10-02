@@ -43,9 +43,9 @@ public class TransactionQRepository {
                 .where(receiptList.receipt.transaction.id.eq(id)).fetch();
     }
 
-    public RecentTransaction findRecentTransactionByCardId(Long id, LocalDate startDate){
+    public RecentTransaction findRecentTransactionByShopName(String shopName, LocalDate startDate){
         return queryFactory.select(Projections.fields(RecentTransaction.class, transaction.count().as("count"), transaction.approvedAmount.sum().as("sum")
-                )).from(transaction).where(transaction.id.eq(id).and(transaction.dateTime.after(startDate.atStartOfDay()))).fetchFirst();
+                )).from(transaction).where(transaction.shopName.eq(shopName).and(transaction.dateTime.after(startDate.atStartOfDay()))).fetchFirst();
     }
 
     public List<TransactionDTO> findTransactionListByMonth(Long id, LocalDate startDate, LocalDate endDate, String category){
@@ -60,13 +60,13 @@ public class TransactionQRepository {
         return queryFactory.select(Projections.fields(ReceiptDTO.class,
                 receiptList.category, receiptList.price, receiptList.name.as("productName")
                 )).from(receiptList).where(receiptList.receipt.transaction.cardId.eq(id)
-                .and(receiptList.category.eq(category).and(receiptList.receipt.transactionDate
+                .and(receiptList.category.eq(category).and(receiptList.receipt.transaction.dateTime
                         .between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))).fetch();
     }
 
     public List<OftenCategory> findOftenTransaction(Long id, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(OftenCategory.class, transaction.category,
-                        transaction.count().as("count"),transaction.approvedAmount.sum().as("money")
+                        transaction.dateTime.countDistinct().as("count"),transaction.approvedAmount.sum().as("money"), transaction.approvedAmount.sum().divide(30).as("dateMoney")
                 )).from(transaction).where(transaction.cardId.eq(id).
                 and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(transaction.category)
@@ -75,13 +75,14 @@ public class TransactionQRepository {
 
     public List<OftenCategory> findOftenReceipt(Long id, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(OftenCategory.class, receiptList.category,
-                receiptList.count().as("count"), receiptList.price.sum().as("money"))).from(receiptList)
+                receiptList.receipt.transaction.dateTime.countDistinct().as("count"), receiptList.price.sum().as("money")
+                , receiptList.price.sum().divide(30).as("dateMoney"))).from(receiptList)
                 .where(receiptList.receipt.transaction.cardId.eq(id)
                         .and(receiptList.category.eq("커피/차").or(receiptList.category.eq("과자/간식")
                                 .or(receiptList.category.eq("제과/잼").or(receiptList.category.eq("완구")
                                         .or(receiptList.category.eq("잡화/명품").or(receiptList.category.eq("문구/도서")
                                                 .or(receiptList.category.eq("담배"))))))))
-                        .and(receiptList.receipt.transactionDate.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
+                        .and(receiptList.receipt.transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(receiptList.category)
                 .orderBy(receiptList.count().desc()).limit(3).fetch();
     }
@@ -107,7 +108,7 @@ public class TransactionQRepository {
 
                 ))
                 .from(receiptList)
-                .where(receiptList.receipt.transaction.cardId.eq(cardId).and(receiptList.receipt.transactionDate.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
+                .where(receiptList.receipt.transaction.cardId.eq(cardId).and(receiptList.receipt.transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(receiptList.category)
                 .fetch();
     }

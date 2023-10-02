@@ -69,9 +69,17 @@ public class TransactionService {
 
     public TransactionResponse getTransactionDetail(Long transactionId){
         TransactionDTO transactionDTO = qRepository.findTransactionDetailByCardId(transactionId);
-        RecentTransaction recentTransaction = qRepository.findRecentTransactionByCardId(transactionId, LocalDate.now());
+        LocalDate now = LocalDate.now();
+        now = now.minusMonths(3);
+        RecentTransaction recentTransaction = qRepository.findRecentTransactionByShopName(transactionDTO.getShopName(), now);
         TransactionResponse result = new TransactionResponse(transactionDTO, recentTransaction);
         return result;
+    }
+
+    public ReceiptListResponse getReceipts(Long transactionId){
+        List<ReceiptDTO> result = qRepository.findReceiptByTransactionId(transactionId);
+        ReceiptListResponse response = new ReceiptListResponse(Long.parseLong("0"), result);
+        return response;
     }
 
     public ReceiptResultResponse setReciptInfo(Long transactionId, ReceiptRequest receiptRequest){
@@ -85,7 +93,6 @@ public class TransactionService {
         List<ReceiptList> list = new ArrayList<>();
         Receipt receipt = Receipt.builder()
                 .transaction(transaction)
-                .transactionDate(receiptRequest.getDate())
                 .products(list)
                 .build();
         for(CategoryResult temp : aiResult){

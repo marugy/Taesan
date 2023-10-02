@@ -26,14 +26,32 @@ public class AnalystService {
     private final FileUtil fileUtil;
 
     public PlaceAnalystResponse placeAnlystResponse(Long cardId, String year, String month){
-        YearMonth yearMonth = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
-        List<Info> list = transactionQRepository.findTransactionAnal(cardId, yearMonth.atDay(1), yearMonth.atEndOfMonth());
+        YearMonth start = null;
+        YearMonth end = null;
+        if(month.equals("0")){ // 년에 대한 검색을 실행할 때
+            start = YearMonth.of(Integer.parseInt(year), 1);
+            end = YearMonth.of(Integer.parseInt(year), 12);
+        }
+        else{
+            start = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
+            end = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
+        }
+        List<Info> list = transactionQRepository.findTransactionAnal(cardId, start.atDay(1), end.atEndOfMonth());
         return new PlaceAnalystResponse(year, month, list);
     }
 
     public ReceiptAnalystResponse receiptAnalystResponse(Long cardId, String year, String month){
-        YearMonth yearMonth = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
-        List<Info> list = transactionQRepository.findReceiptAnal(cardId, yearMonth.atDay(1), yearMonth.atEndOfMonth());
+        YearMonth start = null;
+        YearMonth end = null;
+        if(month.equals("0")){ // 년에 대한 검색을 실행할 때
+            start = YearMonth.of(Integer.parseInt(year), 1);
+            end = YearMonth.of(Integer.parseInt(year), 12);
+        }
+        else{
+            start = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
+            end = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
+        }
+        List<Info> list = transactionQRepository.findReceiptAnal(cardId, start.atDay(1), end.atEndOfMonth());
         return new ReceiptAnalystResponse(year, month, list);
     }
 

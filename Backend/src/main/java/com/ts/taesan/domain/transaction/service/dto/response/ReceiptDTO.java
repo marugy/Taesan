@@ -7,7 +7,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReceiptDTO {
     private String productName;
-    private Integer count;
     private Long price;
     private String category;
 }
