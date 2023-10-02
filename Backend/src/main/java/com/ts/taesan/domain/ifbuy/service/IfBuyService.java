@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.ifbuy.service;
 
 import com.sun.xml.bind.v2.TODO;
+import com.ts.taesan.domain.asset.service.AssetService;
 import com.ts.taesan.domain.ifbuy.api.dto.request.IfbuyRegisterRequest;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyItem;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyListResponse;
@@ -39,6 +40,7 @@ public class IfBuyService {
     private final MemberRepository memberRepository;
     private final TransactionQRepository transactionRepository;
     private final FileUtil fileStore;
+    private final AssetService assetService;
 
     Map<String, List<String>> productInfo = new ConcurrentHashMap<>();
     @PostConstruct
@@ -91,9 +93,7 @@ public class IfBuyService {
                     .storeFileName(imgFile.getStoreFileName()).build();
 
             ifBuyRepository.save(entity);
-            // TODO [하영] : 은행에서 출금하기
-            // TODO [하영] : 티끌머니 잔액 추가
-            
+            assetService.saveMoney(memberId, Long.parseLong(request.getPrice()), 1);
 
         }catch (IOException e){
             throw new RuntimeException(e);

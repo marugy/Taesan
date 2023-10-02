@@ -66,29 +66,40 @@ public class AssetService {
     }
 
     // 태산 적금통에서 내 계좌로 이체시 이 로직 사용
-    public void charge(Long memberId) {
-        Member member = memberRepository.findById(memberId).get();
-        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
-
-        ChargeRequest chargeRequest = ChargeRequest.builder()
-                .senderAccNum(member.getAccountNum())
-                .transAmt(calculateUtil.calculate(tikkle))
-                .build();
-        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
-
-    }
+//    public void charge(Long memberId, Long amt) {
+//        Member member = memberRepository.findById(memberId).get();
+//        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
+//
+//        ChargeRequest chargeRequest = ChargeRequest.builder()
+//                .senderAccNum(member.getAccountNum())
+//                .transAmt(amt)
+//                .build();
+//        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
+//
+//    }
 
     // 다른 서비스에서 적금통으로 금액 저장시 이 로직 사용
     // 1: 샀다치고, 2: 습관저금, 3: 절약챌린지
     public void saveMoney(Long memberId, Long amount, int serviceType) {
+        Member member = memberRepository.findById(memberId).get();
         Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
 
+        // 이체
+        ChargeRequest chargeRequest = ChargeRequest.builder()
+                .senderAccNum(member.getAccountNum())
+                .transAmt(amount)
+                .build();
+        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
+
+        // 내역 생성
         PayHistory payHistory = PayHistory.builder()
                 .tikkle(tikkle)
                 .transType(serviceType)
                 .transAmount(amount)
                 .build();
         payHistoryRepository.save(payHistory);
+
+        // 티끌 머니 잔액 계산
         tikkle.updateMoney(amount);
     }
 
