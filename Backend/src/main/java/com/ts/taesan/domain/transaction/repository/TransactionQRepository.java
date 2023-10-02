@@ -3,6 +3,7 @@ package com.ts.taesan.domain.transaction.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.analyst.service.dto.response.Info;
+import com.ts.taesan.domain.ifbuy.api.dto.response.MostBuyItem;
 import com.ts.taesan.domain.transaction.entity.ReceiptList;
 import com.ts.taesan.domain.transaction.service.dto.response.OftenCategory;
 import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
@@ -112,4 +113,6 @@ public class TransactionQRepository {
                 .groupBy(receiptList.category)
                 .fetch();
     }
+
+//    public MostBuyItem findMostBuyItem()
 }

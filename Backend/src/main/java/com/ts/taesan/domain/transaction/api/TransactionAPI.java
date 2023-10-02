@@ -1,19 +1,14 @@
 package com.ts.taesan.domain.transaction.api;
 
 
-import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
 import com.ts.taesan.domain.transaction.api.dto.request.ReceiptRequest;
 import com.ts.taesan.domain.transaction.api.dto.response.*;
-import com.ts.taesan.domain.transaction.req.KakaoResult;
-import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.api.ApiResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
 
@@ -68,5 +63,4 @@ public class TransactionAPI {
         ReceiptListResponse result = transactionService.getReceiptDetail(cardId,Integer.parseInt(year), Integer.parseInt(month), category);
         return OK(result);
     }
-
 }
