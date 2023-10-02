@@ -10,6 +10,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,24 +26,29 @@ public class Habit extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+
+    private String habitName;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String title;
-
-    private String habitName;
+    private int targetMoney;
 
     @ColumnDefault("0")
     private int state; //상태 0이면 진행중 1이면 종료
 
     @ColumnDefault("0")
-    private Long saving;
+    private Long saving; //저축 금액
 
     @OneToMany
-    private List<HabitLog> habitLogList;
+    private List<HabitLog> habitLog;
+
+    private LocalDateTime endDate;
 
     public void endHabit() {
         this.state = 1;
+        this.endDate = LocalDateTime.now();
     }
 }

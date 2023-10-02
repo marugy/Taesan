@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.habit.service;
 
+import com.ts.taesan.domain.habit.dto.response.HabitCalendarResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitListResponse;
 import com.ts.taesan.domain.habit.repository.HabitQRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,25 @@ public class HabitQService {
     public List<HabitListResponse> getCompleteHabits(Long memberId) {
         List<HabitListResponse> completeHabits = habitQRepository.getCompleteHabits(memberId);
         return completeHabits;
+    }
+
+    public List<HabitCalendarResponse> getTotalCalendar(Long memberId, int year, int month) {
+        List<HabitCalendarResponse> habitCalendarResponses = habitQRepository.getTotalCalendar(memberId, year, month);
+        return habitCalendarResponses;
+    }
+
+    public List<HabitListResponse> getTotalCalendarDetail(Long memberId, int year, int month, int day) {
+        List<HabitListResponse> totalCalendarDetails = habitQRepository.getTotalCalendarDetail(memberId, year, month, day);
+        return totalCalendarDetails;
+    }
+
+    public HabitListResponse getHabitInfo(Long habitId) {
+        HabitListResponse habitListResponse = habitQRepository.getHabitInfo(habitId);
+        return habitListResponse;
+    }
+
+    public List<HabitCalendarResponse> getHabitCalendar(Long habitId, int year, int month) {
+        List<HabitCalendarResponse> habitCalendar = habitQRepository.getHabitCalendar(habitId, year, month);
+        return habitCalendar;
     }
 }

@@ -18,6 +18,6 @@ public class TransferRequest {
     private String receiverAccNum;
 
     @JsonProperty("trans_amt")
-    private Integer transAmt;
+    private Long transAmt;
 
 }

@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TransactionDTO {
     private Long transactionId;
+    private Long cardHistoryId;
     private String approvedNum;
     private LocalDateTime dateTime;
     private Long approvedAmount;

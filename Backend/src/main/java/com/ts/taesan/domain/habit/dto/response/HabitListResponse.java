@@ -15,10 +15,13 @@ public class HabitListResponse {
     private String habitName;
     private LocalDateTime startDate;
     private Long saving;
+    private LocalDateTime endDate;
 
-//    public ProgressHabitResponse(String title, String habitName, Date startDate) {
-//        this.title = title;
-//        this.habitName = habitName;
-//        this.startDate = startDate;
-//    }
+    public HabitListResponse(Long habitId, String title, String habitName, LocalDateTime startDate, Long saving) {
+        this.habitId = habitId;
+        this.title = title;
+        this.habitName = habitName;
+        this.startDate = startDate;
+        this.saving = saving;
+    }
 }

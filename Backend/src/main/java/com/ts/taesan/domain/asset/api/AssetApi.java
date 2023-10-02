@@ -6,14 +6,12 @@ import com.ts.taesan.domain.asset.api.dto.response.CardListResponse;
 import com.ts.taesan.domain.asset.service.AssetQueryService;
 import com.ts.taesan.domain.asset.service.AssetService;
 import com.ts.taesan.global.api.ApiResponse;
+import com.ts.taesan.global.openfeign.card.dto.request.PayRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
 
@@ -52,8 +50,33 @@ public class AssetApi {
     public ApiResponse<Void> connectAssets(
             @AuthenticationPrincipal User user
     ) {
-        log.warn("1: {}", user.getUsername());
         assetService.connectAssets(Long.parseLong(user.getUsername()));
+        return OK(null);
+    }
+
+    @PostMapping("/{card_id}/pay")
+    public ApiResponse<Void> pay(
+            @AuthenticationPrincipal User user,
+            @PathVariable("card_id") Long cardId,
+            @RequestParam PayRequest payRequest
+            ) {
+        assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
+        return OK(null);
+    }
+
+    @PostMapping("/transfer")
+    public ApiResponse<Void> transfer(
+            @AuthenticationPrincipal User user
+    ) {
+        assetService.transfer(Long.parseLong(user.getUsername()));
+        return OK(null);
+    }
+
+    @PostMapping("/charge")
+    public ApiResponse<Void> charge(
+            @AuthenticationPrincipal User user
+    ) {
+        assetService.charge(Long.parseLong(user.getUsername()));
         return OK(null);
     }
 

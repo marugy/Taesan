@@ -1,9 +1,6 @@
 package com.ts.taesan.global.openfeign.bank;
 
-import com.ts.taesan.global.openfeign.bank.dto.request.AccountDetailRequest;
-import com.ts.taesan.global.openfeign.bank.dto.request.AccountInfoRequest;
-import com.ts.taesan.global.openfeign.bank.dto.request.AccountListRequest;
-import com.ts.taesan.global.openfeign.bank.dto.request.ChargeRequest;
+import com.ts.taesan.global.openfeign.bank.dto.request.*;
 import com.ts.taesan.global.openfeign.bank.dto.response.*;
 import com.ts.taesan.domain.transaction.req.OpenFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -48,6 +45,6 @@ public interface BankClient {
     @PostMapping("/transfer")
     ResponseEntity<TransferResponse> transfer(
             @RequestHeader("Authorization") String token,
-            @RequestBody TransferResponse transferRequest);
+            @RequestBody TransferRequest transferRequest);
 
 }

@@ -4,6 +4,7 @@ import com.ts.taesan.global.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,7 +24,8 @@ public class HabitLog extends BaseEntity {
     @ManyToOne()
     @JoinColumn(name = "habit_id")
     private Habit habit;
-
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date saveDay;
 
     private Long saveMoney;
