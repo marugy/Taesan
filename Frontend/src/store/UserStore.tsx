@@ -15,8 +15,8 @@ interface UserStore {
   // 임시 테스트용 store
   connectedAsset: boolean;
   setConnectedAsset: (connectedAsset: boolean) => void;
-  isTikkleCreated: boolean;
-  setIsTikkleCreated: (isTikkleCreated: boolean) => void;
+  createdTikkle: boolean;
+  setCreatedTikkle: (createdTikkle: boolean) => void;
 
   // 알림 여부
   storeDate: string;
@@ -38,8 +38,8 @@ export const useUserStore = create<UserStore>()(
       connectedAsset: false,
       setConnectedAsset: (connectedAsset: boolean) => set({ connectedAsset }),
 
-      isTikkleCreated: false,
-      setIsTikkleCreated: (isTikkleCreated: boolean) => set({ isTikkleCreated }),
+      createdTikkle: false,
+      setCreatedTikkle: (createdTikkle: boolean) => set({ createdTikkle }),
 
       userId: '',
       setUserId: (userId: string) => set({ userId }),

@@ -65,7 +65,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             적금통 조회
           </Button>
         </div>
-      ) : (
+      ) : connectedAsset ? (
         <div className="flex justify-between mt-1">
           <div className="flex items-center font-semibold font-main">적금통을 생성해주세요.</div>
           <Button
@@ -78,7 +78,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             적금통 만들기
           </Button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

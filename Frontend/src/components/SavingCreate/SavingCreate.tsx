@@ -18,7 +18,7 @@ import { Pincode } from 'components/Common/Pincode';
 import SavingComplete from './SavingComplete';
 
 const SavingCreate = () => {
-  const { accessToken, refreshToken, setIsTikkleCreated } = useUserStore();
+  const { accessToken, refreshToken, setCreatedTikkle } = useUserStore();
   const [date, setDate] = useState('2023-09-27'); // 선택한 날짜를 상태로 저장
   const koreanDate = dayjs(date).format('YYYY년 MM월 DD일'); //
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
@@ -48,7 +48,7 @@ const SavingCreate = () => {
       .then((response) => {
         // 적금통 생성 API 요청이 성공한 경우
         console.log('POST: BODY(만기일)', date);
-        setIsTikkleCreated(true);
+        setCreatedTikkle(true);
         setCompleteVisible(true);
       })
       .catch((error) => {

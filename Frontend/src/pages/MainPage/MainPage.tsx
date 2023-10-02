@@ -14,12 +14,23 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   // 스토어에서 AT,RT 가져오기
-  const { accessToken, refreshToken, setName, isTikkleCreated, storeDate, setStoreDate, pushInfo, setPushInfo } =
-    useUserStore();
+  const {
+    accessToken,
+    refreshToken,
+    setName,
+    storeDate,
+    setStoreDate,
+    pushInfo,
+    setPushInfo,
+    connectedAsset,
+    setConnectedAsset,
+    createdTikkle,
+    setCreatedTikkle,
+  } = useUserStore();
 
   // 사용자 자산 관련 State
-  const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
-  const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
+  // const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
+  // const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
   const [bankName, setBankName] = useState('카카오뱅크'); // 은행 이름
   const [accountNumber, setAccountNumber] = useState('110509677498'); // 계좌 번호
   const [balance, setBalance] = useState(870120); // 잔액
@@ -75,13 +86,14 @@ const MainPage = () => {
         'REFRESH-TOKEN': refreshToken,
       },
     });
-    console.log(userAssetInfo);
     setCreatedTikkle(userAssetInfo.response.createdTikkle);
     setConnectedAsset(userAssetInfo.response.connectedAsset);
-    setBankName(userAssetInfo.response.account.bank);
-    setAccountNumber(userAssetInfo.response.account.accountNum);
-    setBalance(userAssetInfo.response.account.balance);
-    setCardList(userAssetInfo.response.cardList);
+    if (connectedAsset) {
+      setBankName(userAssetInfo.response.account.bank);
+      setAccountNumber(userAssetInfo.response.account.accountNum);
+      setBalance(userAssetInfo.response.account.balance);
+      setCardList(userAssetInfo.response.cardList);
+    }
     return userAssetInfo;
   };
   const query2 = useQuery('getAsset', getAsset);
@@ -97,18 +109,13 @@ const MainPage = () => {
         accessToken,
         refreshToken,
         connectedAsset,
-        isTikkleCreated,
+        createdTikkle,
         storeDate,
         setStoreDate,
-        pushInfo,
-        setPushInfo,
       });
     };
-
     handleNotification();
   }, []);
-
-  console.log(createdTikkle);
 
   return (
     <div className="flex flex-col items-center h-full">
