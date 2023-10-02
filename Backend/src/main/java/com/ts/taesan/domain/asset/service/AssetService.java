@@ -15,6 +15,7 @@ import com.ts.taesan.global.openfeign.card.dto.inner.CardList;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardTransactionList;
 import com.ts.taesan.global.openfeign.card.dto.request.CardListRequest;
 import com.ts.taesan.global.openfeign.card.dto.request.CardTransactionListRequest;
+import com.ts.taesan.global.openfeign.card.dto.request.PayRequest;
 import com.ts.taesan.global.util.KakaoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,11 @@ public class AssetService {
 
     @Value("${org-code}")
     private String orgCode;
+
+    public void pay(Long memberId, Long pay_amt, PayRequest payRequest) {
+        Member member = memberRepository.findById(memberId).get();
+        cardClient.pay(member.getMydataAccessToken(), pay_amt, payRequest);
+    }
 
     public void connectAssets(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
