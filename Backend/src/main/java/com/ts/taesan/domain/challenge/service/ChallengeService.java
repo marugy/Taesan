@@ -1,12 +1,16 @@
 package com.ts.taesan.domain.challenge.service;
 
 import com.ts.taesan.domain.challenge.dto.reqeust.ParticipateRequest;
+import com.ts.taesan.domain.challenge.dto.response.ChallengeMakeResponse;
 import com.ts.taesan.domain.challenge.entity.Challenge;
 import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
 import com.ts.taesan.domain.challenge.repository.ChallengeParticipantRepository;
+import com.ts.taesan.domain.challenge.repository.ChallengeQRepository;
 import com.ts.taesan.domain.challenge.repository.ChallengeRepository;
+import com.ts.taesan.domain.challenge.service.dto.ChallengeInfoResponse;
 import com.ts.taesan.domain.challenge.service.dto.ChallengeStartRequest;
 import com.ts.taesan.domain.member.entity.Member;
+import com.ts.taesan.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class ChallengeService {
-
+    
     private final ChallengeRepository challengeRepository;
+    private final ChallengeQRepository challengeQRepository;
     private final ChallengeParticipantRepository challengeParticipantRepository;
 
     public void save(ChallengeStartRequest challengeStartRequest) {
@@ -49,5 +54,13 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow();
         challengeParticipantRepository.deleteAllByChallengeId(challengeId);
         challengeRepository.delete(challenge);
+    }
+
+    public void changeSpare(Long memberId, Long approvedAmt) {
+        ChallengeMakeResponse challengeMakeResponse = challengeQRepository.getState(memberId);
+        if (challengeMakeResponse.getState() == 2) {
+            ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeMakeResponse.getChallengeId()).orElseThrow();
+            challengeParticipant.changeSpare(approvedAmt);
+        }
     }
 }

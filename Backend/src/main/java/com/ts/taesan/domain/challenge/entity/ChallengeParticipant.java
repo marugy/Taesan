@@ -41,4 +41,8 @@ public class ChallengeParticipant extends BaseEntity {
         this.challenge = challenge;
         this.spare = challenge.getPrice();
     }
+
+    public void changeSpare(Long money) {
+        this.spare -= money;
+    }
 }
