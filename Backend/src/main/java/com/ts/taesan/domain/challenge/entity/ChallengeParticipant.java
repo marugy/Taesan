@@ -26,7 +26,7 @@ public class ChallengeParticipant extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-    private Long spare; //10만원으로 살기 -> 6000
+    private Long spare;
     @ColumnDefault("false")
     private Boolean isExchange;
 
@@ -44,5 +44,9 @@ public class ChallengeParticipant extends BaseEntity {
 
     public void changeSpare(Long money) {
         this.spare -= money;
+    }
+
+    public void settle() {
+        this.isExchange = true;
     }
 }

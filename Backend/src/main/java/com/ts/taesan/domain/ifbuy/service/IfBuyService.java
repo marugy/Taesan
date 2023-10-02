@@ -1,6 +1,8 @@
 package com.ts.taesan.domain.ifbuy.service;
 
 import com.sun.xml.bind.v2.TODO;
+import com.ts.taesan.domain.asset.api.dto.inner.Account;
+import com.ts.taesan.domain.asset.service.AssetService;
 import com.ts.taesan.domain.ifbuy.api.dto.request.IfbuyRegisterRequest;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyItem;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyListResponse;
@@ -13,19 +15,22 @@ import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.transaction.repository.TransactionQRepository;
 import com.ts.taesan.domain.transaction.repository.TransactionRepository;
 import com.ts.taesan.global.entity.UploadFile;
+import com.ts.taesan.global.openfeign.bank.BankClient;
+import com.ts.taesan.global.openfeign.bank.dto.inner.AccountDetail;
+import com.ts.taesan.global.openfeign.bank.dto.inner.AccountInfo;
+import com.ts.taesan.global.openfeign.bank.dto.request.AccountDetailRequest;
+import com.ts.taesan.global.openfeign.bank.dto.request.AccountInfoRequest;
 import com.ts.taesan.global.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -39,6 +44,11 @@ public class IfBuyService {
     private final MemberRepository memberRepository;
     private final TransactionQRepository transactionRepository;
     private final FileUtil fileStore;
+    private final AssetService assetService;
+    private final BankClient bankClient;
+
+    @Value("${org-code}")
+    private String orgCode;
 
     Map<String, List<String>> productInfo = new ConcurrentHashMap<>();
     @PostConstruct
@@ -69,12 +79,22 @@ public class IfBuyService {
 
         // 은행 정보, 잔액 가져오기
         // TODO [하영] : 은행 정보 가져오기
-        
+
+        String tranId = getTranId();
+        String apiType = getApiType();
+        String accessToken = member.getMydataAccessToken();
+
+        AccountInfo accountInfo = getAccountInfo(tranId, apiType, accessToken, member);
+        AccountDetail accountDetail = getAccountDetail(tranId, apiType, accessToken, member);
+
+
         // 샀다 치고 객체 가져오기
         List<IfbuyItem> list =ifBuyQRepository.findByMember(member.getId());
         List<String> info = productInfo.get(mostBuyItem.getName());
         IfbuyListResponse ifbuyListResponse = IfbuyListResponse.builder()
                 .mostBuy(info.get(0))
+                .bank(accountInfo.getBank())
+                .balance((long) accountDetail.getBalanceAmt())
                 .mostBuyPrice(Long.parseLong(info.get(1)))
                 .itemList(list).build();
 
@@ -91,13 +111,48 @@ public class IfBuyService {
                     .storeFileName(imgFile.getStoreFileName()).build();
 
             ifBuyRepository.save(entity);
-            // TODO [하영] : 은행에서 출금하기
-            // TODO [하영] : 티끌머니 잔액 추가
-            
+            assetService.saveMoney(memberId, Long.parseLong(request.getPrice()), 1);
 
         }catch (IOException e){
             throw new RuntimeException(e);
 
         }
     }
+
+    private String getApiType() {
+        return "user-search";
+    }
+
+    private String getTranId() {
+        return "1234567890M00000000000001";
+    }
+
+    private AccountInfoRequest getAccountInfoRequest(Member member) {
+        return AccountInfoRequest.builder()
+                .org_code(orgCode)
+                .account_num(member.getAccountNum())
+                .seqno(1)
+                .search_timestamp(new Date().getTime())
+                .next_page(0L)
+                .limit(500)
+                .build();
+    }
+
+    private AccountInfo getAccountInfo(String tranId, String apiType, String accessToken, Member member) {
+        return bankClient.getAccountInfo(accessToken, tranId, apiType, getAccountInfoRequest(member)).getBody().getBasicList().get(0);
+    }
+
+    private AccountDetail getAccountDetail(String tranId, String apiType, String accessToken, Member member) {
+        return bankClient.getAccountDetail(accessToken, tranId, apiType, getAccountDetailRequest(member)).getBody().getDetailList().get(0);
+    }
+
+    private AccountDetailRequest getAccountDetailRequest(Member member) {
+        return AccountDetailRequest.builder()
+                .org_code(orgCode)
+                .account_num(member.getAccountNum())
+                .seqno(1)
+                .search_timestamp(new Date().getTime())
+                .build();
+    }
+
 }
