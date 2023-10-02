@@ -99,9 +99,17 @@ public class TransactionService {
         return result;
     }
 
-    public CardResponse getCardDetail(Long cardId, Integer year, Integer month, String category){
-        // Todo: 2023-09-21: Card 객체 용현이 API에서 가져와야 함
-        Card card = new Card();
+    public CardResponse getCardDetail(Long memberId, Long cardId, Integer year, Integer month, String category){
+        Member member = memberRepository.findById(memberId).get();
+        CardInfoRequest cardInfoRequest = CardInfoRequest.builder()
+                .org_code(orgCode)
+                .search_timestamp(new Date().getTime())
+                .next_page(0L)
+                .limit(500)
+                .build();
+        CardInfoResponse cardResponse = cardClient.getCardInfo(member.getMydataAccessToken(), getTranId(), getApiType(), cardId, cardInfoRequest).getBody();
+
+        Card card = new Card(cardResponse.getCardId(), cardResponse.getCardNum(), cardResponse.getCompany(), cardResponse.getCardType());
 
         // 월의 첫날부터 끝날 구함
         YearMonth toSearch = YearMonth.of(year, month);

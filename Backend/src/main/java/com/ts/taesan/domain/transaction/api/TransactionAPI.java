@@ -52,9 +52,9 @@ public class TransactionAPI {
 
     @ApiOperation(value = "카드 카테고리 상세내역", notes = "패턴분석에서 위치 카테고리의 상세 내용")
     @GetMapping("/card/{cardId}")
-    public ApiResponse<CardResponse> getCardDetail(@PathVariable Long cardId, @RequestParam String year, @RequestParam String month
+    public ApiResponse<CardResponse> getCardDetail(@Parameter(hidden = true) @AuthenticationPrincipal User user, @PathVariable Long cardId, @RequestParam String year, @RequestParam String month
     , @RequestParam String category){
-        CardResponse response = transactionService.getCardDetail(cardId,Integer.parseInt(year), Integer.parseInt(month), category);
+        CardResponse response = transactionService.getCardDetail(Long.valueOf(user.getUsername()), cardId, Integer.parseInt(year), Integer.parseInt(month), category);
 
         return OK(response);
     }
