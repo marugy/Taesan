@@ -29,21 +29,14 @@ public class Receipt {
     @JoinColumn(name = "id")
     private Transaction transaction; // 영수증이 속한 거래내역 참조
 
-    @NotNull
-    private String shopName; // 상점의 상호명
-
-    @NotNull
-    private LocalDateTime transactionDate; // 거래내역
 
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
     private List<ReceiptList> products; // 영수증의 상세목록
 
     @Builder
-    public Receipt(Long id, Transaction transaction, String shopName, LocalDateTime transactionDate, List<ReceiptList> products) {
+    public Receipt(Long id, Transaction transaction, List<ReceiptList> products) {
         this.id = id;
         this.transaction = transaction;
-        this.shopName = shopName;
-        this.transactionDate = transactionDate;
         this.products = products;
     }
 }

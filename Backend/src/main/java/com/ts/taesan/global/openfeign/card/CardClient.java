@@ -9,6 +9,7 @@ import com.ts.taesan.global.openfeign.card.dto.request.CardTransactionListReques
 import com.ts.taesan.global.openfeign.card.dto.request.PayRequest;
 import com.ts.taesan.global.openfeign.card.dto.response.CardInfoResponse;
 import com.ts.taesan.global.openfeign.card.dto.response.CardListResponse;
+import com.ts.taesan.global.openfeign.card.dto.response.CardTransactionListResponse;
 import com.ts.taesan.global.openfeign.card.dto.response.PayResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
@@ -34,7 +35,7 @@ public interface CardClient {
             @SpringQueryMap CardInfoRequest cardInfoRequest);
 
     @GetMapping("/{card_id}/approval-domestic")
-    ResponseEntity<CardListResponse> getCardTransactionList(
+    ResponseEntity<CardTransactionListResponse> getCardTransactionList(
             @RequestHeader("Authorization") String token,
             @RequestHeader("x-api-tran-id") String tranId,
             @RequestHeader("x-api-type") String type,

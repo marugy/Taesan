@@ -1,10 +1,19 @@
 package com.ts.taesan.global.openfeign.card.dto.inner;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+@Data
+@AllArgsConstructor
 public class CardTransactionList {
+
+        @JsonProperty("history_id")
+        private Long id;
 
         @JsonProperty("approved_num")
         private String approvedNum;
@@ -28,10 +37,10 @@ public class CardTransactionList {
         private String merchantRegno;
 
         @JsonProperty("approved_amt")
-        private Integer approvedAmt;
+        private Long approvedAmt;
 
         @JsonProperty("modified_amt")
-        private Integer modifiedAmt;
+        private Long modifiedAmt;
 
         @JsonProperty("total_install_cnt")
         private Integer totalInstallCnt;

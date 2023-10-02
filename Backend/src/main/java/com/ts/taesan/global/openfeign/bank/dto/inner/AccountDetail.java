@@ -3,9 +3,14 @@ package com.ts.taesan.global.openfeign.bank.dto.inner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AccountDetail {
+
+        @JsonProperty("account_name")
+        private String accountName;
 
         @JsonProperty("currency_code")
         private String currencyCode;
@@ -23,7 +28,8 @@ public class AccountDetail {
         private String lastPaidInCnt;
 
         @Builder
-        public AccountDetail(String currencyCode, Double balanceAmt, Double withdrawableAmt, Double offeredRate) {
+        public AccountDetail(String accountName, String currencyCode, Double balanceAmt, Double withdrawableAmt, Double offeredRate) {
+                this.accountName = accountName;
                 this.currencyCode = currencyCode;
                 this.balanceAmt = balanceAmt;
                 this.withdrawableAmt = withdrawableAmt;

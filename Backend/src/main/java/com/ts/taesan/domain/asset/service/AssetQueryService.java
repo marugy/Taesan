@@ -5,6 +5,7 @@ import com.ts.taesan.domain.asset.api.dto.response.AccountListResponse;
 import com.ts.taesan.domain.asset.api.dto.response.AssetResponse;
 import com.ts.taesan.domain.asset.api.dto.inner.Card;
 import com.ts.taesan.domain.asset.api.dto.response.CardListResponse;
+import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.global.openfeign.bank.BankClient;
@@ -37,6 +38,7 @@ public class AssetQueryService {
     private final BankClient bankClient;
     private final CardClient cardClient;
     private final MemberRepository memberRepository;
+    private final TikkleRepository tikkleRepository;
 
     @Value("${org-code}")
     private String orgCode;
@@ -65,7 +67,7 @@ public class AssetQueryService {
 
             return AssetResponse.builder()
                     .connectedAsset(true)
-                    .createdTikkle(true)
+                    .createdTikkle(tikkleRepository.existsByMemberId(memberId))
                     .account(account)
                     .cardList(retCardList)
                     .build();
@@ -114,6 +116,7 @@ public class AssetQueryService {
         return Account.builder()
                 .bank(accountInfo.getBank())
                 .accountNum(member.getAccountNum())
+                .accountName(accountDetail.getAccountName())
                 .balance((long) accountDetail.getBalanceAmt())
                 .build();
     }

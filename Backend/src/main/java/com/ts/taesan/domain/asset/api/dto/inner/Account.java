@@ -15,9 +15,10 @@ public class Account {
     private Long balance;
 
     @Builder
-    public Account(String bank, String accountNum, Long balance) {
+    public Account(String bank, String accountNum, String accountName, Long balance) {
         this.bank = bank;
         this.accountNum = accountNum;
+        this.accountName = accountName;
         this.balance = balance;
     }
 

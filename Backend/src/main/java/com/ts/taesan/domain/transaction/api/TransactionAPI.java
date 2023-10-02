@@ -38,6 +38,13 @@ public class TransactionAPI {
         return OK(transaction);
     }
 
+    @ApiOperation(value = "거래내역에 대한 영수증 목록 불러오기", notes = "거래내역을 눌렀을 때 등록된 영수증에 대한 정보 불러오기")
+    @GetMapping("/{transactionId}/receipt")
+    public ApiResponse<ReceiptListResponse> getReceipts(@PathVariable Long transactionId){
+        ReceiptListResponse receipts = transactionService.getReceipts(transactionId);
+        return OK(receipts);
+    }
+
     @ApiOperation(value = "영수증 정보 등록하기(미완성)", notes = "분석이 완료된 영수증 정보를 등록")
     @PostMapping("/{transactionId}/receipt")
     public ApiResponse<ReceiptResultResponse> setReciptInfo(@PathVariable Long transactionId, @RequestBody ReceiptRequest receiptRequest){
@@ -62,12 +69,4 @@ public class TransactionAPI {
         return OK(result);
     }
 
-    @ApiOperation(value = "최초 거래내역 불러오기(미완성)", notes = "최초 카드Id 마다 거래내역 불러오기 API")
-    @PostMapping("/load/transaction")
-//    public ApiResponse<String> loadTransactions(@RequestBody LoadTransactions request){
-    public ApiResponse<String> loadTransactions(){
-        transactionService.loadTransactions(new LoadTransactions(new ArrayList<>()));
-        return OK("Success");
-
-    }
 }

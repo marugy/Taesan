@@ -11,4 +11,6 @@ public interface TikkleRepository extends JpaRepository<Tikkle, Long> {
 
     Optional<Tikkle> findByMemberId(Long memberId);
 
+    boolean existsByMemberId(Long memberId);
+
 }
