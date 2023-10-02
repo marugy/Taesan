@@ -1,15 +1,26 @@
 package com.ts.taesan.domain.habit.repository;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ts.taesan.domain.habit.dto.response.ClearHabitResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitCalendarResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitListResponse;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.ts.taesan.domain.habit.entity.QHabit.habit;
 import static com.ts.taesan.domain.habit.entity.QHabitLog.habitLog;
+import static com.ts.taesan.domain.transaction.entity.QReceipt.receipt;
+import static com.ts.taesan.domain.transaction.entity.QReceiptList.receiptList;
+import static com.ts.taesan.domain.transaction.entity.QTransaction.transaction;
 
 @Repository
 
@@ -108,4 +119,65 @@ public class HabitQRepository {
                 .fetch();
         return habitCalendar;
     }
+
+    public List<ClearHabitResponse> getSaveHabit(Long memberId) {
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        Date today = new Date();
+
+        // 현재 날짜의 시작 시간을 계산합니다. (시간, 분, 초, 밀리초를 0으로 설정)
+        Calendar calendarStart = Calendar.getInstance();
+        calendarStart.setTime(today);
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+        calendarStart.set(Calendar.MINUTE, 0);
+        calendarStart.set(Calendar.SECOND, 0);
+        calendarStart.set(Calendar.MILLISECOND, 0);
+        Date startDay = calendarStart.getTime();
+
+        // 현재 날짜의 끝 시간을 계산합니다. (시간, 분, 초, 밀리초를 23:59:59:999로 설정)
+        Calendar calendarEnd = Calendar.getInstance();
+        calendarEnd.setTime(today);
+        calendarEnd.set(Calendar.HOUR_OF_DAY, 23);
+        calendarEnd.set(Calendar.MINUTE, 59);
+        calendarEnd.set(Calendar.SECOND, 59);
+        calendarEnd.set(Calendar.MILLISECOND, 999);
+        Date endDay = calendarEnd.getTime();
+
+        List<ClearHabitResponse> saveHabit = queryFactory.select(Projections.constructor(ClearHabitResponse.class,
+                        habit.id,
+                        habit.habitName,
+                        habit.targetMoney
+                ))
+                .from(habit)
+                .where(habit.state.eq(0)
+                                .and(habit.habitName.notIn(
+                                        JPAExpressions.select(
+                                                        receiptList.category).distinct()
+                                                .from(receiptList)
+                                                .where(receiptList.receipt.transaction.member.id.eq(memberId).and(receiptList.receipt.transaction.dateTime.between(startOfDay, endOfDay))))
+                                )
+//                                .and(habit.habitName.notIn(
+//                        queryFactory.select(
+//                                        receiptList.category).distinct()
+//                                .from(receiptList)
+//                                .join(habitLog).on(habitLog.habit.id.eq(habit.id))
+//                                .where(habitLog.habit.member.id.eq(memberId).and(habitLog.saveDay.between(startDay, endDay)))
+//                ))
+                )
+                .fetch();
+        return saveHabit;
+    }
+
+//    public Long getSavingDays(String habitTitle, Long memberId) {
+//        Long count = queryFactory.select(receiptList).distinct()
+//                .from(receiptList, habit)
+//                .join(receipt).on(receiptList.receipt.id.eq(receipt.id))
+//                .join(transaction).on(receipt.transaction.id.eq(transaction.id))
+////                .join(habit).on(habit.title.eq(habitTitle).and(habit.member.id.eq(memberId)))
+//                .where(receiptList.category.eq(habitTitle).and(transaction.dateTime.between(habit.createDate, Expressions.asDateTime(LocalDateTime.now()))))
+//                .fetch().stream().count();
+//        return count;
+//    }
 }

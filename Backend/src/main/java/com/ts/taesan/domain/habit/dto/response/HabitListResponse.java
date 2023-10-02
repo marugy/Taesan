@@ -16,6 +16,7 @@ public class HabitListResponse {
     private LocalDateTime startDate;
     private Long saving;
     private LocalDateTime endDate;
+    private Long savingCnt;
 
     public HabitListResponse(Long habitId, String title, String habitName, LocalDateTime startDate, Long saving) {
         this.habitId = habitId;
@@ -23,5 +24,19 @@ public class HabitListResponse {
         this.habitName = habitName;
         this.startDate = startDate;
         this.saving = saving;
+    }
+
+    public HabitListResponse(Long habitId, String title, String habitName, LocalDateTime startDate, Long saving, LocalDateTime endDate) {
+        this.habitId = habitId;
+        this.title = title;
+        this.habitName = habitName;
+        this.startDate = startDate;
+        this.saving = saving;
+        this.endDate = endDate;
+    }
+
+
+    public void updateSavingCnt(Long cnt) {
+        this.savingCnt = cnt;
     }
 }

@@ -121,4 +121,7 @@ public class ChallengeApi {
         challengeService.delete(challengeId);
         return OK(null);
     }
+    // TODO: 2023-10-02 챌린지 결과 저장 api 
+    // TODO: 2023-10-02 종료된 챌린지에 대해 티끌머니로 입금이 필요함 
+    // TODO: 2023-10-02 service 단에 티끌머니 입금 부분만 todo로 나머지 로직 생성 
 }

@@ -1,6 +1,7 @@
 package com.ts.taesan.domain.habit.api;
 
 import com.ts.taesan.domain.habit.dto.CreateHabitRequest;
+import com.ts.taesan.domain.habit.dto.response.ClearHabitResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitCalendarResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitListResponse;
 import com.ts.taesan.domain.habit.service.HabitQService;
@@ -95,12 +96,13 @@ public class HabitApi {
         return OK(habitCalendar);
     }
 
+
     @ApiOperation(value = "오늘 아낀 습관 목록 조회", notes = "오늘 아낀 습관을 조회한다.")
     @GetMapping("/today")
-    public ApiResponse<?> getClearHabit(@AuthenticationPrincipal User user) {
+    public ApiResponse<List<ClearHabitResponse>> getClearHabit(@AuthenticationPrincipal User user) {
         Long memberId = Long.parseLong(user.getUsername());
-
-        return OK(null);
+        List<ClearHabitResponse> clearHabits = habitQService.getClearHabits(memberId);
+        return OK(clearHabits);
     }
 
     @ApiOperation(value = "오늘 아낀 습관 저금", notes = "오늘 아낀 습관들을 저금한다.")
