@@ -13,9 +13,10 @@ import { useUserStore } from 'store/UserStore';
 import { useAssetStore} from 'store/AssetStore';
 interface CardInfoProps {
 
-  cardList: Array<any>;
+  cardList: Array<any>,
+  main:string
 }
-const MainCardInfo: React.FC<CardInfoProps> = ({ cardList }) => {
+const MainCardInfo: React.FC<CardInfoProps> = ({ cardList,main }) => {
   const { selectedCardId,setSelectedCardId } = useAssetStore();
   const { name } = useUserStore();
   // 컴포넌트가 마운트될 때 첫 번째 카드의 id 값을 설정해놓음.
@@ -48,7 +49,7 @@ const MainCardInfo: React.FC<CardInfoProps> = ({ cardList }) => {
                   cardCompany={data.cardCompany}
                   cardNumber={data.cardNumber}
                   cardType={data.cardType}
-                  main="1"
+                  main={main}
                   name={name}
                 />
               </div>
