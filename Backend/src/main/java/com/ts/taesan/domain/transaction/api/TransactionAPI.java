@@ -34,8 +34,9 @@ public class TransactionAPI {
 
     @ApiOperation(value = "상세 거래내역 불러오기", notes = "위의 거래내역 목록에서 transactionId를 통해 검색")
     @GetMapping("/{transactionId}/detail")
-    public ApiResponse<TransactionResponse> getTransactionDetail(@PathVariable Long transactionId){
-        TransactionResponse transaction = transactionService.getTransactionDetail(transactionId);
+    public ApiResponse<TransactionResponse> getTransactionDetail(@AuthenticationPrincipal User user, @PathVariable Long transactionId){
+        Long memberId = Long.valueOf(user.getUsername());
+        TransactionResponse transaction = transactionService.getTransactionDetail(transactionId, memberId);
         return OK(transaction);
     }
 
