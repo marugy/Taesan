@@ -96,9 +96,9 @@ const PayPage = () => {
   const onCorrectPincode = () => {
     setPincodeVisible(false);
     // POST_결제 API
-    axios.post(`https://j9c211.p.ssafy.io/api/${selectedCardId}/pay`,{
-      name:{itemname},
-      price:{itemprice}
+    axios.post(`https://j9c211.p.ssafy.io/api/asset-management/assets/${selectedCardId}/pay`,{
+      shopName:itemname,
+      pay_amt:itemprice
     },
     {
       headers: {

@@ -41,7 +41,10 @@ const HistoryDetail = () => {
           },
         ],
       });
-    
+    const [receiptList, setReceiptList] = useState({
+        receipts: [
+        ]
+    });
   
     const [editableItemIndex, setEditableItemIndex] = useState<number | null>(null);
       
@@ -87,8 +90,8 @@ const HistoryDetail = () => {
             setDateTime(res.data.response.transactionDTO.dateTime)
             setShopName(res.data.response.transactionDTO.shopName)
             setShopNumber(res.data.response.transactionDTO.shopNumber)
-            setRecentSum(res.data.response.recentHistories.count)
-            setRecentCount(res.data.response.recentHistories.sum)
+            setRecentCount(res.data.response.recentHistories.count)
+            setRecentSum(res.data.response.recentHistories.sum)
         })
         .catch((error)=>{
             console.log(error)
@@ -240,14 +243,77 @@ const HistoryDetail = () => {
     const registerItem = () =>{
         const total = clovaAnalys.items.reduce((acc, item) => acc + Number(item.price), 0);
 
-        if (total !== 10000) {
+        if (total !== Number(approvedAmount)) {
           Swal.fire({
             icon: 'warning',
             title: '가격 합계가 일치하지 않습니다',
           });
           return;
         }
+        else{
+            const postClovaAnalys = {
+                productList: clovaAnalys.items.map((item:any) => ({
+                  productName: item.name,
+                  price: item.price
+                })),
+              };
+            axios.post(`https://j9c211.p.ssafy.io/api/transactions/${transactionId}/receipt`,
+                postClovaAnalys
+            ,{
+                headers: {
+                    'Content-Type':'application/json',
+                    'ACCESS-TOKEN': accessToken,
+                    'REFRESH-TOKEN': refreshToken,
+                    } 
+            })
+            .then((res)=>{
+                console.log('등록 완료')
+                console.log(res)
+            })
+            .catch((err)=>{
+                console.log(err)
+                console.log(postClovaAnalys)
+            })
+        }
     }
+    const formatDate = (dateTime:any) => {
+        const date = new Date(dateTime);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+      };
+    
+    const getReceiptList = () =>{
+        
+        axios
+        .get(`https://j9c211.p.ssafy.io/api/transactions/${transactionId}/receipt/`,{
+            headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+                } 
+        })
+        .then((res)=>{
+            const updateReceiptList = {
+                receipts: res.data.response.receipts.map((item:any) => ({
+                    category: item.category,
+                    price: item.price.toString(), 
+                    productName:item.productName
+                })),
+              };
+            console.log(res.data.response)
+            setReceiptList(updateReceiptList)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+    useEffect(()=>{
+        getReceiptList()
+    },[])
+
     return (
         <div className='flex flex-col items-center mt-3 '>
             {loading?
@@ -398,34 +464,56 @@ const HistoryDetail = () => {
                         </div>
                     </div>
                     {analys? 
-                    <div className='border-blue-gray-100 rounded-xl border mt-5 flex flex-col items-center w-full '>
-                        <div className='mt-11 font-bold'>아직 분석한 결제 내역이 없습니다.</div>
-                        <div className='mt-10 mb-6'>
-                        <Button color="blue" onClick={() => document.getElementById('file-input')?.click()}>영수증 등록</Button>
-                            <input
-                                type="file"
-                                id="file-input"
-                                accept="image/*"
-                                style={{
-                                    position: 'absolute',
-                                    opacity: 0,
-                                    width: 0,
-                                    height: 0,
-                                    overflow: 'hidden',
-                                }}
-                                onChange={(e) => {
-                                    if (e.target.files && e.target.files.length > 0) {
-                                        const selectedImage = e.target.files[0] as File;
-                                        setReceiptImage(selectedImage);
-                                        console.log(selectedImage);
-                                    }
-                                }}
-                                />
-                            {/* <button onClick={receiptAnlays}>확인</button> */}
+                    <div className='w-full '>
+                        {receiptList.receipts.length === 0 ? 
+                        <div className='border-blue-gray-100 rounded-xl border mt-5 flex flex-col items-center w-full '>
+                            <div className='mt-11 font-bold'>아직 분석한 결제 내역이 없습니다.</div>
+                            <div className='mt-10 mb-6'>
+                            <Button color="blue" onClick={() => document.getElementById('file-input')?.click()}>영수증 등록</Button>
+                                <input
+                                    type="file"
+                                    id="file-input"
+                                    accept="image/*"
+                                    style={{
+                                        position: 'absolute',
+                                        opacity: 0,
+                                        width: 0,
+                                        height: 0,
+                                        overflow: 'hidden',
+                                    }}
+                                    onChange={(e) => {
+                                        if (e.target.files && e.target.files.length > 0) {
+                                            const selectedImage = e.target.files[0] as File;
+                                            setReceiptImage(selectedImage);
+                                            console.log(selectedImage);
+                                        }
+                                    }}
+                                    />
+                            </div>
                         </div>
+                        :
+                        <div className='border-blue-gray-100 rounded-xl border mt-5 flex flex-col items-center w-full '>
+                            {receiptList.receipts.map((item:any,index)=>(
+                                <div key={index} className='w-11/12 flex justify-between my-2 items-center'>
+                                        <Avatar variant="square" className="p-1" alt="candice" src={`/Category/${item.category}.png`} />
+                                    <div className="w-full flex justify-between ml-4">
+                                        <div>
+                                        <Typography variant="h6" color="blue-gray">
+                                            {item.productName}
+                                        </Typography>
+                                        </div>
+                                        <div>
+                                            <Typography variant="h6" color="red" className="text-end">
+                                            {item.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>}
                     </div>: null}
                     <div className='border-blue-gray-100 rounded-xl border mt-12 w-full'>
-                        <div className=' flex justify-between mt-2 mx-5'>
+                        <div className=' flex justify-between my-2 mx-5 items-center'>
                             <ListItemPrefix>
                                 <Avatar variant="square" className="p-1" alt="candice" src={`/Category/${category}.png`} />
                             </ListItemPrefix>
@@ -440,7 +528,7 @@ const HistoryDetail = () => {
                     <div className='border-blue-gray-100 rounded-xl border mt-5 w-full'>
                         <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-lg font-bold '>
                             <div>거래 일시 :</div>
-                            <div>{dateTime}</div>
+                            <div>{formatDate(dateTime)}</div>
                         </Typography>
                         <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-lg font-bold '>
                             <div>사용처 :</div>
@@ -448,7 +536,7 @@ const HistoryDetail = () => {
                         </Typography>
                         <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-lg font-bold '>
                             <div>결제 수단 :</div>
-                            <div>{cardType}</div>
+                            <div>{cardType === '01' ? 'Credit' : cardType === '02' ? 'Check' : cardType === '03' ? 'Hybrid' : ''}</div>
                         </Typography>                    
                     </div>
                     <div className='border-blue-gray-100 rounded-xl border mt-5 w-full mb-28'>
@@ -456,8 +544,8 @@ const HistoryDetail = () => {
                             최근 3개월간 거래 내역
                         </Typography>
                         <Typography variant="h6" color="blue-gray" className='flex justify-between mx-4 my-4 text-m font-bold w-[90%] text-blue-gray-500 '>
-                            <div>거래 횟수:{recentSum}</div>
-                            <div>총 거래 금액:{recentCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+                            <div>거래 횟수:{recentCount}</div>
+                            <div>총 거래 금액:{recentSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
                         </Typography>
                     </div>
                 </div>

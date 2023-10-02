@@ -7,13 +7,13 @@ interface PropsUserinfo {
   mostbuy:string,
   mostbuyprice:number
 }
-const AssetCard = ({userbalance,userbank,tikkle}:PropsUserinfo) => {
+const AssetCard = ({userbalance,userbank,tikkle,mostbuy,mostbuyprice}:PropsUserinfo) => {
   return (
     <div className="flex justify-center items-center mx-auto">
         <div>
           <div style={{ backgroundImage: 'url("/Card/Buyif_card.png")', backgroundSize: '100% 100%' }} className='dt:w-[500px] dt:h-[260px] tb:w-[400px] tb:h-[220px] w-[320px] h-[170px] flex flex-col items-center justify-between'>
             <div className='w-[90%] flex justify-start my-2'>
-              <Avatar variant="circular" className="p-1" alt="candice" src={`/Account/NH.png`} />
+              <Avatar variant="circular" className="p-1" alt="candice" src={`/Account/${userbank}.png`} />
             </div>
             <div className='w-[90%] flex justify-between'>
               <div className='font-main text-white text-lg'>잔액</div>
@@ -25,8 +25,8 @@ const AssetCard = ({userbalance,userbank,tikkle}:PropsUserinfo) => {
                 <div className='font-main font-bold'>₩{tikkle?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
               </div>
               <div className='w-[90%] flex justify-between'>
-                <div className='font-main'>커피로 환산하면?</div>
-                <div className='font-main font-bold text-lg'> 1 X ☕</div>
+                <div className='font-main'>{mostbuy}로 환산하면?</div>
+                <div className='font-main font-bold text-lg'> {Math.floor(tikkle / mostbuyprice)} X {mostbuy}</div>
               </div>
             </div>
           </div>
