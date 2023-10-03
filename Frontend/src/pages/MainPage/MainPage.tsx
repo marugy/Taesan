@@ -9,6 +9,7 @@ import BottomNav from 'components/Common/BottomNav';
 import { useUserStore } from 'store/UserStore';
 import Notification from 'components/Common/Notification';
 import { useNavigate } from 'react-router';
+import Loading from 'components/Common/Loading';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -71,12 +72,9 @@ const MainPage = () => {
         'REFRESH-TOKEN': refreshToken,
       },
     });
-    console.log(userProfileInfo);
-    console.log(accessToken);
     setName(userProfileInfo.response.name);
     return userProfileInfo;
   };
-  const query = useQuery('getInfo', getInfo);
 
   // 쿼리 2 ( API 관련 임시 주석처리 )
   const getAsset = async () => {
@@ -96,7 +94,9 @@ const MainPage = () => {
     }
     return userAssetInfo;
   };
-  const query2 = useQuery('getAsset', getAsset);
+
+  const { data: userProfileInfo, isLoading: isLoading1 } = useQuery('getInfo', getInfo);
+  const { data: userAssetInfo, isLoading: isLoading2 } = useQuery('getAsset', getAsset);
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);
@@ -114,11 +114,31 @@ const MainPage = () => {
         setStoreDate,
       });
     };
-    handleNotification();
+
+    const timerId = setTimeout(() => {
+      handleNotification();
+    }, 2000);
+    return () => clearTimeout(timerId);
   }, []);
+
+  const [isShowingLoading, setIsShowingLoading] = useState(true);
+  useEffect(() => {
+    // 데이터 로딩이 완료되었더라도 최소 100ms 동안 로딩 컴포넌트를 보여주기 위해 setTimeout을 사용합니다.
+    const timerId = setTimeout(() => setIsShowingLoading(false), 200);
+
+    // 데이터 로딩이 더 빨리 끝나면, 위의 setTimeout을 취소하고 즉시 로딩 컴포넌트를 숨깁니다.
+    // if (!isLoading1 || !isLoading2) {
+    //   clearTimeout(timerId);
+    //   setIsShowingLoading(false);
+    // }
+
+    // 컴포넌트가 언마운트되면 setTimeout을 취소합니다.
+    return () => clearTimeout(timerId);
+  }, [isLoading1, isLoading2]);
 
   return (
     <div className="flex flex-col items-center h-full">
+      {(isLoading1 || isLoading2 || isShowingLoading) && <Loading />}
       <div className="dt:w-screen dt:h-screen dt:flex">
         <div className="mt-3 dt:fixed dt:top-3 dt:left-6">
           <img src="/Main/logo.png" className="h-16" />

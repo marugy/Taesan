@@ -5,14 +5,19 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
 import React, { useEffect, useState } from 'react';
-import ArrowBack from 'components/Common/ArrowBack';
 
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
+import ArrowBackPincode from './ArrowBackPincode';
 
 const MAX_LENGTH = 6;
 
-export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) => {
+interface Props {
+  onCorrectPincode: () => void;
+  visibleFalse: () => void;
+}
+
+export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
   const { accessToken, refreshToken } = useUserStore();
 
   const [simplePassword, setSimplePassword] = useState('');
@@ -44,7 +49,7 @@ export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) 
       .post(
         'https://j9c211.p.ssafy.io/api/auth-management/auths/simple-password/check',
         {
-          simplePassword: simplePassword,
+          simplePassword: stack.join(''),
         },
         {
           headers: {
@@ -54,11 +59,12 @@ export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) 
         },
       )
       .then((res) => {
-        console.log(res);
-        if (res.data.success) {
+        console.log('ads', res);
+        if (res.data.response) {
           onCorrectPincode(); // onPincode는 상위 컴포넌트로 핀코드 뷰를 닫는 함수가 있어야 함
         } else {
           setErrorMessage('잘못된 입력입니다.');
+          setStack([]);
         }
       })
       .catch((err) => {
@@ -70,17 +76,23 @@ export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) 
     // 핀코드가 MAX_LENGTH에 도달했는지 확인
     if (stack.length === MAX_LENGTH) {
       handleConfirmPincode();
-      setStack([]); // 입력 스택 초기화
       setErrorMessage('');
     }
   }, [stack]);
 
+  const handleClose = () => {
+    setStack([]);
+    visibleFalse();
+  };
+
   return (
     <div
-      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-50 flex-col bg-back ${
+      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-40 flex-col bg-back  mt-5 ${
         errorMessage ? 'animate-shake' : ''
       }`}
     >
+      <ArrowBackPincode pageName="뒤로가기" handleClose={handleClose} />
+
       <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
         암호 입력
       </div>
@@ -94,7 +106,7 @@ export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) 
         })}
       </div>
       {errorMessage && <div className="text-red-500 text-2xl mb-5">{errorMessage}</div>}
-      <div className="flex flex-col mb-8 ">
+      <div className="flex flex-col items-center mb-8 ">
         <div className="space-x-1 m-1 flex justify-center">
           <Button
             variant="text"
