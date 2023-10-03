@@ -80,9 +80,6 @@ public class IfBuyService {
 
         MostBuyItem mostBuyItem = transactionRepository.findMostBuyItem(memberId);
 
-        // 은행 정보, 잔액 가져오기
-        // TODO [하영] : 은행 정보 가져오기
-
         String tranId = getTranId();
         String apiType = getApiType();
         String accessToken = member.getMydataAccessToken();
