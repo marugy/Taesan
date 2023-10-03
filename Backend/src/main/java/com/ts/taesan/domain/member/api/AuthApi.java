@@ -2,7 +2,6 @@ package com.ts.taesan.domain.member.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ts.taesan.domain.member.dto.request.*;
-import com.ts.taesan.domain.member.dto.response.ResultResponse;
 import com.ts.taesan.domain.member.dto.response.SmsResponse;
 import com.ts.taesan.domain.member.service.MemberService;
 import com.ts.taesan.domain.member.service.SmsService;
@@ -28,7 +27,7 @@ import static com.ts.taesan.global.api.ApiResponse.OK;
 @RestController
 @RequestMapping("/api/auth-management/auths")
 @Slf4j
-public class SmsApi {
+public class AuthApi {
     private final SmsService smsService;
     private final MemberService memberService;
 
@@ -51,7 +50,7 @@ public class SmsApi {
     @PostMapping("/simple-password/check")
     public ApiResponse<Boolean> verifySimplePassword(@AuthenticationPrincipal User user, @RequestBody VerifySimplePasswordRequest verifySimplePasswordRequest) {
         Long memberId = Long.parseLong(user.getUsername());
-        Boolean check = memberService.checkSImplePassword(memberId, verifySimplePasswordRequest.getSimplePassword());
+        Boolean check = memberService.checkSimplePassword(memberId, verifySimplePasswordRequest.getSimplePassword());
 
         return OK(check);
     }

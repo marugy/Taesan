@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.member.api;
 
+import antlr.Token;
 import com.ts.taesan.domain.member.dto.request.MemberJoinRequest;
 import com.ts.taesan.domain.member.dto.request.MemberLoginRequest;
 import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
@@ -63,10 +64,8 @@ public class MemberApi {
 
     @ApiOperation(value = "간편 로그인", notes = "간편 비밀번호 입력하고 로그인을 진행하는 API")
     @PostMapping("/simple-login")
-    public ApiResponse<TokenResponse> simpleLogin(@RequestBody SimpleLoginRequest simpleLoginRequest) {
-        Long id = 1L;
-        TokenResponse tokenResponse = memberService.simpleLogin(id, simpleLoginRequest);
-        // TODO: 2023-09-22 JWT 응답으로 변경
+    public ApiResponse<TokenResponse> simpleLogin(HttpServletRequest request, @RequestBody SimpleLoginRequest simpleLoginRequest) {
+        TokenResponse tokenResponse = memberService.simpleLogin(request, simpleLoginRequest);
         return OK(tokenResponse);
     }
 
@@ -74,18 +73,23 @@ public class MemberApi {
     @PostMapping("/issue")
     public ApiResponse<TokenResponse> issueToken(HttpServletRequest request) throws IllegalAccessException {
         TokenResponse tokenResponse = memberService.issueAccessToken(request);
-        // TODO: 2023-09-22 JWT 응답으로 변경
         return OK(tokenResponse);
+    }
+
+    @ApiOperation(value = "token 유효성 검사", notes = "accessToken 유효성 검사 API")
+    @PostMapping("/check/token")
+    public ApiResponse<Boolean> checkToken(HttpServletRequest request) {
+        Boolean check = memberService.checkToken(request);
+        return OK(check);
     }
 
     @ApiOperation(value = "로그아웃", notes = "세션 종료 및 로그아웃을 진행하는 API")
     @GetMapping("/logout")
-    public ApiResponse<Void> logout(HttpServletRequest httpServletRequest) {
+    public ApiResponse<Void> logout(HttpServletRequest httpServletRequest, @AuthenticationPrincipal User user) {
         HttpSession session = httpServletRequest.getSession();
         session.invalidate();
 
-        // TODO: 2023-09-24 accesstoken에서 id 추출로 변경
-        Long memberId = 1L;
+        Long memberId = Long.parseLong(user.getUsername());
         memberService.logout(memberId);
 
         return OK(null);
