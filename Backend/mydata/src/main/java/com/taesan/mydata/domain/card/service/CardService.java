@@ -43,7 +43,7 @@ public class CardService {
                 .approvedAmt(amount)
                 .build();
         cardHistoryRepository.save(cardHistory);
-        transactionClient.saveNewTransaction(accessToken, new CardHistoryList(cardHistory));
+        transactionClient.saveNewTransaction(accessToken, cardId, new CardHistoryList(cardHistory));
 
         return PayResponse.builder()
                 .rspCode("200")
