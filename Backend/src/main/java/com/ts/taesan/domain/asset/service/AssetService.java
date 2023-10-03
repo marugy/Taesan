@@ -2,6 +2,7 @@ package com.ts.taesan.domain.asset.service;
 
 import com.ts.taesan.domain.asset.api.dto.inner.Card;
 import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
+import com.ts.taesan.domain.asset.api.dto.request.TaesanPayRequest;
 import com.ts.taesan.domain.asset.api.dto.response.CardHistoryListResponse;
 import com.ts.taesan.domain.asset.entity.PayHistory;
 import com.ts.taesan.domain.asset.entity.Tikkle;
@@ -11,11 +12,14 @@ import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.transaction.entity.Transaction;
 import com.ts.taesan.domain.transaction.repository.TransactionRepository;
+import com.ts.taesan.global.openfeign.auth.AuthAccessUtil;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
 import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
+import com.ts.taesan.global.openfeign.bank.BankAccessUtil;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.request.ChargeRequest;
 import com.ts.taesan.global.openfeign.bank.dto.request.TransferRequest;
+import com.ts.taesan.global.openfeign.card.CardAccessUtil;
 import com.ts.taesan.global.openfeign.card.CardClient;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardList;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardTransactionList;
@@ -45,51 +49,22 @@ public class AssetService {
     private final TikkleRepository tikkleRepository;
     private final TransactionRepository transactionRepository;
     private final PayHistoryRepository payHistoryRepository;
-    private final AuthClient authClient;
-    private final BankClient bankClient;
-    private final CardClient cardClient;
     private final KakaoUtil kakaoUtil;
-    private final InterestCalculateUtil calculateUtil;
+    private final BankAccessUtil bankAccessUtil;
+    private final CardAccessUtil cardAccessUtil;
+    private final AuthAccessUtil authAccessUtil;
 
-    @Value("${org-code}")
-    private String orgCode;
-
-    // 적금통 해지시 이 로직 사용
     public void transfer(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
-        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
-        TransferRequest transferRequest = TransferRequest.builder()
-                .receiverAccNum(member.getAccountNum())
-                .transAmt(calculateUtil.calculate(tikkle))
-                .build();
-        bankClient.transfer(member.getMydataAccessToken(), transferRequest);
+        bankAccessUtil.transfer(member);
     }
 
-    // 태산 적금통에서 내 계좌로 이체시 이 로직 사용
-//    public void charge(Long memberId, Long amt) {
-//        Member member = memberRepository.findById(memberId).get();
-//        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
-//
-//        ChargeRequest chargeRequest = ChargeRequest.builder()
-//                .senderAccNum(member.getAccountNum())
-//                .transAmt(amt)
-//                .build();
-//        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
-//
-//    }
-
-    // 다른 서비스에서 적금통으로 금액 저장시 이 로직 사용
-    // 1: 샀다치고, 2: 습관저금, 3: 절약챌린지
     public void saveMoney(Long memberId, Long amount, int serviceType) {
         Member member = memberRepository.findById(memberId).get();
         Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
 
         // 이체
-        ChargeRequest chargeRequest = ChargeRequest.builder()
-                .senderAccNum(member.getAccountNum())
-                .transAmt(amount)
-                .build();
-        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
+        bankAccessUtil.charge(member, amount);
 
         // 내역 생성
         PayHistory payHistory = PayHistory.builder()
@@ -103,27 +78,21 @@ public class AssetService {
         tikkle.updateMoney(amount);
     }
 
-    public void pay(Long memberId, Long cardId, PayRequest payRequest) {
+    public void pay(Long memberId, Long cardId, String accessToken, TaesanPayRequest payRequest) {
         Member member = memberRepository.findById(memberId).get();
-        cardClient.pay(member.getMydataAccessToken(), cardId, payRequest);
+        PayRequest request = new PayRequest(payRequest.getShopName(), payRequest.getPayAmt(), accessToken);
+        cardAccessUtil.pay(member, cardId, request);
     }
 
     public void connectAssets(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
-        TokenRequest tokenRequest = TokenRequest.builder()
-                .org_code(orgCode)
-                .grant_type("authorization_code")
-                .client_id("taesan")
-                .client_id("taesanSecretPassword")
-                .redirect_uri("https://j9c211.p.ssafy.io/blahblah")
-                .build();
-        String accessToken = authClient.getAccessToken(member.getId(), getTranId(), tokenRequest).getBody().getAccess_token();
-        member.earnMydataAccessToken("Bearer " + accessToken);
+        String mydataAccessToken = authAccessUtil.getMydataAccessToken(member);
+        member.earnMydataAccessToken("Bearer " + mydataAccessToken);
 
         // 생성된 더미데이터 카테고리 추가해서 저장
-        List<CardList> cardList = cardClient.getCardList(member.getMydataAccessToken(), getTranId(), getApiType(), getCardListRequest()).getBody().getCardList();
+        List<CardList> cardList = cardAccessUtil.getCardList(member);
         for (CardList card : cardList) {
-            List<CardTransactionList> approvedList = cardClient.getCardTransactionList(member.getMydataAccessToken(), getTranId(), getApiType(), card.getCardId(), getCardTransactionList()).getBody().getApprovedList();
+            List<CardTransactionList> approvedList = cardAccessUtil.getCardTransactionList(member, card);
             List<CardHistoryList> historyList = approvedList.stream().map(CardHistoryList::new).collect(Collectors.toList());
             List<Transaction> transactionList = new ArrayList<>();
             for (CardHistoryList history : historyList) {
@@ -133,30 +102,6 @@ public class AssetService {
             transactionRepository.saveAll(transactionList);
         }
 
-    }
-
-    private CardListRequest getCardListRequest() {
-        return CardListRequest.builder()
-                .org_code(orgCode)
-                .search_timestamp(new Date().getTime())
-                .next_page(0L)
-                .limit(500)
-                .build();
-    }
-
-    private CardTransactionListRequest getCardTransactionList() {
-        return CardTransactionListRequest.builder()
-                .org_code(orgCode)
-                .limit(500)
-                .build();
-    }
-
-    private String getApiType() {
-        return "user-search";
-    }
-
-    private String getTranId() {
-        return "1234567890M00000000000001";
     }
 
 }

@@ -1,23 +1,17 @@
-package com.ts.taesan.global.openfeign.card.dto.request;
+package com.ts.taesan.domain.asset.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-public class PayRequest {
+public class TaesanPayRequest {
 
         @JsonProperty("shop_name")
         private String shopName;
 
         @JsonProperty("pay_amt")
         private Integer payAmt;
-
-    @JsonProperty("access_token")
-    private String accessToken;
 
     }

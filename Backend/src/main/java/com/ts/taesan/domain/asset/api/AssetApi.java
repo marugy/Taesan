@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.asset.api;
 
+import com.ts.taesan.domain.asset.api.dto.request.TaesanPayRequest;
 import com.ts.taesan.domain.asset.api.dto.response.AccountListResponse;
 import com.ts.taesan.domain.asset.api.dto.response.AssetResponse;
 import com.ts.taesan.domain.asset.api.dto.response.CardListResponse;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
 
@@ -57,10 +60,11 @@ public class AssetApi {
     @PostMapping("/{card_id}/pay")
     public ApiResponse<Void> pay(
             @AuthenticationPrincipal User user,
+            HttpServletRequest request,
             @PathVariable("card_id") Long cardId,
-            @RequestBody PayRequest payRequest
+            @RequestBody TaesanPayRequest payRequest
             ) {
-        assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
+        assetService.pay(Long.parseLong(user.getUsername()), cardId, request.getHeader("ACCESS-TOKEN"), payRequest);
         return OK(null);
     }
 
