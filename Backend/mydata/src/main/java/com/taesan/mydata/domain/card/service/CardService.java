@@ -27,7 +27,7 @@ public class CardService {
     private final TransactionClient transactionClient;
     private final DummyUtils dummyUtils;
 
-    public PayResponse pay(Long memberId, Long cardId, String shopName, Long amount) {
+    public PayResponse pay(Long memberId, Long cardId, String shopName, Long amount, String accessToken) {
         if (!cardRepository.existsByMemberCi(memberId)) {
             throw new RuntimeException("당신의 카드가 아닙니다.");
         }
@@ -43,7 +43,7 @@ public class CardService {
                 .approvedAmt(amount)
                 .build();
         cardHistoryRepository.save(cardHistory);
-        transactionClient.saveNewTransaction(new CardHistoryList(cardHistory));
+        transactionClient.saveNewTransaction(accessToken, new CardHistoryList(cardHistory));
 
         return PayResponse.builder()
                 .rspCode("200")

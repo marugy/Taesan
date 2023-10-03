@@ -87,7 +87,7 @@ public class CardApi {
             @PathVariable("card_id") long cardId,
             @Valid @RequestBody PayRequest payRequest)
     {
-        PayResponse pay = cardService.pay(Long.parseLong(user.getUsername()), cardId, payRequest.getShopName(), payRequest.getPayAmt());
+        PayResponse pay = cardService.pay(Long.parseLong(user.getUsername()), cardId, payRequest.getShopName(), payRequest.getPayAmt(), payRequest.getAccessToken());
         return new ResponseEntity<>(pay, HttpStatus.OK);
     }
 
