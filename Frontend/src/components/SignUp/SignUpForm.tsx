@@ -7,8 +7,12 @@ import { Card, Input, Checkbox, Button, Typography } from '@material-tailwind/re
 import { formatPhone } from 'hooks/useFormatPhone';
 import EmailInput from './EmailInput';
 import PostcodeList from './PostcodeList';
+import NewPostcode from './NewPostcode';
+import NewPostcode2 from './NewPostcode2';
 import { FormProps } from 'types/SignUpForm';
 import axios from 'axios';
+
+import { Toast } from 'components/Common/Toast';
 
 import { SignUpPincode } from './SignUpPincode';
 
@@ -20,7 +24,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password')], '비밀번호가 다릅니다.')
     .required('비밀번호를 확인해주세요.'),
   name: yup.string().required('이름을 입력해주세요.'),
-  phone: yup.string().required(' '),
+  phone: yup.string().required('휴대폰을 인증해주세요.'),
   email: yup.string().required('이메일을 입력해주세요.'),
   postcode: yup.string().required('주소를 선택해주세요.'),
   zonecode: yup.string().required(' '),
@@ -55,19 +59,17 @@ const SingUpForm = () => {
     formState: { errors },
   } = useForm<FormProps>({ resolver: yupResolver(schema) });
 
-  // 이메일 입력 확인
-  const watchedPostcode = watch('postcode');
-  const watchedZonecode = watch('zonecode');
-  const watchedDetailPostcode = watch('detailPostcode');
-
   // 아이디 인증 요청
   const watchedLoginId = watch('loginId');
   const handleRequestLoginId = () => {
+    if (!watchedLoginId) {
+      setValidLoginId(-1);
+      return;
+    }
     // 아이디 보내기
     axios
       .get(`https://j9c211.p.ssafy.io/api/member-management/members/check?id=${watchedLoginId}`)
       .then((res) => {
-        console.log(res.data.response);
         if (res.data.response) {
           // 결과 받기 (중복 X)
           setValidLoginId(1);
@@ -79,11 +81,10 @@ const SingUpForm = () => {
       .catch((err) => {
         console.log(err);
       });
-    console.log(watchedLoginId);
   };
-  useEffect(() => {
-    setValidLoginId(0);
-  }, [watchedLoginId]);
+  // useEffect(() => {
+  //   setValidLoginId(0);
+  // }, [watchedLoginId]);
 
   // SMS 번호 받기
   const handleRequestSMS = () => {
@@ -99,14 +100,14 @@ const SingUpForm = () => {
           to: extractNumbers(phone),
         })
         .then((res) => {
-          console.log(res.data);
+          console.log('SMS전송');
         })
         .catch((err) => {
           console.log(typeof extractNumbers(phone));
           console.log(err);
         });
-      setPhoneLengthError(false);
       setInputSMS(true);
+      setPhoneLengthError(false);
       setCountDown(180); // 인증 180(3분) 설정
       return;
     }
@@ -116,21 +117,24 @@ const SingUpForm = () => {
     setNumberSMS(e.target.value);
   };
 
+  const [errorSMS, setErrorSMS] = useState('');
+
   // SMS 번호 인증 확인
   const handleResponseSMS = () => {
-    console.log(numberSMS);
     axios
       .post(`https://j9c211.p.ssafy.io/api/auth-management/auths/sms/check`, {
         phone: extractNumbers(phone),
         sms: numberSMS,
       })
       .then((res) => {
-        if (res.data.response.success) {
+        console.log(res);
+        if (res.data.response) {
           setValidPhone(1);
+          setErrorSMS('');
         } else {
-          setValidPhone(-1);
+          setValidPhone(0);
+          setErrorSMS('잘못된 인증번호입니다.');
         }
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -162,9 +166,9 @@ const SingUpForm = () => {
   };
 
   // 핀코드 상태
+  const [viewPincode, setViewPincode] = useState(false);
   const [pincode, setPincode] = useState('');
   const [simplePassword, setSimplePassword] = useState('');
-  const [viewPincode, setViewPincode] = useState(false);
 
   const onValid = (data: FormProps) => {
     // 모든 인증 성공
@@ -203,10 +207,12 @@ const SingUpForm = () => {
           addressDetail: data.detailPostcode,
         })
         .then((res) => {
-          console.log('회원가입 성공함');
-          console.log(res);
-          setViewPincode(false);
-          navigate('/login');
+          Toast.fire({
+            icon: 'success',
+            title: '회원가입 완료',
+          });
+          setViewPincode(false); // 핀코드 닫기
+          navigate('/');
         })
         .catch((err) => {
           console.log(err);
@@ -222,14 +228,6 @@ const SingUpForm = () => {
     console.log(formattedData);
   };
 
-  // const handlePincodeSuccess = () => {
-  //   setViewPincode(false); // 핀코드 입력이 성공적으로 완료되면 모달을 닫습니다.
-  //   console.log(simplePassword);
-  //   if (formData) {
-  //     onSubmit(formData);
-  //   }
-  // };
-
   useEffect(() => {
     if (simplePassword && formData) {
       onSubmit(formData);
@@ -238,31 +236,47 @@ const SingUpForm = () => {
   }, [simplePassword]);
 
   return (
-    <div className=" flex flex-col justify-center items-center">
+    <div className=" flex flex-col justify-center items-center my-5">
       {viewPincode && <SignUpPincode pincode={pincode} setPincode={setPincode} setSimplePassword={setSimplePassword} />}
       <div className="text-2xl tb:text-3xl dt:text-4xl mb-5">회원가입</div>
       <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 justify-center items-center">
-            <Input size="lg" label="*아이디" crossOrigin="anonymous" {...register('loginId')} />
-            <Button
-              type="button"
-              className="bg-[#0067AC] h-10 w-36 flex items-center justify-center flex-col"
-              onClick={handleRequestLoginId}
-            >
-              중복 확인
-            </Button>
+            <Input
+              size="lg"
+              label="*아이디"
+              crossOrigin="anonymous"
+              disabled={validLoginId === 1}
+              {...register('loginId')}
+            />
+            {(validLoginId === -1 || validLoginId === 0) && (
+              <Button
+                type="button"
+                className="bg-[#0067AC] h-10 w-36 flex items-center justify-center flex-col"
+                onClick={handleRequestLoginId}
+              >
+                중복 확인
+              </Button>
+            )}
+            {validLoginId === 1 && (
+              <Button
+                type="button"
+                className="bg-[#0067AC] h-10 w-36 flex items-center justify-center flex-col"
+                onClick={() => setValidLoginId(0)}
+              >
+                다시 쓰기
+              </Button>
+            )}
             {/* {validLoginId === 0 && <span className="text-gray-500 ">❓</span>} */}
             {validLoginId === -1 && <span className="text-red-500 ">❌</span>}
-            {validLoginId === 1 && <span className="text-blue-500 ">✔</span>}
-            {validLoginId === -1 && <div className="text-red-500 ">아이디 중복 확인을 해주세요.</div>}
+            {watchedLoginId && validLoginId === 1 && <span className="text-blue-500 ">✔</span>}
           </div>
           {errors.loginId && <span className="text-red-500 ">{errors.loginId.message}</span>}
-          <div>
+          <div className="mt-2">
             <Input size="lg" label="*비밀번호" crossOrigin="anonymous" {...register('password')} type="password" />
             {errors.password && <span className="text-red-500 ">{errors.password.message}</span>}
           </div>
-          <div>
+          <div className="mt-2">
             <Input
               size="lg"
               label="*비밀번호 확인"
@@ -272,11 +286,11 @@ const SingUpForm = () => {
             />
             {errors.passwordConfirm && <span className="text-red-500 ">{errors.passwordConfirm.message}</span>}
           </div>
-          <div>
+          <div className="mt-2">
             <Input size="lg" label="*이름" crossOrigin="anonymous" {...register('name')} />
             {errors.name && <span className="text-red-500 ">{errors.name.message}</span>}
           </div>
-          <div className="">
+          <div className="mt-2">
             <Input
               size="lg"
               label="*휴대폰 번호"
@@ -286,12 +300,12 @@ const SingUpForm = () => {
               onChange={onPhoneChange}
               disabled={countDown > 0}
             />
-            {!inputSMS && (
+            {!inputSMS && validPhone !== 1 && (
               <Button type="button" className="bg-[#0067AC] h-10 w-36 mt-1" onClick={handleRequestSMS}>
                 인증번호 전송
               </Button>
             )}
-            {inputSMS && (
+            {inputSMS && validPhone !== 1 && (
               <div className="flex gap-1 mt-1">
                 <Input className="" label="*인증번호" crossOrigin="anonymous" onChange={onChangeSMS} />
                 <Button
@@ -303,24 +317,29 @@ const SingUpForm = () => {
                 </Button>
               </div>
             )}
-            {errors.phone && <span className="text-red-500 ">{errors.phone.message}</span>}
-            {phoneLengthError && <span className="text-red-500 ">유효하지 않은 번호입니다.</span>}
+            {phoneLengthError && <span className="text-red-500 p-2">유효하지 않은 번호입니다.</span>}
             {validPhone === 1 && <span className="text-blue-500 ">인증되었습니다.</span>}
             {validPhone === -1 && <div className="text-red-500 ">휴대폰 인증을 해주세요.</div>}
+            {errors.phone && <div className="text-red-500 ">{errors.phone.message}</div>}
+            {errorSMS && <span className="text-red-500">{errorSMS}</span>}
           </div>
-          <div>
+          <div className="mt-2">
             {/* 이메일 */}
             <EmailInput register={register} errors={errors} />
             {errors.email && <span className="text-red-500 ">{errors.email.message}</span>}
           </div>
-          {/* 주소 */}
-          <PostcodeList register={register} errors={errors} />
-          {errors.postcode && <span className="text-red-500 ">{errors.postcode.message}</span>}
-          {errors.zonecode && <span className="text-red-500 ">{errors.zonecode.message}</span>}
-          {errors.detailPostcode && <span className="text-red-500 ">{errors.detailPostcode.message}</span>}
-          {/* {(watchedDetailPostcode === '' || watchedZonecode === '' || watchedPostcode === '') && (
+          <div className="mt-2">
+            {/* 주소 */}
+            {/* <PostcodeList register={register} errors={errors} /> */}
+            {/* <NewPostcode register={register} errors={errors} /> */}
+            <NewPostcode2 register={register} errors={errors} />
+            {errors.postcode && <span className="text-red-500 ">{errors.postcode.message}</span>}
+            {errors.zonecode && <span className="text-red-500 ">{errors.zonecode.message}</span>}
+            {errors.detailPostcode && <span className="text-red-500 ">{errors.detailPostcode.message}</span>}
+            {/* {(watchedDetailPostcode === '' || watchedZonecode === '' || watchedPostcode === '') && (
             <div className="text-red-500">주소를 입력해주세요.</div>
           )} */}
+          </div>
         </div>
         <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
           회원가입

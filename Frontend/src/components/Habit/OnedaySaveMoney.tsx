@@ -15,7 +15,7 @@ const OnedaySaveMoney: React.FC<OnedaySaveMoneyProps> = ({ dayData,selectedDate 
         dayData.map((habit:any,index:number) => (
           <div className="w-full flex justify-between mt-2">
         <ListItemPrefix>
-          <Avatar variant="square" className="p-1" alt="candice" src="Account/KB.jpg" />
+          <Avatar variant="circular" className="p-1" alt="candice" src="/Habit/smoking.png" />
         </ListItemPrefix>
         <div className="w-full flex justify-between">
           <div>

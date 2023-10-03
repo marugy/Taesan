@@ -13,11 +13,67 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 // 한국어로 변환
-import locale from 'antd/es/calendar/locale/ko_KR';
 import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
 import ArrowBack from 'components/Common/ArrowBack';
 import {useUserStore} from 'store/UserStore'
 //////////////////////////////
+
+// 더미데이터
+const getListData = (value: Dayjs) => {
+  let listData;
+  switch (value.date()) {
+    case 1:
+      listData = [
+        { type: 'warning', content: '3,000원' },
+      ];
+      break;
+    case 3:
+      listData = [
+        { type: 'warning', content: '1,500원' },
+      ];
+      break;
+    case 8:
+      listData = [
+        { type: 'warning', content: '3,000원' },
+
+      ];
+      break;
+      case 9:
+      listData = [
+        { type: 'warning', content: '4,500원' },
+
+      ];
+      break;
+      case 7:
+      listData = [
+        { type: 'warning', content: '4,500원' },
+
+      ];
+      break;
+      case 6:
+        listData = [
+          { type: 'warning', content: '4,500원' },
+  
+        ];
+        break; case 5:
+        listData = [
+          { type: 'warning', content: '4,500원' },
+  
+        ];
+        break;
+    default:
+  }
+  return listData || [];
+};
+
+const getMonthData = (value: Dayjs) => {
+  if (value.month() === 8) {
+    return 1394;
+  }
+};
+
+//////////////////////////////
+
 
 const HabitPage = () => {
   const { accessToken,refreshToken,name} = useUserStore();
@@ -207,6 +263,8 @@ const HabitPage = () => {
         {/* <div className="text-gray-600 text-sm dt:text-md my-3 font-bold font-main">{name}님은 월 한 달 동안 습관 저금통에 25,000원을 저금하셨어요!</div> */}
         {/* 달력 */}
         <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange}  cellRender={cellRender}
+        
+        
         />
         {/* 좋은 습관을 통해 하루에 아낀 돈 */}
         <OnedaySaveMoney selectedDate={selectedDate} dayData={dayData.length > 0 ? dayData : []} />

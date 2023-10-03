@@ -1,25 +1,32 @@
 import React from 'react';
 import { Avatar } from '@material-tailwind/react';
-const AssetCard = () => {
+interface PropsUserinfo {
+  userbalance:number,
+  userbank:string,
+  tikkle:number,
+  mostbuy:string,
+  mostbuyprice:number
+}
+const AssetCard = ({userbalance,userbank,tikkle,mostbuy,mostbuyprice}:PropsUserinfo) => {
   return (
     <div className="flex justify-center items-center mx-auto">
         <div>
           <div style={{ backgroundImage: 'url("/Card/Buyif_card.png")', backgroundSize: '100% 100%' }} className='dt:w-[500px] dt:h-[260px] tb:w-[400px] tb:h-[220px] w-[320px] h-[170px] flex flex-col items-center justify-between'>
             <div className='w-[90%] flex justify-start my-2'>
-              <Avatar variant="circular" className="p-1" alt="candice" src={`/piggy_bank.png`} />
+              <Avatar variant="circular" className="p-1" alt="candice" src={`/Account/${userbank}.png`} />
             </div>
             <div className='w-[90%] flex justify-between'>
-              <div>잔액</div>
-              <div>30000원</div>
+              <div className='font-main text-white text-lg'>잔액</div>
+              <div className='font-main text-white font-bold text-lg'>₩{userbalance?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
             </div>
             <div className='bg-white w-[90%] h-[40%] rounded-md my-2 flex flex-col items-center justify-evenly'>
               <div className='w-[90%] flex justify-between'>
-                <div>티끌 머니</div>
-                <div>5600원</div>
+                <div className='font-main'>티끌 머니</div>
+                <div className='font-main font-bold'>₩{tikkle?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
               </div>
               <div className='w-[90%] flex justify-between'>
-                <div>커피로 환산하면?</div>
-                <div> 50000x 커피</div>
+                <div className='font-main'>{mostbuy}로 환산하면?</div>
+                <div className='font-main font-bold text-lg'> {Math.floor(tikkle / mostbuyprice)} X {mostbuy}</div>
               </div>
             </div>
           </div>

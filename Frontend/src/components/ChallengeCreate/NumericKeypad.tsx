@@ -71,94 +71,46 @@ const NumericKeypad = ({ money, setMoney }: Props) => {
           </Button>
         </div>
         <div className="space-x-1 m-1  flex justify-center">
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('1')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('1')}>
             1
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('2')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('2')}>
             2
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('3')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('3')}>
             3
           </Button>
         </div>
         <div className="space-x-1 m-1 flex justify-center">
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('4')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('4')}>
             4
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('5')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('5')}>
             5
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('6')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('6')}>
             6
           </Button>
         </div>
         <div className="space-x-1 m-1  flex justify-center">
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('7')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('7')}>
             7
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('8')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('8')}>
             8
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputNumber('9')}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputNumber('9')}>
             9
           </Button>
         </div>
         <div className="space-x-1 m-1  flex justify-center">
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputZero(2)}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputZero(2)}>
             00
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={() => handleInputZero(1)}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={() => handleInputZero(1)}>
             0
           </Button>
-          <Button
-            variant="text"
-            className=" tb:text-md dt:text-xl tb:w-[150px] dt:w-[200px]"
-            onClick={handleDeleteNumber}
-          >
+          <Button variant="text" className="text-xl  tb:w-[150px] dt:w-[200px]" onClick={handleDeleteNumber}>
             <BackspaceOutlinedIcon />
           </Button>
         </div>

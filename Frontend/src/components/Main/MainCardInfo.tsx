@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useEffect } from 'react';
 import { Button } from '@material-tailwind/react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,57 +9,49 @@ import './styles.css';
 import { Pagination, Navigation } from 'swiper/modules';
 import Card from 'components/Common/Card';
 import './MainCardInfo.css';
-const MainCardInfo = () => {
-  const dummyData = [
-    {
-      cardnumber: 9,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 8,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 3,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 4,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 5,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-    {
-      cardnumber: 6,
-      name: '신한카드',
-      assetnumber: '1234-1234-1234-1234',
-    },
-  ];
+import { useUserStore } from 'store/UserStore';
+import { useAssetStore} from 'store/AssetStore';
+interface CardInfoProps {
+
+  cardList: Array<any>,
+  main:string
+}
+const MainCardInfo: React.FC<CardInfoProps> = ({ cardList,main }) => {
+  const { selectedCardId,setSelectedCardId } = useAssetStore();
+  const { name } = useUserStore();
+  // 컴포넌트가 마운트될 때 첫 번째 카드의 id 값을 설정해놓음.
+  useEffect(() => {
+    setSelectedCardId(cardList[0].cardId);
+  }, []); 
   return (
-    <div className="w-full flex justify-center -mt-4">
-      <div className="w-[70vw] dt:w-[19vw] ">
+    <div className="w-full flex justify-center">
+      <div className="w-[70vw] dt:w-[30vw] ">
         <Swiper
           slidesPerView={1}
           spaceBetween={30}
-          loop={true}
+          // loop={true}
           pagination={{
             clickable: true,
           }}
           navigation={true}
           modules={[Pagination, Navigation]}
           className="mySwiper"
+          // swiper를 넘길 때마다 선택한 카드의 id값을 스토어에 저장.
+          onSlideChange={(swiper:any)=> setSelectedCardId(cardList[swiper.realIndex].cardId)
+          
+          } 
         >
-          {dummyData.map((data, index) => (
+          {cardList.map((data, index) => (
             <SwiperSlide key={index}>
               <div className="w-full h-full bg-back flex justify-center items-center">
-                <Card cardnumber={data.cardnumber} name={data.name} assetnumber={data.assetnumber} />
+                <Card
+                  cardId={data.cardId}
+                  cardCompany={data.cardCompany}
+                  cardNumber={data.cardNumber}
+                  cardType={data.cardType}
+                  main={main}
+                  name={name}
+                />
               </div>
             </SwiperSlide>
           ))}
