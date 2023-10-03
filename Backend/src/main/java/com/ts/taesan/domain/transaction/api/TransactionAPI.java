@@ -7,14 +7,18 @@ import com.ts.taesan.domain.transaction.api.dto.request.LoadTransactions;
 import com.ts.taesan.domain.transaction.api.dto.request.ReceiptRequest;
 import com.ts.taesan.domain.transaction.api.dto.response.*;
 import com.ts.taesan.domain.transaction.service.TransactionService;
+import com.ts.taesan.domain.transaction.service.dto.response.OftenCategory;
 import com.ts.taesan.global.api.ApiResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.ts.taesan.global.api.ApiResponse.OK;
 
@@ -81,6 +85,16 @@ public class TransactionAPI {
 
         transactionService.saveNewTransaction(cardId, history, Long.parseLong(user.getUsername()));
         return OK(null);
+    }
+
+    @ApiOperation(value = "자주 쓰는 카테고리 목록 불러오기", notes = "습관 생성 등에서 자주 쓰는 카테고리 목록 및 가격 불러오기")
+    @GetMapping("/oftenTransaction/{cardId]")
+    public ApiResponse<List<OftenCategory>> getOftenCategory(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long cardId
+    ) {
+        List<OftenCategory> result =  transactionService.getOftenCategory(cardId);
+        return OK(result);
     }
 
 }
