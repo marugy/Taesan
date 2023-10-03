@@ -95,7 +95,7 @@ const SavingDelete = () => {
   }
   return (
     <div className="bg-back">
-      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} />}
+      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode}  visibleFalse={() => setPincodeVisible(false)}  />}
       <div className="flex justify-end mr-5 mt-5">
         <Button
           color="blue"

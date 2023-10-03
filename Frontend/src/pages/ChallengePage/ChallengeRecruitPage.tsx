@@ -59,7 +59,7 @@ const ChallengeRecruitPage = () => {
     isError,
     isFetching,
   } = useQuery('playersData', fetchPlayersData, {
-    refetchInterval: 10000,
+    refetchInterval: 5000,
   });
 
   useEffect(() => {

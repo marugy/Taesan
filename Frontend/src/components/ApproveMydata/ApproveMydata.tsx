@@ -5,8 +5,12 @@ import Swal2 from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
+
+import Loading from 'components/Common/Loading';
+
 const ApproveMydata = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const { accessToken, refreshToken } = useUserStore();
   const [checkEntireApprove, setCheckEntireApprove] = useState(false);
   const [check1, setCheck1] = useState(false);
@@ -32,20 +36,21 @@ const ApproveMydata = () => {
 
   const handleNext = () => {
     if (check1 && check2 && check3) {
+      setIsLoading(true);
       axios
         .post(
           // Post 요청할 때는 빈값일때는 {}를 보내자
-          'https://j9c211.p.ssafy.io/api/asset-management/assets/authenticate',{
-          },
+          'https://j9c211.p.ssafy.io/api/asset-management/assets/authenticate',
+          {},
           {
             headers: {
-              "ACCESS-TOKEN": accessToken,
-              "REFRESH-TOKEN": refreshToken,
+              'ACCESS-TOKEN': accessToken,
+              'REFRESH-TOKEN': refreshToken,
             },
           },
-          
         )
         .then((response) => {
+          setIsLoading(false);
           navigate('/main/asset/register');
         })
         .catch((error) => {
@@ -62,6 +67,7 @@ const ApproveMydata = () => {
   };
   return (
     <div className="font-main">
+      {isLoading && <Loading />}
       <ArrowBack pageName="마이데이터 가입하기" />
       <div className="font-main font-semibold text-2xl mt-10 mx-3">
         태산(泰山)에 가입하시면 마이데이터와 <br /> 오픈뱅킹의 통합자산관리를 <br /> 이용하실 수 있습니다.

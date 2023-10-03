@@ -41,7 +41,14 @@ const Notification = async ({
   const cooldown = new Date(storeDate);
 
   // 쿨타임
-  const COOL_TIME = 10000;
+  // 10초
+  // const COOL_TIME = 10000;
+
+  // 10분
+  const COOL_TIME = 600000;
+
+  // 1시간
+  // const COOL_TIME = 3600000;
 
   // 알림 쿨타임이 남았다면
   if (cooldown.getTime() > now.getTime()) {
@@ -185,11 +192,12 @@ const Notification = async ({
 
   const EnrollReceiptPush = (pushInfo: string): any =>
     Swal.mixin({
-      title: '최근 등록하지 않은 영수증이 있습니다.<br/>영수증 등록 하실래요?',
+      // title: '최근 등록하지 않은 영수증이 있습니다.<br/>영수증 등록 하실래요?',
+      title: '영수증을 등록하면 상세 결제 내역을 기록할 수 있어요!',
       toast: true,
       position: 'top',
       showConfirmButton: true,
-      confirmButtonText: '확인',
+      confirmButtonText: '등록하기',
       confirmButtonColor: '#0067AC',
       showCancelButton: true,
       cancelButtonColor: '#f44336',
@@ -210,7 +218,8 @@ const Notification = async ({
 
   const EnrollHabitPush = (pushInfo: string): any =>
     Swal.mixin({
-      title: '오늘 저금하지 않은 습관이 있습니다.<br/>습관 저금하실래요?',
+      // title: '오늘 저금하지 않은 습관이 있습니다.<br/>습관 저금하실래요?',
+      title: '습관 저금하실래요?',
       toast: true,
       position: 'top',
       showConfirmButton: true,
@@ -308,27 +317,31 @@ const Notification = async ({
       },
     });
 
-  // // 계좌 등록 안되었으면 계좌등록알림
-  // if (!connectedAsset) {
-  //   console.log('계좌등록');
-  //   AccountPush.fire().then((result) => {
-  //     if (result.isConfirmed) {
-  //       navigate('/main/mydata'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
-  //     }
-  //   });
-  //   return null;
-  // }
+  // 계좌 등록 안되었으면 계좌등록알림
+  if (!connectedAsset) {
+    console.log('계좌등록');
+    AccountPush('')
+      .fire()
+      .then((result: any) => {
+        if (result.isConfirmed) {
+          navigate('/main/mydata'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+        }
+      });
+    return null;
+  }
 
-  // // 적금통 생성 안했으면 적금통 생성 알림
-  // if (!createdTikkle) {
-  //   console.log('적금통 생성');
-  //   TikklePush.fire().then((result) => {
-  //     if (result.isConfirmed) {
-  //       navigate('/saving/create'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
-  //     }
-  //   });
-  //   return null;
-  // }
+  // 적금통 생성 안했으면 적금통 생성 알림
+  if (!createdTikkle) {
+    console.log('적금통 생성');
+    TikklePush('')
+      .fire()
+      .then((result: any) => {
+        if (result.isConfirmed) {
+          navigate('/saving/create'); // 사용자가 확인 버튼을 클릭하면 이 경로로 이동합니다.
+        }
+      });
+    return null;
+  }
 
   const initPush = [
     { id: 'challengeCreate', push: ChallengeCreatePush, url: '/challenge/create', weight: 1 },
@@ -405,6 +418,17 @@ const Notification = async ({
 
         // 영수증 등록 가능 여부 조회 후 true 필터
         if (pushItem.id === 'EnrollRecipt') {
+          // 카드리스트 불러오기
+
+          // 각 카드의 기본 거래 내역 불러오기
+
+          // 기본 거래 내역에서 가장 최근 거래 불러오기
+
+          // 가장 최근 거래에 receiptList 불러오기
+
+          // 0이면 그 거래 아이디 info에 저장
+
+          // shouldInclude = true
           shouldInclude = true;
         }
 
@@ -476,8 +500,6 @@ const Notification = async ({
 
   const getPush = getRandomPush(filteredPush);
 
-  console.log(getPush);
-
   getPush
     .push(getPush.info)
     .fire()
@@ -489,5 +511,3 @@ const Notification = async ({
 };
 
 export default Notification;
-
-// ########################### 알림 ########################

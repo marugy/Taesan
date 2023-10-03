@@ -72,7 +72,7 @@ const SavingCreate = () => {
   };
   return (
     <div className="flex flex-col items-center h-screen mt-5">
-      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} />}
+      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} visibleFalse={() => setPincodeVisible(false)} />}
       {completeVisible && <SavingComplete onComplete={handleConfirm} />}
       <div className="font-extrabold text-3xl  ">새로운 적금통 만들기</div>
       <div className="font-normal text-sm text-base text-gray-500 mt-2 text-center">

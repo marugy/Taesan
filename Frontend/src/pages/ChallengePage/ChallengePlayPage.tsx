@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 import dayjs from 'dayjs';
 import ArrowBackParam from 'components/Common/ArrowBackParam';
+import { useQuery } from 'react-query';
 
 const ChallengePlayPage = () => {
   const navigate = useNavigate();
@@ -19,51 +20,104 @@ const ChallengePlayPage = () => {
   const [players, setPlayers] = useState([]);
   const [spare, setSpare] = useState(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 방 ID 불러오기
-        const response1 = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
+  const fetchData = async () => {
+    try {
+      // 방 ID 불러오기
+      const response1 = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
+        headers: {
+          'ACCESS-TOKEN': accessToken,
+          'REFRESH-TOKEN': refreshToken,
+        },
+      });
+
+      setChallengeId(response1.data.response.challengeId);
+      const chID = response1.data.response.challengeId;
+
+      // 방ID를 이용한 방 정보 불러오기
+      const response2 = await axios.get(
+        `https://j9c211.p.ssafy.io/api/challenge-management/challenges/progress/${chID}`,
+        {
           headers: {
             'ACCESS-TOKEN': accessToken,
             'REFRESH-TOKEN': refreshToken,
           },
-        });
+        },
+      );
 
-        setChallengeId(response1.data.response.challengeId);
-        const chID = response1.data.response.challengeId;
+      return response2.data.response;
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-        // 방ID를 이용한 방 정보 불러오기
-        const response2 = await axios.get(
-          `https://j9c211.p.ssafy.io/api/challenge-management/challenges/progress/${chID}`,
-          {
-            headers: {
-              'ACCESS-TOKEN': accessToken,
-              'REFRESH-TOKEN': refreshToken,
-            },
-          },
-        );
+  // useEffect(() => {
+  // const fetchData = async () => {
+  //   try {
+  //     // 방 ID 불러오기
+  //     const response1 = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
+  //       headers: {
+  //         'ACCESS-TOKEN': accessToken,
+  //         'REFRESH-TOKEN': refreshToken,
+  //       },
+  //     });
 
-        const challengeState = response2.data.response;
-        console.log(challengeState);
+  //     setChallengeId(response1.data.response.challengeId);
+  //     const chID = response1.data.response.challengeId;
 
-        setTitle(challengeState.title);
-        setPrice(challengeState.price);
-        setSpare(challengeState.spare);
+  //     // 방ID를 이용한 방 정보 불러오기
+  //     const response2 = await axios.get(
+  //       `https://j9c211.p.ssafy.io/api/challenge-management/challenges/progress/${chID}`,
+  //       {
+  //         headers: {
+  //           'ACCESS-TOKEN': accessToken,
+  //           'REFRESH-TOKEN': refreshToken,
+  //         },
+  //       },
+  //     );
 
-        const today = dayjs(); // 오늘 날짜
-        const targetDate = dayjs(challengeState.endDate); // 만기일
-        const duration = targetDate.diff(today, 'day') + 1;
-        setPeriod(String(duration));
+  //     const challengeState = response2.data.response;
+  //     console.log(challengeState);
 
-        setPlayers(challengeState.participants); // 사용자 업데이트
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  //     setTitle(challengeState.title);
+  //     setPrice(challengeState.price);
+  //     setSpare(challengeState.spare);
 
-    fetchData();
-  }, [challengeId]);
+  //     const today = dayjs(); // 오늘 날짜
+  //     const targetDate = dayjs(challengeState.endDate); // 만기일
+  //     const duration = targetDate.diff(today, 'day') + 1;
+  //     setPeriod(String(duration));
+
+  //     setPlayers(challengeState.participants); // 사용자 업데이트
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  //
+  //   fetchData();
+  // }, [challengeId]);
+
+  const {
+    data: challengePlay,
+    isError,
+    isFetching,
+  } = useQuery('challengePlay', fetchData, {
+    refetchInterval: 5000,
+  });
+
+  useEffect(() => {
+    if (challengePlay) {
+      setTitle(challengePlay.title);
+      setPrice(challengePlay.price);
+      setSpare(challengePlay.spare);
+
+      const today = dayjs(); // 오늘 날짜
+      const targetDate = dayjs(challengePlay.endDate); // 만기일
+      const duration = targetDate.diff(today, 'day') + 1;
+      setPeriod(String(duration));
+
+      setPlayers(challengePlay.participants); // 사용자 업데이트
+    }
+  }, [challengePlay]);
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
