@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 public class PayRequest {
 
-        @JsonProperty("shopName")
-        private String merchantRegno;
+        @JsonProperty("shop_name")
+        private String shopName;
 
         @JsonProperty("pay_amt")
         private Integer payAmt;
