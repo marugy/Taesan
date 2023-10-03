@@ -34,6 +34,9 @@ const HabitPage = () => {
         "saving": 4000
     },
 ],);
+// 한 달 동안 총 절약한 돈.
+const totalSaving = monthData.reduce((accumulator, currentData) => accumulator + currentData.saving, 0);
+
   const [dayData,setDayData] = useState( [
     {
         "habitId": 1,
@@ -52,6 +55,7 @@ const HabitPage = () => {
 
 ],);
 
+
 const [todaySave,setTodaySave] = useState( [
   {
       "habitId": 4,
@@ -64,6 +68,7 @@ const [todaySave,setTodaySave] = useState( [
     "targetMoney": 4000
 }
 ]);
+
   
   // 렌더링되자마자 현재 연,월의 데이터 습관 데이터 조회하기
   useEffect(()=>{
@@ -155,13 +160,14 @@ const [todaySave,setTodaySave] = useState( [
   }
   const cellRender: CalendarProps<Dayjs>['cellRender'] = (current, info) => {
     if (info.type === 'date') return dateCellRender(current);
-    // if (info.type === 'month') return monthCellRender(current);
     return info.originNode;
   };
 
   ////////////////////////////////////////////////////////////////////////////////
   const navigate = useNavigate();
   const [date, setDate] = useState<Dayjs>(dayjs());
+  // 현재 달력에서 선택하고 있는 달.
+  const [currMonth,setCurrMonth] = useState(dayjs().month()+1);
   const selectedDate = date.format('YYYY년 MM월 DD일');
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
     // 패널이 변경될 때(연도와 월을 바꿀 때) 연도와 월 추출
@@ -178,6 +184,7 @@ const [todaySave,setTodaySave] = useState( [
       (response) => {
         console.log(response.data);
         setMonthData(response.data.response);
+        setCurrMonth(parseInt(month));
       }
     )
     .catch(
@@ -214,11 +221,18 @@ const [todaySave,setTodaySave] = useState( [
   };
   return (
     <div>
-      <ArrowBack pageName="습관 절약" />
+      <ArrowBack pageName="습관 저금통" />
       <div className="mx-3 mt-3 mb-28 font-main">
-        <div className="text-main text-4xl mt-5 font-bold font-main">나의 습관 저금</div>
-        <div className="text-gray-600 text-md my-3 font-bold font-main">좋은 습관을 만들며 그동안 모은 돈을 확인해 보아요!</div>
+        <div className="text-green-600 text-2xl dt:text-4xl mt-5 font-bold font-main">{name}님의 습관 저금통</div>
+        <div className="text-gray-600 text-md my-3 font-bold font-main">'태산'과 함께 좋은 습관을 만들어 보아요! <br/> 그리고 좋은 습관을 들이며 저축한 돈을 <br/>이 곳에서 확인해 볼 수 있어요.</div>
+        {/* <div className="">{name}님이 습관 저금통을 통해 <br/> {currMonth}월 한 달 동안 저금한 돈은 총 {totalSaving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 입니다.</div> */}
         {/* <div className="text-gray-600 text-sm dt:text-md my-3 font-bold font-main">{name}님은 월 한 달 동안 습관 저금통에 25,000원을 저금하셨어요!</div> */}
+        <div className="h-36 dt:h-48 mt-10 bg-gradient-to-r from-cyan-500 to-blue-500 border rounded-md flex flex-col items-center justify-center ">
+          <div className="text-2xl dt:text-4xl text-white font-bold ">
+          <span className="text-green-300">{currMonth}월</span>의 습관 저금 내역
+          </div>
+          <div className="text-white text-center mt-5"><span className="font-extrabold text-xl text-green-300">{name}</span>님이 습관 저금통을 통해 <br/> <span className="font-extrabold text-xl text-green-300">{currMonth}</span>월 한 달 동안 저금한 돈은 총 <span className="font-extrabold text-xl text-green-300">{totalSaving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>원 입니다.</div>
+          </div>
         {/* 달력 */}
         <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange}  cellRender={cellRender}
         />
