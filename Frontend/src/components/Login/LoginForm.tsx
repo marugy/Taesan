@@ -20,6 +20,7 @@ const schema = yup.object().shape({
 
 const LoginForm = () => {
   const { setAccessToken, setRefreshToken, setUserId } = useUserStore();
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   const {
@@ -60,6 +61,7 @@ const LoginForm = () => {
       })
       .catch((err) => {
         console.log(err);
+        setErrorMsg('아이디와 비밀번호를 확인해주세요.');
       });
   };
 
@@ -93,6 +95,7 @@ const LoginForm = () => {
           <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
             로그인
           </Button>
+          {errorMsg && <div className="text-red-500">{errorMsg}</div>}
           <Typography color="gray" className="mt-4 text-center font-normal" onClick={() => navigate('/signup')}>
             태산 회원이 아니신가요?{' '}
             <a href="#" className="font-bold text-sub">

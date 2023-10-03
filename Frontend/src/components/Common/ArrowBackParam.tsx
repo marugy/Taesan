@@ -12,7 +12,7 @@ const ArrowBackParam = ({ pageName, param }: Props) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center mr-44 my-3 z-50">
+    <div className="flex items-center ml-3 mt-3">
       <IconButton variant="outlined" className="rounded-full mr-3 border-gray-300" onClick={() => navigate(param)}>
         <NavigateBeforeOutlinedIcon />
       </IconButton>
