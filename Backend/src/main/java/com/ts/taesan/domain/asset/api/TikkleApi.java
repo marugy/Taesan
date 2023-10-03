@@ -36,7 +36,7 @@ public class TikkleApi {
     }
 
     @GetMapping
-    public ApiResponse<TikkleInfoResponse> getMyAssets(
+    public ApiResponse<TikkleInfoResponse> getMyTikkleInfo(
             @AuthenticationPrincipal User user
     ) {
         return OK(tikkleQueryService.getMyTikkleInfo(Long.parseLong(user.getUsername())));
@@ -46,7 +46,8 @@ public class TikkleApi {
     public ApiResponse<TikkleInfoResponse> deleteTikkle(
             @AuthenticationPrincipal User user
     ) {
-        return OK(tikkleQueryService.getMyTikkleInfo(Long.parseLong(user.getUsername())));
+        tikkleService.delete(Long.parseLong(user.getUsername()));
+        return OK(null);
     }
 
 }
