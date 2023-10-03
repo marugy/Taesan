@@ -38,8 +38,6 @@ public class AccountApi {
             @RequestHeader("x-api-type") String type,
             @Valid @ModelAttribute AccountListRequest accountListRequest)
     {
-        log.info("{}", accountListRequest.getOrg_code());
-        log.info("{}", user.getUsername());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountListResponse response = accountQueryService.findAccountList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
@@ -53,7 +51,6 @@ public class AccountApi {
             @RequestHeader("x-api-type") String type,
             @Valid @RequestBody AccountInfoRequest accountInfoRequest)
     {
-        log.info("{}", accountInfoRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountInfoResponse response = accountQueryService.findAccountInfo(accountInfoRequest.getAccountNum());
@@ -67,13 +64,13 @@ public class AccountApi {
             @RequestHeader("x-api-type") String type,
             @Valid @RequestBody AccountDetailRequest accountDetailRequest)
     {
-        log.info("{}", accountDetailRequest.getOrgCode());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         AccountDetailResponse detail = accountQueryService.findAccountDetail(accountDetailRequest.getAccountNum());
         return new ResponseEntity<>(detail, headers, HttpStatus.OK);
     }
 
+    // 계좌 입출금내역 조회
 //    @PostMapping("/deposit/transactions")
 //    public ResponseEntity<AccountTransactionListResponse> getTransactions(
 //            @AuthenticationPrincipal User user,
@@ -95,7 +92,6 @@ public class AccountApi {
     public ResponseEntity<ChargeResponse> charge(
             @Valid @RequestBody ChargeRequest chargeRequest)
     {
-        log.info("{}", chargeRequest.getSenderAccNum());
         accountService.charge(chargeRequest.getSenderAccNum(), chargeRequest.getTransAmt());
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -104,7 +100,6 @@ public class AccountApi {
     public ResponseEntity<TransferResponse> transfer(
             @Valid @RequestBody TransferRequest transferRequest)
     {
-        log.info("{}", transferRequest.getTransAmt());
         accountService.transfer(transferRequest.getReceiverAccNum(), transferRequest.getTransAmt());
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

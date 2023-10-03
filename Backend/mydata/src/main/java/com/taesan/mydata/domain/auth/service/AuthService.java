@@ -120,12 +120,9 @@ public class AuthService {
             return null;        // 추후 에러처리 필요
         }
 
-        log.info("{} entered", userId);
         String accessToken = jwtUtils.createAccessToken(userId);
-        log.info("{} entered", userId);
         String refreshToken = jwtUtils.createRefreshToken(userId);
 
-        log.info("{} entered", userId);
         return TokenCreateResponse.builder()
                 .tokenType("Bearer")
                 .accessToken(accessToken)

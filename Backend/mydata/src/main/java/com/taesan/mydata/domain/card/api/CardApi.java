@@ -37,7 +37,6 @@ public class CardApi {
             @RequestHeader("x-api-type") String type,
             @Valid @ModelAttribute CardListRequest accountListRequest)
     {
-        log.info("{}", accountListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         CardListResponse cardList = cardQueryService.findCardList(Long.parseLong(user.getUsername()), accountListRequest.getNext_page(), accountListRequest.getLimit());
@@ -51,7 +50,6 @@ public class CardApi {
             @PathVariable("card_id") long cardId,
             @Valid @ModelAttribute CardInfoRequest cardInfoRequest)
     {
-        log.info("{}", cardInfoRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         CardInfoResponse cardInfo = cardQueryService.findCardInfo(cardId);
@@ -65,7 +63,6 @@ public class CardApi {
             @PathVariable("card_id") long cardId,
             @Valid @ModelAttribute CardTransactionListRequest cardTransactionListRequest)
     {
-        log.info("{}", cardTransactionListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.OK);
@@ -79,7 +76,6 @@ public class CardApi {
             @PathVariable("card_id") long cardId,
             @Valid @ModelAttribute CardTransactionListRequest cardTransactionListRequest)
     {
-        log.info("{}", cardTransactionListRequest.getOrg_code());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         return new ResponseEntity<>(cardHistoryQueryService.findCardHistory(cardId, cardTransactionListRequest.getNext_page(), cardTransactionListRequest.getLimit()), headers, HttpStatus.OK);

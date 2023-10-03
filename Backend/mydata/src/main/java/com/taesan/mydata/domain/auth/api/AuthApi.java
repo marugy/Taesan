@@ -32,7 +32,6 @@ public class AuthApi {
             @RequestHeader("x-api-tran-id") String tranId,
             @ModelAttribute AuthRequest authRequest)
     {
-        log.info("{}", authRequest.getClient_id());
         return new ResponseEntity<>(new AuthResponse(), HttpStatus.OK);
     }
 
@@ -44,7 +43,6 @@ public class AuthApi {
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
-        log.info("{}", tokenRequest.getCode());
 
 //        if (userCI == null) {       // AT 갱신 로직
 //            return new ResponseEntity<>(new TokenResponse(), headers, HttpStatus.TEMPORARY_REDIRECT);
@@ -61,7 +59,6 @@ public class AuthApi {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-api-tran-id", "1234567890M00000000000001");
         String userCi = body.get("user_ci");
-        log.info("{}", userCi);
         authService.registerToken(Long.parseLong(userCi));
 
         return new ResponseEntity<>(HttpStatus.OK);

@@ -24,7 +24,6 @@ public class AccountQueryService {
     public AccountListResponse findAccountList(long memberCi, long cursor, int limit) {
 
         List<AccountList> accountList = accountQueryRepository.findAccountListByMemberCi(memberCi, cursor, limit);
-        log.warn("{}", memberCi);
         return AccountListResponse.builder()
                 .accountList(accountList)
                 .regDate("20170203")
