@@ -2,6 +2,8 @@ package com.ts.taesan.domain.ifbuy.service;
 
 import com.sun.xml.bind.v2.TODO;
 import com.ts.taesan.domain.asset.api.dto.inner.Account;
+import com.ts.taesan.domain.asset.entity.Tikkle;
+import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.domain.asset.service.AssetService;
 import com.ts.taesan.domain.ifbuy.api.dto.request.IfbuyRegisterRequest;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyItem;
@@ -43,6 +45,7 @@ public class IfBuyService {
     private final IfBuyRepository ifBuyRepository;
     private final MemberRepository memberRepository;
     private final TransactionQRepository transactionRepository;
+    private final TikkleRepository tikkleRepository;
     private final FileUtil fileStore;
     private final AssetService assetService;
     private final BankClient bankClient;
@@ -86,7 +89,7 @@ public class IfBuyService {
 
         AccountInfo accountInfo = getAccountInfo(tranId, apiType, accessToken, member);
         AccountDetail accountDetail = getAccountDetail(tranId, apiType, accessToken, member);
-
+        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).orElseThrow();
 
         // 샀다 치고 객체 가져오기
         List<IfbuyItem> list =ifBuyQRepository.findByMember(member.getId());
@@ -95,6 +98,7 @@ public class IfBuyService {
                 .mostBuy(info.get(0))
                 .bank(accountInfo.getBank())
                 .balance((long) accountDetail.getBalanceAmt())
+                .tikkle(tikkle.getMoney())
                 .mostBuyPrice(Long.parseLong(info.get(1)))
                 .itemList(list).build();
 
