@@ -66,10 +66,9 @@ public class ChallengeQService {
 
     public void saveMoney(Long challengeId, Long memberId) {
         ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(challengeId, memberId).orElseThrow();
-        if (!challengeParticipant.getIsExchange()) {        // 이미 바꿔먹은거 또 바꾸려 하면
+        if (challengeParticipant.getIsExchange()) {        // 이미 바꿔먹은거 또 바꾸려 하면
             throw new RuntimeException();
         }
-
         challengeParticipant.settle();
         assetService.saveMoney(memberId, challengeParticipant.getSpare(), 3);
     }
