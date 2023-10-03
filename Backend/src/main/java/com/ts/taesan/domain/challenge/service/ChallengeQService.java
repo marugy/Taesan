@@ -65,7 +65,7 @@ public class ChallengeQService {
     }
 
     public void saveMoney(Long challengeId, Long memberId) {
-        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(challengeId, memberId).orElseThrow();
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId).orElseThrow();
         if (challengeParticipant.getIsExchange()) {        // 이미 바꿔먹은거 또 바꾸려 하면
             throw new RuntimeException();
         }

@@ -71,7 +71,7 @@ public class HabitQRepository {
                 .from(habitLog)
                 .join(habit).on(habit.id.eq(habitLog.habit.id))
                 .where(habit.member.id.eq(memberId).and(habitLog.saveDay.year().eq(year).and(habitLog.saveDay.month().eq(month))))
-                .groupBy(habitLog.saveDay.dayOfMonth())
+                .groupBy(habitLog.saveDay.year(), habitLog.saveDay.month(), habitLog.saveDay.dayOfMonth())
                 .fetch();
         return habitCalendarResponses;
     }
