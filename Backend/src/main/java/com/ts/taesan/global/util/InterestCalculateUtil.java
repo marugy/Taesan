@@ -36,7 +36,6 @@ public class InterestCalculateUtil {
             long originalMoney = payHistory.getTransAmount();
             totalOriginalMoney += originalMoney;
             totalInterest += (long) (originalMoney * (daysDifference / 365) * (rate / 100));
-            log.warn("{}", totalInterest);
         }
 
         if (new Date().before(tikkle.getEndDate())) {
