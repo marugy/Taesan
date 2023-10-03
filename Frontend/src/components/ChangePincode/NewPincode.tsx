@@ -5,7 +5,7 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
 import React, { useEffect, useState } from 'react';
-import ArrowBackPincode from './ArrowBackPincode';
+import ArrowBack from 'components/Common/ArrowBack';
 
 const MAX_LENGTH = 6;
 
@@ -13,10 +13,9 @@ interface Props {
   pincode: string;
   setPincode: (value: string) => void;
   setSimplePassword: (value: string) => void;
-  setViewPincode: (value: boolean) => void;
 }
 
-export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewPincode }: Props) => {
+export const NewPincode = ({ pincode, setPincode, setSimplePassword }: Props) => {
   const [errorMessage, setErrorMessage] = useState(false);
   // 현재 턴 (1: 입력, 2: 확인)
   const [turn, setTurn] = useState(1);
@@ -38,13 +37,6 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
 
   const handleReset = () => {
     setStack([]);
-  };
-
-  const handleClose = () => {
-    setStack([]);
-    setTurn(1);
-    setPincode('');
-    setViewPincode(false);
   };
 
   useEffect(() => {
@@ -76,18 +68,18 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
 
   return (
     <div
-      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-50 flex-col bg-back ${
+      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-40 flex-col bg-back mt-5 ${
         errorMessage ? 'animate-shake' : ''
       }`}
     >
       {turn === 1 && (
         <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
-          암호 입력
+          새 암호 입력
         </div>
       )}
       {turn === 2 && (
         <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
-          암호 재입력
+          새 암호 재입력
         </div>
       )}
       <div className="flex justify-center space-x-5 text-[#0067AC] mb-5  ">
@@ -99,7 +91,7 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
         })}
       </div>
       {errorMessage && <div className="text-red-500 text-2xl mb-5">입력한 암호와 다릅니다!</div>}
-      <div className="flex flex-col mb-6 ">
+      <div className="flex flex-col mb-8 ">
         <div className="space-x-1 m-1 flex justify-center">
           <Button
             variant="text"
@@ -185,9 +177,6 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
             <img src="/Pincode/delete.svg" alt="delete" />
           </Button>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <ArrowBackPincode pageName="닫기" handleClose={handleClose} />
       </div>
     </div>
   );

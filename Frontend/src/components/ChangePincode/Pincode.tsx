@@ -5,21 +5,23 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
 import React, { useEffect, useState } from 'react';
-import ArrowBackPincode from './ArrowBackPincode';
+
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
 
 const MAX_LENGTH = 6;
 
 interface Props {
-  pincode: string;
-  setPincode: (value: string) => void;
-  setSimplePassword: (value: string) => void;
-  setViewPincode: (value: boolean) => void;
+  onCorrectPincode: () => void;
+  visibleFalse: () => void;
 }
 
-export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewPincode }: Props) => {
-  const [errorMessage, setErrorMessage] = useState(false);
-  // 현재 턴 (1: 입력, 2: 확인)
-  const [turn, setTurn] = useState(1);
+export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
+  const { accessToken, refreshToken } = useUserStore();
+
+  const [simplePassword, setSimplePassword] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   // 입력한 PinCode 값
   const [stack, setStack] = useState<string[]>([]);
@@ -36,60 +38,62 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
     setStack(stack.slice(0, -1));
   };
 
+  // 숫자 초기화
   const handleReset = () => {
     setStack([]);
   };
 
-  const handleClose = () => {
-    setStack([]);
-    setTurn(1);
-    setPincode('');
-    setViewPincode(false);
+  const handleConfirmPincode = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/auth-management/auths/simple-password/check',
+        {
+          simplePassword: stack.join(''),
+        },
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        console.log('ads', res);
+        if (res.data.response) {
+          onCorrectPincode(); // onPincode는 상위 컴포넌트로 핀코드 뷰를 닫는 함수가 있어야 함
+        } else {
+          setErrorMessage('잘못된 입력입니다.');
+          setStack([]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
     // 핀코드가 MAX_LENGTH에 도달했는지 확인
     if (stack.length === MAX_LENGTH) {
-      switch (turn) {
-        case 1: // 첫 번째 턴에서는 핀코드 설정
-          setErrorMessage(false);
-          setPincode(stack.join(''));
-          setTurn(2); // 다음 턴으로 이동
-          setStack([]); // 입력 스택 초기화
-          break;
-
-        case 2: // 두 번째 턴에서는 핀코드 재입력 확인
-          if (pincode === stack.join('')) {
-            setSimplePassword(pincode); // 간편 비밀번호 설정
-          } else {
-            setErrorMessage(true); // '입력한 암호와 다릅니다!'
-            setTurn(1); // 첫 번째 턴으로 되돌아감
-            setStack([]); // 입력 스택 초기화
-          }
-          break;
-
-        default:
-          break;
-      }
+      handleConfirmPincode();
+      setErrorMessage('');
     }
-  }, [stack, pincode, turn]);
+  }, [stack]);
+
+  const handleClose = () => {
+    setStack([]);
+    visibleFalse();
+  };
 
   return (
     <div
-      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-50 flex-col bg-back ${
+      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-40 flex-col bg-back  mt-5 ${
         errorMessage ? 'animate-shake' : ''
       }`}
     >
-      {turn === 1 && (
-        <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
-          암호 입력
-        </div>
-      )}
-      {turn === 2 && (
-        <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
-          암호 재입력
-        </div>
-      )}
+      <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
+        암호 입력
+      </div>
+
       <div className="flex justify-center space-x-5 text-[#0067AC] mb-5  ">
         {Array.from({ length: MAX_LENGTH }).map((_, index) => {
           if (index < stack.length) {
@@ -98,8 +102,8 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
           return <RadioButtonUncheckedOutlinedIcon />;
         })}
       </div>
-      {errorMessage && <div className="text-red-500 text-2xl mb-5">입력한 암호와 다릅니다!</div>}
-      <div className="flex flex-col mb-6 ">
+      {errorMessage && <div className="text-red-500 text-2xl mb-5">{errorMessage}</div>}
+      <div className="flex flex-col items-center mb-8 ">
         <div className="space-x-1 m-1 flex justify-center">
           <Button
             variant="text"
@@ -185,9 +189,6 @@ export const SignUpPincode = ({ pincode, setPincode, setSimplePassword, setViewP
             <img src="/Pincode/delete.svg" alt="delete" />
           </Button>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <ArrowBackPincode pageName="닫기" handleClose={handleClose} />
       </div>
     </div>
   );

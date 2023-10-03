@@ -15,6 +15,7 @@ import axios from 'axios';
 import { Toast } from 'components/Common/Toast';
 
 import { SignUpPincode } from './SignUpPincode';
+import Loading from 'components/Common/Loading';
 
 const schema = yup.object().shape({
   loginId: yup.string().required('아이디를 입력해주세요.'),
@@ -33,6 +34,7 @@ const schema = yup.object().shape({
 
 const SingUpForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   // 폼 데이터
   const [formData, setFormData] = useState<FormProps>();
 
@@ -194,6 +196,8 @@ const SingUpForm = () => {
   const onSubmit = (data: FormProps) => {
     // 간편 비밀번호가 설정되면
     if (simplePassword !== '') {
+      setViewPincode(false);
+      setIsLoading(true);
       axios
         .post('https://j9c211.p.ssafy.io/api/member-management/members/join', {
           loginId: data.loginId,
@@ -207,6 +211,7 @@ const SingUpForm = () => {
           addressDetail: data.detailPostcode,
         })
         .then((res) => {
+          setIsLoading(false);
           Toast.fire({
             icon: 'success',
             title: '회원가입 완료',
@@ -237,7 +242,15 @@ const SingUpForm = () => {
 
   return (
     <div className=" flex flex-col justify-center items-center my-5">
-      {viewPincode && <SignUpPincode pincode={pincode} setPincode={setPincode} setSimplePassword={setSimplePassword} />}
+      {isLoading && <Loading />}
+      {viewPincode && (
+        <SignUpPincode
+          pincode={pincode}
+          setPincode={setPincode}
+          setSimplePassword={setSimplePassword}
+          setViewPincode={setViewPincode}
+        />
+      )}
       <div className="text-2xl tb:text-3xl dt:text-4xl mb-5">회원가입</div>
       <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col gap-1">
