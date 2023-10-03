@@ -87,7 +87,7 @@ function App() {
           {/* 습관 저금 관련 페이지 */}
           <Route path="/habit" element={<HabitPage />} />
           <Route path="/habit/create" element={<HabitCreatePage />} />
-          <Route path="/habit/detail" element={<HabitDetailPage />} />
+          <Route path="/habit/detail/:habitId" element={<HabitDetailPage />} />
 
           {/* 거래내역 관련 페이지 */}
           <Route path="/history" element={<HistoryPage />} />
