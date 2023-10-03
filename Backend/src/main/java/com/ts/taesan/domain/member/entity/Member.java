@@ -4,6 +4,7 @@ import com.ts.taesan.domain.member.dto.request.MemberModifyRequest;
 import com.ts.taesan.global.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,11 +58,18 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = true, name = "refresh_token") // 초기에는 없음
     private String refreshToken;
 
+    @Column(nullable = true, name = "auto_Login")
+    @ColumnDefault("false")
+    private Boolean autoLogin;
+
     public void updateMemberInfo(MemberModifyRequest memberModifyRequest) {
         this.email = memberModifyRequest.getEmail();
         this.address = memberModifyRequest.getAddress();
     }
 
+    public void changeAutoLogin(Boolean autoLogin) {
+        this.autoLogin = autoLogin;
+    }
 
     //////////////////////////
     // 비즈니스 로직
@@ -89,7 +97,7 @@ public class Member extends BaseEntity implements UserDetails {
     public void addAccount(String account) {
         this.accountNum = account;
     }
-    
+
     public void earnMydataAccessToken(String mydataAccessToken) {
         this.mydataAccessToken = mydataAccessToken;
     }

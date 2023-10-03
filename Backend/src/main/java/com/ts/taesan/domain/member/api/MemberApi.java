@@ -58,7 +58,8 @@ public class MemberApi {
     public ApiResponse<TokenResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) throws IOException {
         String loginId = memberLoginRequest.getLoginId();
         String password = memberLoginRequest.getPassword();
-        TokenResponse tokenResponse = memberService.login(loginId, password);
+        Boolean autoLogin = memberLoginRequest.getAutoLogin();
+        TokenResponse tokenResponse = memberService.login(loginId, password, autoLogin);
         return OK(tokenResponse);
     }
 
