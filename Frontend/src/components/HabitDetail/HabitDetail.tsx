@@ -197,14 +197,19 @@ const stopHabit = () => {
 
       <ArrowBack pageName="습관 절약" />
       <div className="mx-3 mt-3 mb-28">
-        <div className="text-main text-3xl font-extrabold font-main">{detailData.response.habitName } 습관 절약</div>
+        <div className="text-main text-3xl font-bold font-main">{detailData.response.habitName } 습관 절약</div>
+        <div className="text-gray-600  text-xl">습관 제목 : {detailData.response.title}</div>
+        <div className="my-5">
+        <div className="text:md dt:text-lg mt-3">습관 시작일 : {dayjs(detailData.response.startDate).format('YYYY년 MM월 DD일')}</div>
+        { detailData.response.endDate !== null ? <div className="text:md dt:text-lg">습관 종료일 : {dayjs(detailData.response.endDate).format('YYYY년 MM월 DD일')}</div> : <div><Button color="blue" onClick={stopHabit}>습관 중단하기</Button></div> }
+        </div>
         {/* 달력 */}
         <Calendar value={date}  onPanelChange={onPanelChange} onSelect={onSelect} cellRender={cellRender}
         />
-        <div>시작일 : {dayjs(detailData.response.startDate).format('YYYY년 MM월 DD일')}</div>
-        { detailData.response.endDate !== null ? <div>종료일 : {dayjs(detailData.response.endDate).format('YYYY년 MM월 DD일')}</div> : <div><Button color="blue" onClick={stopHabit}>습관 중단하기</Button></div> }
+  
       </div>
       <BottomNav />
+      <div className="h-[3vh]"></div>
     </div>
   );
 };

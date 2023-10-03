@@ -21,6 +21,26 @@ const HabitCreatePage = () => {
 
   // 습관 생성하기
   const createHabit = () => {
+
+    if (title === '') {
+      Swal2.fire({
+        icon: 'info',
+        title: '습관 제목을 입력해주세요.',
+      }
+      )
+      return;
+    }
+
+    if (habit === '') {
+      Swal2.fire({
+        icon: 'info',
+        title: '생성할 습관을 선택해주세요.',
+      }
+      )
+      return;
+    }
+
+    
     axios.post('https://j9c211.p.ssafy.io/api/habit-management/habits',{
       title: title,
       habitName: habit,
@@ -51,9 +71,9 @@ const HabitCreatePage = () => {
   }
 
   return (
-    <div className='h-screen w-full'>
+    <div className='h-screen w-full font-main'>
       <ArrowBack pageName='습관 절약'/>
-      <div className="font-semibold text-center text-3xl">'태산'에서 <br/>새로운 습관을 만들어 보아요.</div>
+      <div className="font-semibold text-center text-2xl dt:text-3xl ">'태산'과 함께 <br/>좋은 습관을 만들어 보아요</div>
       <div className="flex justify-center ">
       <img src="/Habit/goodHabit.png" className="h-72 border rounded-full"/>
       </div>
@@ -62,7 +82,7 @@ const HabitCreatePage = () => {
         생성할 습관의 <br/>제목을 입력해주세요.
       </div>
       <div className="mt-3 flex mx-auto w-4/5">
-      <Input crossOrigin="anonymous" label="제목" onChange={handleTitle} size="lg" className="" />
+      <Input crossOrigin="anonymous" label="습관 제목" color="blue" onChange={handleTitle} size="lg" className="" />
       </div>
       
       {/* Default Category (술,담배,커피,택시) */}
@@ -71,23 +91,27 @@ const HabitCreatePage = () => {
       </div>
 <div className="flex flex-wrap justify-center items-center">
   <div className="w-2/5 p-2">
-    <div className="bg-white border border-blue-500 p-4 text-center text-blue-500 text-lg cursor-pointer" onClick={() => { setHabit('담배') }}>
-      담배
+  <div className={`${habit==="담배" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('담배') }}>
+      <img src="/Habit/담배.png" className="w-8 dt:w-12 "/>
+      <div className="text-md dt:text-4xl font-semibold">담배</div>
     </div>
   </div>
   <div className="w-2/5 p-2">
-  <div className="bg-white border border-blue-500 p-4 text-center text-blue-500 text-lg cursor-pointer" onClick={() => { setHabit('술') }}>
-  술
-</div>
-  </div>
-  <div className="w-2/5 p-2">
-    <div className="bg-white border border-blue-500 p-4 text-center text-blue-500 text-lg cursor-pointer" onClick={() => { setHabit('택시') }}>
-      택시
+  <div className={`${habit==="술" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('술') }}>
+      <img src="/Habit/술.png" className="w-8 dt:w-12 "/>
+      <div className="text-md dt:text-4xl font-semibold ">술</div>
     </div>
   </div>
   <div className="w-2/5 p-2">
-    <div className="bg-white border border-blue-500 p-4 text-center text-blue-500 text-lg cursor-pointer" onClick={() => { setHabit('커피') }}>
-      커피
+  <div className={`${habit==="택시" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2  border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('택시') }}>
+      <img src="/Habit/택시.png" className="w-8 dt:w-12 "/>
+      <div className="text-md dt:text-4xl font-semibold">택시</div>
+    </div>
+  </div>
+  <div className="w-2/5 p-2">
+  <div className={`${habit==="커피" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2 border-blue-500  p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('커피') }}>
+      <img src="/Habit/커피.png" className="w-8 dt:w-12 "/>
+      <div className="text-md dt:text-4xl font-semibold">커피</div>
     </div>
   </div>
 </div>
@@ -104,13 +128,13 @@ const HabitCreatePage = () => {
       {/* <DefaultCategory /> */}
       {/* FrequencyPayList (사용자의 소비패턴에 따른 것들) */}
       {/* <RepeatCategory /> */}
-      제목 : { title } 
-      습관 : { habit}
+
 <div className="flex justify-center mt-10 ">
-      <Button color="blue" onClick={createHabit} className="bg-main">습관 생성하기</Button>
+      <Button color="blue" onClick={createHabit}>습관 생성하기</Button>
       </div>
       </div>
       <BottomNav/>
+      <div className="h-[15vh]"></div>
     </div>
   );
 };

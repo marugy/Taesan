@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 // 한국어로 변환
-import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
 import ArrowBack from 'components/Common/ArrowBack';
 import {useUserStore} from 'store/UserStore'
 import Swal2 from 'sweetalert2';
@@ -69,7 +68,7 @@ const [todaySave,setTodaySave] = useState( [
   // 렌더링되자마자 현재 연,월의 데이터 습관 데이터 조회하기
   useEffect(()=>{
     const year = dayjs().year();
-    // month는 0부터 시작해서 +1 해줘야함.
+    // month랑 day는 0부터 시작해서 +1 해줘야함.
     const month = dayjs().month() + 1;
     const day = dayjs().day()+1;
     axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`,
@@ -90,7 +89,7 @@ const [todaySave,setTodaySave] = useState( [
         console.log(error);
       }
     )
-    //////////
+    ////////////////////////////////////
     axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}/${day}`,
     {headers:{
   'ACCESS-TOKEN':accessToken,
@@ -108,7 +107,7 @@ const [todaySave,setTodaySave] = useState( [
         console.log(error);
       }
     )
-    /////////////
+    ////////////////////////////////////
     axios.get(`https://j9c211.p.ssafy.io/api/habit-management/habits/today`,
     {headers:{
   'ACCESS-TOKEN':accessToken,
@@ -130,8 +129,6 @@ const [todaySave,setTodaySave] = useState( [
     
     
   },[])
-
-
   const dateCellRender = (value: Dayjs) => {
     // 현재 날짜의 연도, 월, 일을 가져옵니다.
     const currentYear = value.year();
@@ -150,8 +147,8 @@ const [todaySave,setTodaySave] = useState( [
     return (
       <div className="w-full h-full flex justify-center">
         {currentDayData ? (
-                <div><img src="/Habit/check.png" className="h-7 dt:h-12 "></img>
-                <div className="hidden dt:block font-main">
+                <div><img src="/Habit/check.png" className="h-7 dt:h-12 aspect-square "></img>
+                <div className="hidden dt:block font-main">+
         {currentDayData.saving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 </div></div>): ''}
       </div>
     );
@@ -161,7 +158,6 @@ const [todaySave,setTodaySave] = useState( [
     // if (info.type === 'month') return monthCellRender(current);
     return info.originNode;
   };
-  
 
   ////////////////////////////////////////////////////////////////////////////////
   const navigate = useNavigate();
@@ -245,7 +241,9 @@ const [todaySave,setTodaySave] = useState( [
         {/* 오늘의 습관 절약 */}
         <ModalSaveMoney todaySave={todaySave} />
       </div>
-      {/* <BottomNav /> */}
+      <BottomNav />
+      <div className="h-[1vh]"></div>
+
     </div>
   );
 };

@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Avatar, Typography, ListItemPrefix } from '@material-tailwind/react';
 import dayjs from 'dayjs';
+import { useNavigate} from  'react-router-dom';
 
 interface OnedaySaveMoneyProps {
   dayData?: any; //
@@ -8,14 +9,28 @@ interface OnedaySaveMoneyProps {
 }
 
 const OnedaySaveMoney: React.FC<OnedaySaveMoneyProps> = ({ dayData,selectedDate }) => {
+  const navigate = useNavigate();
+  const [habitName,setHabitName] = useState('그외');
   return (
     <div className="mt-10">
       <div className="font-semibold">{selectedDate}</div>
       {
         dayData.map((habit:any,index:number) => (
-          <div className="w-full flex justify-between mt-2">
+          <div className="w-full flex justify-between mt-2" onClick={()=>{
+            navigate(`/habit/detail/${habit.habitId}`)
+          }}>
         <ListItemPrefix>
-          <Avatar variant="circular" className="p-1" alt="candice" src="/Habit/smoking.png" />
+        {habit.habitName === '담배' ? (
+  <img className="p-1 w-14" alt="candice" src="/Habit/담배.png" />
+) : habit.habitName === '술' ? (
+  <img className="p-1 w-14" alt="candice" src="/Habit/술.png" />
+) : habit.habitName === '택시' ? (
+  <img className="p-1 w-14" alt="candice" src="/Habit/택시.png" />
+) : habit.habitName === '커피' ? (
+  <img className="p-1 w-14" alt="candice" src="/Habit/커피.png" />
+) : (
+  <img className="p-1 w-14" alt="candice" src="/Habit/그외.png" />
+)}
         </ListItemPrefix>
         <div className="w-full flex justify-between">
           <div>
