@@ -20,9 +20,11 @@ const schema = yup.object().shape({
 
 const LoginForm = () => {
   const { setAccessToken, setRefreshToken, setUserId } = useUserStore();
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
+  const [autoLogin,setAutoLogin] = useState(false);
 
-  const {
+  const { 
     register,
     handleSubmit,
     formState: { errors },
@@ -48,6 +50,7 @@ const LoginForm = () => {
       .post('https://j9c211.p.ssafy.io/api/member-management/members/login', {
         loginId: data.loginId,
         password: data.password,
+        autoLogin:autoLogin,
       })
       .then((res) => {
         console.log(res.data);
@@ -60,9 +63,10 @@ const LoginForm = () => {
       })
       .catch((err) => {
         console.log(err);
+        setErrorMsg('아이디와 비밀번호를 확인해주세요.');
       });
   };
-
+console.log(autoLogin)
   return (
     <div>
       <Card color="transparent" shadow={false} className="flex justify-center items-center">
@@ -82,6 +86,7 @@ const LoginForm = () => {
           </div>
           <Checkbox
             crossOrigin="anonymous"
+            onChange={() => setAutoLogin(!autoLogin)}
             label={
               <Typography variant="small" color="gray" className="flex items-center font-normal">
                 자동으로 로그인하기
@@ -93,6 +98,7 @@ const LoginForm = () => {
           <Button className="mt-6 bg-sub text-lg" type="submit" fullWidth>
             로그인
           </Button>
+          {errorMsg && <div className="text-red-500">{errorMsg}</div>}
           <Typography color="gray" className="mt-4 text-center font-normal" onClick={() => navigate('/signup')}>
             태산 회원이 아니신가요?{' '}
             <a href="#" className="font-bold text-sub">
