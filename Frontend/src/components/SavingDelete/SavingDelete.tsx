@@ -1,12 +1,101 @@
 import React, { useState } from 'react';
 import { Button } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { useUserStore } from 'store/UserStore';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { Toast } from 'components/Common/Toast';
+import { Pincode } from 'components/Common/Pincode';
+import Swal from 'sweetalert2';
 
 const SavingDelete = () => {
   const navigate = useNavigate();
   const [isDeleteButtonClicked, setIsDeleteButtonClicked] = useState(false);
+  const [pincodeVisible, setPincodeVisible] = useState(false);
+  const [savingmoney, setSavingMoney] = useState(0);
+  const [date, setDate] = useState(0);
+  const [aftermoney, setAfterMoney] = useState(0)
+  const { accessToken, refreshToken } = useUserStore();
+  // 쿼리 1
+  const getSavingInfo = async () => {
+    const { data: savingTikkleInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/tikkle/', {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    });
+    const today = dayjs();
+    setSavingMoney(savingTikkleInfo.response.curMoney);
+    setAfterMoney(savingTikkleInfo.response.futureMoney);
+    setDate(savingTikkleInfo.response.endDate)
+
+    // console.log(userProfileInfo);
+    // setName(userProfileInfo.response.name);
+    return savingTikkleInfo;
+  };
+  const query = useQuery('getSavingInfo', getSavingInfo);
+  const today = dayjs();
+  const expirationDate = dayjs(date).diff(today, 'day') + 1;
+  const { name } = useUserStore();
+  const onCorrectPincode = () => {
+    setPincodeVisible(false);
+    // POST_결제 API
+    axios
+    .delete('https://j9c211.p.ssafy.io/api/asset-management/tikkle',{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((respone)=>{
+        console.log(respone)
+
+        Toast.fire({
+            icon: 'success',
+            title: '해지를 완료했습니다!',
+          });
+        navigate('/main')
+    })
+    .catch((error)=>{
+        Toast.fire({
+            icon: 'error',
+            title: '해지에 실패했습니다!',
+          });
+        navigate('/main')
+        console.log(error)
+        console.log('여기')
+        
+    })
+  };
+  const deleteTikkle = () =>{
+    Swal.fire({
+      title: '티끌 적금 해지',
+      html: `<span>
+            <b> 만기 까지 ${expirationDate}일 남았습니다
+            <br>
+              지금 해지하시면 이자를 받을 수 없습니다. 
+             <br>
+             </b></span>
+             <br>
+             정말 해지하시겠습니다??`,
+      icon: 'question',
+
+      confirmButtonColor: 'red',
+      confirmButtonText: '해지',
+
+      showCancelButton: true,
+      cancelButtonColor: 'gray',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setPincodeVisible(true);
+      }
+    });
+  }
   return (
     <div className="bg-back">
+      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode}  visibleFalse={() => setPincodeVisible(false)}  />}
       <div className="flex justify-end mr-5 mt-5">
         <Button
           color="blue"
@@ -18,7 +107,7 @@ const SavingDelete = () => {
         </Button>
       </div>
       <div className="text-center text-3xl text font-semibold mt-5">
-        이지헌님의 <br /> 적금통 해지하기
+        {name}님의 <br /> 적금통 해지하기
       </div>
       <div className="flex justify-center">
         <img className="h-44 dt:h-64" src="/piggy_bank.png" alt="pig" />
@@ -27,15 +116,15 @@ const SavingDelete = () => {
         <div className="border-4 rounded-xl mb-5 p-3">
           <div className="mb-2">
             <span className="text-sm dt:text-xl text-gray-500 ">현재 적금통에 적립된 금액 : </span>
-            <span className="text-sm dt:text-xl text-main font-bold">$NowSavingMoney</span>
+            <span className="text-sm dt:text-xl text-main font-bold">{savingmoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</span>
           </div>
           <div className="mb-2">
             <span className="text-sm dt:text-xl text-gray-500">만기까지 남은 일자 : </span>
-            <span className="text-sm dt:text-xl text-main font-bold">$duration일($today)</span>{' '}
+            <span className="text-sm dt:text-xl text-main font-bold">{expirationDate}일</span>{' '}
           </div>
           <div className="">
             <span className="text-sm dt:text-xl text-gray-500">만기시 예상 출금액 : </span>
-            <span className="text-sm dt:text-xl text-main font-bold">$fullMoney</span>
+            <span className="text-sm dt:text-xl text-main font-bold">{aftermoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</span>
           </div>
         </div>
         <div className="text-sm dt:text-xl text-gray-800 ">적금통 계좌 해지 안내입니다.</div>
@@ -48,7 +137,7 @@ const SavingDelete = () => {
           size="lg"
           color="red"
           onClick={() => {
-            navigate('/saving/delete');
+            deleteTikkle()
           }}
         >
           적금통 해지하기

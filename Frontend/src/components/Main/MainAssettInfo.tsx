@@ -26,7 +26,7 @@ const MainAssettInfo = ({ createdTikkle, connectedAsset, bankName, accountNumber
             <div className="mr-2">
               <img src={`/Account/${bankName}.png`} className="h-8 border rounded-full" />
             </div>
-            <div className="font-semibold font-main">
+            <div className="font-semibold font-main text-xs">
               {bankName} {accountNumber}{' '}
             </div>
           </div>

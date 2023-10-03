@@ -22,7 +22,7 @@ const MainCardInfo: React.FC<CardInfoProps> = ({ cardList,main }) => {
   // 컴포넌트가 마운트될 때 첫 번째 카드의 id 값을 설정해놓음.
   useEffect(() => {
     setSelectedCardId(cardList[0].cardId);
-  }, []); 
+  }, [cardList]); 
   return (
     <div className="w-full flex justify-center">
       <div className="w-[70vw] dt:w-[30vw] ">

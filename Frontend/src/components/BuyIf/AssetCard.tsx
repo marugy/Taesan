@@ -25,8 +25,12 @@ const AssetCard = ({userbalance,userbank,tikkle,mostbuy,mostbuyprice}:PropsUseri
                 <div className='font-main font-bold'>₩{tikkle?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
               </div>
               <div className='w-[90%] flex justify-between'>
-                <div className='font-main'>{mostbuy}로 환산하면?</div>
-                <div className='font-main font-bold text-lg'> {Math.floor(tikkle / mostbuyprice)} X {mostbuy}</div>
+                <div className='font-main'>{mostbuy}으로 환산하면?</div>
+                <div className='font-main font-bold text-lg flex items-center'> {Math.floor(tikkle / mostbuyprice)} X 
+                <div className='w-7 aspect-square'>
+                  <img src={`/Mostbuy/${mostbuy}.png`} alt="" />
+                </div>
+                </div>
               </div>
             </div>
           </div>

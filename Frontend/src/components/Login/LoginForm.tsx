@@ -22,8 +22,9 @@ const LoginForm = () => {
   const { setAccessToken, setRefreshToken, setUserId } = useUserStore();
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
+  const [autoLogin,setAutoLogin] = useState(false);
 
-  const {
+  const { 
     register,
     handleSubmit,
     formState: { errors },
@@ -49,6 +50,7 @@ const LoginForm = () => {
       .post('https://j9c211.p.ssafy.io/api/member-management/members/login', {
         loginId: data.loginId,
         password: data.password,
+        autoLogin:autoLogin,
       })
       .then((res) => {
         console.log(res.data);
@@ -64,7 +66,7 @@ const LoginForm = () => {
         setErrorMsg('아이디와 비밀번호를 확인해주세요.');
       });
   };
-
+console.log(autoLogin)
   return (
     <div>
       <Card color="transparent" shadow={false} className="flex justify-center items-center">
@@ -84,6 +86,7 @@ const LoginForm = () => {
           </div>
           <Checkbox
             crossOrigin="anonymous"
+            onChange={() => setAutoLogin(!autoLogin)}
             label={
               <Typography variant="small" color="gray" className="flex items-center font-normal">
                 자동으로 로그인하기

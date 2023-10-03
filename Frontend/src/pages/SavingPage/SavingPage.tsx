@@ -17,6 +17,7 @@ const SavingPage = () => {
     });
     console.log(savingInfo);
     setSavingInfo(savingTikkleInfo.response);
+    console.log(savingTikkleInfo.response)
     // console.log(userProfileInfo);
     // setName(userProfileInfo.response.name);
     return savingTikkleInfo;
