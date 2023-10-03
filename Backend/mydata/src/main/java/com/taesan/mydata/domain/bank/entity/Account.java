@@ -44,11 +44,11 @@ public class Account {
 
     private Integer lastPaidInCnt;
 
-    public void withdraw(int amt) {
+    public void withdraw(Long amt) {
         balanceAmt -= amt;
     }
 
-    public void deposit(int amt) {
+    public void deposit(Long amt) {
         balanceAmt += amt;
     }
 

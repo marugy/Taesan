@@ -14,12 +14,12 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
-    public void charge(String accNum, int amt) {
+    public void charge(String accNum, Long amt) {
         Account account = accountRepository.findByAccountNum(accNum).orElseThrow();
         account.withdraw(amt);
     }
 
-    public void transfer(String accNum, int amt) {
+    public void transfer(String accNum, Long amt) {
         Account account = accountRepository.findByAccountNum(accNum).orElseThrow();
         account.deposit(amt);
     }
