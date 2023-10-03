@@ -6,6 +6,7 @@ import com.ts.taesan.domain.asset.entity.Tikkle;
 import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
 import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
+import com.ts.taesan.global.openfeign.bank.BankAccessUtil;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.request.TransferRequest;
 import com.ts.taesan.global.util.InterestCalculateUtil;
@@ -25,8 +26,7 @@ public class TikkleService {
 
     private final TikkleRepository tikkleRepository;
     private final MemberRepository memberRepository;
-    private final InterestCalculateUtil calculateUtil;
-    private final BankClient bankClient;
+    private final BankAccessUtil bankAccessUtil;
 
     public void save(Long memberId, Date endDate) {
         Member member = memberRepository.findById(memberId).get();
@@ -41,11 +41,7 @@ public class TikkleService {
     public void delete(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
         Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
-        TransferRequest transferRequest = TransferRequest.builder()
-                .receiverAccNum(member.getAccountNum())
-                .transAmt(calculateUtil.calculate(tikkle))
-                .build();
-        bankClient.transfer(member.getMydataAccessToken(), transferRequest);
+        bankAccessUtil.transfer(member);
         tikkleRepository.delete(tikkle);
     }
 
