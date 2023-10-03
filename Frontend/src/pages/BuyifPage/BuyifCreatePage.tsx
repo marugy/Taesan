@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
+import BuyifRegister from 'components/BuyifCreate/BuyifRegister';
+import BottomNav from 'components/Common/BottomNav';
 
 const BuyifCreatePage = () => {
-  const [item, setItem] = useState('');
 
   return (
     <div>
-      <div>샀다치고 생성 페이지</div>
-      <div>{item}</div>
-      <div>
-        <input type="text" onChange={(e) => setItem(e.target.value)} />
-        <button>POST_샀다치고 등록</button>
-      </div>
-      <div>
-        <button>지피티 도움!</button>
-      </div>
+      <BuyifRegister/>
+      <BottomNav/>
     </div>
   );
 };

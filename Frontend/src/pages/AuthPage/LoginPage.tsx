@@ -7,12 +7,12 @@ const LoginPage = () => {
   useEffect(() => {
       const timer = setTimeout(() => {
           setShowLanding(false);
-      }, 2500);
+      }, 2900);
       return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div>
+    <div className='h-full flex items-center justify-center'>
       {showLanding ? <Landing /> : <LoginForm />}
     </div>
   );

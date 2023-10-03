@@ -4,7 +4,6 @@ import SavingList from 'components/SavingDetail/SavingList';
 const SavingDetailPage = () => {
   return (
     <div>
-      <div>상세내역 페이지임</div>
       <SavingDday />
       <SavingList />
     </div>

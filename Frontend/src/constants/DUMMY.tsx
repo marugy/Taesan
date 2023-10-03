@@ -1,4 +1,4 @@
-export const DUMMY = [
+export const CHALLENGE_RESULT_LIST = [
   {
     title: '여행저축',
     challengeMoney: '5,000,000',
@@ -40,5 +40,38 @@ export const DUMMY = [
     saveMoney: '500,000',
     duration: '2023.11.20~2023.12.25',
     isSave: false,
+  },
+];
+
+export const ACCOUNT_DATA = [
+  {
+    name: '국민은행',
+    accountNumber: '052-1234-1234',
+    image: '/Account/KB.jpg',
+    balance: '1320000',
+  },
+  {
+    name: '신한은행',
+    accountNumber: '110-509-677498',
+    image: '/Account/Shinhan.png',
+    balance: '1220000',
+  },
+  {
+    name: '우리은행',
+    accountNumber: '110-509-677498',
+    image: '/Account/Woori.jpg',
+    balance: '465000',
+  },
+  {
+    name: '하나은행',
+    accountNumber: '110-509-677498',
+    image: '/Account/Hana.png',
+    balance: '230124',
+  },
+  {
+    name: '신한은행',
+    accountNumber: '110-509-677498',
+    image: '/Account/Shinhan.png',
+    balance: '1210122',
   },
 ];

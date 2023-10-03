@@ -1,55 +1,186 @@
-import React, { useState } from 'react';
-import { ReactPaymentKeypad, ReactPaymentKeypadProps, ReturnValue } from 'react-payment-keypad';
+import { Button } from '@material-tailwind/react';
+import { IconButton } from '@material-tailwind/react';
 
-const Pincode = () => {
-  const [visible, setVisible] = useState(false);
-  const setting: ReactPaymentKeypadProps = {
-    // {Required} keypad 사용 여부 입니다.
-    isVisible: visible,
-    // {Optional} emptyPassword true 일 경우 패스워드를 2번 입력 하도록 변경
-    emptyPassword: false,
-    // {Optional}  패스워드 화면을 꽉 채웁니다
-    full: true,
-    // {Optional} 패스워드를 입력 하는 횟수를 정하는 props 입니다
-    count: 6,
-    // {Optional} 에러 메세지 props 입니다.
-    errorMessage: '패스워드가 일치 하지 않습니다.',
-    // {Optional} 메세지 커스텀을 위한 props 입니다.
-    messages: ['패스워드를 입력 해주세요.', '사용할 패스워드를 설정 해주세요', '다시 한번 입력해 주세요.'],
-    /**
-     *  숫자 키패드 정렬 props 입니다.
-     * - always 키패드 클릭 시 항상 패드를 재정렬 합니다.
-     * - fixed 숫자 순서 그대로 정렬 합니다.
-     * - once 키패드 입력 전 한번 랜덤으로 정렬 합니다.
-     * */
-    shuffle: 'fixed',
-    /**
-     *   전체삭제 버튼 커스텀을 위한 props 입니다.
-     *   @example
-     *    deleteAllIcon: <img src="/image/icon.png"/> or "전체삭제"
-     * */
-    deleteAllIcon: '전체 삭제버튼',
-    /**
-     * 삭제 버튼 커스텀을 위한 props 입니다.
-     *  @example
-     *    deleteAllIcon: <img src="/image/icon.png"/> or "삭제"
-     * */
-    deleteIcon: '삭제버튼',
-    // {Required} keypad close func
-    onClose: () => {
-      setVisible(false);
-    },
-    // {Required} keypad 입력 후 패스워드 결과 값이 나오는 func
-    onFinish: (password) => {
-      console.log(password);
-    },
-    // {Optional} emptyPassword true 일 경우 패스워드 결과 값이 return 되는 func
-    onPassConfirm: (password) => {
-      console.log(password);
-    },
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
+import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
+
+import React, { useEffect, useState } from 'react';
+import ArrowBack from 'components/Common/ArrowBack';
+
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
+
+const MAX_LENGTH = 6;
+
+export const Pincode = ({ onCorrectPincode }: { onCorrectPincode: () => void }) => {
+  const { accessToken, refreshToken } = useUserStore();
+
+  const [simplePassword, setSimplePassword] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // 입력한 PinCode 값
+  const [stack, setStack] = useState<string[]>([]);
+
+  // 숫자 입력
+  const handlePushPin = (pin: string) => {
+    if (stack.length < MAX_LENGTH) {
+      setStack([...stack, pin]);
+    }
   };
 
-  return <ReactPaymentKeypad {...setting} opener={true} />;
-};
+  // 숫자 제거
+  const handlePopPin = () => {
+    setStack(stack.slice(0, -1));
+  };
 
-export default Pincode;
+  // 숫자 초기화
+  const handleReset = () => {
+    setStack([]);
+  };
+
+  const handleConfirmPincode = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/auth-management/auths/simple-password/check',
+        {
+          simplePassword: simplePassword,
+        },
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          onCorrectPincode(); // onPincode는 상위 컴포넌트로 핀코드 뷰를 닫는 함수가 있어야 함
+        } else {
+          setErrorMessage('잘못된 입력입니다.');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    // 핀코드가 MAX_LENGTH에 도달했는지 확인
+    if (stack.length === MAX_LENGTH) {
+      handleConfirmPincode();
+      setStack([]); // 입력 스택 초기화
+      setErrorMessage('');
+    }
+  }, [stack]);
+
+  return (
+    <div
+      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-50 flex-col bg-back ${
+        errorMessage ? 'animate-shake' : ''
+      }`}
+    >
+      <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
+        암호 입력
+      </div>
+
+      <div className="flex justify-center space-x-5 text-[#0067AC] mb-5  ">
+        {Array.from({ length: MAX_LENGTH }).map((_, index) => {
+          if (index < stack.length) {
+            return <RadioButtonCheckedOutlinedIcon />;
+          }
+          return <RadioButtonUncheckedOutlinedIcon />;
+        })}
+      </div>
+      {errorMessage && <div className="text-red-500 text-2xl mb-5">{errorMessage}</div>}
+      <div className="flex flex-col mb-8 ">
+        <div className="space-x-1 m-1 flex justify-center">
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('1')}
+          >
+            <img src="/Pincode/one.svg" alt="one" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('2')}
+          >
+            <img src="/Pincode/two.svg" alt="two" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('3')}
+          >
+            <img src="/Pincode/three.svg" alt="three" />
+          </Button>
+        </div>
+        <div className="space-x-1 m-1 flex justify-center">
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('4')}
+          >
+            <img src="/Pincode/four.svg" alt="four" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('5')}
+          >
+            <img src="/Pincode/five.svg" alt="five" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('6')}
+          >
+            <img src="/Pincode/six.svg" alt="six" />
+          </Button>
+        </div>
+        <div className="space-x-1 m-1 flex justify-center">
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('7')}
+          >
+            <img src="/Pincode/seven.svg" alt="seven" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('8')}
+          >
+            <img src="/Pincode/eight.svg" alt="eight" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('9')}
+          >
+            <img src="/Pincode/nine.svg" alt="nine" />
+          </Button>
+        </div>
+
+        <div className="space-x-1 m-1 flex justify-center">
+          <Button variant="text" className="flex justify-center items-center rounded-full w-32" onClick={handleReset}>
+            <img src="/Pincode/reload.svg" alt="reload" />
+          </Button>
+          <Button
+            variant="text"
+            className="flex justify-center items-center rounded-full w-32"
+            onClick={() => handlePushPin('0')}
+          >
+            <img src="/Pincode/zero.svg" alt="zero" />
+          </Button>
+          <Button variant="text" className="flex justify-center items-center rounded-full w-32" onClick={handlePopPin}>
+            <img src="/Pincode/delete.svg" alt="delete" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};

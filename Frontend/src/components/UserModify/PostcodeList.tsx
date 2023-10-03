@@ -1,16 +1,20 @@
 import React from 'react';
 import { usePostcodePopup } from 'hooks/usePostcodePopup';
 
+import TextField from '@mui/material/TextField';
+import { Button } from '@material-tailwind/react';
+import { Input } from '@material-tailwind/react';
+
 interface Props {
   postcode: string;
   zonecode: string;
   detailPostcode: string;
-  setPostCode: (value: string) => void;
-  setZonCode: (value: string) => void;
+  setPostcode: (value: string) => void;
+  setZoncode: (value: string) => void;
   setDetailPostcode: (value: string) => void;
 }
 
-const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonCode, setDetailPostcode }: Props) => {
+const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZoncode, setDetailPostcode }: Props) => {
   const open = usePostcodePopup();
 
   const handleComplete = (data: any) => {
@@ -28,8 +32,8 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonC
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    setPostCode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-    setZonCode(data.zonecode);
+    setPostcode(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setZoncode(data.zonecode);
   };
 
   const handleClick = () => {
@@ -42,18 +46,25 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostCode, setZonC
   };
 
   return (
-    <div>
-      <div>
-        <input type="text" placeholder="우편번호" value={zonecode} />
-        <button type="button" onClick={handleClick}>
+    <div className="space-y-2 border rounded-lg p-5">
+      <div className="space-x-1 flex items-center">
+        <Input type="text" label="우편번호" value={zonecode} className="" crossOrigin="anonymous" disabled />
+        <Button type="button" className="bg-[#0067AC] h-10 w-24" onClick={handleClick}>
           찾기
-        </button>
+        </Button>
       </div>
-      <div>
-        <input type="text" placeholder="주소" value={postcode} />
-        <input type="text" placeholder="상세주소" onChange={onChange} />
+      <div className="gap-1 flex flex-col">
+        <Input className="" type="text" label="주소" value={postcode} crossOrigin="anonymous" disabled />
+        <Input
+          className=""
+          type="text"
+          label="상세주소"
+          onChange={onChange}
+          value={detailPostcode}
+          crossOrigin="anonymous"
+        />
       </div>
-      <div>
+      <div className="text-xs text-gray-500">
         {zonecode} {postcode} {detailPostcode}
       </div>
     </div>

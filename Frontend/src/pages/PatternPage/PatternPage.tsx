@@ -1,12 +1,15 @@
 import React from 'react';
-import SelectInfo from 'components/Pattern/SelectInfo'
-
+import Graph from 'components/Pattern/Graph';
+import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 const PatternPage = () => {
   return (
     <div>
-      <SelectInfo/>
+      <ArrowBack pageName='소비패턴 분석'/>
+      <Graph/>
+      <BottomNav/>
     </div>
   );
 };
 
-export default PatternPage;<SelectInfo/>
+export default PatternPage;

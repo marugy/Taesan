@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import { EMAIL_DOMAIN } from 'constants/USER_MODIFY';
+import { Input } from '@material-tailwind/react';
 
 interface Props {
-  email: string;
-  setEmail: (value: string) => void;
+  register: UseFormRegister<any>;
+  errors: FieldErrors;
 }
 
-const EmailInput = ({ email, setEmail }: Props) => {
+const EmailInput = ({ register, errors }: Props) => {
+  const [email, setEmail] = useState('');
+  const { onChange, ...rest } = register('email'); // useHookForm
   const [emailList, setEmailList] = useState(EMAIL_DOMAIN); //추천 이메일 리스트를 확인, 이메일 리스트 상태 관리
   const [selected, setSelected] = useState(-1); //키보드 선택
   const [isDrobBox, setIsDropbox] = useState(false); // 드롭박스 유무
@@ -27,6 +32,14 @@ const EmailInput = ({ email, setEmail }: Props) => {
 
   const handleDropDownClick = (email: string, domain: string) => {
     setEmail(`${email.split('@')[0]}${domain}`);
+
+    onChange({
+      target: {
+        value: email,
+        name: 'email',
+      },
+    });
+
     setIsDropbox(false);
     setSelected(-1);
   };
@@ -47,21 +60,28 @@ const EmailInput = ({ email, setEmail }: Props) => {
 
   return (
     <div ref={inputRef}>
-      <label>이메일</label>
-
-      <input
+      <Input
         type="email"
-        placeholder="이메일 입력"
+        label="이메일"
+        {...register('email')}
         value={email}
         onChange={(e) => {
-          onChangeEmail(e);
+          onChange(e); // react-hook-form에 변경을 알림
+          onChangeEmail(e); // 자동완성 로직
         }}
         onKeyUp={handleKeyUp}
+        crossOrigin="anonymous"
+        autoComplete="off"
       />
       {isDrobBox && (
-        <ul>
+        <ul className="border-2 bg-back z-10 w-96 rounded">
           {emailList.map((domain, idx) => (
-            <li key={idx} onMouseOver={() => setSelected(idx)} onClick={() => handleDropDownClick(email, domain)}>
+            <li
+              key={idx}
+              onMouseOver={() => setSelected(idx)}
+              onClick={() => handleDropDownClick(email, domain)}
+              className={idx === selected ? 'bg-blue-gray-500 text-white border-black border rounded ml-3' : 'ml-3'}
+            >
               {email.split('@')[0]}
               {domain}
             </li>
