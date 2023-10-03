@@ -9,12 +9,10 @@ import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
 import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
-import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,32 +60,54 @@ public class MemberService {
                 .build();
     }
 
-    public TokenResponse simpleLogin(Long memberId, SimpleLoginRequest simpleLoginRequest) {
-        // TODO: 2023-09-25 RT에서 유저 정보 추출 및 expiredate 체크
+    public TokenResponse simpleLogin(HttpServletRequest request, SimpleLoginRequest simpleLoginRequest) {
         String simplePassword = simpleLoginRequest.getSimplePassword();
-        Member member = memberRepository.findMemberByIdAndSimplePassword(memberId, simplePassword).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         String accessToken = "";
-        String refreshToken = member.getRefreshToken();
+        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 
-        //refresh 토큰은 유효 할 경우
+        //유저로부터 받은 RT의 기한이 유효한 경우
         if (jwtTokenProvider.isValidRefreshToken(refreshToken)) {
-            accessToken = jwtTokenProvider.createAccessToken(member.getId()); //Access Token 새로 만들어서 줌
-            return TokenResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .build();
-        } else {
-            //둘 다 새로 발급
-            accessToken = jwtTokenProvider.createAccessToken(member.getId());
-            refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
-            member.updateRefreshToken(refreshToken);   //DB Refresh 토큰 갱신
-        }
 
-        return TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+            Claims claimsToken = jwtTokenProvider.getClaimsToken(refreshToken);
+            Long memberId = (long) (int) claimsToken.get("userId");
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+            // 입력받은 RT와 DB의 RT가 동일하다면
+            if (member.getRefreshToken().equals(refreshToken)) {
+                //입력받은 simple password가 동일하다면
+                if (member.getSimplePassword().equals(simplePassword)) {
+                    //둘 다 새로 발급
+                    accessToken = jwtTokenProvider.createAccessToken(member.getId());
+                    refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
+                    member.updateRefreshToken(refreshToken);   //DB Refresh 토큰 갱신
+
+                    return TokenResponse.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .build();
+                }
+            }
+        }
+        return null;
+    }
+
+    public Boolean checkToken(HttpServletRequest request) {
+        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+        Claims claimsToken = jwtTokenProvider.getClaimsToken(refreshToken);
+        Long userId = (long) (int) claimsToken.get("userId");
+        System.out.println("검증 토큰 : " + refreshToken + " 회원 아이디 : " + userId);
+        Member member = memberRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        String tokenFromDB = member.getRefreshToken();
+        System.out.println("tokenFromDB = " + tokenFromDB);
+        if (refreshToken.equals(tokenFromDB)) {   //DB의 refresh토큰과 지금들어온 토큰이 같은지 확인
+            return true;//동일하면 true 반환
+        } else {
+            //DB의 Refresh토큰과 들어온 Refresh토큰이 다르면 중간에 변조된 것임
+            System.out.println("Refresh Token 탈취");
+            member.deleteRefreshToken();
+            return false;
+        }
     }
 
     public TokenResponse issueAccessToken(HttpServletRequest request) throws IllegalAccessException {
@@ -165,7 +185,7 @@ public class MemberService {
         } else return false;
     }
 
-    public Boolean checkSImplePassword(Long memberId, String simplePassword) {
+    public Boolean checkSimplePassword(Long memberId, String simplePassword) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         if (member.getSimplePassword().equals(simplePassword)) {
             return true;
@@ -176,4 +196,6 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow();
         member.addAccount(account);
     }
+
+
 }

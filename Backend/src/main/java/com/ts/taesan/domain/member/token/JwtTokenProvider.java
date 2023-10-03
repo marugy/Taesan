@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtTokenProvider {
 
-    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 1000L;   // 60분
+    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 1000L;   // 1시간
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
     @Value("${secret.access}")
     private String SECRET_KEY;
