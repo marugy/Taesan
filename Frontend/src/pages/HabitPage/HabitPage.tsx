@@ -16,63 +16,7 @@ import { useQuery, useMutation } from 'react-query';
 import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
 import ArrowBack from 'components/Common/ArrowBack';
 import {useUserStore} from 'store/UserStore'
-//////////////////////////////
-
-// 더미데이터
-const getListData = (value: Dayjs) => {
-  let listData;
-  switch (value.date()) {
-    case 1:
-      listData = [
-        { type: 'warning', content: '3,000원' },
-      ];
-      break;
-    case 3:
-      listData = [
-        { type: 'warning', content: '1,500원' },
-      ];
-      break;
-    case 8:
-      listData = [
-        { type: 'warning', content: '3,000원' },
-
-      ];
-      break;
-      case 9:
-      listData = [
-        { type: 'warning', content: '4,500원' },
-
-      ];
-      break;
-      case 7:
-      listData = [
-        { type: 'warning', content: '4,500원' },
-
-      ];
-      break;
-      case 6:
-        listData = [
-          { type: 'warning', content: '4,500원' },
-  
-        ];
-        break; case 5:
-        listData = [
-          { type: 'warning', content: '4,500원' },
-  
-        ];
-        break;
-    default:
-  }
-  return listData || [];
-};
-
-const getMonthData = (value: Dayjs) => {
-  if (value.month() === 8) {
-    return 1394;
-  }
-};
-
-//////////////////////////////
+import Swal2 from 'sweetalert2';
 
 
 const HabitPage = () => {
@@ -90,18 +34,6 @@ const HabitPage = () => {
         "day": 2,
         "saving": 4000
     },
-    {
-        "year": 2023,
-        "month": 9,
-        "day": 3,
-        "saving": 5000
-    },
-    {
-        "year": 2023,
-        "month": 9,
-        "day": 4,
-        "saving": 6000
-    }
 ],);
   const [dayData,setDayData] = useState( [
     {
@@ -120,13 +52,26 @@ const HabitPage = () => {
   },
 
 ],);
+
+const [todaySave,setTodaySave] = useState( [
+  {
+      "habitId": 4,
+      "habitTitle": "쇼핑",
+      "targetMoney": 5500
+  },
+  {
+    "habitId": 5,
+    "habitTitle": "담배",
+    "targetMoney": 4000
+}
+]);
   
   // 렌더링되자마자 현재 연,월의 데이터 습관 데이터 조회하기
   useEffect(()=>{
     const year = dayjs().year();
     // month는 0부터 시작해서 +1 해줘야함.
     const month = dayjs().month() + 1;
-    const day = dayjs().day();
+    const day = dayjs().day()+1;
     axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`,
     {headers:{
   'ACCESS-TOKEN':accessToken,
@@ -154,8 +99,8 @@ const HabitPage = () => {
     )
     .then(
       (response) => {
-        console.log(response.data);
-        setDayData(response.data);
+        console.log('확인',response.data);
+        setDayData(response.data.response);
       }
     )
     .catch(
@@ -164,7 +109,26 @@ const HabitPage = () => {
       }
     )
     /////////////
-    // axios.get(`https://j9c211.p.ssafy.io/api/`)
+    axios.get(`https://j9c211.p.ssafy.io/api/habit-management/habits/today`,
+    {headers:{
+  'ACCESS-TOKEN':accessToken,
+  'REFRESH-TOKEN':refreshToken,
+    }},
+    )
+    .then(
+      (response) => {
+        console.log(response.data);
+        setTodaySave(response.data.response);
+        
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    )
+    
+    
   },[])
 
 
@@ -252,8 +216,6 @@ const HabitPage = () => {
       }
     )
   };
-  
- 
   return (
     <div>
       <ArrowBack pageName="습관 절약" />
@@ -263,8 +225,6 @@ const HabitPage = () => {
         {/* <div className="text-gray-600 text-sm dt:text-md my-3 font-bold font-main">{name}님은 월 한 달 동안 습관 저금통에 25,000원을 저금하셨어요!</div> */}
         {/* 달력 */}
         <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange}  cellRender={cellRender}
-        
-        
         />
         {/* 좋은 습관을 통해 하루에 아낀 돈 */}
         <OnedaySaveMoney selectedDate={selectedDate} dayData={dayData.length > 0 ? dayData : []} />
@@ -283,9 +243,9 @@ const HabitPage = () => {
         {/* 진행중 & 완료에 따른 습관 목록 띄우기 */}
         <HabitList />
         {/* 오늘의 습관 절약 */}
-        <ModalSaveMoney />
+        <ModalSaveMoney todaySave={todaySave} />
       </div>
-      <BottomNav />
+      {/* <BottomNav /> */}
     </div>
   );
 };
