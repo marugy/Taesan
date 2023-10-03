@@ -71,6 +71,7 @@ public class AssetService {
                 .tikkle(tikkle)
                 .transType(serviceType)
                 .transAmount(amount)
+                .totalAmount(tikkle.getMoney())
                 .build();
         payHistoryRepository.save(payHistory);
 

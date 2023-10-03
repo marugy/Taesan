@@ -30,4 +30,7 @@ public class PayHistory extends BaseEntity {
     @Column(name = "trans_amt")
     private Long transAmount;
 
+    @Column(name = "total_amt")
+    private Long totalAmount;
+
 }
