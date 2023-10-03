@@ -95,7 +95,7 @@ const stopHabit = () => {
       (response) => {
         console.log('습관상세 달력 데이터',response.data);
         console.log(year,month)
-        setDetailMonthData(response.data);
+        setDetailMonthData(response.data.response);
       }
     )
     .catch(
@@ -172,7 +172,7 @@ const stopHabit = () => {
     .then(
       (response) => {
         console.log(response.data);
-        setDetailMonthData(response.data);
+        setDetailMonthData(response.data.response);
       }
     )
     .catch(
