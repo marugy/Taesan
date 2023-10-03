@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { useUserStore } from 'store/UserStore';
 import { useParams } from 'react-router-dom';
 import { Spin,Modal } from 'antd';
+import { useAssetStore } from 'store/AssetStore';
 
 
 const HistoryDetail = () => {
@@ -33,6 +34,7 @@ const HistoryDetail = () => {
     const [newItemPrice,setNewItemPrice] = useState('')
     const { accessToken, refreshToken} = useUserStore();
     const [imgRegister,setImgRegister] = useState(false)
+    const {selectedCardId} = useAssetStore()
     const [clovaAnalys, setClovaAnalys] = useState({
         items: [
           {
@@ -76,7 +78,7 @@ const HistoryDetail = () => {
     //     }
     // }
     const getTransactionDetail = () =>{
-        axios.get(`https://j9c211.p.ssafy.io/api/transactions/${transactionId}/detail`,{
+        axios.get(`https://j9c211.p.ssafy.io/api/transactions/${transactionId}/${selectedCardId}/detail`,{
             headers: {
                 'ACCESS-TOKEN': accessToken,
                 'REFRESH-TOKEN': refreshToken,

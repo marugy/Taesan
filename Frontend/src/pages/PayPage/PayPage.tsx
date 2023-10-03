@@ -97,7 +97,7 @@ const PayPage = () => {
     setPincodeVisible(false);
     // POST_결제 API
     axios.post(`https://j9c211.p.ssafy.io/api/asset-management/assets/${selectedCardId}/pay`,{
-      shopName:itemname,
+      shop_name:itemname,
       pay_amt:itemprice
     },
     {

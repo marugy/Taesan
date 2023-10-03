@@ -13,8 +13,8 @@ interface SavingInfoProps {
 
   const SavingInfo: React.FC<SavingInfoProps> = ({ savingInfo }) =>{
   const today = dayjs(); // 오늘 날짜
-    const expirationDate = dayjs(savingInfo.endDate).diff(today, 'day') + 1; // 오늘과 만기일 사이의 날짜 차이
-    const { name } = useUserStore();
+  const expirationDate = dayjs(savingInfo.endDate).diff(today, 'day') + 1; // 오늘과 만기일 사이의 날짜 차이
+  const { name } = useUserStore();
   const navigate = useNavigate();
   return (
     <div className="h-screen">
