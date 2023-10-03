@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import type { BadgeProps, CalendarProps } from 'antd';
@@ -7,7 +7,7 @@ import HabitCalendar from 'components/Habit/HabitCalendar';
 import OnedaySaveMoney from 'components/Habit/OnedaySaveMoney';
 import HabitList from 'components/Habit/HabitList';
 import ModalSaveMoney from 'components/Habit/ModalSaveMoney';
-import { Button } from '@material-tailwind/react';
+import { Button, select } from '@material-tailwind/react';
 import BottomNav from 'components/Common/BottomNav';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -15,6 +15,8 @@ import { useQuery, useMutation } from 'react-query';
 // 한국어로 변환
 import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
 import ArrowBack from 'components/Common/ArrowBack';
+import {useUserStore} from 'store/UserStore'
+//////////////////////////////
 
 // 더미데이터
 const getListData = (value: Dayjs) => {
@@ -74,101 +76,208 @@ const getMonthData = (value: Dayjs) => {
 
 
 const HabitPage = () => {
+  const { accessToken,refreshToken,name} = useUserStore();
+  const [monthData,setMonthData] = useState([
+    {
+        "year": 2023,
+        "month": 9,
+        "day": 1,
+        "saving": 3000
+    },
+    {
+        "year": 2023,
+        "month": 9,
+        "day": 2,
+        "saving": 4000
+    },
+    {
+        "year": 2023,
+        "month": 9,
+        "day": 3,
+        "saving": 5000
+    },
+    {
+        "year": 2023,
+        "month": 9,
+        "day": 4,
+        "saving": 6000
+    }
+],);
+  const [dayData,setDayData] = useState( [
+    {
+        "habitId": 1,
+        "title": "금연하겠습니다",
+        "habitName": "담배",
+        "startDate": "2023-10-02T07:09:34",
+        "saving": 3000
+    },
+    {
+      "habitId": 1,
+      "title": "금연하겠습니다",
+      "habitName": "담배",
+      "startDate": "2023-10-02T07:09:34",
+      "saving": 3000
+  },
 
-  /////////////////////더미데이터 연습부분//////////////////////////////////
-  const monthCellRender = (value: Dayjs) => {
-    const num = getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
-      </div>
-    ) : null;
-  };
+],);
+  
+  // 렌더링되자마자 현재 연,월의 데이터 습관 데이터 조회하기
+  useEffect(()=>{
+    const year = dayjs().year();
+    // month는 0부터 시작해서 +1 해줘야함.
+    const month = dayjs().month() + 1;
+    const day = dayjs().day();
+    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`,
+    {headers:{
+  'ACCESS-TOKEN':accessToken,
+  'REFRESH-TOKEN':refreshToken,
+    }},
+    )
+    .then(
+      (response) => {
+        console.log(response.data.response);
+        console.log(year,month)
+        setMonthData(response.data.response);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    )
+    //////////
+    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}/${day}`,
+    {headers:{
+  'ACCESS-TOKEN':accessToken,
+  'REFRESH-TOKEN':refreshToken,
+    }},
+    )
+    .then(
+      (response) => {
+        console.log(response.data);
+        setDayData(response.data);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    )
+    /////////////
+    // axios.get(`https://j9c211.p.ssafy.io/api/`)
+  },[])
+
 
   const dateCellRender = (value: Dayjs) => {
-    const listData = getListData(value);
+    // 현재 날짜의 연도, 월, 일을 가져옵니다.
+    const currentYear = value.year();
+    const currentMonth = value.month()+1;
+    const currentDay = value.date();
+  
+    // monthData에서 현재 연,월에 해당하는 데이터를 필터링합니다.
+    const matchingData = Array.isArray(monthData) ? monthData.filter((data) => {
+      return data.year === currentYear && data.month === currentMonth;
+    }) : [];
+  
+    // 현재 날짜의 `day` 값을 찾아서 해당 `day`에 맞는 `saving` 값을 가져옵니다.
+    const currentDayData = matchingData.find((data) => data.day === currentDay);
+  
+    // 값을 반환하도록 수정
     return (
-      <div className="flex flex-col justify-center items-center">
-      {/* <div className="font-main text-[3px]">+</div> */}
-      <img src="/Habit/check.png" className="h-5 dt:h-8 flex justify-center items-center" />
-      <div className="font-main text-center flex h-full items-center justify-center hidden lg:flex">+14,500원</div>
+      <div className="w-full h-full flex justify-center">
+        {currentDayData ? (
+                <div><img src="/Habit/check.png" className="h-7 dt:h-12 "></img>
+                <div className="hidden dt:block font-main">
+        {currentDayData.saving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 </div></div>): ''}
       </div>
-      // <ul className="events">
-      //   {listData.map((item) => (
-      //     <li key={item.content}>
-      //       <Badge status={item.type as BadgeProps['status']} text={item.content} />
-      //     </li>
-      //   ))}
-      // </ul>
     );
-  };
-
+  }
   const cellRender: CalendarProps<Dayjs>['cellRender'] = (current, info) => {
     if (info.type === 'date') return dateCellRender(current);
-    if (info.type === 'month') return monthCellRender(current);
+    // if (info.type === 'month') return monthCellRender(current);
     return info.originNode;
   };
+  
 
   ////////////////////////////////////////////////////////////////////////////////
   const navigate = useNavigate();
   const [date, setDate] = useState<Dayjs>(dayjs());
   const selectedDate = date.format('YYYY년 MM월 DD일');
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
-    // 패널이 변경될 때 연도와 월 추출
+    // 패널이 변경될 때(연도와 월을 바꿀 때) 연도와 월 추출
     const year = value.format('YYYY');
     const month = value.format('MM');
+
+    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`,
+    {headers:{
+  'ACCESS-TOKEN':accessToken,
+  'REFRESH-TOKEN':refreshToken,
+    }},
+    )
+    .then(
+      (response) => {
+        console.log(response.data);
+        setMonthData(response.data.response);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    )
     console.log(year, month);
-    // console.log(value.format('YYYY년 MM월 DD일'), mode);
   };
 
   const onSelect = (newDay: Dayjs) => {
     setDate(newDay);
+    const selectYear = newDay.format('YYYY');
+    const selectMonth = newDay.format('MM');
+    const selectDay = newDay.format('DD');
+    console.log(selectYear,selectMonth,selectDay);
+    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${selectYear}/${selectMonth}/${selectDay}`,
+    {headers:{
+  'ACCESS-TOKEN':accessToken,
+  'REFRESH-TOKEN':refreshToken,
+    }},
+    )
+    .then(
+      (response) => {
+        console.log('일일 습관 데이터',response.data);
+        setDayData(response.data.response);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    )
   };
-  // 각 날짜 셀을 커스터마이즈하기 위한 함수
-  //  const dateCellRender = (date: Dayjs) => {
-  //   const day = date.format('DD');
-  //   const money = moneyData[day]; // 해당 날짜의 아낀 금액
-  //   return (
-  //     <div>
-  //       <span>{day}</span>
-  //       {money && <div className="money-badge">{money}원</div>}
-  //     </div>
-  //   );
-  // };
-
-  // react-query를 사용하여 데이터 가져오기 (첫 번째 쿼리키, 두번째 함수)
-  const { data: monthData } = useQuery(['savingData', date.format('YYYY-MM')], () =>
-    getTotalCalendarMonth(date.format('YYYY'), date.format('MM')),
-  );
-
-  const { data: dayData } = useQuery(['getTotalCalendarDay', date.format('YYYY-MM-DD')], () =>
-    getTotalCalendarDay(date.format('YYYY'), date.format('MM'), date.format('DD')),
-  );
+  
+ 
   return (
     <div>
       <ArrowBack pageName="습관 절약" />
-      <div className="mx-3 mt-3 mb-28">
-        {monthData}
-        <div className="text-main text-3xl font-extrabold font-main">내 습관 절약</div>
-        <div className="text-xl font-semibold mt-5 font-main">총 절약 금액 : 45,000원</div>
+      <div className="mx-3 mt-3 mb-28 font-main">
+        <div className="text-main text-4xl mt-5 font-bold font-main">나의 습관 저금</div>
+        <div className="text-gray-600 text-md my-3 font-bold font-main">좋은 습관을 만들며 그동안 모은 돈을 확인해 보아요!</div>
+        {/* <div className="text-gray-600 text-sm dt:text-md my-3 font-bold font-main">{name}님은 월 한 달 동안 습관 저금통에 25,000원을 저금하셨어요!</div> */}
         {/* 달력 */}
         <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange}  cellRender={cellRender}
         
         
         />
         {/* 좋은 습관을 통해 하루에 아낀 돈 */}
-        <OnedaySaveMoney selectedDate={selectedDate} />
+        <OnedaySaveMoney selectedDate={selectedDate} dayData={dayData.length > 0 ? dayData : []} />
         {/* 습관 생성 페이지 */}
         <div className="w-full flex justify-end">
           <Button
             color="blue"
-            className="mt-5 -mb-6"
+            className="mt-5 -mb-6 "
             onClick={() => {
               navigate('/habit/create');
             }}
           >
-            +
+            습관 생성
           </Button>
         </div>
         {/* 진행중 & 완료에 따른 습관 목록 띄우기 */}
