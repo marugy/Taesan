@@ -8,7 +8,9 @@ import axios from 'axios';
 import Swal2 from 'sweetalert2';
 import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
+import { useUserStore } from 'store/UserStore';
 const HabitCreatePage = () => {
+  const { accessToken,refreshToken} = useUserStore();
   const navigate = useNavigate();
   const [title,setTitle] = useState('');
   const [habit,setHabit] = useState('');
@@ -19,10 +21,18 @@ const HabitCreatePage = () => {
 
   // 습관 생성하기
   const createHabit = () => {
-    axios.post('주소입력하기',{
+    axios.post('https://j9c211.p.ssafy.io/api/habit-management/habits',{
       title: title,
-      habit: habit
-    }).then((res)=>{
+      habitName: habit,
+      targetMoney:1000,
+    },
+    {
+      headers: {
+        "ACCESS-TOKEN": accessToken,
+        "REFRESH-TOKEN": refreshToken,
+      },
+    }
+    ).then((res)=>{
       console.log(res);
       navigate('/habit');
       Swal2.fire({
@@ -43,9 +53,13 @@ const HabitCreatePage = () => {
   return (
     <div className='h-screen w-full'>
       <ArrowBack pageName='습관 절약'/>
+      <div className="font-semibold text-center text-3xl">'태산'에서 <br/>새로운 습관을 만들어 보아요.</div>
+      <div className="flex justify-center ">
+      <img src="/Habit/goodHabit.png" className="h-72 border rounded-full"/>
+      </div>
       <div className=' mx-3 mt-4'>
       <div className="font-semibold text-2xl text-center ">
-        습관 제목 입력하기
+        생성할 습관의 <br/>제목을 입력해주세요.
       </div>
       <div className="mt-3 flex mx-auto w-4/5">
       <Input crossOrigin="anonymous" label="제목" onChange={handleTitle} size="lg" className="" />

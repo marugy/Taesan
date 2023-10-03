@@ -17,7 +17,7 @@ const ModalSaveMoney = () => {
   return (
     <div className="text-center">
       <Button color="blue" onClick={() => handleOpen('md')} variant="gradient">
-        오늘의 습관 저금
+        오늘 습관으로 아낀 돈 저금하기
       </Button>
       <Dialog
         open={size === 'xs' || size === 'sm' || size === 'md' || size === 'lg' || size === 'xl' || size === 'xxl'}

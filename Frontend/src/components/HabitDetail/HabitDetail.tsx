@@ -1,9 +1,9 @@
+
 import React, { useState,useEffect } from 'react';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import type { BadgeProps, CalendarProps } from 'antd';
-import { Badge, Calendar } from 'antd';
-import HabitCalendar from 'components/Habit/HabitCalendar';
+import type { CalendarProps } from 'antd';
+import {  Calendar } from 'antd';
 import OnedaySaveMoney from 'components/Habit/OnedaySaveMoney';
 import HabitList from 'components/Habit/HabitList';
 import ModalSaveMoney from 'components/Habit/ModalSaveMoney';
@@ -13,15 +13,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery, useMutation } from 'react-query';
 // 한국어로 변환
-import locale from 'antd/es/calendar/locale/ko_KR';
-import { getTotalCalendarMonth, getTotalCalendarDay } from 'api/habits';
 import ArrowBack from 'components/Common/ArrowBack';
 import {useUserStore} from 'store/UserStore'
-//////////////////////////////
-
-const HabitPage = () => {
-  const { accessToken,refreshToken,name} = useUserStore();
-  const [monthData,setMonthData] = useState([
+import { useParams} from 'react-router-dom';
+import Swal2 from 'sweetalert2'
+const HabitDetail = () => {
+    const { habitId } = useParams<{ habitId: string }>();
+    const { accessToken,refreshToken} = useUserStore();
+  const [detailMonthData,setDetailMonthData] = useState([
     {
         "year": 2023,
         "month": 9,
@@ -34,44 +33,59 @@ const HabitPage = () => {
         "day": 2,
         "saving": 4000
     },
+],);
+  const [detailData,setDetailData] = useState( 
     {
-        "year": 2023,
-        "month": 9,
-        "day": 3,
-        "saving": 5000
-    },
-    {
-        "year": 2023,
-        "month": 9,
-        "day": 4,
-        "saving": 6000
+        "success": true,
+        "response": {
+            "habitId": 1,
+            "title": "금연하겠습니다",
+            "habitName": "담배",
+            "startDate": "2023-10-02T09:22:53",
+            "saving": 0,
+            "endDate": "2023-10-02T00:23:23.12489"
+        },
+        "error": null
     }
-],);
-  const [dayData,setDayData] = useState( [
-    {
-        "habitId": 1,
-        "title": "금연하겠습니다",
-        "habitName": "담배",
-        "startDate": "2023-10-02T07:09:34",
-        "saving": 3000
-    },
-    {
-      "habitId": 1,
-      "title": "금연하겠습니다",
-      "habitName": "담배",
-      "startDate": "2023-10-02T07:09:34",
-      "saving": 3000
-  },
-
-],);
+  );
   
-  // 렌더링되자마자 현재 연,월의 데이터 습관 데이터 조회하기
+// 습관 중단하는 함수
+const stopHabit = () => {
+    axios.put(`https://j9c211.p.ssafy.io/api/habit-management/habits/progress/${habitId}`, {
+        // 여기에 객체 속성과 값을 추가하세요
+      }, {
+        headers: {
+          'ACCESS-TOKEN': accessToken,
+          'REFRESH-TOKEN': refreshToken,
+        },
+      })
+      .then(response => {
+        console.log('습관삭제성공함')
+        console.log(response.data)
+        Swal2.fire({
+            icon: 'success',
+            title: '습관을 성공적으로 삭제했습니다.',
+          }); 
+        navigate('/habit')
+        
+      })
+      .catch(error => {
+        console.log(error);
+        Swal2.fire({
+            icon: 'info',
+            title: '습관 삭제에 실패했습니다.',
+          }); 
+
+      });
+}
+  
+  // 렌더링되자마자 현재 연,월의 습관 상세 데이터 조회하기
   useEffect(()=>{
     const year = dayjs().year();
     // month는 0부터 시작해서 +1 해줘야함.
     const month = dayjs().month() + 1;
     const day = dayjs().day();
-    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`,
+    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/${habitId}/calendars/${year}/${month}`,
     {headers:{
   'ACCESS-TOKEN':accessToken,
   'REFRESH-TOKEN':refreshToken,
@@ -79,9 +93,9 @@ const HabitPage = () => {
     )
     .then(
       (response) => {
-        console.log(response.data.response);
+        console.log('습관상세 달력 데이터',response.data);
         console.log(year,month)
-        setMonthData(response.data.response);
+        setDetailMonthData(response.data);
       }
     )
     .catch(
@@ -90,7 +104,7 @@ const HabitPage = () => {
       }
     )
     //////////
-    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}/${day}`,
+    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/${habitId}`,
     {headers:{
   'ACCESS-TOKEN':accessToken,
   'REFRESH-TOKEN':refreshToken,
@@ -98,8 +112,8 @@ const HabitPage = () => {
     )
     .then(
       (response) => {
-        console.log(response.data);
-        setDayData(response.data);
+        console.log('습관상세데이터',response.data);
+        setDetailData(response.data);
       }
     )
     .catch(
@@ -107,10 +121,7 @@ const HabitPage = () => {
         console.log(error);
       }
     )
-    /////////////
-    // axios.get(`https://j9c211.p.ssafy.io/api/`)
   },[])
-
 
   const dateCellRender = (value: Dayjs) => {
     // 현재 날짜의 연도, 월, 일을 가져옵니다.
@@ -119,7 +130,7 @@ const HabitPage = () => {
     const currentDay = value.date();
   
     // monthData에서 현재 연,월에 해당하는 데이터를 필터링합니다.
-    const matchingData = Array.isArray(monthData) ? monthData.filter((data) => {
+    const matchingData = Array.isArray(detailMonthData) ? detailMonthData.filter((data) => {
       return data.year === currentYear && data.month === currentMonth;
     }) : [];
   
@@ -161,7 +172,7 @@ const HabitPage = () => {
     .then(
       (response) => {
         console.log(response.data);
-        setMonthData(response.data.response);
+        setDetailMonthData(response.data);
       }
     )
     .catch(
@@ -172,64 +183,35 @@ const HabitPage = () => {
     console.log(year, month);
   };
 
+  
   const onSelect = (newDay: Dayjs) => {
     setDate(newDay);
     const selectYear = newDay.format('YYYY');
     const selectMonth = newDay.format('MM');
     const selectDay = newDay.format('DD');
     console.log(selectYear,selectMonth,selectDay);
-    axios.get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${selectYear}/${selectMonth}/${selectDay}`,
-    {headers:{
-  'ACCESS-TOKEN':accessToken,
-  'REFRESH-TOKEN':refreshToken,
-    }},
-    )
-    .then(
-      (response) => {
-        console.log('일일 습관 데이터',response.data);
-        setDayData(response.data.response);
-      }
-    )
-    .catch(
-      (error) => {
-        console.log(error);
-      }
-    )
   };
-  
  
   return (
     <div>
+
       <ArrowBack pageName="습관 절약" />
-      <div className="mx-3 mt-3 mb-28 font-main">
-        <div className="text-main text-4xl mt-5 font-bold font-main">나의 습관 저금</div>
-        <div className="text-gray-600 text-md my-3 font-bold font-main">좋은 습관을 만들며 그동안 모은 돈을 확인해 보아요!</div>
-        {/* <div className="text-gray-600 text-sm dt:text-md my-3 font-bold font-main">{name}님은 월 한 달 동안 습관 저금통에 25,000원을 저금하셨어요!</div> */}
+      <div className="mx-3 mt-3 mb-28">
+        <div className="text-main text-3xl font-extrabold font-main">{detailData.response.habitName } 습관 절약</div>
         {/* 달력 */}
-        <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange}  cellRender={cellRender}
+        <Calendar value={date}  onPanelChange={onPanelChange} onSelect={onSelect} cellRender={cellRender}
         />
-        {/* 좋은 습관을 통해 하루에 아낀 돈 */}
-        <OnedaySaveMoney selectedDate={selectedDate} dayData={dayData.length > 0 ? dayData : []} />
-        {/* 습관 생성 페이지 */}
-        <div className="w-full flex justify-end">
-          <Button
-            color="blue"
-            className="mt-5 -mb-6 "
-            onClick={() => {
-              navigate('/habit/create');
-            }}
-          >
-            습관 생성
-          </Button>
-        </div>
-        {/* 진행중 & 완료에 따른 습관 목록 띄우기 */}
-        <HabitList />
-        {/* 오늘의 습관 절약 */}
-        <ModalSaveMoney />
+        <div>시작일 : {dayjs(detailData.response.startDate).format('YYYY년 MM월 DD일')}</div>
+        { detailData.response.endDate !== null ? <div>종료일 : {dayjs(detailData.response.endDate).format('YYYY년 MM월 DD일')}</div> : <div><Button color="blue" onClick={stopHabit}>습관 중단하기</Button></div> }
       </div>
       <BottomNav />
     </div>
   );
 };
 
-export default HabitPage;
+
+
+export default HabitDetail;
+
+///
+
