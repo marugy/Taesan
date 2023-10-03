@@ -23,14 +23,10 @@ import java.util.Date;
 @Slf4j
 public class TikkleService {
 
-    private final AuthClient authClient;
     private final TikkleRepository tikkleRepository;
     private final MemberRepository memberRepository;
     private final InterestCalculateUtil calculateUtil;
     private final BankClient bankClient;
-
-    @Value("${org-code}")
-    private String orgCode;
 
     public void save(Long memberId, Date endDate) {
         Member member = memberRepository.findById(memberId).get();
