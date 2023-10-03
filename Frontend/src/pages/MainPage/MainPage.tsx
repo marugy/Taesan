@@ -96,7 +96,7 @@ const MainPage = () => {
   };
 
   const { data: userProfileInfo, isLoading: isLoading1 } = useQuery('getInfo', getInfo);
-  const { data: userAssetInfo, isLoading: isLoading2 } = useQuery('getAsset', getAsset);
+  const { data: userAssetInfo } = useQuery('getAsset', getAsset);
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);
@@ -134,11 +134,11 @@ const MainPage = () => {
 
     // 컴포넌트가 언마운트되면 setTimeout을 취소합니다.
     return () => clearTimeout(timerId);
-  }, [isLoading1, isLoading2]);
+  }, [isLoading1]);
 
   return (
     <div className="flex flex-col items-center h-full">
-      {(isLoading1 || isLoading2 || isShowingLoading) && <Loading />}
+      {(isLoading1 || isShowingLoading) && <Loading />}
       <div className="dt:w-screen dt:h-screen dt:flex">
         <div className="mt-3 dt:fixed dt:top-3 dt:left-6">
           <img src="/Main/logo.png" className="h-16" />
