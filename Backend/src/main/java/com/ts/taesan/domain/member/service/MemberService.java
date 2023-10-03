@@ -45,10 +45,10 @@ public class MemberService {
         authClient.registerAuth(map);
     }
 
-    public TokenResponse login(String loginId, String password) throws IOException {
+    public TokenResponse login(String loginId, String password, Boolean autoLogin) throws IOException {
 
         Member member = memberRepository.findMemberByLoginIdAndPassword(loginId, password).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-
+        member.changeAutoLogin(autoLogin);
         //둘 다 새로 발급
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
@@ -66,12 +66,12 @@ public class MemberService {
         String accessToken = "";
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 
+        Claims claimsToken = jwtTokenProvider.getClaimsToken(refreshToken);
+        Long memberId = (long) (int) claimsToken.get("userId");
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
         //유저로부터 받은 RT의 기한이 유효한 경우
         if (jwtTokenProvider.isValidRefreshToken(refreshToken)) {
-
-            Claims claimsToken = jwtTokenProvider.getClaimsToken(refreshToken);
-            Long memberId = (long) (int) claimsToken.get("userId");
-            Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
             // 입력받은 RT와 DB의 RT가 동일하다면
             if (member.getRefreshToken().equals(refreshToken)) {
@@ -88,6 +88,8 @@ public class MemberService {
                             .build();
                 }
             }
+        } else {
+            member.changeAutoLogin(false);
         }
         return null;
     }
@@ -98,16 +100,19 @@ public class MemberService {
         Long userId = (long) (int) claimsToken.get("userId");
         System.out.println("검증 토큰 : " + refreshToken + " 회원 아이디 : " + userId);
         Member member = memberRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        String tokenFromDB = member.getRefreshToken();
-        System.out.println("tokenFromDB = " + tokenFromDB);
-        if (refreshToken.equals(tokenFromDB)) {   //DB의 refresh토큰과 지금들어온 토큰이 같은지 확인
-            return true;//동일하면 true 반환
-        } else {
-            //DB의 Refresh토큰과 들어온 Refresh토큰이 다르면 중간에 변조된 것임
-            System.out.println("Refresh Token 탈취");
-            member.deleteRefreshToken();
-            return false;
+        if (jwtTokenProvider.isValidRefreshToken(refreshToken) && member.getAutoLogin()) { // RT 값이 유효하고 autoLogin check 유저
+            String tokenFromDB = member.getRefreshToken();
+            System.out.println("tokenFromDB = " + tokenFromDB);
+            if (refreshToken.equals(tokenFromDB)) {   //DB의 refresh토큰과 지금들어온 토큰이 같은지 확인
+                return true;//동일하면 true 반환
+            } else {
+                //DB의 Refresh토큰과 들어온 Refresh토큰이 다르면 중간에 변조된 것임
+                System.out.println("Refresh Token 탈취");
+                member.deleteRefreshToken();
+                return false;
+            }
         }
+        return false;
     }
 
     public TokenResponse issueAccessToken(HttpServletRequest request) throws IllegalAccessException {
