@@ -8,6 +8,7 @@ import com.ts.taesan.domain.asset.api.dto.response.CardListResponse;
 import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
+import com.ts.taesan.global.openfeign.bank.BankAccessUtil;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountDetail;
 import com.ts.taesan.global.openfeign.bank.dto.inner.AccountInfo;
@@ -15,6 +16,7 @@ import com.ts.taesan.global.openfeign.bank.dto.inner.AccountList;
 import com.ts.taesan.global.openfeign.bank.dto.request.AccountDetailRequest;
 import com.ts.taesan.global.openfeign.bank.dto.request.AccountInfoRequest;
 import com.ts.taesan.global.openfeign.bank.dto.request.AccountListRequest;
+import com.ts.taesan.global.openfeign.card.CardAccessUtil;
 import com.ts.taesan.global.openfeign.card.CardClient;
 import com.ts.taesan.global.openfeign.card.dto.inner.CardList;
 import com.ts.taesan.global.openfeign.card.dto.request.CardListRequest;
@@ -35,13 +37,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AssetQueryService {
 
-    private final BankClient bankClient;
-    private final CardClient cardClient;
+    private final BankAccessUtil bankAccessUtil;
+    private final CardAccessUtil cardAccessUtil;
     private final MemberRepository memberRepository;
     private final TikkleRepository tikkleRepository;
-
-    @Value("${org-code}")
-    private String orgCode;
 
     public AssetResponse getMyAssets(long memberId) {
         Member member = memberRepository.findById(memberId).get();
@@ -54,15 +53,11 @@ public class AssetQueryService {
                     .cardList(null)
                     .build();
         } else {
-            String tranId = getTranId();
-            String apiType = getApiType();
-            String accessToken = member.getMydataAccessToken();
+            AccountInfo accountInfo = bankAccessUtil.getAccountInfo(member);
+            AccountDetail accountDetail = bankAccessUtil.getAccountDetail(member);
+            Account account = createAccount(member, accountInfo, accountDetail);
 
-            AccountInfo accountInfo = getAccountInfo(tranId, apiType, accessToken, member);
-            AccountDetail accountDetail = getAccountDetail(tranId, apiType, accessToken, member);
-            Account account = getAccount(member, accountInfo, accountDetail);
-
-            List<CardList> cardList = cardClient.getCardList(accessToken, tranId, apiType, getCardListRequest()).getBody().getCardList();
+            List<CardList> cardList = cardAccessUtil.getCardList(member);
             List<Card> retCardList = cardList.stream().map(Card::new).collect(Collectors.toList());
 
             return AssetResponse.builder()
@@ -76,86 +71,30 @@ public class AssetQueryService {
     }
 
     public AccountListResponse getMyAccountList(long memberId) {
-        String tranId = getTranId();
-        String apiType = getApiType();
         Member member = memberRepository.findById(memberId).get();
 
-        AccountListRequest request = AccountListRequest.builder()
-                .org_code(orgCode)
-                .search_timestamp(new Date().getTime())
-                .next_page(0)
-                .limit(500)
-                .build();
-
-        List<AccountList> accountList = bankClient.getAccountList(member.getMydataAccessToken(), tranId, apiType, request).getBody().getAccountList();
+        List<AccountList> accountList = bankAccessUtil.getAccountList(member);
         List<Account> retAccountList = accountList.stream().map(Account::new).collect(Collectors.toList());
 
         return new AccountListResponse(retAccountList);
     }
 
     public CardListResponse getMyCardList(long memberId) {
-        String tranId = getTranId();
-        String apiType = getApiType();
         Member member = memberRepository.findById(memberId).get();
 
-        List<CardList> cardList = cardClient.getCardList(member.getMydataAccessToken(), tranId, apiType, getCardListRequest()).getBody().getCardList();
+        List<CardList> cardList = cardAccessUtil.getCardList(member);
         List<Card> retCardList = cardList.stream().map(Card::new).collect(Collectors.toList());
 
         return new CardListResponse(retCardList);
     }
 
-    private String getApiType() {
-        return "user-search";
-    }
-
-    private String getTranId() {
-        return "1234567890M00000000000001";
-    }
-
-    private Account getAccount(Member member, AccountInfo accountInfo, AccountDetail accountDetail) {
+    private Account createAccount(Member member, AccountInfo accountInfo, AccountDetail accountDetail) {
         return Account.builder()
                 .bank(accountInfo.getBank())
                 .accountNum(member.getAccountNum())
                 .accountName(accountDetail.getAccountName())
                 .balance((long) accountDetail.getBalanceAmt())
                 .build();
-    }
-
-    private CardListRequest getCardListRequest() {
-        return CardListRequest.builder()
-                .org_code(orgCode)
-                .search_timestamp(new Date().getTime())
-                .next_page(0L)
-                .limit(500)
-                .build();
-    }
-
-    private AccountDetail getAccountDetail(String tranId, String apiType, String accessToken, Member member) {
-        return bankClient.getAccountDetail(accessToken, tranId, apiType, getAccountDetailRequest(member)).getBody().getDetailList().get(0);
-    }
-
-    private AccountDetailRequest getAccountDetailRequest(Member member) {
-        return AccountDetailRequest.builder()
-                .org_code(orgCode)
-                .account_num(member.getAccountNum())
-                .seqno(1)
-                .search_timestamp(new Date().getTime())
-                .build();
-    }
-
-    private AccountInfoRequest getAccountInfoRequest(Member member) {
-        return AccountInfoRequest.builder()
-                .org_code(orgCode)
-                .account_num(member.getAccountNum())
-                .seqno(1)
-                .search_timestamp(new Date().getTime())
-                .next_page(0L)
-                .limit(500)
-                .build();
-    }
-
-    private AccountInfo getAccountInfo(String tranId, String apiType, String accessToken, Member member) {
-        return bankClient.getAccountInfo(accessToken, tranId, apiType, getAccountInfoRequest(member)).getBody().getBasicList().get(0);
     }
 
 }
