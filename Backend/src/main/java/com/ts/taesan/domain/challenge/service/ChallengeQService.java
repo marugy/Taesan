@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.challenge.service;
 
+import com.ts.taesan.domain.asset.service.AssetService;
 import com.ts.taesan.domain.challenge.dto.response.*;
 import com.ts.taesan.domain.challenge.entity.ChallengeParticipant;
 import com.ts.taesan.domain.challenge.repository.ChallengeParticipantRepository;
@@ -23,6 +24,7 @@ public class ChallengeQService {
 
     private final ChallengeQRepository challengeQRepository;
     private final ChallengeParticipantRepository challengeParticipantRepository;
+    private final AssetService assetService;
 
     public ChallengeMakeResponse getState(Long memberId) {
         ChallengeMakeResponse challengeMakeResponse = challengeQRepository.getState(memberId);
@@ -61,4 +63,14 @@ public class ChallengeQService {
         ChallengeExpiredDetailResponse challengeExpiredDetailResponse = new ChallengeExpiredDetailResponse(challengeParticipant.getSpare(), expiredChallengeInfoResponse, participants);
         return challengeExpiredDetailResponse;
     }
+
+    public void saveMoney(Long challengeId, Long memberId) {
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(challengeId, memberId).orElseThrow();
+        if (challengeParticipant.getIsExchange()) {        // 이미 바꿔먹은거 또 바꾸려 하면
+            throw new RuntimeException();
+        }
+        challengeParticipant.settle();
+        assetService.saveMoney(memberId, challengeParticipant.getSpare(), 3);
+    }
+
 }

@@ -3,7 +3,9 @@ package com.ts.taesan.domain.asset.service;
 import com.ts.taesan.domain.asset.api.dto.inner.Card;
 import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
 import com.ts.taesan.domain.asset.api.dto.response.CardHistoryListResponse;
+import com.ts.taesan.domain.asset.entity.PayHistory;
 import com.ts.taesan.domain.asset.entity.Tikkle;
+import com.ts.taesan.domain.asset.repository.PayHistoryRepository;
 import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
@@ -42,6 +44,7 @@ public class AssetService {
     private final MemberRepository memberRepository;
     private final TikkleRepository tikkleRepository;
     private final TransactionRepository transactionRepository;
+    private final PayHistoryRepository payHistoryRepository;
     private final AuthClient authClient;
     private final BankClient bankClient;
     private final CardClient cardClient;
@@ -62,15 +65,42 @@ public class AssetService {
         bankClient.transfer(member.getMydataAccessToken(), transferRequest);
     }
 
+    // 태산 적금통에서 내 계좌로 이체시 이 로직 사용
+//    public void charge(Long memberId, Long amt) {
+//        Member member = memberRepository.findById(memberId).get();
+//        Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
+//
+//        ChargeRequest chargeRequest = ChargeRequest.builder()
+//                .senderAccNum(member.getAccountNum())
+//                .transAmt(amt)
+//                .build();
+//        bankClient.charge(member.getMydataAccessToken(), chargeRequest);
+//
+//    }
+
     // 다른 서비스에서 적금통으로 금액 저장시 이 로직 사용
-    public void charge(Long memberId) {
+    // 1: 샀다치고, 2: 습관저금, 3: 절약챌린지
+    public void saveMoney(Long memberId, Long amount, int serviceType) {
         Member member = memberRepository.findById(memberId).get();
         Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
+
+        // 이체
         ChargeRequest chargeRequest = ChargeRequest.builder()
                 .senderAccNum(member.getAccountNum())
-                .transAmt(calculateUtil.calculate(tikkle))
+                .transAmt(amount)
                 .build();
         bankClient.charge(member.getMydataAccessToken(), chargeRequest);
+
+        // 내역 생성
+        PayHistory payHistory = PayHistory.builder()
+                .tikkle(tikkle)
+                .transType(serviceType)
+                .transAmount(amount)
+                .build();
+        payHistoryRepository.save(payHistory);
+
+        // 티끌 머니 잔액 계산
+        tikkle.updateMoney(amount);
     }
 
     public void pay(Long memberId, Long cardId, PayRequest payRequest) {

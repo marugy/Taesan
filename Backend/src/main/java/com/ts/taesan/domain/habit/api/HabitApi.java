@@ -1,8 +1,11 @@
 package com.ts.taesan.domain.habit.api;
 
 import com.ts.taesan.domain.habit.dto.CreateHabitRequest;
+import com.ts.taesan.domain.habit.dto.SaveHabitRequest;
+import com.ts.taesan.domain.habit.dto.response.ClearHabitResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitCalendarResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitListResponse;
+import com.ts.taesan.domain.habit.service.HabitLogService;
 import com.ts.taesan.domain.habit.service.HabitQService;
 import com.ts.taesan.domain.habit.service.HabitService;
 import com.ts.taesan.domain.member.entity.Member;
@@ -30,6 +33,7 @@ public class HabitApi {
     private final HabitService habitService;
     private final HabitQService habitQService;
     private final MemberService memberService;
+    private final HabitLogService habitLogService;
 
     @ApiOperation(value = "전체 습관 달력 조회", notes = "월을 입력하여 월별 전체 습관 달력을 조회한다 API")
     @GetMapping("/total-calendar/{year}/{month}")
@@ -97,17 +101,17 @@ public class HabitApi {
 
     @ApiOperation(value = "오늘 아낀 습관 목록 조회", notes = "오늘 아낀 습관을 조회한다.")
     @GetMapping("/today")
-    public ApiResponse<?> getClearHabit(@AuthenticationPrincipal User user) {
+    public ApiResponse<List<ClearHabitResponse>> getClearHabit(@AuthenticationPrincipal User user) {
         Long memberId = Long.parseLong(user.getUsername());
-
-        return OK(null);
+        List<ClearHabitResponse> clearHabits = habitQService.getClearHabits(memberId);
+        return OK(clearHabits);
     }
 
     @ApiOperation(value = "오늘 아낀 습관 저금", notes = "오늘 아낀 습관들을 저금한다.")
     @PostMapping("/today")
-    public ApiResponse<?> saveHabits(@AuthenticationPrincipal User user) {
+    public ApiResponse<?> saveHabits(@AuthenticationPrincipal User user, @RequestBody SaveHabitRequest saveHabitRequest) {
         Long memberId = Long.parseLong(user.getUsername());
-
+        habitLogService.saveHabits(memberId, saveHabitRequest);
         return OK(null);
     }
 }

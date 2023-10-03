@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.habit.service;
 
+import com.ts.taesan.domain.habit.dto.response.ClearHabitResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitCalendarResponse;
 import com.ts.taesan.domain.habit.dto.response.HabitListResponse;
 import com.ts.taesan.domain.habit.repository.HabitQRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +45,10 @@ public class HabitQService {
     public List<HabitCalendarResponse> getHabitCalendar(Long habitId, int year, int month) {
         List<HabitCalendarResponse> habitCalendar = habitQRepository.getHabitCalendar(habitId, year, month);
         return habitCalendar;
+    }
+
+    public List<ClearHabitResponse> getClearHabits(Long memberId) {
+        List<ClearHabitResponse> clearHabitResponses = habitQRepository.getSaveHabit(memberId);
+        return clearHabitResponses;
     }
 }

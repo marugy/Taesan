@@ -121,4 +121,12 @@ public class ChallengeApi {
         challengeService.delete(challengeId);
         return OK(null);
     }
+
+    @ApiOperation(value = "종료챌린지 저금하기", notes = "종료된 챌린지에 대해서 저금하는 API")
+    @PostMapping("/save/{id}")
+    public ApiResponse<?> saveEndChallenge(@AuthenticationPrincipal User user, @PathVariable(name = "id") Long challengeId) {
+        Long memberId = Long.parseLong(user.getUsername());
+        challengeQService.saveMoney(challengeId, memberId);
+        return OK(null);
+    }
 }

@@ -58,7 +58,7 @@ public class AssetApi {
     public ApiResponse<Void> pay(
             @AuthenticationPrincipal User user,
             @PathVariable("card_id") Long cardId,
-            @RequestParam PayRequest payRequest
+            @RequestBody PayRequest payRequest
             ) {
         assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
         return OK(null);
@@ -72,12 +72,12 @@ public class AssetApi {
         return OK(null);
     }
 
-    @PostMapping("/charge")
-    public ApiResponse<Void> charge(
-            @AuthenticationPrincipal User user
-    ) {
-        assetService.charge(Long.parseLong(user.getUsername()));
-        return OK(null);
-    }
+//    @PostMapping("/charge")
+//    public ApiResponse<Void> charge(
+//            @AuthenticationPrincipal User user
+//    ) {
+//        assetService.charge(Long.parseLong(user.getUsername()));
+//        return OK(null);
+//    }
 
 }
