@@ -51,9 +51,9 @@ public class TransactionQRepository {
                 .where(receiptList.receipt.transaction.id.eq(id)).fetch();
     }
 
-    public RecentTransaction findRecentTransactionByShopName(String shopName, LocalDate startDate, Long memberId){
+    public RecentTransaction findRecentTransactionByShopName(String shopName, LocalDate startDate, Long memberId, Long cardId){
         return queryFactory.select(Projections.fields(RecentTransaction.class, transaction.count().as("count"), transaction.approvedAmount.sum().as("sum")
-                )).from(transaction).where(transaction.shopName.eq(shopName).and(transaction.member.id.eq(memberId)).and(transaction.dateTime.after(startDate.atStartOfDay()))).fetchFirst();
+                )).from(transaction).where(transaction.shopName.eq(shopName).and(transaction.member.id.eq(memberId)).and(transaction.cardId.eq(cardId)).and(transaction.dateTime.after(startDate.atStartOfDay()))).fetchFirst();
     }
 
     public List<TransactionDTO> findTransactionListByMonth(Long id, LocalDate startDate, LocalDate endDate, String category){
