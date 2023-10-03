@@ -73,12 +73,16 @@ const HabitCreatePage = () => {
   return (
     <div className='h-screen w-full font-main'>
       <ArrowBack pageName='습관 절약'/>
-      <div className="font-semibold text-center text-2xl dt:text-3xl ">'태산'과 함께 <br/>좋은 습관을 만들어 보아요</div>
+      <div className="h-36 dt:h-48 w-4/5 mx-auto mt-10 bg-gradient-to-r from-cyan-500 to-blue-500 border rounded-md flex flex-col items-center justify-center ">
+
+      <div className="text-white text-2xl dt:text-3xl font-semibold">습관 생성하기</div>
+      <div className="mt-5 text-center text-lg dt:text-2xl text-white">습관도 만들고, 돈도 모으고 !</div>
+      </div>
       <div className="flex justify-center ">
       <img src="/Habit/goodHabit.png" className="h-72 border rounded-full"/>
       </div>
       <div className=' mx-3 mt-4'>
-      <div className="font-semibold text-2xl text-center ">
+      <div className="font-semibold text-xl text-center ">
         생성할 습관의 <br/>제목을 입력해주세요.
       </div>
       <div className="mt-3 flex mx-auto w-4/5">
@@ -91,25 +95,25 @@ const HabitCreatePage = () => {
       </div>
 <div className="flex flex-wrap justify-center items-center">
   <div className="w-2/5 p-2">
-  <div className={`${habit==="담배" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('담배') }}>
+  <div className={`${habit==="담배" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-2 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('담배') }}>
       <img src="/Habit/담배.png" className="w-8 dt:w-12 "/>
       <div className="text-md dt:text-4xl font-semibold">담배</div>
     </div>
   </div>
   <div className="w-2/5 p-2">
-  <div className={`${habit==="술" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('술') }}>
+  <div className={`${habit==="술" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-2 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('술') }}>
       <img src="/Habit/술.png" className="w-8 dt:w-12 "/>
       <div className="text-md dt:text-4xl font-semibold ">술</div>
     </div>
   </div>
   <div className="w-2/5 p-2">
-  <div className={`${habit==="택시" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2  border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('택시') }}>
+  <div className={`${habit==="택시" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-2 flex flex-col  dt:justify-center items-center gap-2  border-blue-500 p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('택시') }}>
       <img src="/Habit/택시.png" className="w-8 dt:w-12 "/>
       <div className="text-md dt:text-4xl font-semibold">택시</div>
     </div>
   </div>
   <div className="w-2/5 p-2">
-  <div className={`${habit==="커피" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-4 flex flex-col  dt:justify-center items-center gap-2 border-blue-500  p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('커피') }}>
+  <div className={`${habit==="커피" ? 'bg-blue-500 text-white':'bg-white text-blue-500'} border-2 flex flex-col  dt:justify-center items-center gap-2 border-blue-500  p-4 text-center  text-lg cursor-pointer`} onClick={() => { setHabit('커피') }}>
       <img src="/Habit/커피.png" className="w-8 dt:w-12 "/>
       <div className="text-md dt:text-4xl font-semibold">커피</div>
     </div>
