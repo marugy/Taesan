@@ -31,13 +31,13 @@ info = {
 "__label__smoke" : "담배",
 "__label__water" : "생수",
 "__label__drink" : "음료",
-"__label__alchol" : "주류",
+"__label__alchol" : "주류"
 }
 
 
 async def lifespan(app: FastAPI):
     global model
-    model = fasttext.load_model("./final_model_02.bin")
+    model = fasttext.load_model("./final_model_03.bin")
     yield
 
 app = FastAPI(lifespan=lifespan)
