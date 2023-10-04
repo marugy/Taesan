@@ -102,10 +102,6 @@ public class Member extends BaseEntity implements UserDetails {
         this.mydataAccessToken = mydataAccessToken;
     }
 
-    public void encryptPassword(String newPassword, String newSimplePassword) {
-        this.password = newPassword;
-        this.simplePassword = newSimplePassword;
-    }
     ////////////////////////
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

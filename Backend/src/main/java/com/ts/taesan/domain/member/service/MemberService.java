@@ -10,7 +10,6 @@ import com.ts.taesan.domain.member.token.JwtTokenProvider;
 import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.openfeign.auth.AuthAccessUtil;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
-import com.ts.taesan.global.util.PasswordEncryptUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,6 @@ import java.util.HashMap;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncryptUtil passwordEncryptUtil;
     private final TransactionService transactionService;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthAccessUtil authAccessUtil;
@@ -41,13 +39,13 @@ public class MemberService {
 
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
-        member.encryptPassword(passwordEncryptUtil.encrypt(member.getPassword()), passwordEncryptUtil.encrypt(member.getSimplePassword()));
-        memberRepository.save(member);
+        member = memberRepository.save(member);
+//        authAccessUtil.addMydataAccessToken(member.getId());
     }
 
     public TokenResponse login(String loginId, String password, Boolean autoLogin) throws IOException {
-        String encryptedPassword = passwordEncryptUtil.encrypt(password);
-        Member member = memberRepository.findMemberByLoginIdAndPassword(loginId, encryptedPassword).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        Member member = memberRepository.findMemberByLoginIdAndPassword(loginId, password).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         member.changeAutoLogin(autoLogin);
         //둘 다 새로 발급
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
@@ -61,7 +59,7 @@ public class MemberService {
     }
 
     public TokenResponse simpleLogin(HttpServletRequest request, SimpleLoginRequest simpleLoginRequest) {
-        String encryptedSimplePassword = passwordEncryptUtil.encrypt(simpleLoginRequest.getSimplePassword());
+        String simplePassword = simpleLoginRequest.getSimplePassword();
 
         String accessToken = "";
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
@@ -76,7 +74,7 @@ public class MemberService {
             // 입력받은 RT와 DB의 RT가 동일하다면
             if (member.getRefreshToken().equals(refreshToken)) {
                 //입력받은 simple password가 동일하다면
-                if (member.getSimplePassword().equals(encryptedSimplePassword)) {
+                if (member.getSimplePassword().equals(simplePassword)) {
                     //둘 다 새로 발급
                     accessToken = jwtTokenProvider.createAccessToken(member.getId());
                     refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
