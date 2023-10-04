@@ -122,7 +122,7 @@ const ChallengeRecruitPage = () => {
               icon: 'success',
               title: '챌린지를 시작했습니다!',
             });
-            navigate('/challenge');
+            navigate('/challenge/play');
           })
           .catch((err) => {
             console.log(err);
