@@ -169,15 +169,15 @@ public class TransactionService {
             temp.setDateMoney(temp.getMoney()/3);
         }
         oftenCategories.addAll(transactions);
-        if(qRepository.checkReceiptExist(userId)){
-            List<OftenCategory> receipts = qRepository.findOftenReceipt(userId, before.atDay(1), before.atEndOfMonth());
-            for(OftenCategory temp : receipts){
 
-                temp.setDateMoney(temp.getMoney()/3);
+        List<OftenCategory> receipts = qRepository.findOftenReceipt(userId, before.atDay(1), before.atEndOfMonth());
+        for(OftenCategory temp : receipts){
 
-            }
-            oftenCategories.addAll(receipts);
+            temp.setDateMoney(temp.getMoney()/3);
+
         }
+        oftenCategories.addAll(receipts);
+
 
         return oftenCategories;
     }
