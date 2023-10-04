@@ -60,7 +60,6 @@ public class AssetApi {
     @PostMapping("/{card_id}/pay")
     public ApiResponse<Void> pay(
             @AuthenticationPrincipal User user,
-            HttpServletRequest request,
             @PathVariable("card_id") Long cardId,
             @RequestBody TaesanPayRequest payRequest
             ) {
