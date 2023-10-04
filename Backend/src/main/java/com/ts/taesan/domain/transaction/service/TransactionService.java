@@ -185,7 +185,7 @@ public class TransactionService {
                 .limit(500)
                 .build();
         CardInfoResponse cardResponse = cardClient.getCardInfo(member.getMydataAccessToken(), getTranId(), getApiType(), cardId, cardInfoRequest).getBody();
-        Long historyId = cardClient.getRecentHistoryId(member.getMydataAccessToken(), cardId).getBody();
+        Long historyId = cardClient.getRecentHistoryId(member.getMydataAccessToken()).getBody();
 
         Card card = new Card(cardResponse.getCardId(), cardResponse.getCardNum(), cardResponse.getCompany(), cardResponse.getCardType());
 

@@ -49,9 +49,8 @@ public interface CardClient {
             @PathVariable("card_id") long cardId,
             @RequestBody Transaction transaction);
 
-    @GetMapping("/{card_id}/recentHistoryId")
+    @GetMapping("/recentHistoryId")
     ResponseEntity<Long> getRecentHistoryId(
-            @RequestHeader("Authorization") String token,
-            @PathVariable("card_id") long cardId);
+            @RequestHeader("Authorization") String token);
 
 }
