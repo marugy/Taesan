@@ -10,4 +10,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     Optional<Challenge> findById(Long challengeId);
 
     Optional<Challenge> findChallengeByUuid(String uuid);
+
+    boolean existsByMemberId(Long memberId);
+
 }

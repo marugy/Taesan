@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TaesanPayRequest {
 
-        @JsonProperty("shop_name")
         private String shopName;
 
         @JsonProperty("pay_amt")
-        private Integer payAmt;
+        private Long payAmt;
 
     }

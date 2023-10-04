@@ -60,11 +60,10 @@ public class AssetApi {
     @PostMapping("/{card_id}/pay")
     public ApiResponse<Void> pay(
             @AuthenticationPrincipal User user,
-            HttpServletRequest request,
             @PathVariable("card_id") Long cardId,
             @RequestBody TaesanPayRequest payRequest
             ) {
-        assetService.pay(Long.parseLong(user.getUsername()), cardId, request.getHeader("ACCESS-TOKEN"), payRequest);
+        assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
         return OK(null);
     }
 

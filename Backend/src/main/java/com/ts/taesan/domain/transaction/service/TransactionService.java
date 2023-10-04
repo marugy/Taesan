@@ -18,9 +18,11 @@ import com.ts.taesan.domain.transaction.req.CategoryResult;
 import com.ts.taesan.domain.transaction.req.KakaoResult;
 import com.ts.taesan.domain.transaction.req.TransactionsClient;
 import com.ts.taesan.domain.transaction.service.dto.response.*;
+import com.ts.taesan.global.openfeign.card.CardAccessUtil;
 import com.ts.taesan.global.openfeign.card.CardClient;
 import com.ts.taesan.global.openfeign.card.dto.request.CardInfoRequest;
 import com.ts.taesan.global.openfeign.card.dto.response.CardInfoResponse;
+import com.ts.taesan.global.openfeign.card.dto.response.PayResponse;
 import com.ts.taesan.global.util.KakaoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,7 @@ public class TransactionService {
     private final AIModelClient aiModelClient;
     private final KakaoUtil kakaoUtil;
     private final ChallengeService challengeService;
+    private final CardAccessUtil cardAccessUtil;
 
     @Value("${org-code}")
     private String orgCode;
@@ -178,11 +181,35 @@ public class TransactionService {
         return oftenCategories;
     }
 
-    public void saveNewTransaction(Long cardId, CardHistoryList history, Long memberId) {
-        String category = kakaoUtil.getCategory(history.getMerchantName());
+    public Transaction saveNewTransaction(Long cardId, String shopName, Long payAmt, Long memberId) {
+        String category = kakaoUtil.getCategory(shopName);
         Member member = memberRepository.findById(memberId).get();
-        transactionRepository.save(new Transaction(history, cardId, category, member));
-        challengeService.changeSpare(memberId, history.getApprovedAmt());
+
+        CardInfoRequest cardInfoRequest = CardInfoRequest.builder()
+                .org_code(orgCode)
+                .search_timestamp(new Date().getTime())
+                .next_page(0L)
+                .limit(500)
+                .build();
+        CardInfoResponse cardResponse = cardClient.getCardInfo(member.getMydataAccessToken(), getTranId(), getApiType(), cardId, cardInfoRequest).getBody();
+        Long historyId = cardClient.getRecentHistoryId(member.getMydataAccessToken()).getBody();
+
+        Card card = new Card(cardResponse.getCardId(), cardResponse.getCardNum(), cardResponse.getCompany(), cardResponse.getCardType());
+
+        Transaction transaction = Transaction.builder()
+                .cardId(card.getCardId())
+                .cardHistoryId(historyId)
+                .shopName(shopName)
+                .approvedAmount(payAmt)
+                .category(category)
+                .cardType(card.getCardType())
+                .member(member)
+                .build();
+
+        transactionRepository.save(transaction);
+        challengeService.changeSpare(memberId, payAmt);
+
+        return transaction;
     }
 
     private String getApiType() {

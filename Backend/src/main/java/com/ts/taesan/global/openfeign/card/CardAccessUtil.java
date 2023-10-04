@@ -4,6 +4,7 @@ import com.ts.taesan.domain.asset.entity.Tikkle;
 import com.ts.taesan.domain.asset.repository.TikkleRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
+import com.ts.taesan.domain.transaction.entity.Transaction;
 import com.ts.taesan.global.openfeign.bank.BankClient;
 import com.ts.taesan.global.openfeign.bank.dto.request.ChargeRequest;
 import com.ts.taesan.global.openfeign.bank.dto.request.TransferRequest;
@@ -53,7 +54,8 @@ public class CardAccessUtil {
 
     public List<CardList> getCardList(Member member) {
         CardListResponse cardListResponse = cardClient.getCardList(
-                        member.getMydataAccessToken(), getTranId(),
+                        member.getMydataAccessToken(),
+                        getTranId(),
                         getApiType(),
                         createCardListRequest())
                 .getBody();
@@ -65,8 +67,8 @@ public class CardAccessUtil {
         return cardListResponse.getCardList();
     }
 
-    public void pay(Member member, Long cardId, PayRequest payRequest) {
-        cardClient.pay(member.getMydataAccessToken(), cardId, payRequest);
+    public void pay(Member member, Long cardId, Transaction transaction) {
+        cardClient.pay(member.getMydataAccessToken(), cardId, transaction);
     }
 
     private String getApiType() {
