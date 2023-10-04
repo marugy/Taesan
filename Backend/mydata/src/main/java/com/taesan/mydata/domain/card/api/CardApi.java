@@ -91,5 +91,8 @@ public class CardApi {
         return new ResponseEntity<>(pay, HttpStatus.OK);
     }
 
-    @GetMapping("/findLastCardHistoryId")
+    @GetMapping("/recentHistoryId")
+    public ResponseEntity<Long> findLastCardHistoryId() {
+        return ResponseEntity.ok(cardHistoryQueryService.findLastCardHistoryId());
+    }
 }
