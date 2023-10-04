@@ -77,10 +77,17 @@ public class MemberApi {
         return OK(tokenResponse);
     }
 
-    @ApiOperation(value = "token 유효성 검사", notes = "accessToken 유효성 검사 API")
+    @ApiOperation(value = "token 유효성 검사", notes = "refreshtoken 유효성 검사 API")
     @PostMapping("/check/token")
     public ApiResponse<Boolean> checkToken(HttpServletRequest request) {
         Boolean check = memberService.checkToken(request);
+        return OK(check);
+    }
+
+    @ApiOperation(value = "access-token 유효성 검사", notes = "accessToken 유효성 검사 API")
+    @PostMapping("/check/access-token")
+    public ApiResponse<Boolean> checkAccessToken(HttpServletRequest request) {
+        Boolean check = memberService.checkAccessToken(request);
         return OK(check);
     }
 

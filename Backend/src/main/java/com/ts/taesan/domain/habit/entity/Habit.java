@@ -51,4 +51,8 @@ public class Habit extends BaseEntity {
         this.state = 1;
         this.endDate = LocalDateTime.now();
     }
+
+    public void savingMoney(Long money) {
+        this.saving += money;
+    }
 }

@@ -204,4 +204,14 @@ public class MemberService {
     }
 
 
+    public Boolean checkAccessToken(HttpServletRequest request) {
+        String accessToken = jwtTokenProvider.resolveAccessToken(request);
+        Claims claimsToken = jwtTokenProvider.getClaimsFormToken(accessToken);
+        Long userId = (long) (int) claimsToken.get("userId");
+        System.out.println("검증 토큰 : " + accessToken + " 회원 아이디 : " + userId);
+        if (jwtTokenProvider.isValidAccessToken(accessToken)) { // accessToken이 유효하면
+            return true;//유효하면
+        }
+        return false;
+    }
 }

@@ -36,6 +36,6 @@ public class Challenge extends BaseEntity {
     public void start() {
         this.state = 1;
         this.startDate = new Date();
-        this.endDate = new Date(new Date().getTime() + period * 1000 * 60 * 60 * 24);
+        this.endDate = new Date(new Date().getTime() + (long) period * 1000 * 60 * 60 * 24);
     }
 }
