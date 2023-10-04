@@ -14,8 +14,8 @@ public class PayRequest {
 
         @JsonProperty("pay_amt")
         private Long payAmt;
-
-        @JsonProperty("access_token")
-        private String accessToken;
+//
+//        @JsonProperty("access_token")
+//        private String accessToken;
 
 }

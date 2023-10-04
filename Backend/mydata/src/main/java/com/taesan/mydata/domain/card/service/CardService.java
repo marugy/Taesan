@@ -6,8 +6,6 @@ import com.taesan.mydata.domain.card.entity.CardHistory;
 import com.taesan.mydata.domain.card.repository.CardHistoryRepository;
 import com.taesan.mydata.domain.card.repository.CardRepository;
 import com.taesan.mydata.global.enumerate.Shop;
-import com.taesan.mydata.global.openfeign.transaction.TransactionClient;
-import com.taesan.mydata.global.openfeign.transaction.dto.request.CardHistoryList;
 import com.taesan.mydata.global.util.DummyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +21,10 @@ public class CardService {
 
     private final CardRepository cardRepository;
     private final CardHistoryRepository cardHistoryRepository;
-    private final TransactionClient transactionClient;
+//    private final TransactionClient transactionClient;
     private final DummyUtils dummyUtils;
 
-    public PayResponse pay(Long memberId, Long cardId, String shopName, Long amount, String accessToken) {
+    public PayResponse pay(Long memberId, Long cardId, String shopName, Long amount) {
         if (!cardRepository.existsByMemberCi(memberId)) {
             throw new RuntimeException("당신의 카드가 아닙니다.");
         }
@@ -42,7 +40,7 @@ public class CardService {
                 .approvedAmt(amount)
                 .build();
         cardHistoryRepository.save(cardHistory);
-        transactionClient.saveNewTransaction(accessToken, cardId, new CardHistoryList(cardHistory));
+//        transactionClient.saveNewTransaction(accessToken, cardId, new CardHistoryList(cardHistory));
 
         return PayResponse.builder()
                 .rspCode("200")
