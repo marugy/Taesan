@@ -167,7 +167,7 @@ const HabitPage = () => {
     const month = value.format('MM');
 
     axios
-      .get(`https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`, {
+      .get(`https://j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${year}/${month}`, {
         headers: {
           'ACCESS-TOKEN': accessToken,
           'REFRESH-TOKEN': refreshToken,
@@ -192,7 +192,7 @@ const HabitPage = () => {
     console.log(selectYear, selectMonth, selectDay);
     axios
       .get(
-        `https:/j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${selectYear}/${selectMonth}/${selectDay}`,
+        `https://j9c211.p.ssafy.io/api/habit-management/habits/total-calendar/${selectYear}/${selectMonth}/${selectDay}`,
         {
           headers: {
             'ACCESS-TOKEN': accessToken,

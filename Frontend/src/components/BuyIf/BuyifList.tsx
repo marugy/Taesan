@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Tooltip,Typography } from '@material-tailwind/react';
 // interface Props{
 //     id: number,
 //     img: string,
@@ -44,6 +44,7 @@ const BuyifList = ({buyiflist,mostbuy,mostbuyprice}:PropsList) => {
                         <div className='font-main text-lg'>{buyif.name}</div>
                         <div className='font-main text-lg'>가격: ₩{buyif.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
                     </div>
+                  
                     <div className='h-full flex items-center'>
                         <div className='font-main font-bold text-lg flex items-center'> {Math.floor(buyif.price / mostbuyprice)} X 
                             <div className='w-7 aspect-square'>
@@ -51,6 +52,7 @@ const BuyifList = ({buyiflist,mostbuy,mostbuyprice}:PropsList) => {
                             </div>
                         </div>
                     </div>
+
                 </div>
             ))}
         </div>

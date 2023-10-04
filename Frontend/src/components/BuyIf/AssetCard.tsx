@@ -1,5 +1,6 @@
 import React from 'react';
-import { Avatar } from '@material-tailwind/react';
+import { Avatar,Typography,Tooltip } from '@material-tailwind/react';
+import { useUserStore } from 'store/UserStore';
 interface PropsUserinfo {
   userbalance:number,
   userbank:string,
@@ -8,6 +9,7 @@ interface PropsUserinfo {
   mostbuyprice:number
 }
 const AssetCard = ({userbalance,userbank,tikkle,mostbuy,mostbuyprice}:PropsUserinfo) => {
+  const { name} = useUserStore();
   return (
     <div className="flex justify-center items-center mx-auto">
         <div>
@@ -26,11 +28,32 @@ const AssetCard = ({userbalance,userbank,tikkle,mostbuy,mostbuyprice}:PropsUseri
               </div>
               <div className='w-[90%] flex justify-between'>
                 <div className='font-main'>{mostbuy}으로 환산하면?</div>
+                <Tooltip
+      placement="bottom"
+      className="border border-blue-gray-50 bg-white px-4 py-3 shadow-xl shadow-black/10"
+      content={
+        <div className="w-80">
+          <Typography color="blue-gray" className="font-semibold">
+            환산 품목 산정 기준
+          </Typography>
+          <Typography
+            variant="small"
+            color="blue-gray"
+            className="font-normal opacity-80"
+          >
+            {name}님의 지난 달 소비 패턴을 분석해서 <br/>가장 많이 소비한 카테고리의 '대표품목
+            '을 나타냅니다.
+
+          </Typography>
+        </div>
+      }
+    >
                 <div className='font-main font-bold text-lg flex items-center'> {Math.floor(tikkle / mostbuyprice)} X 
                 <div className='w-7 aspect-square'>
                   <img src={`/Mostbuy/${mostbuy}.png`} alt="" />
                 </div>
                 </div>
+                </Tooltip>
               </div>
             </div>
           </div>
