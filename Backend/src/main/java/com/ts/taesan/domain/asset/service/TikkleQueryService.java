@@ -47,11 +47,11 @@ public class TikkleQueryService {
         for (int i = 0; i < categoryMoneyResponse.size(); i++) {
             int category = categoryMoneyResponse.get(i).getCategory();
             Long totalMoney = categoryMoneyResponse.get(i).getTotalMoney();
-            if (category == 0) {
+            if (category == 1) {
                 tikkleCategoryResponse.setIfbuy(totalMoney);
-            } else if (category == 1) {
-                tikkleCategoryResponse.setHabit(totalMoney);
             } else if (category == 2) {
+                tikkleCategoryResponse.setHabit(totalMoney);
+            } else if (category == 3) {
                 tikkleCategoryResponse.setChallenge(totalMoney);
             }
         }

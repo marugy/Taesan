@@ -10,7 +10,6 @@ info = {
 "__label__milk_dairy" : "우유_유제품",
 "__label__convenience_food" : "간편식",
 "__label__kimchi_side_delli" : "반찬류",
-"__label__water_drink_alchol" : "생수_음료_주류",
 "__label__coffee_beans_tea" : "커피_차",
 "__label__sauce_oil" : "양념_오일",
 "__label__snack" : "과자_간식",
@@ -30,6 +29,9 @@ info = {
 "__label__digital_appliances_rental" : "디지털_가전",
 "__label__stationery_hobby_book" : "문구_도서",
 "__label__smoke" : "담배",
+"__label__water" : "생수",
+"__label__drink" : "음료",
+"__label__alchol" : "주류",
 }
 
 
