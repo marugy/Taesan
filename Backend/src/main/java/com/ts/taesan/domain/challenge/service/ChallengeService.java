@@ -62,7 +62,7 @@ public class ChallengeService {
         }
 
         ChallengeMakeResponse challengeMakeResponse = challengeQRepository.getState(memberId);
-        if (challengeMakeResponse.getState() == 2) {
+        if (challengeMakeResponse.getState() == 1) {
             ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeMakeResponse.getChallengeId()).orElseThrow();
             challengeParticipant.changeSpare(approvedAmt);
         }
