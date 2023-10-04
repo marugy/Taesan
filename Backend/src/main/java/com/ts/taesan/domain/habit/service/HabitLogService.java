@@ -27,6 +27,7 @@ public class HabitLogService {
         List<Long> habitIds = saveHabitRequest.getHabitIds();
         for (int i = 0; i < habitIds.size(); i++) {
             Habit habit = habitRepository.findById(habitIds.get(i)).orElseThrow();
+            habit.savingMoney(new Long(habit.getTargetMoney()));
             assetService.saveMoney(memberId, new Long(habit.getTargetMoney()), 2);
             HabitLog habitLog = HabitLog.builder()
                     .habit(habit)
