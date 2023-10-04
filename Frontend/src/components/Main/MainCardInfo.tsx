@@ -24,7 +24,7 @@ const MainCardInfo: React.FC<CardInfoProps> = ({ cardList, main }) => {
   }, [cardList]);
   return (
     <div className="w-full flex justify-center">
-      <div className="w-[70vw] dt:w-[30vw] ">
+      <div className="w-[75vw] dt:w-[30vw] ">
         <Swiper
           slidesPerView={1}
           spaceBetween={30}
@@ -38,8 +38,9 @@ const MainCardInfo: React.FC<CardInfoProps> = ({ cardList, main }) => {
           // swiper를 넘길 때마다 선택한 카드의 id값을 스토어에 저장.
           onSlideChange={(swiper: any) => setSelectedCardId(cardList[swiper.realIndex].cardId)}
         >
+
           {cardList.map((data, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="mb-5">
               <div className="w-full h-full bg-back flex justify-center items-center">
                 <Card
                   cardId={data.cardId}

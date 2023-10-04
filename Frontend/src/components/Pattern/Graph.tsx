@@ -68,7 +68,7 @@ const Graph = () => {
     };
     
     const analyzePlace = () => {
-        axios.post(`https://j9c211.p.ssafy.io/api/analyst-management/analysts/place/${selectedCardId}`,
+        axios.post(`https://j9c211.p.ssafy.io/api/analyst-management/analysts/place/analyst`,
         {
             month:month,
             year:year
@@ -87,7 +87,7 @@ const Graph = () => {
         })
     }
     const analyzeReceipt = () => {
-        axios.post(`https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/${selectedCardId}`,
+        axios.post(`https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/analyst`,
         {
             month:month,
             year:year

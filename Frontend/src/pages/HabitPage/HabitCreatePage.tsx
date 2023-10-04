@@ -130,9 +130,9 @@ const HabitCreatePage = () => {
   return (
     <div className="h-screen w-full font-main">
       <ArrowBack pageName="습관 절약" />
-      <div className="h-36 dt:h-48 w-4/5 mx-auto mt-10 bg-gradient-to-r from-cyan-500 to-blue-500 border rounded-md flex flex-col items-center justify-center ">
+      <div className="h-24 dt:h-36 w-4/5 mx-auto mt-5 bg-gradient-to-r from-cyan-500 to-blue-500 border rounded-md flex flex-col items-center justify-center ">
         <div className="text-white text-2xl dt:text-3xl font-semibold">습관 생성하기</div>
-        <div className="mt-5 text-center text-lg dt:text-2xl text-white">습관도 만들고, 돈도 모으고 !</div>
+        {/* <div className="mt-5 text-center text-lg dt:text-2xl text-white">습관도 만들고, 돈도 모으고 !</div> */}
       </div>
       <div className="flex justify-center ">
         <img src="/Habit/goodHabit.png" className="h-72 border rounded-full" />
