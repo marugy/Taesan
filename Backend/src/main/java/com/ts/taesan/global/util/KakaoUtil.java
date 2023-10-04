@@ -39,13 +39,16 @@ public class KakaoUtil {
 
     public String getCategory(String shopName) {
         KakaoResult result = transactionsClient.loadUserByUsername(key, shopName, 1, 1).get();
-        String categoryResult = result.getDocuments().get(0).getCategory_group_code();
-        if(categoryResult != null){
-            String finalCategory = categoryInfo.get(categoryResult);
-            if(finalCategory != null){
-                return finalCategory;
+        if(result != null && !result.getDocuments().isEmpty()){
+            String categoryResult = result.getDocuments().get(0).getCategory_group_code();
+            if(categoryResult != null){
+                String finalCategory = categoryInfo.get(categoryResult);
+                if(finalCategory != null){
+                    return finalCategory;
+                }
             }
         }
         return "기타";
+
     }
 }
