@@ -158,14 +158,14 @@ public class TransactionService {
     }
 
     // ToDo: 규람이 쓸 카테고리 최근 목록 -> 테스트 해야함
-    public List<OftenCategory> getOftenCategory(Long cardId) {
+    public List<OftenCategory> getOftenCategory(Long userId) {
         List<OftenCategory> oftenCategories = new ArrayList<>();
         LocalDate now = LocalDate.now();
         now = now.minusMonths(1);
         YearMonth before = YearMonth.now();
         before = before.minusMonths(1);
-        List<OftenCategory> transactions = qRepository.findOftenTransaction(cardId, before.atDay(1), before.atEndOfMonth());
-        List<OftenCategory> receipts = qRepository.findOftenReceipt(cardId, before.atDay(1), before.atEndOfMonth());
+        List<OftenCategory> transactions = qRepository.findOftenTransaction(userId, before.atDay(1), before.atEndOfMonth());
+        List<OftenCategory> receipts = qRepository.findOftenReceipt(userId, before.atDay(1), before.atEndOfMonth());
         oftenCategories.addAll(transactions);
         oftenCategories.addAll(receipts);
         return oftenCategories;

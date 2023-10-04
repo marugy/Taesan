@@ -88,12 +88,12 @@ public class TransactionAPI {
     }
 
     @ApiOperation(value = "자주 쓰는 카테고리 목록 불러오기", notes = "습관 생성 등에서 자주 쓰는 카테고리 목록 및 가격 불러오기")
-    @GetMapping("/oftenTransaction/{cardId]")
+    @GetMapping("/oftenTransaction")
     public ApiResponse<List<OftenCategory>> getOftenCategory(
-            @AuthenticationPrincipal User user,
-            @PathVariable Long cardId
+            @AuthenticationPrincipal User user
     ) {
-        List<OftenCategory> result =  transactionService.getOftenCategory(cardId);
+
+        List<OftenCategory> result =  transactionService.getOftenCategory(Long.parseLong(user.getUsername()));
         return OK(result);
     }
 
