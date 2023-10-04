@@ -55,16 +55,7 @@ interface SavingInfoProps {
             적금통 해지하기
           </Button>
         </div>
-        <div>
-          <Button
-            color="blue-gray"
-            onClick={() => {
-              navigate('/main');
-            }}
-          >
-            홈 화면 가기
-          </Button>
-        </div>
+        <div className='h-[120px]'/>
       </div>
       <BottomNav />
     </div>
