@@ -26,7 +26,6 @@ const SavingCreate = () => {
   const [completeVisible, setCompleteVisible] = useState(false); // 적금통 생성 완료 화면
   const [errorMessage, setErrorMessage] = useState('');
 
-  const today = dayjs(); // 오늘 날짜
   const duration = Math.max(0, dayjs(date).diff(today, 'day') + 1); // 오늘과 만기일 사이의 날짜 차이
   const navigate = useNavigate();
 
