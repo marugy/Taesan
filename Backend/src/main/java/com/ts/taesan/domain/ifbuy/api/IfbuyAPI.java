@@ -8,6 +8,7 @@ import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyPossibilityResponse;
 import com.ts.taesan.domain.ifbuy.api.dto.response.IfbuyRegisterResponse;
 import com.ts.taesan.domain.ifbuy.service.IfBuyService;
 import com.ts.taesan.global.api.ApiResponse;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,8 @@ public class IfbuyAPI {
     private final IfBuyService ifBuyService;
     @Value("${file.dir}")
     public String basicPath;
-    // 샀다치고 목록 가져오기
+
+    @ApiOperation(value = "샀다치고 목록 가져오기", notes = "샀다치고에 들어갔을 때 등록한 샀다치고의 목록을 가져오는 API")
     @GetMapping
     public ApiResponse<IfbuyListResponse> getIfbuyList(@AuthenticationPrincipal User user) {
         Long memberId = Long.parseLong(user.getUsername());
@@ -47,7 +49,7 @@ public class IfbuyAPI {
         return OK(result);
     }
 
-    // 샀다치고 등록하기
+    @ApiOperation(value = "샀다치고 등록하기", notes = "샀다치고에 물건을 등록하는 API")
     @PostMapping("")
     public ApiResponse<IfbuyRegisterResponse> postIfbuyList(
             @RequestPart(value = "info") IfbuyRegisterRequest request,
@@ -60,13 +62,7 @@ public class IfbuyAPI {
         return OK(new IfbuyRegisterResponse());
     }
 
-    @GetMapping("/possibility")
-    public ApiResponse<IfbuyPossibilityResponse> askToTaesan(
-            @ModelAttribute IfbuyPossibilityRequest ifbuyPossibilityRequest
-    ) {
-        return OK(new IfbuyPossibilityResponse());
-    }
-
+    @ApiOperation(value = "이미지 불러오기", notes = "태산 서비스로부터 이미지를 불러오는 API")
     @GetMapping("/image/{path}")
     public ResponseEntity<?> showImage(@PathVariable String path){
         Resource resource = new FileSystemResource(basicPath+path);

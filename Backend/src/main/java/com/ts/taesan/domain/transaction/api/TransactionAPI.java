@@ -51,7 +51,7 @@ public class TransactionAPI {
         return OK(receipts);
     }
 
-    @ApiOperation(value = "영수증 정보 등록하기(미완성)", notes = "분석이 완료된 영수증 정보를 등록")
+    @ApiOperation(value = "영수증 정보 등록하기", notes = "분석이 완료된 영수증 정보를 등록")
     @PostMapping("/{transactionId}/receipt")
     public ApiResponse<ReceiptResultResponse> setReciptInfo(@PathVariable Long transactionId, @RequestBody ReceiptRequest receiptRequest){
         ReceiptResultResponse result = transactionService.setReciptInfo(transactionId, receiptRequest);
