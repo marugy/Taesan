@@ -4,9 +4,7 @@ import axios from 'axios';
 import { Toast } from 'components/Common/Toast';
 import { NewPincode } from 'components/ChangePincode/NewPincode';
 import { useUserStore } from 'store/UserStore';
-import ArrowBackParam from 'components/Common/ArrowBackParam';
 import { Pincode } from 'components/ChangePincode/Pincode';
-
 const ChangePincodePage = () => {
   const { accessToken, refreshToken } = useUserStore();
   const [pincodeVisible, setPincodeVisible] = useState(true);
@@ -62,9 +60,12 @@ const ChangePincodePage = () => {
     }
   }, [simplePassword]);
 
+  const handleClose = () => {
+    navigate('/mypage');
+  };
+
   return (
     <div className=" flex flex-col items-center">
-      <ArrowBackParam pageName="간편 비밀번호 변경" param="/mypage" />
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} visibleFalse={() => setPincodeVisible(false)} />}
       {newPincodeVisble && (
         <NewPincode pincode={pincode} setPincode={setPincode} setSimplePassword={setSimplePassword} />
