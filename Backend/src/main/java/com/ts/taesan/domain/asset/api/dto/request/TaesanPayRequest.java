@@ -12,6 +12,6 @@ public class TaesanPayRequest {
         private String shopName;
 
         @JsonProperty("pay_amt")
-        private Integer payAmt;
+        private Long payAmt;
 
     }

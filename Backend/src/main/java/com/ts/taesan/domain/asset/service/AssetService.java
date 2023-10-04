@@ -12,6 +12,7 @@ import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.transaction.entity.Transaction;
 import com.ts.taesan.domain.transaction.repository.TransactionRepository;
+import com.ts.taesan.domain.transaction.service.TransactionService;
 import com.ts.taesan.global.openfeign.auth.AuthAccessUtil;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
 import com.ts.taesan.global.openfeign.auth.dto.request.TokenRequest;
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AssetService {
 
+    private final TransactionService transactionService;
     private final MemberRepository memberRepository;
     private final TikkleRepository tikkleRepository;
     private final TransactionRepository transactionRepository;
@@ -54,7 +56,6 @@ public class AssetService {
     private final BankAccessUtil bankAccessUtil;
     private final CardAccessUtil cardAccessUtil;
     private final AuthAccessUtil authAccessUtil;
-    private final AuthClient authClient;
 
     public void transfer(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
@@ -83,14 +84,12 @@ public class AssetService {
 
     public void pay(Long memberId, Long cardId, String accessToken, TaesanPayRequest payRequest) {
         Member member = memberRepository.findById(memberId).get();
-        PayRequest request = new PayRequest(payRequest.getShopName(), payRequest.getPayAmt(), accessToken);
+        PayRequest request = new PayRequest(payRequest.getShopName(), payRequest.getPayAmt());
         cardAccessUtil.pay(member, cardId, request);
+        transactionService.saveNewTransaction(cardId, payRequest.getShopName(), payRequest.getPayAmt(), memberId);
     }
 
     public void connectAssets(Long memberId) {
-//        HashMap<String, String> map = new HashMap<>();
-//        map.put("user_ci", Long.toString(memberId));
-//        authClient.registerAuth(map);
         authAccessUtil.addMydataAccessToken(memberId);
         Member member = memberRepository.findById(memberId).get();
         String mydataAccessToken = authAccessUtil.getMydataAccessToken(member);

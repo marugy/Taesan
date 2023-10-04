@@ -76,16 +76,16 @@ public class TransactionAPI {
         return OK(result);
     }
 
-    @ApiOperation(value = "거래내역 추가 요청", notes = "결제가 발생했을때 카드 서버는 이 API를 호출하여 우리 서버의 거래내역을 최신화합니다.")
-    @PostMapping("/transaction/{card_id}")
-    public ResponseEntity<Void> addNewTransaction(
-            @AuthenticationPrincipal User user,
-            @PathVariable("card_id") Long cardId,
-            @ModelAttribute CardHistoryList history
-    ) {
-        transactionService.saveNewTransaction(cardId, history, Long.parseLong(user.getUsername()));
-        return ResponseEntity.ok(null);
-    }
+//    @ApiOperation(value = "거래내역 추가 요청", notes = "결제가 발생했을때 카드 서버는 이 API를 호출하여 우리 서버의 거래내역을 최신화합니다.")
+//    @PostMapping("/transaction/{card_id}")
+//    public ResponseEntity<Void> addNewTransaction(
+//            @AuthenticationPrincipal User user,
+//            @PathVariable("card_id") Long cardId,
+//            @ModelAttribute CardHistoryList history
+//    ) {
+//        transactionService.saveNewTransaction(cardId, history, Long.parseLong(user.getUsername()));
+//        return ResponseEntity.ok(null);
+//    }
 
     @ApiOperation(value = "자주 쓰는 카테고리 목록 불러오기", notes = "습관 생성 등에서 자주 쓰는 카테고리 목록 및 가격 불러오기")
     @GetMapping("/oftenTransaction/{cardId]")

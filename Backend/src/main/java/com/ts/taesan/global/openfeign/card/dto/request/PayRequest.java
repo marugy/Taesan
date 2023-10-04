@@ -11,13 +11,10 @@ import lombok.Setter;
 @Getter
 public class PayRequest {
 
-        @JsonProperty("shop_name")
-        private String shopName;
+    @JsonProperty("shop_name")
+    private String shopName;
 
-        @JsonProperty("pay_amt")
-        private Integer payAmt;
+    @JsonProperty("pay_amt")
+    private Long payAmt;
 
-    @JsonProperty("access_token")
-    private String accessToken;
-
-    }
+}

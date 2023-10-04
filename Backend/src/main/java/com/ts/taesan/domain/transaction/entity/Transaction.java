@@ -2,6 +2,7 @@ package com.ts.taesan.domain.transaction.entity;
 
 import com.ts.taesan.domain.asset.api.dto.inner.CardHistoryList;
 import com.ts.taesan.domain.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -54,6 +55,20 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Builder
+    public Transaction(Long cardId, String approvedNum, Long cardHistoryId, String shopName, Long approvedAmount, String category, String cardType, String shopNumber, Member member) {
+        this.cardId = cardId;
+        this.approvedNum = "12345678";
+        this.cardHistoryId = cardHistoryId;
+        this.dateTime = LocalDateTime.now();
+        this.shopName = shopName;
+        this.approvedAmount = approvedAmount;
+        this.category = category;
+        this.cardType = cardType;
+        this.shopNumber = "1209120912";
+        this.member = member;
+    }
 
     public Transaction(CardHistoryList history, Long cardId, String category, Member member) {
         this.cardId = cardId;
