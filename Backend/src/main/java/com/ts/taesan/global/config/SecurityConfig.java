@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/api/auth-management/**", "/api/member-management/members/join", "/api/member-management/members/login", "/api/member-management/members/simple-login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/**").permitAll()
-                .antMatchers("/api/member-management/members/check/token", "/api/ifbuy-management/ifbuys/image/**", "/api/auth-management/**", "/api/member-management/members/join", "/api/member-management/members/check", "/api/member-management/members/login", "/api/member-management/members/simple-login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
+                .antMatchers("/api/member-management/members/check/token", "/api/ifbuy-management/ifbuys/image/**", "/api/auth-management/**", "/api/member-management/members/join", "/api/member-management/members/check", "/api/member-management/members/login", "/api/member-management/members/issue", "/api/member-management/members/simple-login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
