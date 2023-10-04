@@ -87,9 +87,7 @@ public class AssetService {
     }
 
     public void connectAssets(Long memberId) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("user_ci", Long.toString(memberId));
-        authClient.registerAuth(map);
+        authAccessUtil.addMydataAccessToken(memberId);
         Member member = memberRepository.findById(memberId).get();
         String mydataAccessToken = authAccessUtil.getMydataAccessToken(member);
         member.earnMydataAccessToken("Bearer " + mydataAccessToken);
