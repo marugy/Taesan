@@ -25,7 +25,7 @@ public class AnalystService {
     private final AnalystClient analystClient;
     private final FileUtil fileUtil;
 
-    public PlaceAnalystResponse placeAnlystResponse(Long cardId, String year, String month){
+    public PlaceAnalystResponse placeAnlystResponse(Long userId, String year, String month){
         YearMonth start = null;
         YearMonth end = null;
         if(month.equals("0")){ // 년에 대한 검색을 실행할 때
@@ -36,11 +36,11 @@ public class AnalystService {
             start = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
             end = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
         }
-        List<Info> list = transactionQRepository.findTransactionAnal(cardId, start.atDay(1), end.atEndOfMonth());
+        List<Info> list = transactionQRepository.findTransactionAnal(userId, start.atDay(1), end.atEndOfMonth());
         return new PlaceAnalystResponse(year, month, list);
     }
 
-    public ReceiptAnalystResponse receiptAnalystResponse(Long cardId, String year, String month){
+    public ReceiptAnalystResponse receiptAnalystResponse(Long userId, String year, String month){
         YearMonth start = null;
         YearMonth end = null;
         if(month.equals("0")){ // 년에 대한 검색을 실행할 때
@@ -51,7 +51,7 @@ public class AnalystService {
             start = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
             end = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
         }
-        List<Info> list = transactionQRepository.findReceiptAnal(cardId, start.atDay(1), end.atEndOfMonth());
+        List<Info> list = transactionQRepository.findReceiptAnal(userId, start.atDay(1), end.atEndOfMonth());
         return new ReceiptAnalystResponse(year, month, list);
     }
 
