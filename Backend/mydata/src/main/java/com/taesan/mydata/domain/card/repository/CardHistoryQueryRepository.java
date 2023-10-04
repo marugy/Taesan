@@ -47,10 +47,9 @@ public class CardHistoryQueryRepository {
                 .fetch();
     }
 
-    public Long count(long cardId) {
+    public Long count() {
         return queryFactory.select(cardHistory.count())
                 .from(cardHistory)
-                .where(cardHistory.card.id.eq(cardId))
                 .fetchFirst();
     }
 

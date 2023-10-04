@@ -85,10 +85,11 @@ public class CardApi {
     public ResponseEntity<PayResponse> pay(
             @AuthenticationPrincipal User user,
             @PathVariable("card_id") long cardId,
-            @Valid @RequestBody PayRequest payRequest)
+            @Valid @RequestBody TransactionRequest transactionRequest)
     {
-        PayResponse pay = cardService.pay(Long.parseLong(user.getUsername()), cardId, payRequest.getShopName(), payRequest.getPayAmt());
+        PayResponse pay = cardService.pay(Long.parseLong(user.getUsername()), cardId, transactionRequest);
         return new ResponseEntity<>(pay, HttpStatus.OK);
     }
 
+    @GetMapping("/findLastCardHistoryId")
 }

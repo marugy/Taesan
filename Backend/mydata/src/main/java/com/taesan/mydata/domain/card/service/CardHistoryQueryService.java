@@ -35,4 +35,7 @@ public class CardHistoryQueryService {
         }
     }
 
+    public Long findLastCardHistoryId() {
+        return cardHistoryQueryRepository.count();
+    }
 }

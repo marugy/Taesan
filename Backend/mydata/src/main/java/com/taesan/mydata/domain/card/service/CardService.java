@@ -1,5 +1,6 @@
 package com.taesan.mydata.domain.card.service;
 
+import com.taesan.mydata.domain.card.api.dto.request.TransactionRequest;
 import com.taesan.mydata.domain.card.api.dto.response.PayResponse;
 import com.taesan.mydata.domain.card.entity.Card;
 import com.taesan.mydata.domain.card.entity.CardHistory;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Service
@@ -24,20 +26,21 @@ public class CardService {
 //    private final TransactionClient transactionClient;
     private final DummyUtils dummyUtils;
 
-    public PayResponse pay(Long memberId, Long cardId, String shopName, Long amount) {
+    public PayResponse pay(Long memberId, Long cardId, TransactionRequest transactionRequest) {
         if (!cardRepository.existsByMemberCi(memberId)) {
             throw new RuntimeException("당신의 카드가 아닙니다.");
         }
         Card card = cardRepository.findById(cardId).get();
         CardHistory cardHistory = CardHistory.builder()
+                .id(transactionRequest.getCardHistoryId())
                 .card(card)
-                .approvedNum("12345678")
-                .approvedDtime(new Date())
+                .approvedNum(transactionRequest.getApprovedNum())
+                .approvedDtime(Timestamp.valueOf(transactionRequest.getDateTime()))
                 .status("01")
-                .payType(dummyUtils.getType(2))
-                .merchantName(shopName)
-                .merchantRegno(dummyUtils.getShop().getRegistrationNumber())
-                .approvedAmt(amount)
+                .payType(transactionRequest.getCardType())
+                .merchantName(transactionRequest.getShopName())
+                .merchantRegno(transactionRequest.getShopNumber())
+                .approvedAmt(transactionRequest.getApprovedAmount())
                 .build();
         cardHistoryRepository.save(cardHistory);
 //        transactionClient.saveNewTransaction(accessToken, cardId, new CardHistoryList(cardHistory));
