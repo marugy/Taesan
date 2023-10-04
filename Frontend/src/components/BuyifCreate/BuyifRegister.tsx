@@ -10,7 +10,6 @@ import { Toast } from 'components/Common/Toast';
 import { Pincode } from 'components/Common/Pincode';
 
 const BuyifRegister = () => {
-  const [buyifbot, setBuyifbot] = useState(false);
   const [changeProfileImage, setChangeProfileImage] = useState<File | null>(null);
   const [itemname, setItemname] = useState('');
   const [itemprice, setItemprice] = useState('');
@@ -104,21 +103,7 @@ const BuyifRegister = () => {
   const handleItempriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setItemprice(event.target.value);
   };
-  const handleAnalys = () => {
-    if (itemname === '') {
-      Swal.fire({
-        icon: 'warning',
-        title: '사고 싶은 물건이름을 입력해주세요',
-      });
-    } else if (itemprice === '') {
-      Swal.fire({
-        icon: 'warning',
-        title: '물건의 가격을 입력해주세요',
-      });
-    } else {
-      setBuyifbot(true);
-    }
-  };
+
 
   return (
     <div className="flex flex-col h-screen">
@@ -173,21 +158,12 @@ const BuyifRegister = () => {
               <Input placeholder="물건 가격" type="number" onChange={handleItempriceChange} />
             </div>
           </div>
-          <div className="w-[90%] flex justify-end gap-6">
-            <Button variant="gradient" color="blue" onClick={handleAnalys}>
-              <span>사도 될까요?</span>
-            </Button>
+          <div className="w-[90%] flex justify-end">
             <Button variant="gradient" color="blue" onClick={Buyif}>
               <span>등록</span>
             </Button>
           </div>
         </div>
-        {buyifbot ? (
-          <div className="w-full flex flex-col items-center gap-6">
-            <img src={'/buyifchatbot.png'} alt="chatbot" className="w-[40%] aspect-square my-6" />
-            <div className="text-2xl font-bold w-[80%] text-center">현재 자산에 올바르지 않은 소비 같아요</div>
-          </div>
-        ) : null}
       </div>
     </div>
   );
