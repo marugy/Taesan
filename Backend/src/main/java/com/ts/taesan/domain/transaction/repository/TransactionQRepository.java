@@ -74,7 +74,7 @@ public class TransactionQRepository {
 
     public List<OftenCategory> findOftenTransaction(Long id, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(OftenCategory.class, transaction.category,
-                        transaction.dateTime.countDistinct().as("count"),transaction.approvedAmount.sum().as("money"), transaction.approvedAmount.sum().divide(30).as("dateMoney")
+                        transaction.dateTime.countDistinct().as("count"),transaction.approvedAmount.sum().as("money")
                 )).from(transaction).where(transaction.member.id.eq(id).
                 and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(transaction.category)
@@ -84,7 +84,7 @@ public class TransactionQRepository {
     public List<OftenCategory> findOftenReceipt(Long id, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(OftenCategory.class, receiptList.category,
                 receiptList.receipt.transaction.dateTime.countDistinct().as("count"), receiptList.price.sum().as("money")
-                , receiptList.price.sum().divide(30).as("dateMoney"))).from(receiptList)
+                )).from(receiptList)
                 .where(receiptList.receipt.transaction.member.id.eq(id)
                         .and(receiptList.category.eq("커피/차").or(receiptList.category.eq("과자/간식")
                                 .or(receiptList.category.eq("제과/잼").or(receiptList.category.eq("완구")
