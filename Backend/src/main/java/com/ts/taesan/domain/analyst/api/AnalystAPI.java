@@ -27,14 +27,14 @@ public class AnalystAPI {
 
     private final AnalystService analystService;
     @ApiOperation(value = "장소 카테고리 분석 정보 불러오기", notes = "카테고리 분석에서 장소에 대한 분석 정보를 불러오는 API")
-    @PostMapping("/place")
+    @PostMapping("/place/analyst")
     public ApiResponse<PlaceAnalystResponse> analyzePlace(@RequestBody PlaceAnalystRequest request, @AuthenticationPrincipal User user) {
         PlaceAnalystResponse result = analystService.placeAnlystResponse(Long.parseLong(user.getUsername()), request.getYear(), request.getMonth());
         return OK(result);
     }
 
     @ApiOperation(value = "영수증 카테고리 분석 정보 불러오기", notes = "카테고리 분석에서 영수증에 대한 분석 정보를 불러오는 API")
-    @PostMapping("/receipt")
+    @PostMapping("/receipt/analyst")
     public ApiResponse<ReceiptAnalystResponse> analyzeReceipt(@RequestBody ReceiptAnalystRequest request, @AuthenticationPrincipal User user) {
         ReceiptAnalystResponse result = analystService.receiptAnalystResponse(Long.parseLong(user.getUsername()), request.getYear(), request.getMonth());
         return OK(result);
