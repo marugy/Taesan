@@ -5,8 +5,8 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
 import React, { useEffect, useState } from 'react';
-import ArrowBack from 'components/Common/ArrowBack';
-
+import ArrowBackChangePincode from './ArrowBackPincode';
+import { useNavigate } from 'react-router-dom';
 const MAX_LENGTH = 6;
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
 }
 
 export const NewPincode = ({ pincode, setPincode, setSimplePassword }: Props) => {
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(false);
   // 현재 턴 (1: 입력, 2: 확인)
   const [turn, setTurn] = useState(1);
@@ -66,12 +67,19 @@ export const NewPincode = ({ pincode, setPincode, setSimplePassword }: Props) =>
     }
   }, [stack, pincode, turn]);
 
+  const handleClose = () => {
+    navigate('/mypage');
+  };
+
   return (
     <div
       className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-40 flex-col bg-back mt-5 ${
         errorMessage ? 'animate-shake' : ''
       }`}
     >
+      <div className="fixed top-10 left-5  dt:left-96">
+        <ArrowBackChangePincode pageName="뒤로가기" handleClose={handleClose} />
+      </div>
       {turn === 1 && (
         <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
           새 암호 입력

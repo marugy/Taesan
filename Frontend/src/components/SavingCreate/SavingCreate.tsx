@@ -26,7 +26,7 @@ const SavingCreate = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const today = dayjs(); // 오늘 날짜
-  const duration = dayjs(date).diff(today, 'day') + 1; // 오늘과 만기일 사이의 날짜 차이
+  const duration = Math.max(0, dayjs(date).diff(today, 'day') + 1); // 오늘과 만기일 사이의 날짜 차이
   const navigate = useNavigate();
 
   const onCorrectPincode = () => {

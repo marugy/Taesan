@@ -87,11 +87,13 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
 
   return (
     <div
-      className={`flex inset-0 justify-center items-center fixed h-screen  w-full z-40 flex-col bg-back  mt-5 ${
+      className={`flex inset-0 justify-center items-center fixed h-screen w-full z-40 flex-col bg-back ${
         errorMessage ? 'animate-shake' : ''
       }`}
     >
-      <ArrowBackPincode pageName="뒤로가기" handleClose={handleClose} />
+      <div className="fixed top-10 left-5  dt:left-96">
+        <ArrowBackPincode pageName="뒤로가기" handleClose={handleClose} />
+      </div>
 
       <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
         암호 입력

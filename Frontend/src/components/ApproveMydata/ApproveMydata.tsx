@@ -5,7 +5,7 @@ import Swal2 from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
-
+import { Toast } from 'components/Common/Toast';
 import Loading from 'components/Common/Loading';
 
 const ApproveMydata = () => {
@@ -54,6 +54,12 @@ const ApproveMydata = () => {
           navigate('/main/asset/register');
         })
         .catch((error) => {
+          setIsLoading(false);
+          Toast.fire({
+            icon: 'error',
+            title: '데이터를 불러오는데 실패했습니다!',
+          });
+
           console.log(accessToken);
           console.log(refreshToken);
           console.log(error);

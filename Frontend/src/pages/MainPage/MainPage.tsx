@@ -32,9 +32,9 @@ const MainPage = () => {
   // 사용자 자산 관련 State
   // const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
   // const [connectedAsset, setConnectedAsset] = useState(false); // 자산 연동 여부
-  const [bankName, setBankName] = useState('카카오뱅크'); // 은행 이름
-  const [accountNumber, setAccountNumber] = useState('110509677498'); // 계좌 번호
-  const [balance, setBalance] = useState(870120); // 잔액
+  const [bankName, setBankName] = useState(''); // 은행 이름
+  const [accountNumber, setAccountNumber] = useState(''); // 계좌 번호
+  const [balance, setBalance] = useState(0); // 잔액
   const [cardList, setCardList] = useState([
     // Axios 쏘고 응답값 갈아 끼우기
     {
@@ -95,7 +95,8 @@ const MainPage = () => {
     return userAssetInfo;
   };
 
-  const { data: userProfileInfo, isLoading: isLoading1 } = useQuery('getInfo', getInfo);
+  const { data: userProfileInfo } = useQuery('getInfo', getInfo);
+  // const { data: userProfileInfo, isLoading: isLoading1 } = useQuery('getInfo', getInfo);
   const { data: userAssetInfo } = useQuery('getAsset', getAsset);
 
   // const mutation = useMutation(testPost);
@@ -117,14 +118,14 @@ const MainPage = () => {
 
     const timerId = setTimeout(() => {
       handleNotification();
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timerId);
   }, []);
 
   const [isShowingLoading, setIsShowingLoading] = useState(true);
   useEffect(() => {
     // 데이터 로딩이 완료되었더라도 최소 100ms 동안 로딩 컴포넌트를 보여주기 위해 setTimeout을 사용합니다.
-    const timerId = setTimeout(() => setIsShowingLoading(false), 200);
+    const timerId = setTimeout(() => setIsShowingLoading(false), 300);
 
     // 데이터 로딩이 더 빨리 끝나면, 위의 setTimeout을 취소하고 즉시 로딩 컴포넌트를 숨깁니다.
     // if (!isLoading1 || !isLoading2) {
@@ -134,11 +135,11 @@ const MainPage = () => {
 
     // 컴포넌트가 언마운트되면 setTimeout을 취소합니다.
     return () => clearTimeout(timerId);
-  }, [isLoading1]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center h-full">
-      {(isLoading1 || isShowingLoading) && <Loading />}
+      {isShowingLoading && <Loading />}
       <div className="dt:w-screen dt:h-screen dt:flex">
         <div className="mt-3 dt:fixed dt:top-3 dt:left-6">
           <img src="/Main/logo.png" className="h-16" />

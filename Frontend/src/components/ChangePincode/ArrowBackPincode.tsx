@@ -9,7 +9,7 @@ interface Props {
   handleClose: any;
 }
 
-const ArrowBackPincode = ({ pageName, handleClose }: Props) => {
+const ArrowBackChangePincode = ({ pageName, handleClose }: Props) => {
   const navigate = useNavigate();
 
   return (
@@ -21,4 +21,4 @@ const ArrowBackPincode = ({ pageName, handleClose }: Props) => {
   );
 };
 
-export default ArrowBackPincode;
+export default ArrowBackChangePincode;

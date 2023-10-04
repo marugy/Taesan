@@ -8,6 +8,8 @@ import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
+import ArrowBackChangePincode from './ArrowBackPincode';
+import { useNavigate } from 'react-router-dom';
 
 const MAX_LENGTH = 6;
 
@@ -17,6 +19,7 @@ interface Props {
 }
 
 export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
+  const navigate = useNavigate();
   const { accessToken, refreshToken } = useUserStore();
 
   const [simplePassword, setSimplePassword] = useState('');
@@ -80,8 +83,7 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
   }, [stack]);
 
   const handleClose = () => {
-    setStack([]);
-    visibleFalse();
+    navigate('/mypage');
   };
 
   return (
@@ -90,6 +92,9 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
         errorMessage ? 'animate-shake' : ''
       }`}
     >
+      <div className="fixed top-10 left-5  dt:left-96">
+        <ArrowBackChangePincode pageName="뒤로가기" handleClose={handleClose} />
+      </div>
       <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
         암호 입력
       </div>
