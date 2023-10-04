@@ -11,6 +11,7 @@ import axios from 'axios';
 import AccountRegister from 'components/ChangeAccount/AccountRegister';
 import AssetRegisterList from 'components/ChangeAccount/AssetRegisterList';
 import { useNavigate } from 'react-router-dom';
+import Swal2 from 'sweetalert2';
 
 const ChangeAccountPage = () => {
   const { accessToken, refreshToken, connectedAsset, setConnectedAsset, createdTikkle, setCreatedTikkle } =
@@ -42,6 +43,10 @@ const ChangeAccountPage = () => {
   useEffect(() => {
     tokenCheck();
     if (connectedAsset === false) {
+      Swal2.fire({
+        icon: 'info',
+        title: '자산을 연결해 주세요',
+      });
       navigate('/main');
     }
   }, []);
