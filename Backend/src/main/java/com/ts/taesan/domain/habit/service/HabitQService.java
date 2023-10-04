@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +47,13 @@ public class HabitQService {
     }
 
     public List<ClearHabitResponse> getClearHabits(Long memberId) {
-        List<ClearHabitResponse> clearHabitResponses = habitQRepository.getSaveHabit(memberId);
-        return clearHabitResponses;
+
+        List<ClearHabitResponse> clearCategoryHabitResponses = habitQRepository.getSaveCategoryHabit(memberId); //카테고리에서 조회
+
+        List<ClearHabitResponse> clearPlaceHabitResponses = habitQRepository.getSavePlaceHabit(memberId); //장소에서 조회
+
+        clearCategoryHabitResponses.addAll(clearPlaceHabitResponses);
+
+        return clearCategoryHabitResponses;
     }
 }

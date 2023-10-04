@@ -15,6 +15,7 @@ public class CreateHabitRequest {
     private String title;
     private String habitName;
     private int targetMoney;
+    private int type; //0이면 장소, 1이면 카테고리
 
     public Habit toEntity(Member member) {
         return Habit.builder()
@@ -22,6 +23,7 @@ public class CreateHabitRequest {
                 .title(this.title)
                 .habitName(this.habitName)
                 .targetMoney(this.targetMoney)
+                .type(this.type)
                 .build();
     }
 }

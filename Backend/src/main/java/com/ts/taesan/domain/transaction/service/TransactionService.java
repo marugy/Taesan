@@ -75,7 +75,7 @@ public class TransactionService {
         }
     }
 
-    public TransactionResponse getTransactionDetail(Long transactionId, Long memberId, Long cardId){
+    public TransactionResponse getTransactionDetail(Long transactionId, Long memberId, Long cardId) {
         TransactionDTO transactionDTO = qRepository.findTransactionDetailByCardId(transactionId);
         LocalDate now = LocalDate.now();
         now = now.minusMonths(3);
@@ -168,16 +168,16 @@ public class TransactionService {
         YearMonth before = YearMonth.now();
         before = before.minusMonths(1);
         List<OftenCategory> transactions = qRepository.findOftenTransaction(userId, before.atDay(1), before.atEndOfMonth());
-        for(OftenCategory temp : transactions){
-            temp.setDateMoney(temp.getMoney()/30);
+        for (OftenCategory temp : transactions) {
+            temp.setDateMoney(temp.getMoney() / 30);
+            temp.setType(0);
         }
         oftenCategories.addAll(transactions);
 
         List<OftenCategory> receipts = qRepository.findOftenReceipt(userId, before.atDay(1), before.atEndOfMonth());
-        for(OftenCategory temp : receipts){
-
-            temp.setDateMoney(temp.getMoney()/30);
-
+        for (OftenCategory temp : receipts) {
+            temp.setDateMoney(temp.getMoney() / 30);
+            temp.setType(1);
         }
         oftenCategories.addAll(receipts);
 

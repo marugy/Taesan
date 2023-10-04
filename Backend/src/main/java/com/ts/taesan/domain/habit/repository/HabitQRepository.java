@@ -1,7 +1,6 @@
 package com.ts.taesan.domain.habit.repository;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.habit.dto.response.ClearHabitResponse;
@@ -121,7 +120,7 @@ public class HabitQRepository {
         return habitCalendar;
     }
 
-    public List<ClearHabitResponse> getSaveHabit(Long memberId) {
+    public List<ClearHabitResponse> getSaveCategoryHabit(Long memberId) {
 
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
@@ -154,7 +153,7 @@ public class HabitQRepository {
                         habit.targetMoney
                 ))
                 .from(habit)
-                .where(habit.state.eq(0)
+                .where(habit.state.eq(0).and(habit.type.eq(1))
                         .and(habit.habitName.notIn(
                                 JPAExpressions.select(
                                                 receiptList.category).distinct()
@@ -177,6 +176,63 @@ public class HabitQRepository {
                 )
                 .fetch();
         return saveHabit;
+    }
+
+    public List<ClearHabitResponse> getSavePlaceHabit(Long memberId) {
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        System.out.println("시작일 : " + startOfDay + " 종료일 : " + endOfDay);
+
+        Date today = new Date();
+
+        // 현재 날짜의 시작 시간을 계산합니다. (시간, 분, 초, 밀리초를 0으로 설정)
+        Calendar calendarStart = Calendar.getInstance();
+        calendarStart.setTime(today);
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+        calendarStart.set(Calendar.MINUTE, 0);
+        calendarStart.set(Calendar.SECOND, 0);
+        calendarStart.set(Calendar.MILLISECOND, 0);
+        Date startDay = calendarStart.getTime();
+
+        // 현재 날짜의 끝 시간을 계산합니다. (시간, 분, 초, 밀리초를 23:59:59:999로 설정)
+        Calendar calendarEnd = Calendar.getInstance();
+        calendarEnd.setTime(today);
+        calendarEnd.set(Calendar.HOUR_OF_DAY, 23);
+        calendarEnd.set(Calendar.MINUTE, 59);
+        calendarEnd.set(Calendar.SECOND, 59);
+        calendarEnd.set(Calendar.MILLISECOND, 999);
+        Date endDay = calendarEnd.getTime();
+
+        List<ClearHabitResponse> saveHabit = queryFactory.select(Projections.constructor(ClearHabitResponse.class,
+                        habit.id,
+                        habit.habitName,
+                        habit.targetMoney
+                ))
+                .from(habit)
+                .where(habit.state.eq(0).and(habit.type.eq(0))
+                        .and(habit.habitName.notIn(
+                                JPAExpressions.select(
+                                                transaction.category).distinct()
+                                        .from(transaction)
+                                        .join(member).on(transaction.member.id.eq(member.id))
+                                        .where(transaction.member.id.eq(memberId)
+                                                .and(transaction.dateTime.between(startOfDay, endOfDay))
+                                        ))
+                        )
+                        .and(habit.habitName.notIn(
+                                JPAExpressions.select(
+                                                habit.habitName).distinct()
+                                        .from(habitLog)
+                                        .join(habit).on(habit.id.eq(habitLog.habit.id))
+                                        .join(member).on(member.id.eq(habit.member.id))
+                                        .where(member.id.eq(memberId).and(habitLog.saveDay.between(startDay, endDay)))
+                        ))
+                )
+                .fetch();
+        return saveHabit;
+
     }
 
 //    public Long getSavingDays(String habitTitle, Long memberId) {

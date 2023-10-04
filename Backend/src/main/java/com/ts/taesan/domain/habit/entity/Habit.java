@@ -47,6 +47,8 @@ public class Habit extends BaseEntity {
 
     private LocalDateTime endDate;
 
+    private int type; //0이면 장소 1이면 카테고리
+
     public void endHabit() {
         this.state = 1;
         this.endDate = LocalDateTime.now();

@@ -11,5 +11,5 @@ public class OftenCategory {
     private Long count;
     private Long money;
     private Long dateMoney; // 돈을 30일로 나눈 하루 금액
-
+    private int type; //0이면 장소, 1이면 카테고리
 }
