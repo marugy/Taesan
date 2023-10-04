@@ -22,35 +22,20 @@ const LoginForm = () => {
   const { setAccessToken, setRefreshToken, setUserId } = useUserStore();
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
-  const [autoLogin,setAutoLogin] = useState(false);
+  const [autoLogin, setAutoLogin] = useState(false);
 
-  const { 
+  const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormProps>({ resolver: yupResolver(schema) });
 
   const onSubmit = (data: FormProps) => {
-    // postLogin을 불러와서 id랑 password를 넘겨주고,
-    // postLogin(data.loginId, data.password)
-    //   //받아온 accessToken과 refreshToken을 store에 저장해줍니다.
-    //   .then((res) => {
-    //     setAccessToken(res.data.response.accessToken);
-    //     setRefreshToken(res.data.response.refreshToken);
-    //     console.log(res.data);
-    //     console.log(res.data.response.accessToken);
-    //     navigate('/main');
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     console.log(data.loginId, data.password)
-    //   });
-    // console.log('폼데이터', data);
     axios
       .post('https://j9c211.p.ssafy.io/api/member-management/members/login', {
         loginId: data.loginId,
         password: data.password,
-        autoLogin:autoLogin,
+        autoLogin: autoLogin,
       })
       .then((res) => {
         console.log(res.data);
@@ -66,7 +51,7 @@ const LoginForm = () => {
         setErrorMsg('아이디와 비밀번호를 확인해주세요.');
       });
   };
-console.log(autoLogin)
+  console.log(autoLogin);
   return (
     <div>
       <Card color="transparent" shadow={false} className="flex justify-center items-center">
