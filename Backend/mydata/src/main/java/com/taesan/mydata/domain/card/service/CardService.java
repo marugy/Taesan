@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class CardService {
