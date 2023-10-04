@@ -73,9 +73,16 @@ const HistoryDetail = () => {
     //               };
     //             setClovaAnalys(updatedClovaAnalys);
     //             setImgRegister(true)
+    //             setLoading(false)
     //         })
     //         .catch((error)=>{
     //             console.log(formData)
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: '사진을 인식하지 못했어요',
+    //               });
+    //             navigate(0)
+    //             setLoading(false)
     //         })
     //     }
     // }
@@ -95,7 +102,7 @@ const HistoryDetail = () => {
             setShopName(res.data.response.transactionDTO.shopName)
             setShopNumber(res.data.response.transactionDTO.shopNumber)
             setRecentCount(res.data.response.recentHistories.count)
-            setRecentSum(res.data.response.recentHistories.sum)
+            setRecentSum(res.data.response.recentHistories.sum)  
         })
         .catch((error)=>{
             console.log(error)
@@ -140,6 +147,7 @@ const HistoryDetail = () => {
     useEffect(()=>{
         // if (receiptImage) {
         //     postOCR()
+        //     setLoading(true)
         // }
         if (receiptImage) {
             getOCR();
