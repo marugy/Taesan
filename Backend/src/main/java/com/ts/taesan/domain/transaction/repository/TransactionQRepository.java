@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ts.taesan.domain.analyst.service.dto.response.Info;
 import com.ts.taesan.domain.ifbuy.api.dto.response.MostBuyItem;
+import com.ts.taesan.domain.transaction.entity.Receipt;
 import com.ts.taesan.domain.transaction.entity.ReceiptList;
 import com.ts.taesan.domain.transaction.service.dto.response.OftenCategory;
 import com.ts.taesan.domain.transaction.service.dto.response.ReceiptDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import static com.ts.taesan.domain.transaction.entity.QTransaction.transaction;
 import static com.ts.taesan.domain.transaction.entity.QReceipt.receipt;
 import static com.ts.taesan.domain.transaction.entity.QReceiptList.receiptList;
+import static com.ts.taesan.domain.member.entity.QMember.member;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -81,16 +83,29 @@ public class TransactionQRepository {
                 .orderBy(transaction.count().desc()).limit(3).fetch();
     }
 
-    public boolean checkReceiptExist(Long id){
-        return queryFactory.from(receiptList).where(receiptList.receipt.transaction.member.id.eq(id))
-                .select(receiptList.id).fetchFirst() != null;
-    }
+
+//    public List<OftenCategory> findOftenReceipt(Long id, LocalDate startDate, LocalDate endDate){
+//        return queryFactory.select(Projections.fields(OftenCategory.class, receiptList.category,
+//                receiptList.receipt.transaction.dateTime.countDistinct().as("count"), receiptList.price.sum().as("money")
+//                )).from(receiptList)
+//                .where(receiptList.receipt.transaction.member.id.eq(id)
+//                        .and(receiptList.category.eq("커피_차").or(receiptList.category.eq("과자_간식")
+//                                .or(receiptList.category.eq("제과_잼").or(receiptList.category.eq("완구")
+//                                        .or(receiptList.category.eq("잡화_명품").or(receiptList.category.eq("문구_도서")
+//                                                .or(receiptList.category.eq("담배"))))))))
+//                        .and(receiptList.receipt.transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
+//                .groupBy(receiptList.category)
+//                .orderBy(receiptList.count().desc()).limit(3).fetch();
+//    }
 
     public List<OftenCategory> findOftenReceipt(Long id, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(OftenCategory.class, receiptList.category,
-                receiptList.receipt.transaction.dateTime.countDistinct().as("count"), receiptList.price.sum().as("money")
+                        receiptList.receipt.transaction.dateTime.countDistinct().as("count"), receiptList.price.sum().as("money")
                 )).from(receiptList)
-                .where(receiptList.receipt.transaction.member.id.eq(id)
+                .join(receipt).on(receiptList.receipt.id.eq(receipt.id))
+                .join(transaction).on(receipt.transaction.id.eq(receipt.id))
+                .join(member).on(transaction.member.id.eq(member.id))
+                .where(member.id.eq(id)
                         .and(receiptList.category.eq("커피_차").or(receiptList.category.eq("과자_간식")
                                 .or(receiptList.category.eq("제과_잼").or(receiptList.category.eq("완구")
                                         .or(receiptList.category.eq("잡화_명품").or(receiptList.category.eq("문구_도서")
@@ -100,7 +115,7 @@ public class TransactionQRepository {
                 .orderBy(receiptList.count().desc()).limit(3).fetch();
     }
 
-    public List<Info> findTransactionAnal(Long cardId, LocalDate startDate, LocalDate endDate){
+    public List<Info> findTransactionAnal(Long userId, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(Info.class,
                 transaction.category.as("id"),
                         transaction.category.as("label"),
@@ -108,12 +123,12 @@ public class TransactionQRepository {
 
                         ))
                 .from(transaction)
-                .where(transaction.cardId.eq(cardId).and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
+                .where(transaction.member.id.eq(userId).and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(transaction.category)
                 .fetch();
     }
 
-    public List<Info> findReceiptAnal(Long cardId, LocalDate startDate, LocalDate endDate){
+    public List<Info> findReceiptAnal(Long userId, LocalDate startDate, LocalDate endDate){
         return queryFactory.select(Projections.fields(Info.class,
                         receiptList.category.as("id"),
                         receiptList.category.as("label"),
@@ -121,7 +136,9 @@ public class TransactionQRepository {
 
                 ))
                 .from(receiptList)
-                .where(receiptList.receipt.transaction.cardId.eq(cardId).and(receiptList.receipt.transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
+                .join(receipt).on(receiptList.receipt.id.eq(receipt.id))
+                .join(transaction).on(receipt.transaction.id.eq(receipt.id))
+                .where(transaction.member.id.eq(userId).and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(receiptList.category)
                 .fetch();
     }

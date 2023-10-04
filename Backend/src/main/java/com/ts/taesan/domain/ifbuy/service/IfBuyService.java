@@ -106,10 +106,20 @@ public class IfBuyService {
         try{
             Member member = memberRepository.findById(memberId).get();
             UploadFile imgFile = fileStore.storeFile(file);
+            IfBuyEntity entity = null;
+            if(imgFile != null){
+                entity = IfBuyEntity.builder().member(member).name(request.getName())
+                        .price(Long.parseLong(request.getPrice())).uploadFileName(imgFile.getUploadFileName())
+                        .storeFileName(imgFile.getStoreFileName()).build();
 
-            IfBuyEntity entity = IfBuyEntity.builder().member(member).name(request.getName())
-                    .price(Long.parseLong(request.getPrice())).uploadFileName(imgFile.getUploadFileName())
-                    .storeFileName(imgFile.getStoreFileName()).build();
+            }else{
+                entity = IfBuyEntity.builder().member(member).name(request.getName())
+                        .price(Long.parseLong(request.getPrice())).build();
+            }
+
+//            IfBuyEntity entity = IfBuyEntity.builder().member(member).name(request.getName())
+//                    .price(Long.parseLong(request.getPrice())).uploadFileName(imgFile.getUploadFileName())
+//                    .storeFileName(imgFile.getStoreFileName()).build();
 
             ifBuyRepository.save(entity);
             assetService.saveMoney(memberId, Long.parseLong(request.getPrice()), 1);
