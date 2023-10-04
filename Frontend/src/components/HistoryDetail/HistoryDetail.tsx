@@ -13,9 +13,11 @@ import { useUserStore } from 'store/UserStore';
 import { useParams } from 'react-router-dom';
 import { Spin,Modal } from 'antd';
 import { useAssetStore } from 'store/AssetStore';
+import { useNavigate } from 'react-router-dom';
 
 
 const HistoryDetail = () => {
+    const navigate = useNavigate();
     const [approvedAmount,setApprovedAmount] = useState('')
     const [cardType,setCardType] = useState('')
     const [category,setCategory] = useState('')
@@ -271,6 +273,12 @@ const HistoryDetail = () => {
             .then((res)=>{
                 console.log('등록 완료')
                 console.log(res)
+                Swal.fire({
+                    icon: 'success',
+                    title: '등록 완료',
+                  });
+                navigate(0) 
+                
             })
             .catch((err)=>{
                 console.log(err)

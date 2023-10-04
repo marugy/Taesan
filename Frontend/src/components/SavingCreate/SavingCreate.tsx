@@ -19,7 +19,8 @@ import SavingComplete from './SavingComplete';
 
 const SavingCreate = () => {
   const { accessToken, refreshToken, setCreatedTikkle } = useUserStore();
-  const [date, setDate] = useState('2023-09-27'); // 선택한 날짜를 상태로 저장
+  const today = dayjs(); // 오늘 날짜
+  const [date, setDate] = useState(today.add(-1, 'day').format('YYYY-MM-DD')); // 선택한 날짜를 상태로 저장
   const koreanDate = dayjs(date).format('YYYY년 MM월 DD일'); //
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
   const [completeVisible, setCompleteVisible] = useState(false); // 적금통 생성 완료 화면
