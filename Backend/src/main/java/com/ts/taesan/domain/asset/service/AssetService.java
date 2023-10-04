@@ -82,11 +82,10 @@ public class AssetService {
         tikkle.updateMoney(amount);
     }
 
-    public void pay(Long memberId, Long cardId, String accessToken, TaesanPayRequest payRequest) {
+    public void pay(Long memberId, Long cardId, TaesanPayRequest payRequest) {
         Member member = memberRepository.findById(memberId).get();
-        PayRequest request = new PayRequest(payRequest.getShopName(), payRequest.getPayAmt());
-        cardAccessUtil.pay(member, cardId, request);
-        transactionService.saveNewTransaction(cardId, payRequest.getShopName(), payRequest.getPayAmt(), memberId);
+        Transaction transaction = transactionService.saveNewTransaction(cardId, payRequest.getShopName(), payRequest.getPayAmt(), memberId);
+        cardAccessUtil.pay(member, cardId, transaction);
     }
 
     public void connectAssets(Long memberId) {

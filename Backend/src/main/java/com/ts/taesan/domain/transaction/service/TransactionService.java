@@ -174,7 +174,7 @@ public class TransactionService {
         return oftenCategories;
     }
 
-    public void saveNewTransaction(Long cardId, String shopName, Long payAmt, Long memberId) {
+    public Transaction saveNewTransaction(Long cardId, String shopName, Long payAmt, Long memberId) {
         String category = kakaoUtil.getCategory(shopName);
         Member member = memberRepository.findById(memberId).get();
 
@@ -201,6 +201,8 @@ public class TransactionService {
 
         transactionRepository.save(transaction);
         challengeService.changeSpare(memberId, payAmt);
+
+        return transaction;
     }
 
     private String getApiType() {

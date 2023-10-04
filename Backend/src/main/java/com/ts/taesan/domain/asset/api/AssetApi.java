@@ -64,7 +64,7 @@ public class AssetApi {
             @PathVariable("card_id") Long cardId,
             @RequestBody TaesanPayRequest payRequest
             ) {
-        assetService.pay(Long.parseLong(user.getUsername()), cardId, request.getHeader("ACCESS-TOKEN"), payRequest);
+        assetService.pay(Long.parseLong(user.getUsername()), cardId, payRequest);
         return OK(null);
     }
 

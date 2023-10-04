@@ -1,5 +1,6 @@
 package com.ts.taesan.global.openfeign.card;
 
+import com.ts.taesan.domain.transaction.entity.Transaction;
 import com.ts.taesan.domain.transaction.req.OpenFeignConfig;
 import com.ts.taesan.global.openfeign.bank.dto.request.AccountListRequest;
 import com.ts.taesan.global.openfeign.bank.dto.response.AccountListResponse;
@@ -46,7 +47,7 @@ public interface CardClient {
     ResponseEntity<PayResponse> pay(
             @RequestHeader("Authorization") String token,
             @PathVariable("card_id") long cardId,
-            @RequestBody PayRequest payRequest);
+            @RequestBody Transaction transaction);
 
     @GetMapping("/{card_id}/recentHistoryId")
     ResponseEntity<Long> getRecentHistoryId(
