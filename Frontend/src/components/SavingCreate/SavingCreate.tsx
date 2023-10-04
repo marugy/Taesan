@@ -16,6 +16,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useNavigate } from 'react-router';
 import { Pincode } from 'components/Common/Pincode';
 import SavingComplete from './SavingComplete';
+import Loading from 'components/Common/Loading';
 
 const SavingCreate = () => {
   const { accessToken, refreshToken, setCreatedTikkle } = useUserStore();
@@ -25,12 +26,14 @@ const SavingCreate = () => {
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
   const [completeVisible, setCompleteVisible] = useState(false); // 적금통 생성 완료 화면
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const duration = Math.max(0, dayjs(date).diff(today, 'day') + 1); // 오늘과 만기일 사이의 날짜 차이
   const navigate = useNavigate();
 
   const onCorrectPincode = () => {
     setPincodeVisible(false);
+    setIsLoading(true);
     // 지헌(적금통 생성 API 쏘기)
     axios
       .post(
@@ -48,11 +51,13 @@ const SavingCreate = () => {
       .then((response) => {
         // 적금통 생성 API 요청이 성공한 경우
         console.log('POST: BODY(만기일)', date);
+        setIsLoading(false);
         setCreatedTikkle(true);
         setCompleteVisible(true);
       })
       .catch((error) => {
         // 에러 처리
+        setIsLoading(false);
         console.error('적금통 생성 실패', error);
       });
   };
@@ -72,6 +77,7 @@ const SavingCreate = () => {
   };
   return (
     <div className="flex flex-col items-center h-screen mt-5">
+      {isLoading && <Loading />}
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} visibleFalse={() => setPincodeVisible(false)} />}
       {completeVisible && <SavingComplete onComplete={handleConfirm} />}
       <div className="font-extrabold text-3xl  ">새로운 적금통 만들기</div>

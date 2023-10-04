@@ -1,4 +1,4 @@
-import React, { useRef, useState,useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@material-tailwind/react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,19 +10,18 @@ import { Pagination, Navigation } from 'swiper/modules';
 import Card from 'components/Common/Card';
 import './MainCardInfo.css';
 import { useUserStore } from 'store/UserStore';
-import { useAssetStore} from 'store/AssetStore';
+import { useAssetStore } from 'store/AssetStore';
 interface CardInfoProps {
-
-  cardList: Array<any>,
-  main:string
+  cardList: Array<any>;
+  main: string;
 }
-const MainCardInfo: React.FC<CardInfoProps> = ({ cardList,main }) => {
-  const { selectedCardId,setSelectedCardId } = useAssetStore();
+const MainCardInfo: React.FC<CardInfoProps> = ({ cardList, main }) => {
+  const { selectedCardId, setSelectedCardId } = useAssetStore();
   const { name } = useUserStore();
   // 컴포넌트가 마운트될 때 첫 번째 카드의 id 값을 설정해놓음.
   useEffect(() => {
     setSelectedCardId(cardList[0].cardId);
-  }, [cardList]); 
+  }, [cardList]);
   return (
     <div className="w-full flex justify-center">
       <div className="w-[70vw] dt:w-[30vw] ">
@@ -37,9 +36,7 @@ const MainCardInfo: React.FC<CardInfoProps> = ({ cardList,main }) => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
           // swiper를 넘길 때마다 선택한 카드의 id값을 스토어에 저장.
-          onSlideChange={(swiper:any)=> setSelectedCardId(cardList[swiper.realIndex].cardId)
-          
-          } 
+          onSlideChange={(swiper: any) => setSelectedCardId(cardList[swiper.realIndex].cardId)}
         >
           {cardList.map((data, index) => (
             <SwiperSlide key={index}>

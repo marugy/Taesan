@@ -9,6 +9,7 @@ import { useQuery } from 'react-query';
 import { useUserStore } from 'store/UserStore';
 import axios from 'axios';
 import AccountRegister from 'components/ChangeAccount/AccountRegister';
+import AssetRegisterList from 'components/ChangeAccount/AssetRegisterList';
 
 const ChangeAccountPage = () => {
   const { accessToken, refreshToken, connectedAsset, setConnectedAsset, createdTikkle, setCreatedTikkle } =
@@ -50,16 +51,14 @@ const ChangeAccountPage = () => {
     });
     setCreatedTikkle(userAssetInfo.response.createdTikkle);
     setConnectedAsset(userAssetInfo.response.connectedAsset);
-    if (connectedAsset) {
-      setBankName(userAssetInfo.response.account.bank);
-      setAccountNumber(userAssetInfo.response.account.accountNum);
-      setBalance(userAssetInfo.response.account.balance);
-    }
+    setBankName(userAssetInfo.response.account.bank);
+    setAccountNumber(userAssetInfo.response.account.accountNum);
+    setBalance(userAssetInfo.response.account.balance);
     return userAssetInfo;
   };
   const { data: userAssetInfo } = useQuery('getAsset', getAsset);
-
   const [nextButton, setNextButton] = useState(false);
+
   return (
     <div className="h-scren flex flex-col">
       <ArrowBack pageName="내 정보 수정" />
@@ -68,13 +67,26 @@ const ChangeAccountPage = () => {
           현재 등록 계좌
         </Typography>
 
+        <div className="flex justify-between">
+          <div className="flex flex-row items-center">
+            <div className="mr-2">
+              <img src={`/Account/${bankName}.png`} className="h-8 border rounded-full" />
+            </div>
+            <div className="font-semibold font-main text-xs">
+              {bankName} {accountNumber}{' '}
+            </div>
+          </div>
+          <div className="flex items-center font-main font-semibold">
+            {balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+          </div>
+        </div>
         <hr className="my-5 border-gray-400 border-1 w-full" />
-        {/* 얘 나중에 수정해야함 (지헌 할 것) */}
 
-        {useAccountQuery.data && useAccountQuery.data.response.accountList ? (
+        <AssetRegisterList accountNumber={accountNumber} />
+        {/* {useAccountQuery.data && useAccountQuery.data.response.accountList ? (
           <AccountRegister setAccount={setChangeAccount} accountList={useAccountQuery.data.response.accountList} />
         ) : null}
-        <BottomNav />
+        <BottomNav /> */}
       </div>
     </div>
   );

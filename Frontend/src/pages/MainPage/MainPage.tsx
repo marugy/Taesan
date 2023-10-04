@@ -76,7 +76,7 @@ const MainPage = () => {
     return userProfileInfo;
   };
 
-  // 쿼리 2 ( API 관련 임시 주석처리 )
+  // 쿼리 2 ( API )
   const getAsset = async () => {
     const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
       headers: {

@@ -51,6 +51,10 @@ const ChallengeRecruitPage = () => {
       },
     );
 
+    if (challengeState === 2) {
+      navigate('/challenge/play');
+    }
+
     return challengeResponse.data.response;
   };
 
@@ -203,9 +207,9 @@ const ChallengeRecruitPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col overflow-hidden">
       <ArrowBackParam pageName="절약 챌린지 모집" param="/challenge" />
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col h-[90%] justify-center items-center">
         <img src="/Challenge/ChallengeRecruit.png" alt="ChallengeRecruit" className="w-auto h-24 dt:w-auto dt:h-52 " />
         <div className=" border-4 rounded-xl p-3 mb-2">
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-5 tb:text-md dt:text-xl font-bold">{title}</div>
@@ -241,6 +245,8 @@ const ChallengeRecruitPage = () => {
             )}
           </div>
         </div>
+        <div className="h-[120px]"></div>
+        <BottomNav />
       </div>
     </div>
   );

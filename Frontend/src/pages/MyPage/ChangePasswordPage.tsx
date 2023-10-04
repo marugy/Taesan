@@ -87,10 +87,11 @@ const ChangePasswordPage = () => {
         {errorMessage && <div className="text-red-500">{errorMessage}</div>}
         <PasswordForm form={form} setForm={setForm} />
         <div className="flex flex-col justify-center items-center">
-          <Button className="bg-[#0067AC] p-2 text-[5px] tb:text-[10px] dt:text-[20px]" onClick={handleChangePassword}>
+          <Button className="bg-[#0067AC] p-2 text-xl tb:text-xl dt:text-2xl" onClick={handleChangePassword}>
             수정하기
           </Button>
         </div>
+        <div className="h-[120px]"></div>
       </div>
       <BottomNav />
     </div>

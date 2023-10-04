@@ -46,7 +46,9 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
       cancelButtonColor: 'red',
       cancelButtonText: '취소',
     }).then((result) => {
-      setVisiblePincode(true);
+      if (result.isConfirmed) {
+        setVisiblePincode(true);
+      }
     });
   };
 

@@ -88,8 +88,10 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
   }, [stack]);
 
   const handleClose = () => {
-    setStack([]);
-    visibleFalse();
+    // setStack([]);
+    // visibleFalse();
+    setRefreshToken('');
+    navigate(0);
   };
 
   return (
@@ -98,7 +100,9 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
         errorMessage ? 'animate-shake' : ''
       }`}
     >
-      <ArrowBackPincode pageName="뒤로가기" handleClose={handleClose} />
+      <div className="fixed top-10 left-5 dt:left-96">
+        <ArrowBackPincode pageName="다시 로그인" handleClose={handleClose} />
+      </div>
 
       <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
         암호 입력
