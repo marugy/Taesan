@@ -86,18 +86,18 @@ const MainPage = () => {
     });
     setCreatedTikkle(userAssetInfo.response.createdTikkle);
     setConnectedAsset(userAssetInfo.response.connectedAsset);
-    if (connectedAsset) {
-      setBankName(userAssetInfo.response.account.bank);
-      setAccountNumber(userAssetInfo.response.account.accountNum);
-      setBalance(userAssetInfo.response.account.balance);
-      setCardList(userAssetInfo.response.cardList);
-    }
+    // if (connectedAsset) {
+    setBankName(userAssetInfo.response.account.bank);
+    setAccountNumber(userAssetInfo.response.account.accountNum);
+    setBalance(userAssetInfo.response.account.balance);
+    setCardList(userAssetInfo.response.cardList);
+    // }
     return userAssetInfo;
   };
 
   const { data: userProfileInfo } = useQuery('getInfo', getInfo);
-  // const { data: userProfileInfo, isLoading: isLoading1 } = useQuery('getInfo', getInfo);
   const { data: userAssetInfo } = useQuery('getAsset', getAsset);
+  // const { data: userProfileInfo, isLoading: isLoading1 } = useQuery('getInfo', getInfo);
 
   // const mutation = useMutation(testPost);
   // console.log(mutation);
@@ -120,7 +120,7 @@ const MainPage = () => {
       handleNotification();
     }, 3000);
     return () => clearTimeout(timerId);
-  }, []);
+  }, [connectedAsset, createdTikkle]);
 
   const [isShowingLoading, setIsShowingLoading] = useState(true);
   useEffect(() => {
