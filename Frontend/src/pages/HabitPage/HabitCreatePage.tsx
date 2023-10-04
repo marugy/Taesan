@@ -24,24 +24,29 @@ const HabitCreatePage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [habit, setHabit] = useState('');
+  const [type, setType] = useState(1);
+  const [targetMoney,setTargetMoney] = useState(0);
   const [oftenCategory, setOftenCategory] = useState([
     {
       category: '카페',
       count: 20,
       dateMoney: 4000,
       money: 120000,
+      type:1,
     },
     {
       category: '주류',
       count: 10,
       dateMoney: 5000,
       money: 150000,
+      type:1,
     },
     {
       category: '음식점',
       count: 20,
       dateMoney: 5000,
       money: 150000,
+      type:1,
     },
   ]);
   
@@ -76,14 +81,18 @@ const HabitCreatePage = () => {
   };
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleItemClick = (index: any, category: any) => {
+  const handleItemClick = (index: any, category: any,type:any,dateMoney:any) => {
     // 이미 선택된 항목이면 선택 해제
     if (selectedItem === index) {
       setSelectedItem(null);
       setHabit(''); // habit 상태를 비웁니다.
+      setType(1);
+      setTargetMoney(0);
     } else {
       setSelectedItem(index);
       setHabit(category);
+      setType(type);
+      setTargetMoney(dateMoney);
     }
   };
 
@@ -127,7 +136,8 @@ const HabitCreatePage = () => {
         {
           title: title,
           habitName: habit,
-          targetMoney: 1000,
+          targetMoney: targetMoney,
+          type:type,
         },
         {
           headers: {
@@ -184,6 +194,8 @@ const HabitCreatePage = () => {
               } border-2 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`}
               onClick={() => {
                 setHabit('담배');
+                setType(1);
+                setTargetMoney(4500);
               }}
             >
               <img src="/Habit/담배.png" className="w-8 dt:w-12 " />
@@ -197,6 +209,8 @@ const HabitCreatePage = () => {
               } border-2 flex flex-col  dt:justify-center items-center gap-2 border-blue-500 p-4 text-center  text-lg cursor-pointer`}
               onClick={() => {
                 setHabit('술');
+                setType(1);
+                setTargetMoney(4500);
               }}
             >
               <img src="/Habit/술.png" className="w-8 dt:w-12 " />
@@ -210,6 +224,9 @@ const HabitCreatePage = () => {
               } border-2 flex flex-col  dt:justify-center items-center gap-2  border-blue-500 p-4 text-center  text-lg cursor-pointer`}
               onClick={() => {
                 setHabit('택시');
+                setType(1);
+                setTargetMoney(5000);
+
               }}
             >
               <img src="/Habit/택시.png" className="w-8 dt:w-12 " />
@@ -223,6 +240,9 @@ const HabitCreatePage = () => {
               } border-2 flex flex-col  dt:justify-center items-center gap-2 border-blue-500  p-4 text-center  text-lg cursor-pointer`}
               onClick={() => {
                 setHabit('커피');
+                setType(1);
+                setTargetMoney(3000);
+
               }}
             >
               <img src="/Habit/커피.png" className="w-8 dt:w-12 " />
@@ -249,7 +269,7 @@ const HabitCreatePage = () => {
             {oftenCategory.map((category, index) => (
               <ListItem
                 key={index}
-                onClick={() => handleItemClick(index, category.category)}
+                onClick={() => handleItemClick(index, category.category,category.type,category.dateMoney)}
                 className={`${
                   // selectedItem === index ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
                   habit === category.category ? 'border ring-blue-500 ring-[3px]' : 'ring-[3px] border ring-white'

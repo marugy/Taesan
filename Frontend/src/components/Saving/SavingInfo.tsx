@@ -30,21 +30,21 @@ interface SavingInfoProps {
           상세 내역
         </Button>
       </div>
-      <div className="text-center text-main text-3xl text font-semibold mt-5">
+      <div className="text-center text-blue-500 text-3xl text font-semibold mt-5">
         {name}님의 <br /> 적금통 조회하기
       </div>
-      <div className="flex justify-center h-64">
-        <img src="/piggy_bank.png" />
+      <div className="flex justify-center h-64 dt:h-96">
+        <img src="/Main/습관저금통.png" />
       </div>
       <div className="flex flex-col items-center gap-4">
         <div className="text-lg text-gray-500">현재 적금통에 적립된 금액</div>
-        <div className="text-lg text-main font-bold">{savingInfo.curMoney}원</div>
+        <div className="text-lg text-blue-500 font-bold">{savingInfo.curMoney}원</div>
         <div>만기일</div>
         <div>({dayjs(savingInfo.endDate).format('YYYY년 MM월 DD일')})</div>
         <div className="text-lg text-gray-500">만기까지 남은 일자 : </div>
-        <div className="text-lg text-main font-bold">{expirationDate}일</div>{' '}
+        <div className="text-lg text-blue-500 font-bold">{expirationDate}일</div>{' '}
         <div className="text-lg text-gray-500">만기시 예상 출금액</div>
-        <div className="text-lg text-main font-bold">{savingInfo.futureMoney}원</div>
+        <div className="text-lg text-blue-500 font-bold">{savingInfo.futureMoney}원</div>
         <div>
           <Button
             color="red"

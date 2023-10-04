@@ -34,7 +34,6 @@ const SavingCreate = () => {
   const onCorrectPincode = () => {
     setPincodeVisible(false);
     setIsLoading(true);
-    // 지헌(적금통 생성 API 쏘기)
     axios
       .post(
         'https://j9c211.p.ssafy.io/api/asset-management/tikkle',
@@ -81,13 +80,14 @@ const SavingCreate = () => {
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} visibleFalse={() => setPincodeVisible(false)} />}
       {completeVisible && <SavingComplete onComplete={handleConfirm} />}
       <div className="font-extrabold text-3xl  ">새로운 적금통 만들기</div>
-      <div className="font-normal text-sm text-base text-gray-500 mt-2 text-center">
+      <div className="font-normal text-sm  text-gray-500 mt-2 text-center">
         우리 어플을 통해 절약한 만큼 돈을 모아보아요.
         <br />
         만기까지 기다리면 추가 이자를 받을 수 있어요!
       </div>
       <div>
-        <img className="h-44 dt:h-64" src="/piggy_bank.png" alt="pig" />
+        {/* <img className="h-44 dt:h-64" src="/piggy_bank.png" alt="pig" /> */}
+        <img className="h-44 dt:h-64" src="/Main/습관저금통.png" alt="pig" />
       </div>
 
       {/* MUI 달력 */}
@@ -107,9 +107,7 @@ const SavingCreate = () => {
       </LocalizationProvider>
 
       <div className="my-4 text-lg font-semibold text-gray-600">만기까지 남은 일자 : {duration}일 </div>
-      <div className="mb-4">출금계좌 : 신한은행 110509677498</div>
-
-      <Button className="bg-main w-4/5 text-lg" onClick={handleCreate}>
+      <Button className="bg-blue-500 w-4/5 text-lg" onClick={handleCreate}>
         적금통 만들기
       </Button>
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}

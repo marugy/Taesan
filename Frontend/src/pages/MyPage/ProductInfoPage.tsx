@@ -56,7 +56,7 @@ const ProductInfoPage = () => {
           },
         }}
       /> */}
-        <img src="/piggy_bank.png" className="w-72 dt:w-80" />
+        <img src="/Main/습관저금통.png" className="w-72 dt:w-80" />
 
         <div className="font-bold text-3xl">[상품 기본 정보]</div>
         <div className="border border-gray-300 rounded-xl p-2 text-center w-full dt:w-4/5">

@@ -113,7 +113,7 @@ const SavingDelete = () => {
         {name}님의 <br /> 적금통 해지하기
       </div>
       <div className="flex justify-center">
-        <img className="h-44 dt:h-64" src="/piggy_bank.png" alt="pig" />
+        <img className="h-44 dt:h-64" src="/Main/습관저금통.png" alt="pig" />
       </div>
       <div className="flex flex-col items-center mx-5 ">
         <div className="border-4 rounded-xl mb-5 p-3">
