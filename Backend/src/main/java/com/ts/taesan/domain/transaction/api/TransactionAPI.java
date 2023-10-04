@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.User;
@@ -77,14 +78,13 @@ public class TransactionAPI {
 
     @ApiOperation(value = "거래내역 추가 요청", notes = "결제가 발생했을때 카드 서버는 이 API를 호출하여 우리 서버의 거래내역을 최신화합니다.")
     @PostMapping("/transaction/{card_id}")
-    public ApiResponse<Void> addNewTransaction(
+    public ResponseEntity<Void> addNewTransaction(
             @AuthenticationPrincipal User user,
             @PathVariable("card_id") Long cardId,
             @ModelAttribute CardHistoryList history
     ) {
-
         transactionService.saveNewTransaction(cardId, history, Long.parseLong(user.getUsername()));
-        return OK(null);
+        return ResponseEntity.ok(null);
     }
 
     @ApiOperation(value = "자주 쓰는 카테고리 목록 불러오기", notes = "습관 생성 등에서 자주 쓰는 카테고리 목록 및 가격 불러오기")

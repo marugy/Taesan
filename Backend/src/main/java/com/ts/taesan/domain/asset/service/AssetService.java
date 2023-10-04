@@ -53,7 +53,6 @@ public class AssetService {
     private final BankAccessUtil bankAccessUtil;
     private final CardAccessUtil cardAccessUtil;
     private final AuthAccessUtil authAccessUtil;
-    private final AuthClient authClient;
 
     public void transfer(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
