@@ -10,13 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 public class AnalystFeignConfig {
-//    @Bean
-//    public RequestInterceptor requestInterceptor(){
-//        return requestTemplate -> {
-//            requestTemplate.header("Content-Type", "application/json");
-//            requestTemplate.header("Accept", "application/json");
-//        };
-//    }
     @Bean
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL; // log레벨 설정
