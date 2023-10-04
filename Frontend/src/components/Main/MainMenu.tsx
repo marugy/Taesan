@@ -65,12 +65,6 @@ const MainMenu = () => {
         title: '자산을 연결해 주세요',
       });
     }
-    else if(createdTikkle===false){
-      Swal2.fire({
-        icon: 'info',
-        title: '적금통을 생성해 주세요',
-      });
-    }
     else{
       navigate('/pattern')
     }
