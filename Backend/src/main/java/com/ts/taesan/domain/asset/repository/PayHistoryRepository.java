@@ -13,4 +13,6 @@ public interface PayHistoryRepository extends JpaRepository<PayHistory, Long> {
 
     List<PayHistory> findPayHistoriesByTikkleId(Long tikkleId);
 
+    void deleteAllByTikkleId(Long tikkleId);
+
 }

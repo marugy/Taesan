@@ -1,5 +1,6 @@
 package com.ts.taesan.domain.asset.service;
 
+import com.ts.taesan.domain.asset.repository.PayHistoryRepository;
 import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.asset.entity.Tikkle;
@@ -25,6 +26,7 @@ import java.util.Date;
 public class TikkleService {
 
     private final TikkleRepository tikkleRepository;
+    private final PayHistoryRepository payHistoryRepository;
     private final MemberRepository memberRepository;
     private final BankAccessUtil bankAccessUtil;
 
@@ -42,6 +44,7 @@ public class TikkleService {
         Member member = memberRepository.findById(memberId).get();
         Tikkle tikkle = tikkleRepository.findByMemberId(memberId).get();
         bankAccessUtil.transfer(member);
+        payHistoryRepository.deleteAllByTikkleId(tikkle.getId());
         tikkleRepository.delete(tikkle);
     }
 
