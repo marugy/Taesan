@@ -149,6 +149,7 @@ public class MemberService {
 
     public void logout(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
+        member.changeAutoLogin(false);
         member.deleteRefreshToken();
     }
 
