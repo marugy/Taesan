@@ -1,14 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import ArrowBack from 'components/Common/ArrowBack';
 import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
 import BottomNav from 'components/Common/BottomNav';
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
 const ProductInfoPage = () => {
   const [title, setTitle] = useState('OOOO 행복적금');
   const [goldLee, setgoldLee] = useState('기본 이율: 연 1.5%');
   const [period, setPeriod] = useState('6개월');
   const [info, setInfo] = useState('');
+  const { accessToken, refreshToken } = useUserStore();
+  const navigate = useNavigate();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
 
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+  }, []);
   return (
     <div className="h-screen flex flex-col font-main">
       <ArrowBack pageName="적금 정보" />

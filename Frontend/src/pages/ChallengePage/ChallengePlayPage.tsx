@@ -12,13 +12,37 @@ import { useQuery } from 'react-query';
 
 const ChallengePlayPage = () => {
   const navigate = useNavigate();
-  const { accessToken, refreshToken } = useUserStore();
   const [challengeId, setChallengeId] = useState(0);
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState(0);
   const [period, setPeriod] = useState('');
   const [players, setPlayers] = useState([]);
   const [spare, setSpare] = useState(0);
+  const { accessToken, refreshToken,connectedAsset,createdTikkle } = useUserStore();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+    
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
 
   const fetchData = async () => {
     try {

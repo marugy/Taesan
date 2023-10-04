@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PasswordForm from 'components/ChangePassword/PasswordForm';
 import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Button } from '@material-tailwind/react';
-
+import { useNavigate } from 'react-router-dom';
 import { Toast } from 'components/Common/Toast';
 
 import axios from 'axios';
@@ -17,7 +17,28 @@ const ChangePasswordPage = () => {
     newPassword: '',
     newPasswordConfirm: '',
   });
+  const navigate = useNavigate();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
 
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+  }, []);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleChangePassword = () => {

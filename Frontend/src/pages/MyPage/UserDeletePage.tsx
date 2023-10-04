@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import ArrowBack from 'components/Common/ArrowBack';
 import { Button } from '@material-tailwind/react';
 
@@ -12,7 +12,28 @@ import { useNavigate } from 'react-router-dom';
 const UserDeletePage = () => {
   const navigate = useNavigate();
   const { accessToken, refreshToken, name } = useUserStore();
-
+  
+ 
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+  }, []);
   const handleDeleteUser = () => {
     Swal.fire({
       title: `회원님의 이름을 입력해주세요.`,

@@ -18,7 +18,32 @@ import { useUserStore } from 'store/UserStore';
 import Swal2 from 'sweetalert2';
 
 const HabitPage = () => {
-  const { accessToken, refreshToken, name } = useUserStore();
+  const { accessToken, refreshToken,connectedAsset,createdTikkle,name } = useUserStore();
+  const navigate = useNavigate();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+     
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
   const [monthData, setMonthData] = useState([
     {
       year: 2023,
@@ -156,7 +181,7 @@ const HabitPage = () => {
   };
 
   ////////////////////////////////////////////////////////////////////////////////
-  const navigate = useNavigate();
+
   const [date, setDate] = useState<Dayjs>(dayjs());
   // 현재 달력에서 선택하고 있는 달.
   const [currMonth, setCurrMonth] = useState(dayjs().month() + 1);

@@ -20,8 +20,31 @@ const ChallengeCreatePage = () => {
   const [money, setMoney] = useState('');
   const [sliderBarPercent, setSliderBarPercent] = useState(3.3333);
   const [period, setPeriod] = useState(0);
-  const { accessToken, refreshToken } = useUserStore();
-
+  const { accessToken, refreshToken,connectedAsset,createdTikkle } = useUserStore();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+     
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };

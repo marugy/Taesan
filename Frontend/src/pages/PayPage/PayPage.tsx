@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from 'components/Common/BottomNav';
 import Swal from 'sweetalert2';
@@ -22,9 +22,34 @@ const PayPage = () => {
   const [itemname, setItemname] = useState('');
   const [itemprice, setItemprice] = useState('');
   const [cardid, setCardid] = useState('');
-  const { accessToken, refreshToken } = useUserStore();
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
   const [isLoading, setIsLoading] = useState(false);
+  const { accessToken, refreshToken,connectedAsset,createdTikkle } = useUserStore();
+  
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+  
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false) {
+      navigate('/main');
+    }
+  }, []);
   const [cardList, setCardList] = useState([
     // Axios 쏘고 응답값 갈아 끼우기
     {
