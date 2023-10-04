@@ -66,7 +66,7 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
       )
       .then((response) => {
         // 적금통 생성 API 요청이 성공한 경우
-        navigate('/challenge/result');
+        navigate(0);
         setVisiblePincode(false);
       })
       .catch((error) => {
