@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,7 @@ public class AssetService {
     private final BankAccessUtil bankAccessUtil;
     private final CardAccessUtil cardAccessUtil;
     private final AuthAccessUtil authAccessUtil;
+    private final AuthClient authClient;
 
     public void transfer(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
@@ -86,6 +88,9 @@ public class AssetService {
     }
 
     public void connectAssets(Long memberId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("user_ci", Long.toString(memberId));
+        authClient.registerAuth(map);
         Member member = memberRepository.findById(memberId).get();
         String mydataAccessToken = authAccessUtil.getMydataAccessToken(member);
         member.earnMydataAccessToken("Bearer " + mydataAccessToken);

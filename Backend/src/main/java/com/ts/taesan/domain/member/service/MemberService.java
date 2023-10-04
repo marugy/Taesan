@@ -40,9 +40,6 @@ public class MemberService {
         Member member = memberJoinRequest.toEntity();
         member = memberRepository.save(member);
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("user_ci", Long.toString(member.getId()));
-        authClient.registerAuth(map);
     }
 
     public TokenResponse login(String loginId, String password, Boolean autoLogin) throws IOException {
