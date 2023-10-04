@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class AssetService {
 
@@ -53,6 +54,7 @@ public class AssetService {
     private final BankAccessUtil bankAccessUtil;
     private final CardAccessUtil cardAccessUtil;
     private final AuthAccessUtil authAccessUtil;
+    private final AuthClient authClient;
 
     public void transfer(Long memberId) {
         Member member = memberRepository.findById(memberId).get();
@@ -86,7 +88,10 @@ public class AssetService {
     }
 
     public void connectAssets(Long memberId) {
-//        authAccessUtil.addMydataAccessToken(memberId);
+//        HashMap<String, String> map = new HashMap<>();
+//        map.put("user_ci", Long.toString(memberId));
+//        authClient.registerAuth(map);
+        authAccessUtil.addMydataAccessToken(memberId);
         Member member = memberRepository.findById(memberId).get();
         String mydataAccessToken = authAccessUtil.getMydataAccessToken(member);
         member.earnMydataAccessToken("Bearer " + mydataAccessToken);

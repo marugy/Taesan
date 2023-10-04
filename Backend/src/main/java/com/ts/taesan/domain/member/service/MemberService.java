@@ -40,7 +40,7 @@ public class MemberService {
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
         member = memberRepository.save(member);
-        authAccessUtil.addMydataAccessToken(member.getId());
+//        authAccessUtil.addMydataAccessToken(member.getId());
     }
 
     public TokenResponse login(String loginId, String password, Boolean autoLogin) throws IOException {
