@@ -8,6 +8,7 @@ import com.ts.taesan.domain.member.entity.Member;
 import com.ts.taesan.domain.member.repository.MemberRepository;
 import com.ts.taesan.domain.member.token.JwtTokenProvider;
 import com.ts.taesan.domain.transaction.service.TransactionService;
+import com.ts.taesan.global.openfeign.auth.AuthAccessUtil;
 import com.ts.taesan.global.openfeign.auth.AuthClient;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final TransactionService transactionService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthClient authClient;
+    private final AuthAccessUtil authAccessUtil;
 
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
@@ -39,7 +40,7 @@ public class MemberService {
     public void save(MemberJoinRequest memberJoinRequest) {
         Member member = memberJoinRequest.toEntity();
         member = memberRepository.save(member);
-
+        authAccessUtil.addMydataAccessToken(member.getId());
     }
 
     public TokenResponse login(String loginId, String password, Boolean autoLogin) throws IOException {

@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,13 +40,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthAccessUtil {
 
-    private final MemberRepository memberRepository;
-    private final TikkleRepository tikkleRepository;
-    private final TransactionRepository transactionRepository;
-    private final PayHistoryRepository payHistoryRepository;
     private final AuthClient authClient;
-    private final CardClient cardClient;
-    private final KakaoUtil kakaoUtil;
 
     @Value("${org-code}")
     private String orgCode;
@@ -62,6 +57,12 @@ public class AuthAccessUtil {
         }
 
         return tokenResponse.getAccess_token();
+    }
+
+    public void addMydataAccessToken(Long memberId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("user_ci", Long.toString(memberId));
+        authClient.registerAuth(map);
     }
 
     private String getApiType() {
