@@ -30,4 +30,5 @@ public class MemberJoinRequest {
                 .address(Address.builder().address(this.address).addressDetail(this.addressDetail).zipCode(this.zipCode).build())
                 .build();
     }
+
 }
