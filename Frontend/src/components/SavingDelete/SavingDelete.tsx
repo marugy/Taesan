@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 import { Toast } from 'components/Common/Toast';
 import { Pincode } from 'components/Common/Pincode';
 import Swal from 'sweetalert2';
+import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
 
 const SavingDelete = () => {
   const navigate = useNavigate();
@@ -95,6 +97,7 @@ const SavingDelete = () => {
   }
   return (
     <div className="bg-back">
+      <ArrowBack pageName="내 적금통" />
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode}  visibleFalse={() => setPincodeVisible(false)}  />}
       <div className="flex justify-end mr-5 mt-5">
         <Button
@@ -142,16 +145,9 @@ const SavingDelete = () => {
         >
           적금통 해지하기
         </Button>
-        <Button
-          size="lg"
-          color="blue-gray"
-          onClick={() => {
-            navigate('/main');
-          }}
-        >
-          홈 화면 가기
-        </Button>
+        <div className='h-[120px]'/>
       </div>
+      <BottomNav />
     </div>
   );
 };
