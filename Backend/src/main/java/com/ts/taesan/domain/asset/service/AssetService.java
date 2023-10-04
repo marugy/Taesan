@@ -86,7 +86,7 @@ public class AssetService {
     }
 
     public void connectAssets(Long memberId) {
-        authAccessUtil.addMydataAccessToken(memberId);
+//        authAccessUtil.addMydataAccessToken(memberId);
         Member member = memberRepository.findById(memberId).get();
         String mydataAccessToken = authAccessUtil.getMydataAccessToken(member);
         member.earnMydataAccessToken("Bearer " + mydataAccessToken);
