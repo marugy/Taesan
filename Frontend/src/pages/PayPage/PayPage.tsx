@@ -14,6 +14,8 @@ import { useAssetStore } from 'store/AssetStore';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
+import Loading from 'components/Common/Loading';
+
 const PayPage = () => {
   const navigate = useNavigate();
   const { selectedCardId } = useAssetStore();
@@ -22,6 +24,7 @@ const PayPage = () => {
   const [cardid, setCardid] = useState('');
   const { accessToken, refreshToken } = useUserStore();
   const [pincodeVisible, setPincodeVisible] = useState(false); // 핀코드 화면
+  const [isLoading, setIsLoading] = useState(false);
   const [cardList, setCardList] = useState([
     // Axios 쏘고 응답값 갈아 끼우기
     {
@@ -95,6 +98,7 @@ const PayPage = () => {
   };
   const onCorrectPincode = () => {
     setPincodeVisible(false);
+    setIsLoading(true);
     // POST_결제 API
     axios
       .post(
@@ -115,19 +119,20 @@ const PayPage = () => {
           icon: 'success',
           title: '결제를 완료했습니다!',
         });
-        navigate('/pay');
+        setIsLoading(false);
       })
       .catch((err) => {
         Toast.fire({
           icon: 'error',
           title: '결제에 실패했습니다!',
         });
-        navigate('/pay');
+        setIsLoading(false);
       });
   };
 
   return (
     <div className="h-full overflow-hidden">
+      {isLoading && <Loading />}
       {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} visibleFalse={() => setPincodeVisible(false)} />}
       <ArrowBack pageName="결제" />
       <div className="flex flex-col justify-center items-center gap-5">

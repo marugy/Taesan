@@ -3,7 +3,7 @@ import React from 'react';
 const ChallengeSaving = () => {
   return (
     <div>
-      <div className="m-10 text-left font-bold tb:text-md dt:text-xl">
+      <div className="ml-10 mr-10 mb-10 text-left font-bold tb:text-md dt:text-xl">
         다른 사람들과 절약에 <br />
         도전 해볼까요?
       </div>

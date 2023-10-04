@@ -21,7 +21,7 @@ const SavingList = () => {
   ];
 
   return (
-    <div className="mx-10 my-5">
+    <div className="mx-5 my-5">
       <Tabs value={selectedTab}>
         <TabsHeader>
           {data.map(({ label, value, icon }) => (

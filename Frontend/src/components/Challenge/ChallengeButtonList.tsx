@@ -105,9 +105,11 @@ const ChallengeButtonList = () => {
             진행중
           </Button>
         )}
-        <Button className="bg-main tb:text-md dt:text-xl" onClick={handleInputRoomcode}>
-          같이하기
-        </Button>
+        {challengeState === 0 && (
+          <Button className="bg-main tb:text-md dt:text-xl" onClick={handleInputRoomcode}>
+            같이하기
+          </Button>
+        )}
       </div>
       {/* <Button onClick={() => navigate('/challenge/recruit')}>모집중</Button>
       <Button onClick={() => navigate('/challenge/play')}>진행중</Button> */}

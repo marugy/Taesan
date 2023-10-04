@@ -39,6 +39,8 @@ import TestPage from 'pages/TestPage/TestPage';
 import ApproveMyData from 'pages/MainPage/ApproveMyData';
 import NotFound from 'components/Common/NotFound';
 
+import DisalbeDevTool from 'components/Common/DisableDevTool';
+
 import 'animate.css';
 import './App.css';
 
@@ -64,6 +66,7 @@ function App() {
 
   return (
     <div className="App  flex justify-center bg-back overflow-y-auto h-screen">
+      {/* <DisalbeDevTool /> */}
       <div className="w-screen tb:w-[60vw] dt:w-[50vw]">
         <Routes>
           <Route path="/test" element={<TestPage />} />

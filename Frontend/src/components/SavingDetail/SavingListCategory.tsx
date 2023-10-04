@@ -27,26 +27,20 @@ const SavingListCategory = () => {
     <div className="flex flex-col space-y-20">
       <div className="space-y-2">
         <div className="flex justify-between">
-          <div>샀다 치고</div>
-          <div>{catergory.ifbuy}</div>
+          <div>절약 챌린지</div>
+          <div>{catergory.challenge ? catergory.challenge : 0}원</div>
         </div>
         <div className="flex justify-between">
           <div>습관 저금통</div>
-          <div>{catergory.habit}</div>
+          <div>{catergory.habit ? catergory.habit : 0}원</div>
         </div>
         <div className="flex justify-between">
-          <div>절약 챌린지</div>
-          <div>{catergory.challenge}</div>
+          <div>샀다 치고</div>
+          <div>{catergory.ifbuy ? catergory.ifbuy : 0}원</div>
         </div>
         <div className="flex justify-between">
           <div>총 액</div>
-          <div>{catergory.total}</div>
-        </div>
-      </div>
-      <div>
-        <div className="flex justify-between">
-          <div>현재 이자</div>
-          <div>$interest</div>
+          <div>{catergory.total ? catergory.total : 0}원</div>
         </div>
       </div>
     </div>

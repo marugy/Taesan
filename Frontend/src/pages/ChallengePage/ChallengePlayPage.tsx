@@ -110,6 +110,8 @@ const ChallengePlayPage = () => {
       setPrice(challengePlay.price);
       setSpare(challengePlay.spare);
 
+      console.log(challengePlay.endDate);
+
       const today = dayjs(); // 오늘 날짜
       const targetDate = dayjs(challengePlay.endDate); // 만기일
       const duration = targetDate.diff(today, 'day') + 1;
@@ -120,10 +122,10 @@ const ChallengePlayPage = () => {
   }, [challengePlay]);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col overflow-hidden ">
       <ArrowBackParam pageName="진행중인 챌린지" param="/challenge" />
 
-      <div className="flex flex-col items-center z-10">
+      <div className="flex flex-col items-center h-full justify-center z-10 mt-8">
         <img src="/Challenge/ChallengePlay2.png" alt="ChallengePlay" className="w-auto h-24 dt:w-auto dt:h-52 " />
         <div className=" border-4 rounded-xl p-3">
           <div className="mr-14 tb:mr-14 dt:mr-32 mb-5 tb:text-md dt:text-xl font-bold">{title}</div>
@@ -137,6 +139,8 @@ const ChallengePlayPage = () => {
         </div>
         <ChallengeMemberList players={players} price={price} />
       </div>
+      <div className="h-[120px]"></div>
+      <BottomNav />
     </div>
   );
 };
