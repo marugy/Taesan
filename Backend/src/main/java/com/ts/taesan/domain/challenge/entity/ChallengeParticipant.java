@@ -44,6 +44,9 @@ public class ChallengeParticipant extends BaseEntity {
 
     public void changeSpare(Long money) {
         this.spare -= money;
+        if (this.spare < 0L) {
+            this.spare = 0L;
+        }
     }
 
     public void settle() {

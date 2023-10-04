@@ -54,7 +54,8 @@ public class CardAccessUtil {
 
     public List<CardList> getCardList(Member member) {
         CardListResponse cardListResponse = cardClient.getCardList(
-                        member.getMydataAccessToken(), getTranId(),
+                        member.getMydataAccessToken(),
+                        getTranId(),
                         getApiType(),
                         createCardListRequest())
                 .getBody();

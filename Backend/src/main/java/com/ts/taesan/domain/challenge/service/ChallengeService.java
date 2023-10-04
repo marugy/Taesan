@@ -57,6 +57,10 @@ public class ChallengeService {
     }
 
     public void changeSpare(Long memberId, Long approvedAmt) {
+        if(!challengeRepository.existsByMemberId(memberId)) {       // 등록된 challenge가 없을 경우
+            return;
+        }
+
         ChallengeMakeResponse challengeMakeResponse = challengeQRepository.getState(memberId);
         if (challengeMakeResponse.getState() == 2) {
             ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeMakeResponse.getChallengeId()).orElseThrow();
