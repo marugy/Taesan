@@ -20,7 +20,7 @@ import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
 import { useUserStore } from 'store/UserStore';
 const HabitCreatePage = () => {
-  const { accessToken, refreshToken } = useUserStore();
+  const { accessToken, refreshToken,connectedAsset,createdTikkle,name } = useUserStore();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [habit, setHabit] = useState('');
@@ -44,6 +44,32 @@ const HabitCreatePage = () => {
       money: 150000,
     },
   ]);
+  
+  
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+    
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
 
   const handleTitle = (event: any) => {
     setTitle(event.target.value);
@@ -129,13 +155,13 @@ const HabitCreatePage = () => {
 
   return (
     <div className="h-screen w-full font-main">
-      <ArrowBack pageName="습관 절약" />
+      <ArrowBack pageName="습관 저금통" />
       <div className="h-24 dt:h-36 w-4/5 mx-auto mt-5 bg-gradient-to-r from-cyan-500 to-blue-500 border rounded-md flex flex-col items-center justify-center ">
         <div className="text-white text-2xl dt:text-3xl font-semibold">습관 생성하기</div>
         {/* <div className="mt-5 text-center text-lg dt:text-2xl text-white">습관도 만들고, 돈도 모으고 !</div> */}
       </div>
       <div className="flex justify-center ">
-        <img src="/Habit/goodHabit.png" className="h-72 border rounded-full" />
+        <img src="/Habit/습관로고.png" className="h-72 mt-10" />
       </div>
       <div className=" mx-3 mt-4">
         <div className="font-semibold text-xl text-center ">
@@ -146,8 +172,10 @@ const HabitCreatePage = () => {
           <Input crossOrigin="anonymous" label="습관 제목" color="blue" onChange={handleTitle} size="lg" className="" />
         </div>
 
+    
+      <div className="font-bold text-center text-3xl mt-10">생성할 습관을 골라주세요.</div>
         {/* Default Category (술,담배,커피,택시) */}
-        <div className="mt-10 mb-3 text-2xl text-center font-semibold">기본 카테고리</div>
+        <div className="mb-5 text-2xl text-center font-semibold mt-10">[ 기본 카테고리 ]</div>
         <div className="flex flex-wrap justify-center items-center">
           <div className="w-2/5 p-2">
             <div
@@ -199,14 +227,17 @@ const HabitCreatePage = () => {
             >
               <img src="/Habit/커피.png" className="w-8 dt:w-12 " />
               <div className="text-md dt:text-4xl font-semibold">커피</div>
+              </div>
             </div>
-          </div>
+        </div>
+        
+        <div className="mt-10 mb-1 text-2xl text-center font-semibold">
+
+          [ 퍼스널 카테고리 ]
         </div>
 
-        <div className="mt-10 mb-3 text-2xl text-center font-semibold">
-          저번 달,
-          <br />
-          자주 했던 소비
+        <div className="mb-3 text-lg text-gray-500 text-center font-semibold">
+         지난 달 {name}님의 소비 습관을 분석한 후, <br></br>도출된 결과를 기반으로 추천해드리는 습관 목록입니다.
         </div>
 
         <div></div>
@@ -221,7 +252,7 @@ const HabitCreatePage = () => {
                 onClick={() => handleItemClick(index, category.category)}
                 className={`${
                   // selectedItem === index ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
-                  habit === category.category ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
+                  habit === category.category ? 'border ring-blue-500 ring-[3px]' : 'ring-[3px] border ring-white'
                 } mb-5`}
               >
                 <div className="flex justify-between w-full">
