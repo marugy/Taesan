@@ -3,7 +3,6 @@ package com.taesan.mydata.domain.auth.service;
 import com.taesan.mydata.domain.auth.api.dto.response.TokenCreateResponse;
 import com.taesan.mydata.domain.auth.entity.Auth;
 import com.taesan.mydata.domain.auth.repository.AuthRepository;
-import com.taesan.mydata.domain.bank.api.dto.inner.AccountList;
 import com.taesan.mydata.domain.bank.entity.Account;
 import com.taesan.mydata.domain.bank.repository.AccountRepository;
 import com.taesan.mydata.domain.card.entity.Card;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -45,7 +43,7 @@ public class AuthService {
         }
 
         // 인증 정보 저장
-        Auth auth = authRepository.save(
+        authRepository.save(
                 Auth.builder()
                         .id(userCi)
                         .build());
@@ -117,7 +115,7 @@ public class AuthService {
 
     public TokenCreateResponse getAccessToken(long userId) {
         if(!authRepository.existsById(userId)) {
-            return null;        // 추후 에러처리 필요
+            throw new RuntimeException("등록되지 않은 회원입니다!!");
         }
 
         String accessToken = jwtUtils.createAccessToken(userId);
