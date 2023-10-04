@@ -17,6 +17,7 @@ const ArrowBackPincode = ({ pageName, handleClose }: Props) => {
       <IconButton variant="outlined" className="rounded-full border-gray-700" onClick={handleClose}>
         <NavigateBeforeOutlinedIcon />
       </IconButton>
+      <div className="font-bold ml-4">{pageName}</div>
     </div>
   );
 };

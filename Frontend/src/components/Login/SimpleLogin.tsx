@@ -101,11 +101,11 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
       }`}
     >
       <div className="fixed top-10 left-5 dt:left-96">
-        <ArrowBackPincode pageName="다시 로그인" handleClose={handleClose} />
+        <ArrowBackPincode pageName="기존 로그인" handleClose={handleClose} />
       </div>
 
       <div className="text-[#0067AC] flex justify-center text-2xl tb:text-3xl dt:text-4xl font-bold mb-10">
-        암호 입력
+        간편 로그인
       </div>
 
       <div className="flex justify-center space-x-5 text-[#0067AC] mb-5  ">

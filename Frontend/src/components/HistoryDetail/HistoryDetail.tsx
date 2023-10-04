@@ -406,7 +406,7 @@ const HistoryDetail = () => {
               )}
             </div>
           ))}
-          <div className="border-blue-gray-100 rounded-xl border mt-5 w-full">
+          <div className="border-blue-gray-100 rounded-xl border mt-5 w-full mb-24">
             <Typography variant="h3" color="black" className="mx-3 my-2">
               분석 결과가 맞나요?
             </Typography>
