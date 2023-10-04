@@ -26,21 +26,39 @@ const HabitCreatePage = () => {
   const [habit, setHabit] = useState('');
   const [oftenCategory, setOftenCategory] = useState([
     {
-      category: 'string',
-      count: 0,
-      dateMoney: 0,
-      money: 0,
+      category: '카페',
+      count: 20,
+      dateMoney: 4000,
+      money: 120000,
+    },
+    {
+      category: '주류',
+      count: 10,
+      dateMoney: 5000,
+      money: 150000,
+    },
+    {
+      category: '음식점',
+      count: 20,
+      dateMoney: 5000,
+      money: 150000,
     },
   ]);
 
   const handleTitle = (event: any) => {
     setTitle(event.target.value);
   };
+
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleItemClick = (index: any, category: string) => {
-    setSelectedItem(index);
-    setHabit(category); // setAccount 함수에 accountNum 전달
-    console.log(category);
+  const handleItemClick = (index: any, category: any) => {
+    // 이미 선택된 항목이면 선택 해제
+    if (selectedItem === index) {
+      setSelectedItem(null);
+      setHabit(''); // habit 상태를 비웁니다.
+    } else {
+      setSelectedItem(index);
+      setHabit(category);
+    }
   };
 
   useEffect(() => {
@@ -195,42 +213,45 @@ const HabitCreatePage = () => {
 
         {/* FrequencyPayList (사용자의 소비패턴에 따른 것들) */}
         {/* <RepeatCategory oftenCategory={oftenCategory} /> */}
-        <Card className="w-96">
-          <List>
+        <div className="flex justify-center ">
+          <List className="w-full dt:w-4/5">
             {oftenCategory.map((category, index) => (
               <ListItem
                 key={index}
                 onClick={() => handleItemClick(index, category.category)}
                 className={`${
-                  selectedItem === index ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
-                } mb-4 `}
+                  // selectedItem === index ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
+                  habit === category.category ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
+                } mb-5`}
               >
-                <ListItemPrefix>
-                  <Avatar variant="circular" src={`/Account/국민은행.png`} className="h-10 aspect-square" />
-                </ListItemPrefix>
                 <div className="flex justify-between w-full">
-                  <div>
-                    <Typography variant="h6" color="blue-gray">
-                      {category.category}
-                    </Typography>
-                    <Typography variant="small" color="blue-gray">
-                      지난 달 소비 횟수 {category.count}
-                    </Typography>
-                    <Typography variant="paragraph" color="gray" className="font-normal">
-                      하루 평균 소비 횟수{category.dateMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
-                    </Typography>
+                  <div className="flex flex-row">
+                    <div className="flex items-center">
+                      <img src={`/Category/${category.category}.png`} className="w-8 dt:w-12 mr-2" />
+                    </div>
+                    <div>
+                      <Typography variant="h6" color="blue-gray">
+                        {category.category}
+                      </Typography>
+                      <Typography variant="small" color="blue-gray">
+                        지난 달 : {category.count}회
+                      </Typography>
+                    </div>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center flex-col">
+                    <Typography variant="small" color="gray" className="font-normal">
+                      하루 평균 소비 {category.dateMoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+                    </Typography>
                     <Typography variant="paragraph" color="blue" className="font-normal font-semibold">
-                      카테고리 총액{category.money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+                      총 소비액 {category.money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
                     </Typography>
                   </div>
                 </div>
               </ListItem>
             ))}
           </List>
-        </Card>
+        </div>
         <div className="flex justify-center mt-10 ">
           <Button color="blue" onClick={createHabit}>
             습관 생성하기
