@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 public class AnalystFeignConfig {
-    @Bean
-    Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL; // log레벨 설정
-    }
+//    @Bean
+//    Logger.Level feignLoggerLevel() {
+//        return Logger.Level.FULL; // log레벨 설정
+//    }
 
     @Bean
     public Encoder multipartFormEncoder() {

@@ -12,8 +12,8 @@ public class OpenFeignConfig {
             requestTemplate.header("Accept", "application/json");
         };
     }
-    @Bean
-    Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL; // log레벨 설정
-    }
+//    @Bean
+//    Logger.Level feignLoggerLevel() {
+//        return Logger.Level.FULL; // log레벨 설정
+//    }
 }
