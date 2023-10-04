@@ -63,6 +63,28 @@ const MainPage = () => {
     },
   ]); // 카드 리스트
 
+  
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+    
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+  }, []);
   // useQuery를 이용해 사용자 정보 호출 ( 2개의 쿼리 사용 )
   // 쿼리 1
   const getInfo = async () => {
