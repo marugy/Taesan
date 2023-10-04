@@ -8,6 +8,8 @@ import com.ts.taesan.global.api.ApiResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,16 +27,16 @@ public class AnalystAPI {
 
     private final AnalystService analystService;
     @ApiOperation(value = "장소 카테고리 분석 정보 불러오기", notes = "카테고리 분석에서 장소에 대한 분석 정보를 불러오는 API")
-    @PostMapping("/place/{cardId}")
-    public ApiResponse<PlaceAnalystResponse> analyzePlace(@RequestBody PlaceAnalystRequest request, @PathVariable Long cardId) {
-        PlaceAnalystResponse result = analystService.placeAnlystResponse(cardId, request.getYear(), request.getMonth());
+    @PostMapping("/place/analyst")
+    public ApiResponse<PlaceAnalystResponse> analyzePlace(@RequestBody PlaceAnalystRequest request, @AuthenticationPrincipal User user) {
+        PlaceAnalystResponse result = analystService.placeAnlystResponse(Long.parseLong(user.getUsername()), request.getYear(), request.getMonth());
         return OK(result);
     }
 
     @ApiOperation(value = "영수증 카테고리 분석 정보 불러오기", notes = "카테고리 분석에서 영수증에 대한 분석 정보를 불러오는 API")
-    @PostMapping("/receipt/{cardId}")
-    public ApiResponse<ReceiptAnalystResponse> analyzeReceipt(@RequestBody ReceiptAnalystRequest request, @PathVariable Long cardId) {
-        ReceiptAnalystResponse result = analystService.receiptAnalystResponse(cardId, request.getYear(), request.getMonth());
+    @PostMapping("/receipt/analyst")
+    public ApiResponse<ReceiptAnalystResponse> analyzeReceipt(@RequestBody ReceiptAnalystRequest request, @AuthenticationPrincipal User user) {
+        ReceiptAnalystResponse result = analystService.receiptAnalystResponse(Long.parseLong(user.getUsername()), request.getYear(), request.getMonth());
         return OK(result);
     }
 
