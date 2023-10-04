@@ -11,7 +11,7 @@ const RepeatCategory: React.FC<RepeatCategoryProps> = ({ oftenCategory }) => {
       {/* <div>{oftenCategory}</div> */}
       {/* <Card className="w-96">
         <List>
-          {accountList.map((account, index) => (
+          {oftenCategory.map((category, index) => (
             <ListItem
               key={index}
               onClick={() => handleItemClick(index, account.accountNum)}
