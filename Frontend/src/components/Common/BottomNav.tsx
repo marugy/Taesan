@@ -4,8 +4,23 @@ import { IconButton } from '@material-tailwind/react';
 import { HiHome } from 'react-icons/hi';
 import { BsPerson, BsCreditCard } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
+import { useUserStore } from 'store/UserStore';
+import Swal2 from 'sweetalert2';
+
 const BottomNav = () => {
   const navigate = useNavigate();
+  const { connectedAsset, } = useUserStore();
+  const handleHabit = () =>{
+    if(connectedAsset===false){
+      Swal2.fire({
+        icon: 'info',
+        title: '자산을 연결해 주세요',
+      });
+    }
+    else{
+      navigate('/pay')
+    }
+  }
   return (
     <div className="z-10 flex justify-around items-center bg-white h-[8vh] max-w-full fixed bottom-0 left-0 right-0">
       <div className="flex flex-col items-center w-5">
@@ -13,7 +28,7 @@ const BottomNav = () => {
           <BsCreditCard
             className="text-main text-xl cursor-pointer"
             onClick={() => {
-              navigate('/pay');
+              handleHabit()
             }}
           />
         </div>

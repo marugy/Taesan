@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BuyifList from 'components/BuyIf/BuyifList';
 import AssetCard from 'components/BuyIf/AssetCard';
@@ -18,7 +18,32 @@ const BuyIfPage = () => {
   const [tikkle, setTikkle] = useState(0);
   const [mostBuy, setMostBuy] = useState('');
   const [mostBuyPrice, setMostBuyPrice] = useState(0);
-  const { accessToken, refreshToken } = useUserStore();
+  const { accessToken, refreshToken,connectedAsset,createdTikkle } = useUserStore();
+
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+    
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
   const getBuyif = async () => {
     const { data } = await axios.get('https://j9c211.p.ssafy.io/api/ifbuy-management/ifbuys', {
       headers: {

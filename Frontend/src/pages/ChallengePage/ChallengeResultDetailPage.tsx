@@ -6,9 +6,10 @@ import ArrowBackParam from 'components/Common/ArrowBackParam';
 import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ChallengeResultDetailPage = () => {
-  const { accessToken, refreshToken } = useUserStore();
+
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -16,6 +17,32 @@ const ChallengeResultDetailPage = () => {
   const [price, setPrice] = useState(0);
   const [spare, setSpare] = useState(0);
   const [startDate, setStartDate] = useState('');
+  const { accessToken, refreshToken,connectedAsset,createdTikkle } = useUserStore();
+  const navigate = useNavigate();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+    
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
 
   const formatDate = (dateObj: Date) =>
     `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(

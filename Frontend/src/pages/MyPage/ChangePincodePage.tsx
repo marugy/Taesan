@@ -11,9 +11,30 @@ const ChangePincodePage = () => {
   const [newPincodeVisble, setNewPincodeVisible] = useState(false);
   const [pincode, setPincode] = useState('');
   const [simplePassword, setSimplePassword] = useState('');
-
+  
   const navigate = useNavigate();
 
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+  }, []);
   // 핀코드가 일치하면
   const onCorrectPincode = () => {
     setPincodeVisible(false);

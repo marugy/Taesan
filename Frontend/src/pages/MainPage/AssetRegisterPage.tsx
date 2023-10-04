@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import AccountRegister from 'components/AssetRegister/AccountRegister';
 import CardRegister from 'components/AssetRegister/CardRegister';
 import { Button } from '@material-tailwind/react';
@@ -11,9 +11,32 @@ import { useNavigate } from 'react-router-dom';
 const AssetRegisterPage = () => {
   const navigate = useNavigate();
   const [nextButton, setNextButton] = useState(false);
-  const { accessToken, refreshToken, userId, setConnectedAsset } = useUserStore();
+  const { accessToken, refreshToken, userId, setConnectedAsset,connectedAsset,createdTikkle } = useUserStore();
   const [account, setAccount] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+ 
+
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+   
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+  }, []);
 
   // useQuery를 이용해 계좌 정보 호출
 

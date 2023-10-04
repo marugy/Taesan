@@ -117,7 +117,9 @@ const Graph = () => {
     const data = category?.infos || [];
     const totalValue = data.reduce((sum, item) => sum + item.value, 0);
     return (
-        <div className='mx-4 mt-11 mb-28'>
+        <div className='mx-4 mt-11 mb-28 dt:mt-5 dt:mb-0'>
+            <div className='dt:flex dt:ml-11 dt:gap-9'>
+            <div>
             <div className=' font-bold text-blue-gray-600'>
                 설정기간
             </div>
@@ -156,6 +158,9 @@ const Graph = () => {
                     </FormControl>
                 </Box>
             </div>
+            </div>
+            <div className='dt:w-[23%]'>
+            
             <div className=' font-bold text-blue-gray-600 my-2'>
                 카테고리 분류
             </div>
@@ -165,9 +170,11 @@ const Graph = () => {
                     <Tab label="상세 내역" />
                 </Tabs>
             </Box>
+            </div>
+            </div>
             {data && data.length > 0? (
-            <div>
-                <div className='w-[100%] aspect-square'>
+            <div className='dt:flex dt:items-center dt:justify-around'>
+                <div className='w-[100%] aspect-square dt:w-[35%]'>
                     <ResponsivePie
                         data={data}
                         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -276,6 +283,7 @@ const Graph = () => {
                         legends={[]}
                         />
                     </div>
+                    <div className='dt:w-[40%]'>
                     { tagnum === 0 ?
                         <div className='flex justify-center '>
                             <div className='text-white bg-main h-[8vh] w-[70%] text-xl flex justify-center items-center font-bold rounded-lg'>
@@ -309,8 +317,9 @@ const Graph = () => {
                         ))}
                     <div className='h-[100px]'/>
                 </div>
+                </div>
             </div>):(<div className='w-full flex justify-center items-center h-48'>{tagnum===0?(<Typography variant="h4" color="black" className='w-fit' >소비내역이 없어요</Typography>):(<Typography variant="h4" color="black" className='w-fit' >등록된 영수증이 없어요</Typography>)}</div>)}
-
+            
         </div>
     );
 };

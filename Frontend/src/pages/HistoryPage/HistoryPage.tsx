@@ -7,9 +7,9 @@ import axios from 'axios';
 import { useUserStore } from 'store/UserStore';
 import { useInfiniteQuery } from 'react-query';
 import { useAssetStore } from 'store/AssetStore';
+import { useNavigate } from 'react-router-dom';
 
 const HistoryPage = () => {
-  const { accessToken, refreshToken,name } = useUserStore();
   const [cardId,setCardId]= useState(0)
   const [cardNumber,setCradNumber]=useState('')
   const [cardCompany,setCradCompany]=useState('')
@@ -17,7 +17,32 @@ const HistoryPage = () => {
   const [cardType,setCardType]=useState('')
   const [page,setPage] = useState(null);
   const {selectedCardId} = useAssetStore()
-
+  const { accessToken, refreshToken,connectedAsset,createdTikkle,name } = useUserStore();
+  const navigate = useNavigate();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+    
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false) {
+      navigate('/main');
+    }
+  }, []);
   
   // const getHistory = async (page:number) => {
   //   try {
