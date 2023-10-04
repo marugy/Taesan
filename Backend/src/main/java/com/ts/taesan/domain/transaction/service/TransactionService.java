@@ -166,14 +166,14 @@ public class TransactionService {
         before = before.minusMonths(1);
         List<OftenCategory> transactions = qRepository.findOftenTransaction(userId, before.atDay(1), before.atEndOfMonth());
         for(OftenCategory temp : transactions){
-            temp.setDateMoney(temp.getMoney()/3);
+            temp.setDateMoney(temp.getMoney()/30);
         }
         oftenCategories.addAll(transactions);
 
         List<OftenCategory> receipts = qRepository.findOftenReceipt(userId, before.atDay(1), before.atEndOfMonth());
         for(OftenCategory temp : receipts){
 
-            temp.setDateMoney(temp.getMoney()/3);
+            temp.setDateMoney(temp.getMoney()/30);
 
         }
         oftenCategories.addAll(receipts);
