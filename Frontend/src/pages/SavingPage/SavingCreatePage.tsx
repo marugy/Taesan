@@ -38,21 +38,6 @@ const SavingCreatePage = () => {
   return (
     <div className="h-full overflow-hidden">
       <ArrowBack pageName="적금 만들기" />
-      {/* {createButton ? (
-        <div>암호입력 공통 컴포넌트 띄우기</div>
-      ) : (
-        <div>
-          <SavingCreate />{' '}
-          <button
-            onClick={() => {
-              setCreateButton(true);
-            }}
-          >
-            새 적금 만들기
-          </button>
-        </div>
-      )} */}
-
       <SavingCreate />
       <BottomNav />
     </div>

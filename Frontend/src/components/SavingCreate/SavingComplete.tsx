@@ -9,12 +9,12 @@ const SavingComplete = ({ onComplete }: { onComplete: () => void }) => {
   const navigate = useNavigate();
   return (
     <div className="flex inset-0 items-center fixed h-screen  w-full z-50 flex-col bg-back">
-      <img src="/piggy_bank.png" className="h-64 m-10" />
+      <img src="/Main/습관저금통.png" className="h-64 mt-10 dt:mt-32" />
       <div className="flex flex-col items-center">
+        <div className="text-3xl text-main font-bold my-5">적금통 생성 완료</div>
         <div className="text-lg text-gray-500">'태산' 사용을 위한 적금통을 </div>
         <div className="text-lg text-gray-500">성공적으로 생성했습니다.</div>
-        <div className="text-lg text-main font-bold my-5">적금통 생성 완료</div>
-        <div className="">
+        <div className="mt-5">
           <Button color="blue" onClick={onComplete}>
             홈 화면 가기
           </Button>

@@ -29,7 +29,7 @@ const CardRegister: React.FC<CardRegisterProps> = ({ cardList }) => {
           <Card
             cardId={card.cardId}
             cardCompany={card.cardCompany}
-            cardNumber={card.cardNum}
+            cardNumber={card.cardNumber}
             cardType={`${card.cardName}`}
             main=""
             name={name}
