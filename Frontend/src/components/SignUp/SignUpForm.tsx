@@ -252,7 +252,7 @@ const SingUpForm = () => {
         />
       )}
       <div className="text-2xl tb:text-3xl dt:text-4xl mb-5">회원가입</div>
-      <form onSubmit={handleSubmit(onValid)}>
+      <form onSubmit={handleSubmit(onValid)} className='w-[80%]'>
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 justify-center items-center">
             <Input
