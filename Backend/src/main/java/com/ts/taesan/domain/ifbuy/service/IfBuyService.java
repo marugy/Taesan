@@ -117,9 +117,6 @@ public class IfBuyService {
                         .price(Long.parseLong(request.getPrice())).build();
             }
 
-//            IfBuyEntity entity = IfBuyEntity.builder().member(member).name(request.getName())
-//                    .price(Long.parseLong(request.getPrice())).uploadFileName(imgFile.getUploadFileName())
-//                    .storeFileName(imgFile.getStoreFileName()).build();
 
             ifBuyRepository.save(entity);
             assetService.saveMoney(memberId, Long.parseLong(request.getPrice()), 1);
