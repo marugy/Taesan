@@ -39,10 +39,12 @@ const BuyifList = ({buyiflist,mostbuy,mostbuyprice}:PropsList) => {
             </div> */}
             {buyiflist.map((buyif,index)=>(
                 <div key={index} className='w-[90%] h-[100px] bg-blue-gray-50 rounded-md flex items-center justify-around' >
-                    <img src={`https://j9c211.p.ssafy.io/api/ifbuy-management/ifbuys/image/${buyif.img}`} className='h-[80%] aspect-square rounded-lg ' />
-                    <div className='flex flex-col justify-around h-[90%]'>
-                        <div className='font-main text-lg'>{buyif.name}</div>
-                        <div className='font-main text-lg'>가격: ₩{buyif.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+                    {buyif.img ? <img src={`https://j9c211.p.ssafy.io/api/ifbuy-management/ifbuys/image/${buyif.img}`} className='h-[80%] aspect-square rounded-lg ' />
+                    : <img src='/buyifdefault.png' className='h-[80%] aspect-square rounded-lg ' />}
+                    {/* <img src={`https://j9c211.p.ssafy.io/api/ifbuy-management/ifbuys/image/${buyif.img}`} className='h-[80%] aspect-square rounded-lg ' /> */}
+                    <div className='flex flex-col justify-around h-[90%] w-[40%]'>
+                        <div className='font-main dt:text-lg tb:text-lg text-sm'>{buyif.name}</div>
+                        <div className='font-main  dt:text-lg tb:text-lg text-sm'>가격: ₩{buyif.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
                     </div>
                   
                     <div className='h-full flex items-center'>
