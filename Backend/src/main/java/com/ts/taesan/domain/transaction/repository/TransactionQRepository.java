@@ -94,7 +94,9 @@ public class TransactionQRepository {
                         .and(receiptList.category.eq("커피_차").or(receiptList.category.eq("과자_간식")
                                 .or(receiptList.category.eq("제과_잼").or(receiptList.category.eq("완구")
                                         .or(receiptList.category.eq("잡화_명품").or(receiptList.category.eq("문구_도서")
-                                                .or(receiptList.category.eq("담배"))))))))
+                                                .or(receiptList.category.eq("담배")
+                                                        .or(receiptList.category.eq("주류")
+                                                                .or(receiptList.category.eq("간편식"))))))))))
                         .and(receiptList.receipt.transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(receiptList.category)
                 .orderBy(receiptList.count().desc()).limit(3).fetch();
