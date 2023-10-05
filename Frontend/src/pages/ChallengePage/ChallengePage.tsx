@@ -18,7 +18,7 @@ const ChallengePage = () => {
       },
     })
     .then((res)=>{
-      
+      console.log('여기',res.data.response)
       if(res.data.response === false){
         navigate('/')
       }
