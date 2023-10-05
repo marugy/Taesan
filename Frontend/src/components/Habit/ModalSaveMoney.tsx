@@ -14,11 +14,13 @@ import {
 import dayjs from 'dayjs';
 import { useUserStore } from 'store/UserStore';
 import Swal2 from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 interface ModalSaveMoneyProps {
   todaySave: Array<any>;
 }
 
 const ModalSaveMoney: React.FC<ModalSaveMoneyProps> = ({ todaySave }) => {
+  const navigate = useNavigate();
   const { accessToken, refreshToken } = useUserStore();
   const [size, setSize] = useState(null);
   const [totalMoney, setTotalMoney] = useState(0);
@@ -62,6 +64,7 @@ const ModalSaveMoney: React.FC<ModalSaveMoneyProps> = ({ todaySave }) => {
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate(0);
       })
       .catch((error) => {
         console.log(error);
