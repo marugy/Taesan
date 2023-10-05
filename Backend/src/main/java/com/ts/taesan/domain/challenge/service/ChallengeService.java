@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class ChallengeService {
-    
+
     private final ChallengeRepository challengeRepository;
     private final ChallengeQRepository challengeQRepository;
     private final ChallengeParticipantRepository challengeParticipantRepository;
@@ -57,7 +57,7 @@ public class ChallengeService {
     }
 
     public void changeSpare(Long memberId, Long approvedAmt) {
-        if(!challengeRepository.existsByMemberId(memberId)) {       // 등록된 challenge가 없을 경우
+        if (!challengeParticipantRepository.existsByMemberId(memberId)) {       // 등록된 challenge가 없을 경우
             return;
         }
 
