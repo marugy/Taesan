@@ -102,9 +102,9 @@ export const Pincode = ({ onCorrectPincode, visibleFalse }: Props) => {
       <div className="flex justify-center space-x-5 text-[#0067AC] mb-5  ">
         {Array.from({ length: MAX_LENGTH }).map((_, index) => {
           if (index < stack.length) {
-            return <RadioButtonCheckedOutlinedIcon />;
+            return <RadioButtonCheckedOutlinedIcon key={index} />;
           }
-          return <RadioButtonUncheckedOutlinedIcon />;
+          return <RadioButtonUncheckedOutlinedIcon key={index} />;
         })}
       </div>
       {errorMessage && <div className="text-red-500 text-2xl mb-5">{errorMessage}</div>}

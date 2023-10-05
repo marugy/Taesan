@@ -110,45 +110,45 @@ const HistoryDetail = () => {
     getTransactionDetail();
   }, []);
 
-    const getOCR = () => {
-      axios
-        .get('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/test', {
-          headers: {
-            'ACCESS-TOKEN': accessToken,
-            'REFRESH-TOKEN': refreshToken,
-          },
-        })
-        .then((response) => {
-          const updatedClovaAnalys = {
-            items: response.data.response.list.map((item: any) => ({
-              name: item.name,
-              price: item.sumPrice.toString(), // sumPrice를 문자열로 변환
-            })),
-          };
+  const getOCR = () => {
+    axios
+      .get('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/test', {
+        headers: {
+          'ACCESS-TOKEN': accessToken,
+          'REFRESH-TOKEN': refreshToken,
+        },
+      })
+      .then((response) => {
+        const updatedClovaAnalys = {
+          items: response.data.response.list.map((item: any) => ({
+            name: item.name,
+            price: item.sumPrice.toString(), // sumPrice를 문자열로 변환
+          })),
+        };
 
-          // 업데이트된 데이터를 clovaAnalys 상태로 설정합니다.
-          setClovaAnalys(updatedClovaAnalys);
-          setImgRegister(true);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
-          Swal.fire({
-            icon: 'warning',
-            title: '영수증을 다시 등록해주세요',
-          });
-          return;
+        // 업데이트된 데이터를 clovaAnalys 상태로 설정합니다.
+        setClovaAnalys(updatedClovaAnalys);
+        setImgRegister(true);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+        Swal.fire({
+          icon: 'warning',
+          title: '영수증을 다시 등록해주세요',
         });
-    };
+        return;
+      });
+  };
   useEffect(() => {
     // if (receiptImage) {
     //   postOCR();
     //   setLoading(true);
     // }
     if (receiptImage) {
-        getOCR();
-        setLoading(true)
+      getOCR();
+      setLoading(true);
     }
   }, [receiptImage]);
 
@@ -473,7 +473,7 @@ const HistoryDetail = () => {
             >
               <ExpandMoreIcon />
             </ToggleButton>
-            <div className="ml-4 font-bold">결재 내역 분석</div>
+            <div className="ml-4 font-bold">결제 내역 분석</div>
           </div>
           {analys ? (
             <div className="w-full ">

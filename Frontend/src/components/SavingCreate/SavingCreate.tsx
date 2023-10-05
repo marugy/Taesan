@@ -85,8 +85,16 @@ const SavingCreate = () => {
         <br />
         만기까지 기다리면 추가 이자를 받을 수 있어요!
       </div>
+      <Button
+        color="cyan"
+        onClick={() => {
+          navigate('/mypage/product');
+        }}
+        className="mt-3"
+      >
+        적금통 상품 정보 읽기
+      </Button>
       <div>
-        {/* <img className="h-44 dt:h-64" src="/piggy_bank.png" alt="pig" /> */}
         <img className="h-44 dt:h-64" src="/Main/습관저금통.png" alt="pig" />
       </div>
 

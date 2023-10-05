@@ -18,26 +18,30 @@ import { useUserStore } from 'store/UserStore';
 import Swal2 from 'sweetalert2';
 
 const HabitPage = () => {
-  const { accessToken, refreshToken,connectedAsset,createdTikkle,name } = useUserStore();
+  const { accessToken, refreshToken, connectedAsset, createdTikkle, name } = useUserStore();
   const navigate = useNavigate();
-  const tokenCheck = ()=>{
-    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
-      headers: {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      },
-    })
-    .then((res)=>{
-     
-      if(res.data.response === false){
-        navigate('/')
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-      navigate('/')
-    })
-  }
+  const tokenCheck = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',
+        {},
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.data.response === false) {
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/');
+      });
+  };
   useEffect(() => {
     tokenCheck();
     if (connectedAsset === false || createdTikkle === false) {
@@ -180,8 +184,6 @@ const HabitPage = () => {
     return info.originNode;
   };
 
-  ////////////////////////////////////////////////////////////////////////////////
-
   const [date, setDate] = useState<Dayjs>(dayjs());
   // 현재 달력에서 선택하고 있는 달.
   const [currMonth, setCurrMonth] = useState(dayjs().month() + 1);
@@ -237,7 +239,7 @@ const HabitPage = () => {
     <div>
       <ArrowBack pageName="습관 저금통" />
       <div className="mx-3 mt-3 mb-28 font-main">
-        <div className="text-green-600 text-2xl dt:text-4xl mt-5 font-bold font-main">{name}님의 습관 저금통</div>
+        <div className="text-blue-500 text-2xl dt:text-4xl mt-5 font-bold font-main">{name}님의 습관 저금통</div>
         <div className="text-gray-600 text-md my-3 font-bold font-main">
           '태산'과 함께 좋은 습관을 만들어 보아요! <br /> 그리고 좋은 습관을 들이며 저축한 돈을 <br />이 곳에서 확인해
           볼 수 있어요.
@@ -246,12 +248,12 @@ const HabitPage = () => {
         {/* <div className="text-gray-600 text-sm dt:text-md my-3 font-bold font-main">{name}님은 월 한 달 동안 습관 저금통에 25,000원을 저금하셨어요!</div> */}
         <div className="h-36 dt:h-48 mt-10 bg-gradient-to-r from-cyan-500 to-blue-500 border rounded-md flex flex-col items-center justify-center ">
           <div className="text-2xl dt:text-4xl text-white font-bold ">
-            <span className="text-green-300">{currMonth}월</span>의 습관 저금 내역
+            <span className="text-white">{currMonth}월</span>의 습관 저금 내역
           </div>
           <div className="text-white text-center mt-5">
-            <span className="font-extrabold text-xl text-green-300">{name}</span>님이 습관 저금통을 통해 <br />{' '}
-            <span className="font-extrabold text-xl text-green-300">{currMonth}</span>월 한 달 동안 저금한 돈은 총{' '}
-            <span className="font-extrabold text-xl text-green-300">
+            <span className="font-extrabold text-xl text-blue-800">{name}</span>님이 습관 저금통을 통해 <br /> 한 달
+            동안 저금한 돈은 총{' '}
+            <span className="font-extrabold text-xl  text-blue-800">
               {totalSaving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             </span>
             원 입니다.
