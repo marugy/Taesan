@@ -122,7 +122,7 @@ public class TransactionQRepository {
                 ))
                 .from(receiptList)
                 .join(receipt).on(receiptList.receipt.id.eq(receipt.id))
-                .join(transaction).on(receipt.transaction.id.eq(receipt.id))
+                .join(transaction).on(receipt.transaction.id.eq(transaction.id))
                 .where(transaction.member.id.eq(userId).and(transaction.dateTime.between(startDate.atStartOfDay(), endDate.atTime(23,59,59))))
                 .groupBy(receiptList.category)
                 .fetch();
