@@ -55,7 +55,7 @@ const NewPostcode2 = ({ register }: Props) => {
   };
 
   return (
-    <div className="space-y-2 border rounded-lg p-5">
+    <div className="space-y-3 ">
       <div className="space-x-1 flex items-center">
         <Input
           type="text"
