@@ -17,7 +17,7 @@ const SavingDelete = () => {
   const [pincodeVisible, setPincodeVisible] = useState(false);
   const [savingmoney, setSavingMoney] = useState(0);
   const [date, setDate] = useState(0);
-  const [aftermoney, setAfterMoney] = useState(0)
+  const [aftermoney, setAfterMoney] = useState(0);
   const { accessToken, refreshToken } = useUserStore();
   // 쿼리 1
   const getSavingInfo = async () => {
@@ -30,7 +30,7 @@ const SavingDelete = () => {
     const today = dayjs();
     setSavingMoney(savingTikkleInfo.response.curMoney);
     setAfterMoney(savingTikkleInfo.response.futureMoney);
-    setDate(savingTikkleInfo.response.endDate)
+    setDate(savingTikkleInfo.response.endDate);
 
     // console.log(userProfileInfo);
     // setName(userProfileInfo.response.name);
@@ -44,43 +44,43 @@ const SavingDelete = () => {
     setPincodeVisible(false);
     // POST_결제 API
     axios
-    .delete('https://j9c211.p.ssafy.io/api/asset-management/tikkle',{
-      headers: {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      },
-    })
-    .then((respone)=>{
-        console.log(respone)
+      .delete('https://j9c211.p.ssafy.io/api/asset-management/tikkle', {
+        headers: {
+          'ACCESS-TOKEN': accessToken,
+          'REFRESH-TOKEN': refreshToken,
+        },
+      })
+      .then((respone) => {
+        console.log(respone);
 
         Toast.fire({
-            icon: 'success',
-            title: '해지를 완료했습니다!',
-          });
-        navigate('/main')
-    })
-    .catch((error)=>{
+          icon: 'success',
+          title: '해지를 완료했습니다!',
+        });
+        navigate('/main');
+      })
+      .catch((error) => {
         Toast.fire({
-            icon: 'error',
-            title: '해지에 실패했습니다!',
-          });
-        navigate('/main')
-        console.log(error)
-        console.log('여기')
-        
-    })
+          icon: 'error',
+          title: '해지에 실패했습니다!',
+        });
+        navigate('/main');
+        console.log(error);
+        console.log('여기');
+      });
   };
-  const deleteTikkle = () =>{
+  const deleteTikkle = () => {
     Swal.fire({
       title: '티끌 적금 해지',
       html: `<span>
-            <b> 만기 까지 ${expirationDate}일 남았습니다
+            <b> 만기 까지 ${expirationDate}일 남았습니다.
+            <br/>
             <br>
-              지금 해지하시면 이자를 받을 수 없습니다. 
+              지금 해지하면 기본 이율의 <br/> 50%에 해당하는 이자를 받게 됩니다.
              <br>
              </b></span>
              <br>
-             정말 해지하시겠습니다??`,
+             정말 해지하시겠습니까?`,
       icon: 'question',
 
       confirmButtonColor: 'red',
@@ -94,11 +94,11 @@ const SavingDelete = () => {
         setPincodeVisible(true);
       }
     });
-  }
+  };
   return (
     <div className="bg-back">
       <ArrowBack pageName="내 적금통" />
-      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode}  visibleFalse={() => setPincodeVisible(false)}  />}
+      {pincodeVisible && <Pincode onCorrectPincode={onCorrectPincode} visibleFalse={() => setPincodeVisible(false)} />}
       <div className="flex justify-end mr-5 mt-5">
         <Button
           color="blue"
@@ -119,7 +119,9 @@ const SavingDelete = () => {
         <div className="border-4 rounded-xl mb-5 p-3">
           <div className="mb-2">
             <span className="text-sm dt:text-xl text-gray-500 ">현재 적금통에 적립된 금액 : </span>
-            <span className="text-sm dt:text-xl text-main font-bold">{savingmoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</span>
+            <span className="text-sm dt:text-xl text-main font-bold">
+              {savingmoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+            </span>
           </div>
           <div className="mb-2">
             <span className="text-sm dt:text-xl text-gray-500">만기까지 남은 일자 : </span>
@@ -127,7 +129,9 @@ const SavingDelete = () => {
           </div>
           <div className="">
             <span className="text-sm dt:text-xl text-gray-500">만기시 예상 출금액 : </span>
-            <span className="text-sm dt:text-xl text-main font-bold">{aftermoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</span>
+            <span className="text-sm dt:text-xl text-main font-bold">
+              {aftermoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+            </span>
           </div>
         </div>
         <div className="text-sm dt:text-xl text-gray-800 ">적금통 계좌 해지 안내입니다.</div>
@@ -140,12 +144,12 @@ const SavingDelete = () => {
           size="lg"
           color="red"
           onClick={() => {
-            deleteTikkle()
+            deleteTikkle();
           }}
         >
           적금통 해지하기
         </Button>
-        <div className='h-[120px]'/>
+        <div className="h-[120px]" />
       </div>
       <BottomNav />
     </div>

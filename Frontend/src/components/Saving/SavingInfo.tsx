@@ -4,21 +4,19 @@ import { Button } from '@material-tailwind/react';
 import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
 import { screen } from '@testing-library/react';
-import { useUserStore} from 'store/UserStore';
+import { useUserStore } from 'store/UserStore';
 import dayjs from 'dayjs';
 interface SavingInfoProps {
-  savingInfo :any;
+  savingInfo: any;
 }
 
-
-  const SavingInfo: React.FC<SavingInfoProps> = ({ savingInfo }) =>{
+const SavingInfo: React.FC<SavingInfoProps> = ({ savingInfo }) => {
   const today = dayjs(); // 오늘 날짜
   const expirationDate = dayjs(savingInfo.endDate).diff(today, 'day') + 1; // 오늘과 만기일 사이의 날짜 차이
   const { name } = useUserStore();
   const navigate = useNavigate();
   return (
     <div className="h-screen">
-     
       <ArrowBack pageName="내 적금통" />
       <div className="flex justify-end mr-5">
         <Button
@@ -37,14 +35,14 @@ interface SavingInfoProps {
         <img src="/Main/습관저금통.png" />
       </div>
       <div className="flex flex-col items-center gap-4">
-        <div className="text-lg text-gray-500">현재 적금통에 적립된 금액</div>
-        <div className="text-lg text-blue-500 font-bold">{savingInfo.curMoney}원</div>
-        <div>만기일</div>
-        <div>({dayjs(savingInfo.endDate).format('YYYY년 MM월 DD일')})</div>
-        <div className="text-lg text-gray-500">만기까지 남은 일자 : </div>
-        <div className="text-lg text-blue-500 font-bold">{expirationDate}일</div>{' '}
-        <div className="text-lg text-gray-500">만기시 예상 출금액</div>
-        <div className="text-lg text-blue-500 font-bold">{savingInfo.futureMoney}원</div>
+        <div className="text-xl text-gray-700 font-bold">현재 적금통에 적립된 금액</div>
+        <div className="text-lg text-blue-600 ">{savingInfo.curMoney}원</div>
+        <div className="text-xl text-gray-700 font-bold">만기일</div>
+        <div className="text-lg text-blue-600 ">{dayjs(savingInfo.endDate).format('YYYY년 MM월 DD일')}</div>
+        <div className="text-xl text-gray-700 font-bold">만기까지 남은 일자 : </div>
+        <div className="text-lg text-blue-600 ">{expirationDate}일</div>{' '}
+        <div className="text-xl text-gray-700 font-bold">만기시 예상 출금액</div>
+        <div className="text-lg text-blue-600 ">{savingInfo.futureMoney}원</div>
         <div>
           <Button
             color="red"
@@ -55,7 +53,7 @@ interface SavingInfoProps {
             적금통 해지하기
           </Button>
         </div>
-        <div className='h-[120px]'/>
+        <div className="h-[120px]" />
       </div>
       <BottomNav />
     </div>
