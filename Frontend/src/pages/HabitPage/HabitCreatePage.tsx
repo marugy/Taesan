@@ -2,6 +2,7 @@ import FrequencyPayList from 'components/HabitCreate/FrequencyPayList';
 import React, { useState, useEffect } from 'react';
 import DefaultCategory from 'components/HabitCreate/DefaultCategory';
 import RepeatCategory from 'components/HabitCreate/RepeatCategory';
+import './Habit.css';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -20,55 +21,58 @@ import ArrowBack from 'components/Common/ArrowBack';
 import BottomNav from 'components/Common/BottomNav';
 import { useUserStore } from 'store/UserStore';
 const HabitCreatePage = () => {
-  const { accessToken, refreshToken,connectedAsset,createdTikkle,name } = useUserStore();
+  const { accessToken, refreshToken, connectedAsset, createdTikkle, name } = useUserStore();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [habit, setHabit] = useState('');
   const [type, setType] = useState(1);
-  const [targetMoney,setTargetMoney] = useState(0);
+  const [targetMoney, setTargetMoney] = useState(0);
   const [oftenCategory, setOftenCategory] = useState([
     {
       category: '카페',
       count: 20,
       dateMoney: 4000,
       money: 120000,
-      type:1,
+      type: 1,
     },
     {
       category: '주류',
       count: 10,
       dateMoney: 5000,
       money: 150000,
-      type:1,
+      type: 1,
     },
     {
       category: '음식점',
       count: 20,
       dateMoney: 5000,
       money: 150000,
-      type:1,
+      type: 1,
     },
   ]);
-  
-  
-  const tokenCheck = ()=>{
-    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
-      headers: {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      },
-    })
-    .then((res)=>{
-    
-      if(res.data.response === false){
-        navigate('/')
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-      navigate('/')
-    })
-  }
+
+  const tokenCheck = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',
+        {},
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.data.response === false) {
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/');
+      });
+  };
   useEffect(() => {
     tokenCheck();
     if (connectedAsset === false || createdTikkle === false) {
@@ -81,7 +85,7 @@ const HabitCreatePage = () => {
   };
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleItemClick = (index: any, category: any,type:any,dateMoney:any) => {
+  const handleItemClick = (index: any, category: any, type: any, dateMoney: any) => {
     // 이미 선택된 항목이면 선택 해제
     if (selectedItem === index) {
       setSelectedItem(null);
@@ -137,7 +141,7 @@ const HabitCreatePage = () => {
           title: title,
           habitName: habit,
           targetMoney: targetMoney,
-          type:type,
+          type: type,
         },
         {
           headers: {
@@ -182,8 +186,7 @@ const HabitCreatePage = () => {
           <Input crossOrigin="anonymous" label="습관 제목" color="blue" onChange={handleTitle} size="lg" className="" />
         </div>
 
-    
-      <div className="font-bold text-center text-3xl mt-10">생성할 습관을 골라주세요.</div>
+        <div className="font-bold text-center text-3xl mt-10">생성할 습관을 골라주세요.</div>
         {/* Default Category (술,담배,커피,택시) */}
         <div className="mb-5 text-2xl text-center font-semibold mt-10">[ 기본 카테고리 ]</div>
         <div className="flex flex-wrap justify-center items-center">
@@ -226,7 +229,6 @@ const HabitCreatePage = () => {
                 setHabit('택시');
                 setType(1);
                 setTargetMoney(5000);
-
               }}
             >
               <img src="/Habit/택시.png" className="w-8 dt:w-12 " />
@@ -242,22 +244,18 @@ const HabitCreatePage = () => {
                 setHabit('커피');
                 setType(1);
                 setTargetMoney(3000);
-
               }}
             >
               <img src="/Habit/커피.png" className="w-8 dt:w-12 " />
               <div className="text-md dt:text-4xl font-semibold">커피</div>
-              </div>
             </div>
+          </div>
         </div>
-        
-        <div className="mt-10 mb-1 text-2xl text-center font-semibold">
 
-          [ 퍼스널 카테고리 ]
-        </div>
+        <div className="mt-10 mb-1 text-2xl text-center font-semibold">[ 퍼스널 카테고리 ]</div>
 
         <div className="mb-3 text-lg text-gray-500 text-center font-semibold">
-         지난 달 {name}님의 소비 습관을 분석한 후, <br></br>도출된 결과를 기반으로 추천해드리는 습관 목록입니다.
+          지난 달 {name}님의 소비 습관을 분석한 후, <br></br>도출된 결과를 기반으로 추천해드리는 습관 목록입니다.
         </div>
 
         <div></div>
@@ -269,7 +267,7 @@ const HabitCreatePage = () => {
             {oftenCategory.map((category, index) => (
               <ListItem
                 key={index}
-                onClick={() => handleItemClick(index, category.category,category.type,category.dateMoney)}
+                onClick={() => handleItemClick(index, category.category, category.type, category.dateMoney)}
                 className={`${
                   // selectedItem === index ? 'border ring-main ring-[3px]' : 'ring-[3px] border ring-white'
                   habit === category.category ? 'border ring-blue-500 ring-[3px]' : 'ring-[3px] border ring-white'

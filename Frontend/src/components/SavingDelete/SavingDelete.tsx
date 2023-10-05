@@ -16,7 +16,7 @@ const SavingDelete = () => {
   const [isDeleteButtonClicked, setIsDeleteButtonClicked] = useState(false);
   const [pincodeVisible, setPincodeVisible] = useState(false);
   const [savingmoney, setSavingMoney] = useState(0);
-  const [date, setDate] = useState(0);
+  const [date, setDate] = useState(dayjs());
   const [aftermoney, setAfterMoney] = useState(0);
   const { accessToken, refreshToken } = useUserStore();
   // 쿼리 1

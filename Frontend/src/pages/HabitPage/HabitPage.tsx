@@ -167,10 +167,10 @@ const HabitPage = () => {
     return (
       <div className="w-full h-full flex justify-center">
         {currentDayData ? (
-          <div>
-            <img src="/Habit/check.png" className="h-7 dt:h-12 aspect-square "></img>
-            <div className="hidden dt:block font-main">
-              +{currentDayData.saving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원{' '}
+          <div className="flex flex-col items-center">
+            <img src="/Habit/check.png" className="h-7 dt:h-10 aspect-square "></img>
+            <div className="hidden dt:block font-main text-xs">
+              {currentDayData.saving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원{' '}
             </div>
           </div>
         ) : (
@@ -260,7 +260,15 @@ const HabitPage = () => {
           </div>
         </div>
         {/* 달력 */}
-        <Calendar value={date} onSelect={onSelect} onPanelChange={onPanelChange} cellRender={cellRender} />
+        <Calendar
+          value={date}
+          onSelect={onSelect}
+          onPanelChange={onPanelChange}
+          // cellRender={cellRender}
+          cellRender={cellRender}
+          // headerRender={() => null}
+          // mode="month"
+        />
         {/* 좋은 습관을 통해 하루에 아낀 돈 */}
         <OnedaySaveMoney selectedDate={selectedDate} dayData={dayData.length > 0 ? dayData : []} />
         {/* 습관 생성 페이지 */}
