@@ -94,7 +94,7 @@ const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:P
                     <div key={index} onClick={() => navigate(`/history/detail/${transaction.transactionId}`)}>
                         <HistoryItem
                         category={transaction.category}
-                        dateTime={transaction.datetime}
+                        dateTime={transaction.dateTime}
                         shopName={transaction.shopName}
                         approvedAmount={transaction.approvedAmount}
                         />
