@@ -153,7 +153,8 @@ public class HabitQRepository {
                         habit.targetMoney
                 ))
                 .from(habit)
-                .where(habit.state.eq(0).and(habit.type.eq(1))
+                .join(member).on(member.id.eq(habit.member.id))
+                .where(habit.state.eq(0).and(habit.type.eq(1)).and(habit.member.id.eq(memberId))
                         .and(habit.habitName.notIn(
                                 JPAExpressions.select(
                                                 receiptList.category).distinct()
@@ -211,7 +212,8 @@ public class HabitQRepository {
                         habit.targetMoney
                 ))
                 .from(habit)
-                .where(habit.state.eq(0).and(habit.type.eq(0))
+                .join(member).on(member.id.eq(habit.member.id))
+                .where(habit.state.eq(0).and(habit.type.eq(0)).and(habit.member.id.eq(memberId))
                         .and(habit.habitName.notIn(
                                 JPAExpressions.select(
                                                 transaction.category).distinct()
