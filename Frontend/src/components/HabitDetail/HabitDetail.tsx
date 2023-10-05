@@ -138,8 +138,8 @@ const HabitDetail = () => {
       <div className="w-full h-full flex justify-center">
         {currentDayData ? (
           <div>
-            <img src="/Habit/check.png" className="h-7 dt:h-12 "></img>
-            <div className="hidden dt:block font-main">
+            <img src="/Habit/check.png" className="h-7 dt:h-11"></img>
+            <div className="hidden dt:block font-main text-xs">
               {currentDayData.saving.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원{' '}
             </div>
           </div>
