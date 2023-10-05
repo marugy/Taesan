@@ -50,39 +50,39 @@ const HistoryDetail = () => {
 
   const [editableItemIndex, setEditableItemIndex] = useState<number | null>(null);
 
-  // const postOCR = () => {
-  //   const formData = new FormData();
-  //   if (receiptImage) {
-  //     formData.append('img', receiptImage);
-  //     axios
-  //       .post('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt', formData, {
-  //         headers: {
-  //           'ACCESS-TOKEN': accessToken,
-  //           'REFRESH-TOKEN': refreshToken,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         const updatedClovaAnalys = {
-  //           items: response.data.response.list.map((item: any) => ({
-  //             name: item.name,
-  //             price: item.sumPrice.toString(),
-  //           })),
-  //         };
-  //         setClovaAnalys(updatedClovaAnalys);
-  //         setImgRegister(true);
-  //         setLoading(false);
-  //       })
-  //       .catch((error) => {
-  //         console.log(formData);
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: '사진을 인식하지 못했어요',
-  //         });
-  //         navigate(0);
-  //         setLoading(false);
-  //       });
-  //   }
-  // };
+  const postOCR = () => {
+    const formData = new FormData();
+    if (receiptImage) {
+      formData.append('img', receiptImage);
+      axios
+        .post('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt', formData, {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        })
+        .then((response) => {
+          const updatedClovaAnalys = {
+            items: response.data.response.list.map((item: any) => ({
+              name: item.name,
+              price: item.sumPrice.toString(),
+            })),
+          };
+          setClovaAnalys(updatedClovaAnalys);
+          setImgRegister(true);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(formData);
+          Swal.fire({
+            icon: 'error',
+            title: '사진을 인식하지 못했어요',
+          });
+          navigate(0);
+          setLoading(false);
+        });
+    }
+  };
   const getTransactionDetail = () => {
     axios
       .get(`https://j9c211.p.ssafy.io/api/transactions/${transactionId}/${selectedCardId}/detail`, {
@@ -110,46 +110,46 @@ const HistoryDetail = () => {
     getTransactionDetail();
   }, []);
 
-  const getOCR = () => {
-    axios
-      .get('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/test', {
-        headers: {
-          'ACCESS-TOKEN': accessToken,
-          'REFRESH-TOKEN': refreshToken,
-        },
-      })
-      .then((response) => {
-        const updatedClovaAnalys = {
-          items: response.data.response.list.map((item: any) => ({
-            name: item.name,
-            price: item.sumPrice.toString(), // sumPrice를 문자열로 변환
-          })),
-        };
+  // const getOCR = () => {
+  //   axios
+  //     .get('https://j9c211.p.ssafy.io/api/analyst-management/analysts/receipt/test', {
+  //       headers: {
+  //         'ACCESS-TOKEN': accessToken,
+  //         'REFRESH-TOKEN': refreshToken,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       const updatedClovaAnalys = {
+  //         items: response.data.response.list.map((item: any) => ({
+  //           name: item.name,
+  //           price: item.sumPrice.toString(), // sumPrice를 문자열로 변환
+  //         })),
+  //       };
 
-        // 업데이트된 데이터를 clovaAnalys 상태로 설정합니다.
-        setClovaAnalys(updatedClovaAnalys);
-        setImgRegister(true);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-        Swal.fire({
-          icon: 'warning',
-          title: '영수증을 다시 등록해주세요',
-        });
-        return;
-      });
-  };
+  //       // 업데이트된 데이터를 clovaAnalys 상태로 설정합니다.
+  //       setClovaAnalys(updatedClovaAnalys);
+  //       setImgRegister(true);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setLoading(false);
+  //       Swal.fire({
+  //         icon: 'warning',
+  //         title: '영수증을 다시 등록해주세요',
+  //       });
+  //       return;
+  //     });
+  // };
   useEffect(() => {
-    // if (receiptImage) {
-    //   postOCR();
-    //   setLoading(true);
-    // }
     if (receiptImage) {
-      getOCR();
+      postOCR();
       setLoading(true);
     }
+    // if (receiptImage) {
+    //   getOCR();
+    //   setLoading(true);
+    // }
   }, [receiptImage]);
 
   const handleEdit = (index: number) => {
