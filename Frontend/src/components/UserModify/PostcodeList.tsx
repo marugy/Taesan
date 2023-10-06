@@ -55,7 +55,14 @@ const PostcodeList = ({ postcode, zonecode, detailPostcode, setPostcode, setZonc
       </div>
       <div className="gap-1 flex flex-col">
         <Input className="" type="text" label="주소" value={postcode} crossOrigin="anonymous" disabled />
-        <Input className="" type="text" label="상세주소" onChange={onChange} crossOrigin="anonymous" />
+        <Input
+          className=""
+          type="text"
+          label="상세주소"
+          onChange={onChange}
+          value={detailPostcode}
+          crossOrigin="anonymous"
+        />
       </div>
       <div className="text-xs text-gray-500">
         {zonecode} {postcode} {detailPostcode}

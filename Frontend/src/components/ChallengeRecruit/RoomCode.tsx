@@ -25,11 +25,16 @@ const RoomCode = ({ roomcode }: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-5 bg-gray-100 tb:text-md dt:text-xl rounded-lg w-[150px] font-bold">
-      {roomcode}
-      <IconButton className="font-bold m-1 tb:text-md dt:text-xl bg-main" onClick={() => handleCopyClipBoard(roomcode)}>
-        <ContentCopyOutlinedIcon />
-      </IconButton>
+    <div className="flex justify-center items-center mt-5 bg-gray-100 tb:text-md dt:text-xl rounded-lg p-2 w-11/12">
+      <span className="whitespace-nowrap overflow-x-auto">{roomcode}</span>
+      <div>
+        <IconButton
+          className="font-bold m-1 tb:text-md dt:text-xl bg-main"
+          onClick={() => handleCopyClipBoard(roomcode)}
+        >
+          <ContentCopyOutlinedIcon />
+        </IconButton>
+      </div>
     </div>
   );
 };

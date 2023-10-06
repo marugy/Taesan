@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import HabitDetail from 'components/HabitDetail/HabitDetail';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useUserStore } from 'store/UserStore';
+import './Habit.css';
 
 const HabitDetailPage = () => {
+  const { accessToken, refreshToken, connectedAsset, createdTikkle } = useUserStore();
+  const navigate = useNavigate();
+  const tokenCheck = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',
+        {},
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.data.response === false) {
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/');
+      });
+  };
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
   return (
     <div>
-      <h1>습관 상세페이지</h1>
-      <h2>습관 이름 : 금연</h2>
-      <p>총 절약금액 : 45,000 </p>
-      <p>달력띄우는 곳</p>
-      <p>이 습관을 통해 총 10,500원 저금 하셨어요</p>
-      <button>종료</button>
+      <HabitDetail />
     </div>
   );
 };

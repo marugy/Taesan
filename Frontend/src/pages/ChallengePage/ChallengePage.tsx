@@ -1,20 +1,48 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import ChallengeButtonList from 'components/Challenge/ChallengeButtonList';
 import ChallengeSaving from 'components/Challenge/ChallengeSaving';
-import ArrowBack from 'components/Common/ArrowBack';
+import BottomNav from 'components/Common/BottomNav';
+import ArrowBackParam from 'components/Common/ArrowBackParam';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useUserStore } from 'store/UserStore';
 
 const ChallengePage = () => {
-  // 유저 챌린지 상태를 불러오기 API
-  console.log('GET_사용자의 챌린지 상태');
-  // 챌린지 상태에 따라 버튼 보여주기 생성+같이/모집/진행
-
+  const { accessToken, refreshToken,connectedAsset,createdTikkle } = useUserStore();
+  const navigate = useNavigate();
+  const tokenCheck = ()=>{
+    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    })
+    .then((res)=>{
+      console.log('여기',res.data.response)
+      if(res.data.response === false){
+        navigate('/')
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      navigate('/')
+    })
+  }
+  useEffect(() => {
+    tokenCheck();
+    if (connectedAsset === false || createdTikkle === false) {
+      navigate('/main');
+    }
+  }, []);
   return (
-    <div>
-      <ArrowBack pageName="절약 챌린지" />
-      <div className="flex flex-col items-center">
+    <div className=" overflow-hidden">
+      <ArrowBackParam pageName="절약 챌린지" param="/main" />
+      <div className="flex flex-col items-center h-[90%] justify-center">
         <ChallengeSaving />
         <ChallengeButtonList />
+        <div className="h-[120px]"></div>
       </div>
+      <BottomNav />
     </div>
   );
 };

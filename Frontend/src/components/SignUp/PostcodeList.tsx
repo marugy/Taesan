@@ -8,7 +8,7 @@ import { Input } from '@material-tailwind/react';
 
 interface Props {
   register: UseFormRegister<any>;
-  errors?: FieldErrors;
+  errors: FieldErrors;
 }
 
 const PostcodeList = ({ register }: Props) => {

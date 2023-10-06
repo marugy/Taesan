@@ -10,14 +10,14 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </QueryClientProvider>,
+  // </React.StrictMode>,
 );
 
 // If you want your app to work offline and load faster, you can change

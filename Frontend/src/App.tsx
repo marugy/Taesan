@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import logo from './logo.svg';
 
 import { Router, Route, Routes } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import LoginPage from 'pages/AuthPage/LoginPage';
 import SingUpPage from 'pages/AuthPage/SignUpPage';
 import BuyifPage from 'pages/BuyifPage/BuyifPage';
@@ -35,11 +36,38 @@ import SavingDetailPage from 'pages/SavingPage/SavingDetailPage';
 import SavingCreatePage from 'pages/SavingPage/SavingCreatePage';
 import SavingDeletePage from 'pages/SavingPage/SavingDeletePage';
 import TestPage from 'pages/TestPage/TestPage';
+import ApproveMyData from 'pages/MainPage/ApproveMyData';
+import NotFound from 'components/Common/NotFound';
+
+import DisalbeDevTool from 'components/Common/DisableDevTool';
+
+import 'animate.css';
 import './App.css';
+
+// import { useUserStore } from 'store/UserStore';
+// import Notification from 'components/Common/Notification';
+
 function App() {
+  // const location = useLocation();
+  // const { readyNotification, setReadyNotification } = useUserStore();
+  // const timerRef = useRef<number | NodeJS.Timeout | null>(null); // 타이머 ID를 저장할 ref
+
+  // // readyNotification이 true일 때 로직을 실행
+  // if (readyNotification && location.pathname === '/main') {
+  //   // readyNotification을 false로 설정
+  //   setReadyNotification(false);
+
+  //   // 10초 후에 readyNotification을 true로 설정
+  //   timerRef.current = setTimeout(() => {
+  //     console.log('NOW', readyNotification);
+  //     setReadyNotification(true);
+  //   }, 10000);
+  // }
+
   return (
-    <div className="App  flex justify-center bg-back ">
-      <div className="w-screen tb:w-[60vw] dt:w-[50vw] border">
+    <div className="App  flex justify-center bg-back overflow-y-auto h-screen">
+      {/* <DisalbeDevTool /> */}
+      <div className="w-screen tb:w-[60vw] dt:w-[50vw]">
         <Routes>
           <Route path="/test" element={<TestPage />} />
 
@@ -54,7 +82,7 @@ function App() {
           {/* 절약 챌린지 관련 페이지 */}
           <Route path="/challenge" element={<ChallengePage />} />
           <Route path="/challenge/result" element={<ChallengeResultPage />} />
-          <Route path="/challenge/result/detail" element={<ChallengeResultDetailPage />} />
+          <Route path="/challenge/result/:id" element={<ChallengeResultDetailPage />} />
           <Route path="/challenge/create" element={<ChallengeCreatePage />} />
           <Route path="/challenge/play" element={<ChallengePlayPage />} />
           <Route path="/challenge/recruit" element={<ChallengeRecruitPage />} />
@@ -62,16 +90,17 @@ function App() {
           {/* 습관 저금 관련 페이지 */}
           <Route path="/habit" element={<HabitPage />} />
           <Route path="/habit/create" element={<HabitCreatePage />} />
-          <Route path="/habit/detail" element={<HabitDetailPage />} />
+          <Route path="/habit/detail/:habitId" element={<HabitDetailPage />} />
 
           {/* 거래내역 관련 페이지 */}
           <Route path="/history" element={<HistoryPage />} />
-          <Route path="/history/detail/:id" element={<HistoryDetailPage />} />
+          <Route path="/history/detail/:transactionId" element={<HistoryDetailPage />} />
           <Route path="/history/receipt" element={<ReceiptPage />} />
 
           {/* 메인페이지 관련 페이지 */}
           <Route path="/main" element={<MainPage />} />
           <Route path="/main/asset/register" element={<AssetRegisterPage />} />
+          <Route path="/main/mydata" element={<ApproveMyData />} />
 
           {/* 마이페이지 관련 페이지 */}
           <Route path="/mypage" element={<MyPage />} />
@@ -95,7 +124,8 @@ function App() {
           <Route path="/saving/create" element={<SavingCreatePage />} />
           <Route path="/saving/delete" element={<SavingDeletePage />} />
 
-        
+          {/* 예외처리를 위한 404 페이지  */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>
