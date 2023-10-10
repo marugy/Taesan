@@ -35,7 +35,7 @@ public class TransactionQRepository {
                 .where(
                         transaction.cardId.eq(id).and(ltCursor(cursor))
                 )
-                .orderBy(transaction.cardHistoryId.desc())
+                .orderBy(transaction.dateTime.desc())
                 .limit(limit + 1)
                 .fetch();
     }
