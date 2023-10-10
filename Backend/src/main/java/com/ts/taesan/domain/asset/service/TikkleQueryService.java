@@ -30,6 +30,7 @@ public class TikkleQueryService {
         return TikkleInfoResponse.builder()
                 .curMoney(tikkle.getMoney())
                 .futureMoney(calculateUtil.calculate(tikkle))
+                .endMoney(calculateUtil.calculateFinalInterest(tikkle))
                 .endDate(tikkle.getEndDate())
                 .build();
     }

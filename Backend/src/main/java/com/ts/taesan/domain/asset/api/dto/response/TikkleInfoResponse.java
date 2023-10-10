@@ -18,11 +18,13 @@ public class TikkleInfoResponse {
     private Long curMoney;
     private Date endDate;
     private Long futureMoney;
+    private Long endMoney;
 
     @Builder
-    public TikkleInfoResponse(Long curMoney, Date endDate, Long futureMoney) {
+    public TikkleInfoResponse(Long curMoney, Date endDate, Long futureMoney, Long endMoney) {
         this.curMoney = curMoney;
         this.endDate = endDate;
         this.futureMoney = futureMoney;
+        this.endMoney = endMoney;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,7 @@ public class InterestCalculateUtil {
             long daysDifference = ChronoUnit.DAYS.between(payHistory.getCreateDate(), LocalDateTime.now());
             long originalMoney = payHistory.getTransAmount();
             totalOriginalMoney += originalMoney;
-            totalInterest += (long) (originalMoney * (daysDifference / 365) * (rate / 100));
+            totalInterest += (long) (originalMoney * daysDifference / 365 * rate / 100);
         }
 
         if (new Date().before(tikkle.getEndDate())) {
@@ -44,4 +45,24 @@ public class InterestCalculateUtil {
             return totalOriginalMoney + (totalInterest/2);
         }
     }
+
+    public long calculateFinalInterest(Tikkle tikkle) {
+        long totalOriginalMoney = 0;
+        long totalInterest = 0;
+        List<PayHistory> payHistoryList = payHistoryRepository.findPayHistoriesByTikkleId(tikkle.getId());
+        for (PayHistory payHistory : payHistoryList) {
+            LocalDateTime endDate = tikkle.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            long daysDifference = ChronoUnit.DAYS.between(payHistory.getCreateDate(), endDate);
+            long originalMoney = payHistory.getTransAmount();
+            totalOriginalMoney += originalMoney;
+            totalInterest += (long) (originalMoney * daysDifference / 365 * rate / 100);
+        }
+
+        if (new Date().before(tikkle.getEndDate())) {
+            return totalOriginalMoney + totalInterest;
+        } else {
+            return totalOriginalMoney + (totalInterest/2);
+        }
+    }
+
 }
