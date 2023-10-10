@@ -57,6 +57,26 @@ const HistoryList = ({transactionDTOList,fetchNextPage,hasNextPage,isFetching}:P
         groupedTransactions[date].push(transaction);
       });
     const groupedTransactionDates = Object.keys(groupedTransactions);
+    groupedTransactionDates.sort((dateA, dateB) => {
+      const transactionsA = groupedTransactions[dateA];
+      const transactionsB = groupedTransactions[dateB];
+      
+      // 각 그룹 내의 거래 내역을 최신 날짜와 시간 순서로 정렬
+      transactionsA.sort((a, b) => {
+        return dayjs(b.dateTime).isBefore(dayjs(a.dateTime)) ? -1 : 1;
+      });
+    
+      transactionsB.sort((a, b) => {
+        return dayjs(b.dateTime).isBefore(dayjs(a.dateTime)) ? -1 : 1;
+      });
+      
+      // 그룹 내의 첫 번째 거래의 날짜와 시간을 사용하여 비교
+      const dateTimeA = transactionsA[0].dateTime;
+      const dateTimeB = transactionsB[0].dateTime;
+    
+      // ISO 8601 형식의 문자열을 직접 비교
+      return dateTimeB.localeCompare(dateTimeA);
+    });
     useEffect(() => {
         const options = {
           root: null, // viewport를 기준으로 감시

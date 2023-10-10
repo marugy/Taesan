@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2';
-import { useUserStore } from 'store/UserStore';
 import { NavigateFunction } from 'react-router-dom';
 import { get } from 'http';
 
@@ -21,6 +20,7 @@ interface Props {
   createdTikkle: boolean;
   storeDate: string;
   setStoreDate: (date: string) => void;
+  selectedCardId: string;
 }
 
 const Notification = async ({
@@ -31,6 +31,7 @@ const Notification = async ({
   createdTikkle,
   storeDate,
   setStoreDate,
+  selectedCardId,
 }: Props) => {
   // info : 모집된 인원
   // info : 남은 소비 금액
@@ -167,7 +168,9 @@ const Notification = async ({
 
   const ChallengePlayPush = (pushInfo: string): any =>
     Swal.mixin({
-      title: `현재 절약 챌린지 남은 금액 ${pushInfo}원! <br/>확인하시겠습니까?`,
+      title: `현재 절약 챌린지 남은 금액 ${pushInfo
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원! <br/>확인하시겠습니까?`,
       toast: true,
       position: 'top',
       showConfirmButton: true,
@@ -192,8 +195,7 @@ const Notification = async ({
 
   const EnrollReceiptPush = (pushInfo: string): any =>
     Swal.mixin({
-      // title: '최근 등록하지 않은 영수증이 있습니다.<br/>영수증 등록 하실래요?',
-      title: '영수증을 등록하면 상세 결제 내역을 기록할 수 있어요!',
+      title: '최근 등록하지 않은 영수증이 있습니다.<br/>영수증 등록 하실래요?',
       toast: true,
       position: 'top',
       showConfirmButton: true,
@@ -218,8 +220,8 @@ const Notification = async ({
 
   const EnrollHabitPush = (pushInfo: string): any =>
     Swal.mixin({
-      // title: '오늘 저금하지 않은 습관이 있습니다.<br/>습관 저금하실래요?',
-      title: '습관 저금하실래요?',
+      title: `오늘 저금할 수 있는 습관 ${pushInfo}개! <br/>습관 저금하실래요?`,
+      // title: '습관 저금하실래요?',
       toast: true,
       position: 'top',
       showConfirmButton: true,
@@ -359,6 +361,7 @@ const Notification = async ({
       initPush.map(async (pushItem) => {
         let shouldInclude = false;
 
+        // 절약 챌린지 조회 후 필터링
         try {
           const res = await axios.get(`https://j9c211.p.ssafy.io/api/challenge-management/challenges/state`, {
             headers: {
@@ -418,23 +421,64 @@ const Notification = async ({
 
         // 영수증 등록 가능 여부 조회 후 true 필터
         if (pushItem.id === 'EnrollRecipt') {
-          // 카드리스트 불러오기
+          try {
+            // 해당 카드 거래 내역 불러오기
+            const response = await axios.get(`https://j9c211.p.ssafy.io/api/transactions/history/${selectedCardId}`, {
+              params: {
+                cursor: null,
+                limit: 10,
+              },
+              headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+              },
+            });
 
-          // 각 카드의 기본 거래 내역 불러오기
-
-          // 기본 거래 내역에서 가장 최근 거래 불러오기
-
-          // 가장 최근 거래에 receiptList 불러오기
-
-          // 0이면 그 거래 아이디 info에 저장
-
-          // shouldInclude = true
-          shouldInclude = true;
+            console.log(response.data.response.transactionDTOList[0]);
+            const DTOList = response.data.response.transactionDTOList[0];
+            // 가장 최근 거래 상세내역 불러오기
+            await axios
+              .get(`https://j9c211.p.ssafy.io/api/transactions/${DTOList.transactionId}/receipt/`, {
+                headers: {
+                  'ACCESS-TOKEN': accessToken,
+                  'REFRESH-TOKEN': refreshToken,
+                },
+              })
+              .then((res) => {
+                console.log(res.data.response);
+                // 가장 최근 거래에 receiptList 불러오기
+                if (res.data.response.receipts.length === 0) {
+                  pushItem.url = `/history/detail/${DTOList.transactionId}`;
+                  shouldInclude = true;
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } catch (error) {
+            console.error(error);
+          }
         }
 
         // 습관 저금 등록 가능 여부 조회 후 true 필터
         if (pushItem.id === 'EnrollHabit') {
-          shouldInclude = true;
+          await axios
+            .get(`https://j9c211.p.ssafy.io/api/habit-management/habits/today`, {
+              headers: {
+                'ACCESS-TOKEN': accessToken,
+                'REFRESH-TOKEN': refreshToken,
+              },
+            })
+            .then((response) => {
+              if (response.data.response.length > 0) {
+                console.log(response.data.response.length);
+                pushItem.info = response.data.response.length;
+                shouldInclude = true;
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }
 
         // 적금통 만기 조회 후 true 필터

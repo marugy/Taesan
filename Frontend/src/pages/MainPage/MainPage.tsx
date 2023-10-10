@@ -10,6 +10,7 @@ import { useUserStore } from 'store/UserStore';
 import Notification from 'components/Common/Notification';
 import { useNavigate } from 'react-router';
 import Loading from 'components/Common/Loading';
+import { useAssetStore } from 'store/AssetStore';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ const MainPage = () => {
     createdTikkle,
     setCreatedTikkle,
   } = useUserStore();
+
+  const { selectedCardId, setSelectedCardId } = useAssetStore();
 
   // 사용자 자산 관련 State
   // const [createdTikkle, setCreatedTikkle] = useState(false); // 티끌모아 적금 생성 여부
@@ -63,25 +66,28 @@ const MainPage = () => {
     },
   ]); // 카드 리스트
 
-  
-  const tokenCheck = ()=>{
-    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
-      headers: {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      },
-    })
-    .then((res)=>{
-    
-      if(res.data.response === false){
-        navigate('/')
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-      navigate('/')
-    })
-  }
+  const tokenCheck = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',
+        {},
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.data.response === false) {
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/');
+      });
+  };
   useEffect(() => {
     tokenCheck();
   }, []);
@@ -135,6 +141,7 @@ const MainPage = () => {
         createdTikkle,
         storeDate,
         setStoreDate,
+        selectedCardId,
       });
     };
 

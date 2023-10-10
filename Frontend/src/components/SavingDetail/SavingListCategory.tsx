@@ -28,19 +28,19 @@ const SavingListCategory = () => {
       <div className="space-y-2">
         <div className="flex justify-between">
           <div>절약 챌린지</div>
-          <div>{catergory.challenge ? catergory.challenge : 0}원</div>
+          <div>{catergory.challenge ? catergory.challenge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</div>
         </div>
         <div className="flex justify-between">
           <div>습관 저금통</div>
-          <div>{catergory.habit ? catergory.habit : 0}원</div>
+          <div>{catergory.habit ? catergory.habit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</div>
         </div>
         <div className="flex justify-between">
           <div>샀다 치고</div>
-          <div>{catergory.ifbuy ? catergory.ifbuy : 0}원</div>
+          <div>{catergory.ifbuy ? catergory.ifbuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</div>
         </div>
         <div className="flex justify-between">
           <div>총 액</div>
-          <div>{catergory.total ? catergory.total : 0}원</div>
+          <div>{catergory.total ? catergory.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}원</div>
         </div>
       </div>
     </div>

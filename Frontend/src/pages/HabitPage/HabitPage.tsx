@@ -16,6 +16,7 @@ import { useQuery, useMutation } from 'react-query';
 import ArrowBack from 'components/Common/ArrowBack';
 import { useUserStore } from 'store/UserStore';
 import Swal2 from 'sweetalert2';
+import ArrowBackParam from 'components/Common/ArrowBackParam';
 
 const HabitPage = () => {
   const { accessToken, refreshToken, connectedAsset, createdTikkle, name } = useUserStore();
@@ -237,7 +238,7 @@ const HabitPage = () => {
   };
   return (
     <div>
-      <ArrowBack pageName="습관 저금통" />
+      <ArrowBackParam pageName="습관 저금통" param="/main" />
       <div className="mx-3 mt-3 mb-28 font-main">
         <div className="text-blue-500 text-2xl dt:text-4xl mt-5 font-bold font-main">{name}님의 습관 저금통</div>
         <div className="text-gray-600 text-md my-3 font-bold font-main">

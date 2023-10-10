@@ -128,7 +128,7 @@ const SavingDelete = () => {
             <span className="text-sm dt:text-xl text-main font-bold">{expirationDate}일</span>{' '}
           </div>
           <div className="">
-            <span className="text-sm dt:text-xl text-gray-500">만기시 예상 출금액 : </span>
+            <span className="text-sm dt:text-xl text-gray-500">현재 해지시 출금액 : </span>
             <span className="text-sm dt:text-xl text-main font-bold">
               {aftermoney.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
             </span>

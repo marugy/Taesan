@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { Input } from 'antd';
 import { Toast } from 'components/Common/Toast';
 import { Pincode } from 'components/Common/Pincode';
+import { useQuery } from 'react-query';
 
 const BuyifRegister = () => {
   const [changeProfileImage, setChangeProfileImage] = useState<File | null>(null);
@@ -15,12 +16,27 @@ const BuyifRegister = () => {
   const [itemprice, setItemprice] = useState('');
   const [pincodeVisible, setPincodeVisible] = useState(false);
   const { accessToken, refreshToken, setName } = useUserStore();
+
+  const [balance, setBalance] = useState(0); // 잔액
   const navigate = useNavigate();
 
   // 아무것도 안 보내면 사진이 안 바뀜.
   // else {
   //   formData.append('file', '');
   // }
+
+  const getAsset = async () => {
+    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    });
+    setBalance(userAssetInfo.response.account.balance);
+    return userAssetInfo;
+  };
+  const { data: userAssetInfo } = useQuery('getAsset', getAsset);
+
   const Buyif = () => {
     if (itemname === '') {
       Swal.fire({
@@ -52,6 +68,13 @@ const BuyifRegister = () => {
         cancelButtonColor: 'red',
         cancelButtonText: '취소',
       }).then((result) => {
+        if (balance < Number(itemprice)) {
+          Toast.fire({
+            icon: 'error',
+            title: '잔액이 부족합니다!',
+          });
+          return;
+        }
         if (result.isConfirmed) {
           setPincodeVisible(true);
         }
@@ -103,7 +126,6 @@ const BuyifRegister = () => {
   const handleItempriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setItemprice(event.target.value);
   };
-
 
   return (
     <div className="flex flex-col h-screen">

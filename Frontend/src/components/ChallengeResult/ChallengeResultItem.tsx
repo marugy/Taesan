@@ -8,6 +8,7 @@ import { Toast } from 'components/Common/Toast';
 
 import { useUserStore } from 'store/UserStore';
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 interface Props {
   endDate: string;
@@ -24,6 +25,7 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
 
   const { accessToken, refreshToken } = useUserStore();
   const [visiblePincode, setVisiblePincode] = useState(false);
+  const [balance, setBalance] = useState(0); // 잔액
 
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
@@ -32,6 +34,18 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
       2,
       '0',
     )}`;
+
+  const getAsset = async () => {
+    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    });
+    setBalance(userAssetInfo.response.account.balance);
+    return userAssetInfo;
+  };
+  const { data: userAssetInfo } = useQuery('getAsset', getAsset);
 
   const handleSave = () => {
     Swal.fire({
@@ -46,6 +60,13 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
       cancelButtonColor: 'red',
       cancelButtonText: '취소',
     }).then((result) => {
+      if (balance < spare) {
+        Toast.fire({
+          icon: 'error',
+          title: '잔액이 부족합니다!',
+        });
+        return;
+      }
       if (result.isConfirmed) {
         setVisiblePincode(true);
       }
@@ -89,9 +110,8 @@ const ChallengeResultItem = ({ endDate, exchange, id, price, startDate, title, s
       </div>
       <div className="flex mb-3 mr-3 justify-between">
         <div className="ml-5 text-[13px] dt:text-[15px]">
-          <div className=" ">
-            ￦ {spare} / {price}
-          </div>
+          <div className=" ">목표소비금액 : ￦ {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+          <div className=" ">남은소비금액 : ￦ {spare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
           <div className="">
             {formatDate(startDateObj)} ~ {formatDate(endDateObj)}
           </div>
