@@ -37,15 +37,19 @@ const SavingListAll = () => {
 
   return (
     <div>
-      {transList.map((transaction, index) => (
+      {[...transList].reverse().map((transaction, index) => (
         <div key={index} className="border-2 flex justify-between">
           <div>{formatDate(transaction.createDate)}</div>
           <div className="flex flex-col justify-center items-center">
-            <div>{transaction.transAmount}원</div>
-            <div className="text-xs">{transaction.transAmount + transaction.totalAmount}원</div>
+            <div>{transaction.transAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+            <div className="text-xs">
+              {(transaction.transAmount + transaction.totalAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+            </div>
           </div>
         </div>
       ))}
+
+      <div className="h-[120px]"></div>
     </div>
   );
 };

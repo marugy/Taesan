@@ -10,40 +10,44 @@ import { useAssetStore } from 'store/AssetStore';
 import { useNavigate } from 'react-router-dom';
 
 const HistoryPage = () => {
-  const [cardId,setCardId]= useState(0)
-  const [cardNumber,setCradNumber]=useState('')
-  const [cardCompany,setCradCompany]=useState('')
-  const [transactionDTOList,setTransactionDTOList]=useState([])
-  const [cardType,setCardType]=useState('')
-  const [page,setPage] = useState(null);
-  const {selectedCardId} = useAssetStore()
-  const { accessToken, refreshToken,connectedAsset,createdTikkle,name } = useUserStore();
+  const [cardId, setCardId] = useState(0);
+  const [cardNumber, setCradNumber] = useState('');
+  const [cardCompany, setCradCompany] = useState('');
+  const [transactionDTOList, setTransactionDTOList] = useState([]);
+  const [cardType, setCardType] = useState('');
+  const [page, setPage] = useState(null);
+  const { selectedCardId } = useAssetStore();
+  const { accessToken, refreshToken, connectedAsset, createdTikkle, name } = useUserStore();
   const navigate = useNavigate();
-  const tokenCheck = ()=>{
-    axios.post('https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',{},{
-      headers: {
-        'ACCESS-TOKEN': accessToken,
-        'REFRESH-TOKEN': refreshToken,
-      },
-    })
-    .then((res)=>{
-    
-      if(res.data.response === false){
-        navigate('/')
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-      navigate('/')
-    })
-  }
+  const tokenCheck = () => {
+    axios
+      .post(
+        'https://j9c211.p.ssafy.io/api/member-management/members/check/access-token',
+        {},
+        {
+          headers: {
+            'ACCESS-TOKEN': accessToken,
+            'REFRESH-TOKEN': refreshToken,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.data.response === false) {
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/');
+      });
+  };
   useEffect(() => {
     tokenCheck();
     if (connectedAsset === false) {
       navigate('/main');
     }
   }, []);
-  
+
   // const getHistory = async (page:number) => {
   //   try {
   //     const response = await axios.get(
@@ -74,28 +78,25 @@ const HistoryPage = () => {
   //   }
   // };
 
-  const getHistory = async (page:any) => {
+  const getHistory = async (page: any) => {
     try {
-      const response = await axios.get(
-        `https://j9c211.p.ssafy.io/api/transactions/history/${selectedCardId}`,
-        {
-          params: {
-            cursor: page,
-            limit: 10
-          },
-          headers: {
-            'ACCESS-TOKEN': accessToken,
-            'REFRESH-TOKEN': refreshToken,
-          },
-        }
-      );
-      setPage(response.data.response.cursor)
-      setCradNumber(response.data.response.card.cardNumber)
-      setCradCompany(response.data.response.card.cardCompany)
-      setCardType(response.data.response.card.cardType)
-      setCardId(response.data.response.card.cardId)
-      
-      console.log(response.data)
+      const response = await axios.get(`https://j9c211.p.ssafy.io/api/transactions/history/${selectedCardId}`, {
+        params: {
+          cursor: page,
+          limit: 10,
+        },
+        headers: {
+          'ACCESS-TOKEN': accessToken,
+          'REFRESH-TOKEN': refreshToken,
+        },
+      });
+      setPage(response.data.response.cursor);
+      setCradNumber(response.data.response.card.cardNumber);
+      setCradCompany(response.data.response.card.cardCompany);
+      setCardType(response.data.response.card.cardType);
+      setCardId(response.data.response.card.cardId);
+
+      console.log(response.data);
       return response.data.response.transactionDTOList;
     } catch (error) {
       console.error(error);
@@ -131,13 +132,7 @@ const HistoryPage = () => {
   //   }
   // };
 
-  
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useInfiniteQuery('transactions', () => getHistory(page), {
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery('transactions', () => getHistory(page), {
     getNextPageParam: (lastPage) => {
       if (lastPage.length === 10) {
         // 다음 페이지가 있는 경우 다음 페이지 번호 반환
@@ -147,20 +142,13 @@ const HistoryPage = () => {
       }
     },
     refetchOnWindowFocus: false,
-    cacheTime:0
+    cacheTime: 0,
   });
-  
+
   return (
     <div>
       <ArrowBack pageName="거래내역" />
-      <Card
-        name={name}
-        cardNumber={cardNumber}
-        cardCompany={cardCompany}
-        main=""
-        cardId={cardId}
-        cardType={cardType}
-        />
+      <Card name={name} cardNumber={cardNumber} cardCompany={cardCompany} main="" cardId={cardId} cardType={cardType} />
       <HistoryList
         transactionDTOList={data ? data.pages.flat() : []}
         fetchNextPage={fetchNextPage}
@@ -180,7 +168,7 @@ export default HistoryPage;
 //     cardId: cardid,
 //     cursor: 0,
 //     limit: 20,
-//   },    
+//   },
 //   headers: {
 //       'ACCESS-TOKEN': accessToken,
 //       'REFRESH-TOKEN': refreshToken,

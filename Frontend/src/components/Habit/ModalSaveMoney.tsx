@@ -15,6 +15,9 @@ import dayjs from 'dayjs';
 import { useUserStore } from 'store/UserStore';
 import Swal2 from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { Toast } from 'components/Common/Toast';
+
 interface ModalSaveMoneyProps {
   todaySave: Array<any>;
 }
@@ -33,12 +36,33 @@ const ModalSaveMoney: React.FC<ModalSaveMoneyProps> = ({ todaySave }) => {
   const [selectHabit, setSelectHabit] = useState(initialSelectHabit);
   const [selectedHabitIds, setSelectedHabitIds] = useState<string[]>([]);
   const handleOpen = (value: any) => setSize(value);
+  const [balance, setBalance] = useState(0); // 잔액
+
+  const getAsset = async () => {
+    const { data: userAssetInfo } = await axios.get('https://j9c211.p.ssafy.io/api/asset-management/assets/main', {
+      headers: {
+        'ACCESS-TOKEN': accessToken,
+        'REFRESH-TOKEN': refreshToken,
+      },
+    });
+    setBalance(userAssetInfo.response.account.balance);
+    return userAssetInfo;
+  };
+  const { data: userAssetInfo } = useQuery('getAsset', getAsset);
 
   const postSavingToday = () => {
     if (selectedHabitIds.length === 0) {
       Swal2.fire({
         icon: 'info',
         title: '저금할 습관을 선택해주세요.',
+      });
+      return;
+    }
+
+    if (balance < totalMoney) {
+      Toast.fire({
+        icon: 'error',
+        title: '잔액이 부족합니다!',
       });
       return;
     }

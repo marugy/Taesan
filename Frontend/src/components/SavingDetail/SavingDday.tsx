@@ -33,9 +33,11 @@ const SavingDday = () => {
     <div className="border-2 rounded-xl mx-5 bg-white flex items-center justify-between mt-8">
       <img src="/piggy_bank.png" alt="pig" className="h-24" />
       <div className="font-bold text-sm dt:text-lg flex flex-col justify-center items-center gap-5 p-1">
-        <div> {savingInfo.curMoney} 원</div>
+        <div> {savingInfo?.curMoney?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'} 원</div>
         <div>만기까지 {expirationDate}일</div>
-        <div>만기 시 {savingInfo.futureMoney}원</div>
+        <div>
+          현재 해지시 출금액 {savingInfo?.futureMoney?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}원
+        </div>
       </div>
     </div>
   );

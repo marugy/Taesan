@@ -36,13 +36,17 @@ const SavingInfo: React.FC<SavingInfoProps> = ({ savingInfo }) => {
       </div>
       <div className="flex flex-col items-center gap-4">
         <div className="text-xl text-gray-700 font-bold">현재 적금통에 적립된 금액</div>
-        <div className="text-lg text-blue-600 ">{savingInfo.curMoney}원</div>
+        <div className="text-lg text-blue-600 ">
+          {savingInfo?.curMoney?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}원
+        </div>
         <div className="text-xl text-gray-700 font-bold">만기일</div>
         <div className="text-lg text-blue-600 ">{dayjs(savingInfo.endDate).format('YYYY년 MM월 DD일')}</div>
         <div className="text-xl text-gray-700 font-bold">만기까지 남은 일자 : </div>
         <div className="text-lg text-blue-600 ">{expirationDate}일</div>{' '}
-        <div className="text-xl text-gray-700 font-bold">만기시 예상 출금액</div>
-        <div className="text-lg text-blue-600 ">{savingInfo.futureMoney}원</div>
+        <div className="text-xl text-gray-700 font-bold">현재 해지시 출금액</div>
+        <div className="text-lg text-blue-600 ">
+          {savingInfo?.futureMoney?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}원
+        </div>
         <div>
           <Button
             color="red"

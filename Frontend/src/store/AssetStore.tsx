@@ -4,15 +4,12 @@ import { devtools, persist } from 'zustand/middleware';
 interface AssetStore {
   selectedCardId: string;
   setSelectedCardId: (name: string) => void;
-
-
-
 }
 
 export const useAssetStore = create<AssetStore>()(
   persist(
     (set) => ({
-    selectedCardId: '',
+      selectedCardId: '',
       setSelectedCardId: (selectedCardId: string) => set({ selectedCardId }),
     }),
     {
