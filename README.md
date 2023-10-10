@@ -319,4 +319,4 @@ Kakao Map API, Naver Clova OCR, Naver Cloud Platform SMS
 ![taesan_artchitecture.png](exec/outputs/taesan_artchitecture.png)
 
 ### 🗃️ ERD
-![taesan_erd.png](exec/outputs/taesan_erd.png)
+![taesan_erd.png](exec/outputs/taesan_erd.png){: width="800" height=""}
