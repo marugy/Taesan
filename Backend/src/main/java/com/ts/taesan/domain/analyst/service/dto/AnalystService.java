@@ -66,9 +66,24 @@ public class AnalystService {
         List<OCRReceiptDTO> list = new ArrayList<>();
         for(ReceiptOcrDto.Item one : ocrDto.getImages().get(0).getReceipt().getResult().getSubResults().get(0).getItems()){
             String name = one.getName().getFormatted().getValue();
-            Long sumPrice = Long.parseLong(one.getPrice().getPrice().getFormatted().getValue());
-            Long unitPrice = Long.parseLong(one.getPrice().getUnitPrice().getFormatted().getValue());
+            Long sumPrice = Long.parseLong("0");
+            Long unitPrice = Long.parseLong("0");
+
+            if(name == null){
+                log.info("떴다");
+            }
             log.info(name);
+            if(one.getPrice() != null){
+                if(one.getPrice().getPrice() != null && one.getPrice().getPrice().getFormatted()!=null&&one.getPrice().getPrice().getFormatted().getValue() != null){
+                    log.info(one.getPrice().getPrice().getFormatted().getValue());
+                    sumPrice = Long.parseLong(one.getPrice().getPrice().getFormatted().getValue());
+                }
+
+                if(one.getPrice().getUnitPrice()!= null && one.getPrice().getUnitPrice().getFormatted()!=null&&one.getPrice().getUnitPrice().getFormatted().getValue() != null){
+                    unitPrice = Long.parseLong(one.getPrice().getUnitPrice().getFormatted().getValue());
+                }
+            }
+
             list.add(new OCRReceiptDTO(name, sumPrice, unitPrice));
         }
         Long totalPrice = Long.parseLong(ocrDto.getImages().get(0).getReceipt().getResult().getTotalPrice().getPrice().getFormatted().getValue());
