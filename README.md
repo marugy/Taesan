@@ -11,7 +11,7 @@
 
 <div align=center>
 
-![웹 화면](exec/outputs/웹화면.png){: width="800" height=""}
+![웹 화면](exec/outputs/웹화면.png)
 
 📅 프로젝트 기간 : 2023.08.14 ~ 2023.10.06 (7주)
 
@@ -90,7 +90,7 @@
   * 중도 해지 시엔 감소된 이율을 적용합니다.
 
 
-## 소비패턴 분석 :shopping_bags:
+## 소비패턴 분석 🛍️
 |                소비 패턴 분석                 |
 |:---------------------------------------:|
 | ![소비패턴분석](exec/outputs/gif/소비패턴분석.gif)  | 
@@ -225,6 +225,13 @@
 <table align="center">
     <tr align="center">
         <td style="min-width: 150px;">
+            <a href="https://github.com/marugy">
+              <img src="https://avatars.githubusercontent.com/u/91540464?v=4" width="200">
+              <br />
+              <b>marugy</b>
+            </a> 
+        </td>
+        <td style="min-width: 150px;">
             <a href="https://github.com/bnk159hair">
               <img src="https://avatars.githubusercontent.com/u/71634377?v=4" width="200">
               <br />
@@ -238,6 +245,23 @@
               <b>byh9811</b>
             </a> 
         </td>
+    </tr>
+    <tr align="center">
+        <td>
+            신규람
+        </td>
+        <td>
+            김하영
+        </td>
+        <td>
+            배용현
+        </td>
+    </tr>
+</table>
+
+### 🏗️Infra
+<table align="center">
+    <tr align="center">
         <td style="min-width: 150px;">
             <a href="https://github.com/marugy">
               <img src="https://avatars.githubusercontent.com/u/91540464?v=4" width="200">
@@ -247,12 +271,6 @@
         </td>
     </tr>
     <tr align="center">
-        <td>
-            김하영
-        </td>
-        <td>
-            배용현
-        </td>
         <td>
             신규람
         </td>
